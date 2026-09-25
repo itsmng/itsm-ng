@@ -1148,20 +1148,18 @@ class Planning extends CommonGLPI
             $rights = 'groups';
         }
 
-        $users = getOptionsForUsers(
+        $users = getAjaxUserDropdownOptions(
             $rights,
             ['entities_id' => $_SESSION['glpiactive_entity']]
         );
         foreach ($used as $user) {
-            if (isset($users[$user])) {
-                unset($users[$user]);
-            }
+            $users['used'][] = $user;
         }
 
         renderTwigTemplate('macros/input.twig', [
            'name'        => 'users_id',
            'type'        => 'select',
-           'values'      => $users,
+           ...$users,
         ]);
 
         echo "<br /><br />";

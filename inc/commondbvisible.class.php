@@ -201,28 +201,8 @@ abstract class CommonDBVisible extends CommonDBTM
                                  right: "{$str_type}_public"
                               },
                               success: function(data) {
-                                 const jsonData = JSON.parse(data);
-                                 $("#selectForTarget$rand").empty();
+                                 setAjaxDropdownOptions("#selectForTarget$rand", typeof data === 'string' ? JSON.parse(data) : data);
                                  $("#selectForTarget$rand").attr("name", type.toLowerCase() + "s_id");
-                                 for (const [key, value] of Object.entries(jsonData)) {
-                                    if (typeof(value) === "object") {
-                                        const optgroup = $("<optgroup></optgroup>").attr("label", key);
-                                        for (const [k, v] of Object.entries(value)) {
-                                           optgroup.append(
-                                              $("<option></option>")
-                                                 .attr("value", k)
-                                                 .text(v)
-                                           );
-                                        }
-                                        $("#selectForTarget$rand").append(optgroup);
-                                    } else {
-                                        $("#selectForTarget$rand").append(
-                                           $("<option></option>")
-                                              .attr("value", key)
-                                              .text(value)
-                                        );
-                                    }
-                                 }
                               }
                            });
                            JS,
@@ -238,7 +218,7 @@ abstract class CommonDBVisible extends CommonDBTM
                            'type' => 'select',
                            'id' => "selectForEntity$rand",
                            'name' => 'entities_id',
-                           'values' => getOptionForItems(Entity::class),
+                           ...getAjaxDropdownOptions(Entity::class),
                            'value' => Session::getActiveEntity(),
                            'disabled' => '',
                            'col_lg' => 6,

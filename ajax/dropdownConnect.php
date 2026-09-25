@@ -49,13 +49,10 @@ $used = [];
 if (isset($_POST["used"])) {
     $used = $_POST["used"];
 }
-$options = getItemByEntity(
+$select = getAjaxDropdownOptionsByEntity(
     $_POST['itemtype'],
-    $_POST["entity_restrict"]
+    $_POST['entity_restrict'],
+    $_POST['condition'] ?? (!empty($_POST['onlyglobal']) ? ['is_global' => 1] : []),
+    $used[$_POST['itemtype']] ?? []
 );
-if (isset($used[$_POST['itemtype']])) {
-    $options = array_diff_key($options, array_combine($used[$_POST['itemtype']], $used[$_POST['itemtype']]));
-}
-echo json_encode($options);
-// Computer_Item::dropdownConnect($_POST["itemtype"], $_POST['fromtype'], $_POST['myname'],
-//                                $_POST["entity_restrict"], $_POST["onlyglobal"], $used);
+outputAjaxDropdownDefinition($select);

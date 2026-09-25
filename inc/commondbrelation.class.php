@@ -1481,11 +1481,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
                                     method: 'POST',
                                     data: {idtable: itemtype},
                                     success: function(data) {
-                                       const jsonData = JSON.parse(data);
-                                       $('#select_peer_{$peers_id}').empty();
-                                       for (const [key, value] of Object.entries(jsonData)) {
-                                          $('#select_peer_{$peers_id}').append('<option value="' + key + '">' + value + '</option>');
-                                       }
+                                       setAjaxDropdownOptions("#select_peer_{$peers_id}", typeof data === 'string' ? JSON.parse(data) : data);
                                     }
                                  });
                               JS,

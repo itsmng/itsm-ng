@@ -183,7 +183,7 @@ class Profile_User extends CommonDBRelation
                             Entity::getTypeName() => [
                                 'type' => 'select',
                                 'name' => 'entities_id',
-                                'values' => getOptionForItems('Entity'),
+                                ...getAjaxDropdownOptions('Entity'),
                                 'value' => $_SESSION['glpiactiveentities'],
                                 'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                                 'col_lg' => 8,
@@ -397,7 +397,7 @@ class Profile_User extends CommonDBRelation
                             self::getTypeName() => [
                                 'type' => 'select',
                                 'name' => 'profiles_id',
-                                'values' => getOptionForItems('Profile'),
+                                ...getAjaxDropdownOptions('Profile'),
                                 'value' => Profile::getDefault(),
                             ],
                             __('Recursive') => [
@@ -646,7 +646,7 @@ class Profile_User extends CommonDBRelation
                             Entity::getTypeName() => [
                                 'type' => 'select',
                                 'name' => 'entities_id',
-                                'values' => getOptionForItems('Entity'),
+                                ...getAjaxDropdownOptions('Entity'),
                                 'value' => $_SESSION['glpiactive_entity'],
                                 'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                                 'col_lg' => 4,

@@ -176,7 +176,7 @@ function expandForm($form, $fields = [], $template = null)
 
                 $filteredInputs[$inputKey] = $input;
 
-                if ($input["type"] ?? "" == "select") {
+                if (($input["type"] ?? "") === "select") {
                     expandSelect($filteredInputs[$inputKey], $fields);
                 }
             }

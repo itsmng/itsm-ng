@@ -1430,7 +1430,7 @@ class Problem extends CommonITILObject
                        'type' => 'select',
                        'name' => 'users_id_recipient',
                        'value' => $this->fields["users_id_recipient"],
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields["entities_id"]]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields["entities_id"]]),
                        'actions' => getItemActionButtons(['info'], User::class),
                     ] : [],
                     __('Last update') => $ID ? [

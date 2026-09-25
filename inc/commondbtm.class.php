@@ -5346,15 +5346,15 @@ class CommonDBTM extends CommonGLPI
                 case "dropdown":
                     $itemtype = getItemTypeForTable($searchoptions['table']);
                     if ($itemtype === 'User' && isset($options['right'])) {
-                        $values = getOptionsForUsers($options['right'], $options['condition'] ?? []);
+                        $values = getAjaxUserDropdownOptions($options['right'], $options['condition'] ?? []);
                     } else {
-                        $values = getOptionForItems($itemtype, $options['condition'] ?? []);
+                        $values = getAjaxDropdownOptions($itemtype, $options['condition'] ?? []);
                     }
                     $values = ($searchoptions['toadd'] ?? []) + $values;
                     return renderTwigTemplate('macros/input.twig', [
                        'type' => 'select',
                        'name' => $name,
-                       'values' => $values,
+                       ...$values,
                        'value' => $value,
                     ]);
                 case "right":

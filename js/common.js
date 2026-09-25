@@ -1243,6 +1243,14 @@ function getAjaxCsrfToken() {
   return meta !== null ? meta.getAttribute('content') : null;
 }
 
+/** Select a template value even when its AJAX option has not been loaded. */
+function setAjaxDropdownValue(selector, value, label) {
+    const select = $(selector);
+    if (!select.find('option').toArray().some(option => option.value === String(value))) {
+        select.append(new Option(label, value));
+    }
+    select.val(value).trigger('change');
+}
 
 /** Replace a dependent selector without downloading its candidate list. */
 function setAjaxDropdownOptions(selector, definition) {

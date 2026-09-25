@@ -94,7 +94,7 @@ class PassiveDCEquipment extends CommonDBTM
                     __('Status') => [
                        'name' => 'states_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('State', ['is_visible_passivedcequipment' => 1]),
+                       ...getAjaxDropdownOptions('State', ['is_visible_passivedcequipment' => 1]),
                        'value' => $this->fields['states_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "State"),
                     ],
@@ -108,21 +108,21 @@ class PassiveDCEquipment extends CommonDBTM
                     __('Type') => [
                        'name' => 'passivedcequipmenttypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PassiveDCEquipmentType'),
+                       ...getAjaxDropdownOptions('PassiveDCEquipmentType'),
                        'value' => $this->fields['passivedcequipmenttypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PassiveDCEquipmentType"),
                     ],
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -137,7 +137,7 @@ class PassiveDCEquipment extends CommonDBTM
                     _n('Model', 'Models', 1) => [
                        'name' => 'passivedcequipmentmodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PassiveDCEquipmentModel'),
+                       ...getAjaxDropdownOptions('PassiveDCEquipmentModel'),
                        'value' => $this->fields['passivedcequipmentmodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PassiveDCEquipmentModel"),
                     ],

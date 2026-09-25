@@ -72,14 +72,14 @@ class DeviceHardDrive extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'deviceharddrivemodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceHardDriveModel'),
+                 ...getAjaxDropdownOptions('DeviceHardDriveModel'),
                  'value' => $this->fields['deviceharddrivemodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceHardDriveModel')
               ],
               __('Interface') => [
                  'name'  => 'interfacetypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('InterfaceType'),
+                 ...getAjaxDropdownOptions('InterfaceType'),
                  'value' => $this->fields['interfacetypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType')
               ]

@@ -198,14 +198,14 @@ class ComputerVirtualMachine extends CommonDBChild
                     VirtualMachineSystem::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'virtualmachinesystems_id',
-                       'values' => getOptionForItems('VirtualMachineSystem'),
+                       ...getAjaxDropdownOptions('VirtualMachineSystem'),
                        'value' => $this->fields['virtualmachinesystems_id'],
                        'actions' => getItemActionButtons(['info', 'add'], 'VirtualMachineSystem')
                     ],
                     VirtualMachineState::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'virtualmachinestates_id',
-                       'values' => getOptionForItems('VirtualMachineState'),
+                       ...getAjaxDropdownOptions('VirtualMachineState'),
                        'value' => $this->fields['virtualmachinestates_id'],
                        'actions' => getItemActionButtons(['info', 'add'], 'VirtualMachineState')
                     ],

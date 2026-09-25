@@ -564,12 +564,7 @@ class Change_Ticket extends CommonDBRelation
         }
 
         if ($canedit) {
-            $options = getOptionForItems(Change::class, Change::getOpenCriteria());
-            foreach ($used as $id) {
-                if (isset($options[$id])) {
-                    unset($options[$id]);
-                }
-            }
+            $options = getAjaxDropdownOptions(Change::class, Change::getOpenCriteria(), true, false, $used);
             $form = [
                 'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                 'buttons' => [
@@ -591,7 +586,7 @@ class Change_Ticket extends CommonDBRelation
                          Change::getTypeName() => [
                             'type' => 'select',
                             'name' => 'changes_id',
-                            'values' => $options,
+                            ...$options,
                             'actions' => getItemActionButtons(['info'], Change::class)
                          ],
                          '' => Session::haveRight('change', CREATE) ? [

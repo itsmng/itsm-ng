@@ -98,7 +98,7 @@ class PDU extends CommonDBTM
                     __('Status') => [
                        'name' => 'states_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('State', ['is_visible_pdu' => 1]),
+                       ...getAjaxDropdownOptions('State', ['is_visible_pdu' => 1]),
                        'value' => $this->fields['states_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "State"),
                     ],
@@ -112,21 +112,21 @@ class PDU extends CommonDBTM
                     __('Type') => [
                        'name' => 'pdutypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PDUType'),
+                       ...getAjaxDropdownOptions('PDUType'),
                        'value' => $this->fields['pdutypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PDUType"),
                     ],
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -141,7 +141,7 @@ class PDU extends CommonDBTM
                     _n('Model', 'Models', 1) => [
                        'name' => 'pdumodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PDUModel'),
+                       ...getAjaxDropdownOptions('PDUModel'),
                        'value' => $this->fields['pdumodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PDUModel"),
                     ],

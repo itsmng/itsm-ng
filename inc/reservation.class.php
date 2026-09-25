@@ -669,7 +669,7 @@ class Reservation extends CommonDBChild
                       __('By') => Session::haveRight("reservation", UPDATE) ? [
                           'type'  => 'select',
                           'name'  => 'users_id',
-                          'values' => getOptionsForUsers('all'),
+                          ...getAjaxUserDropdownOptions('all'),
                           'value'  => $uid,
                       ] : [],
                       __('Start date') => [

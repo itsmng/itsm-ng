@@ -81,7 +81,7 @@ class DeviceNetworkCard extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicenetworkcardmodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceNetworkCardModel'),
+                 ...getAjaxDropdownOptions('DeviceNetworkCardModel'),
                  'value' => $this->fields['devicenetworkcardmodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceNetworkCardModel'),
               ],

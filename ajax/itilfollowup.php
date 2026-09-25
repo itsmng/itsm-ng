@@ -60,6 +60,7 @@ if (
         );
     }
 
+    $template->fields['requesttypes_name'] = Dropdown::getDropdownName('glpi_requesttypes', $template->fields['requesttypes_id']);
     $template->fields = array_map('html_entity_decode', $template->fields);
     echo json_encode($template->fields);
 }

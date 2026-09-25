@@ -54,7 +54,7 @@ class DeviceFirmware extends CommonDevice
               _n('Type', 'Types', 1) => [
                  'name'  => 'devicefirmwaretypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceFirmwareType'),
+                 ...getAjaxDropdownOptions('DeviceFirmwareType'),
                  'value' => $this->fields['devicefirmwaretypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceFirmwareType')
               ],
@@ -71,7 +71,7 @@ class DeviceFirmware extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'   => 'devicefirmwaremodels_id',
                  'type'   => 'select',
-                 'values' => getOptionForItems('DeviceFirmwareModel'),
+                 ...getAjaxDropdownOptions('DeviceFirmwareModel'),
                  'value' => $this->fields['devicefirmwaremodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceFirmwareModel')
               ]

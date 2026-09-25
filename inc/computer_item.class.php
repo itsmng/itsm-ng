@@ -418,18 +418,7 @@ class Computer_Item extends CommonDBRelation
                                     },
                                     dataType: 'json',
                                     success: function(data) {
-                                       $.each(data, function(key, value) {
-                                          if (typeof value === 'object') {
-                                             const group = $('#ItemConnectDropdown')
-                                                .append("<optgroup label='" + key + "'></optgroup>");
-                                             for (const j in value) {
-                                                group.append("<option value='" + j + "'>" + value[j] + "</option>");
-                                             }
-                                          } else {
-                                             $('#ItemConnectDropdown').append("<option value='" + key + "'>" + value + "</option>");
-                                          }
-
-                                       });
+                                       setAjaxDropdownOptions("#ItemConnectDropdown", typeof data === 'string' ? JSON.parse(data) : data);
                                     }
                                  });
                               JS,
@@ -572,7 +561,7 @@ class Computer_Item extends CommonDBRelation
                            Computer::getTypeName() => [
                                'type' => 'select',
                                'name' => 'computers_id',
-                               'values' => getItemByEntity(Computer::class, $item->fields['entities_id']),
+                               ...getAjaxDropdownOptionsByEntity(Computer::class, $item->fields['entities_id']),
                                'col_lg' => 12,
                                'col_md' => 12,
                            ],
@@ -722,6 +711,7 @@ class Computer_Item extends CommonDBRelation
         $rand = Dropdown::showItemType($CFG_GLPI['directconnect_types'], $options);
         if ($rand) {
             $params = ['itemtype'        => '__VALUE__',
+                            '_render_dropdown' => true,
                             'fromtype'        => $fromtype,
                             'value'           => 0,
                             'myname'          => $myname,

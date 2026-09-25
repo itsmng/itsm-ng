@@ -340,40 +340,8 @@ class ProjectTask_Ticket extends CommonDBRelation
                                  used: $usedValues,
                               },
                               success: function(data) {
-                                 const jsonData = JSON.parse(data);
-                                 $.ajax({
-                                    url: '{$CFG_GLPI['root_doc']}/ajax/dropdownProjectTaskTicket.php',
-                                    method: 'POST',
-                                    data: {
-                                       projects_id: projects_id,
-                                       entity_restrict: {$ticket->getEntityID()},
-                                       used: $usedValues,
-                                    },
-                                    success: function(data) {
-                                       const jsonData = JSON.parse(data);
-                                       console.log(jsonData);
-                                       $('#DropdownForProjectTaskIdProjectTask').empty();
-                                       for (const [key, value] of Object.entries(jsonData)) {
-                                          if (typeof value === 'object') {
-                                             const group = $('#DropdownForProjectTaskIdProjectTask').append($('<optgroup>', {
-                                                label: key
-                                             }));
-                                             for (const [skey, svalue] of Object.entries(value)) {
-                                                group.append($('<option>', {
-                                                   value: skey,
-                                                   text: svalue
-                                                }));
-                                             }
-                                          } else {
-                                              $('#DropdownForProjectTaskIdProjectTask').append($('<option>', {
-                                                 value: key,
-                                                 text: value
-                                              }));
-                                          }
-                                       }
-                                    }
-                                 });
-                                 $("#DropdownForProjectTaskIdProjectTask").attr('disabled', projects_id == 0)
+                                 setAjaxDropdownOptions('#DropdownForProjectTaskIdProjectTask', JSON.parse(data));
+                                 $('#DropdownForProjectTaskIdProjectTask').prop('disabled', projects_id == 0);
                               }});
                            JS,
                            ],

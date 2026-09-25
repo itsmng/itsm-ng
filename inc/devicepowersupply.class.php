@@ -65,7 +65,7 @@ class DevicePowerSupply extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicepowersupplymodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DevicePowerSupplyModel'),
+                 ...getAjaxDropdownOptions('DevicePowerSupplyModel'),
                  'value' => $this->fields['devicepowersupplymodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DevicePowerSupplyModel')
               ]

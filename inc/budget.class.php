@@ -157,7 +157,7 @@ class Budget extends CommonDropdown
                         __('Type') => [
                             'name' => 'budgettypes_id',
                             'type' => 'select',
-                            'values' => getOptionForItems(BudgetType::class),
+                            ...getAjaxDropdownOptions(BudgetType::class),
                             'value' => $this->fields['budgettypes_id'],
                             'actions' => getItemActionButtons(['info', 'add'], "budgettype"),
                         ],

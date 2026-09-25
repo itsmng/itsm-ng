@@ -64,6 +64,9 @@ if (isset($_POST['tasktemplates_id']) && ($_POST['tasktemplates_id'] > 0)) {
         );
     }
 
+    $template->fields['taskcategories_name'] = Dropdown::getDropdownName('glpi_taskcategories', $template->fields['taskcategories_id']);
+    $template->fields['users_name'] = getUserName($template->fields['users_id_tech']);
+    $template->fields['groups_name'] = Dropdown::getDropdownName('glpi_groups', $template->fields['groups_id_tech']);
     $template->fields = array_map('html_entity_decode', $template->fields);
     echo json_encode($template->fields);
 } else {

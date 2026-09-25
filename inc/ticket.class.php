@@ -5515,7 +5515,7 @@ class Ticket extends CommonITILObject
                     __('By') => $ID ? [
                        'type' => 'select',
                        'name' => 'users_id_recipient',
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields["users_id_recipient"],
                        $canupdate ? '' : 'disabled' => ''
                     ] : [],
@@ -5662,9 +5662,8 @@ class Ticket extends CommonITILObject
                   ],
                   RequestType::getTypeName(1) => [
                      'type' => 'select',
-                     'noLib' => 'true',
                      'name' => 'requesttypes_id',
-                     'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
+                     ...getAjaxDropdownOptions('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
                      'value' => $this->fields['requesttypes_id'],
                      'actions' => getItemActionButtons(['info', 'add'], 'RequestType'),
                      $canupdate ? '' : 'disabled' => ''
@@ -5781,7 +5780,6 @@ class Ticket extends CommonITILObject
                      'default_relation' => $options['_default_link_relation'] ?? null,
                      'default_ticket_id' => $options['_default_link_ticket_id'] ?? null,
                      'default_ticket_label' => $options['_default_link_ticket_label'] ?? null,
-                     'options' => getOptionForItems('Ticket', ['is_deleted' => 0, 'NOT' => ['id' => $ID]]),
                      'values' => Ticket_Ticket::getLinkedTicketsTo($ID),
                      $canupdate ? '' : 'disabled' => '',
                      'ticket_id' => $ID,

@@ -54,7 +54,7 @@ class TaskCategory extends CommonTreeDropdown
         $tab[__('As child of')] = [
            'name'  => 'taskcategories_id',
            'type'  => 'select',
-           'values' => getOptionForItems('TaskCategory', ['NOT' => ['id' => $this->getID()]]),
+           ...getAjaxDropdownOptions('TaskCategory', ['NOT' => ['id' => $this->getID()]]),
            'value' => $this->fields['taskcategories_id']
         ];
 
@@ -67,7 +67,7 @@ class TaskCategory extends CommonTreeDropdown
         $tab[KnowbaseItemCategory::getTypeName()] = [
            'name'  => 'knowbaseitemcategories_id',
            'type'  => 'select',
-           'values' => getOptionForItems('KnowbaseItemCategory'),
+           ...getAjaxDropdownOptions('KnowbaseItemCategory'),
            'value' => $this->fields['knowbaseitemcategories_id']
         ];
 

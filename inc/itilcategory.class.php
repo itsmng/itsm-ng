@@ -53,25 +53,25 @@ class ITILCategory extends CommonTreeDropdown
             __('As child of') => [
               'type' => 'select',
               'name' => $this->getForeignKeyField(),
-              'values' => getOptionForItems('ITILCategory'),
+              ...getAjaxDropdownOptions('ITILCategory'),
               'value' => $this->fields[$this->getForeignKeyField()]
             ],
             __('Technician in charge of the hardware') => [
               'type' => 'select',
               'name' => 'users_id',
-              'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+              ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
               'value' => $this->fields['users_id']
             ],
             __('Group in charge of the hardware') => [
               'type' => 'select',
               'name' => 'groups_id',
-              'values' => getOptionForItems('Group', ['is_assign' => 1]),
+              ...getAjaxDropdownOptions('Group', ['is_assign' => 1]),
               'value' => $this->fields['groups_id']
             ],
             __('Knowledge base') => [
               'type' => 'select',
               'name' => 'knowbaseitemcategories_id',
-              'values' => getOptionForItems('KnowbaseItemCategory'),
+              ...getAjaxDropdownOptions('KnowbaseItemCategory'),
               'value' => $this->fields['knowbaseitemcategories_id']
             ],
             __('Code representing the ticket category') => [
@@ -115,25 +115,25 @@ class ITILCategory extends CommonTreeDropdown
            __('Template for a request') => [
               'type' => 'select',
               'name' => 'tickettemplates_id_demand',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['tickettemplates_id_demand']
            ],
            __('Template for an incident') => [
               'type' => 'select',
               'name' => 'tickettemplates_id_incident',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['tickettemplates_id_incident']
            ],
            __('Template for a change') => [
               'type' => 'select',
               'name' => 'changetemplates_id',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['changetemplates_id']
            ],
            __('Template for a problem') => [
               'type' => 'select',
               'name' => 'problemtemplates_id',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['problemtemplates_id']
            ],
         ]);

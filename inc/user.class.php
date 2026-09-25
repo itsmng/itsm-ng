@@ -2598,7 +2598,7 @@ class User extends CommonDBTM
                    _x('person', 'Title') => [
                       'type' => 'select',
                       'name' => 'usertitles_id',
-                      'values' => getOptionForItems('UserTitle'),
+                      ...getAjaxDropdownOptions('UserTitle'),
                       'value' => $this->fields['usertitles_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
                    ],
@@ -2610,14 +2610,14 @@ class User extends CommonDBTM
                    Profile::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_profiles_id',
-                      'values' => getOptionForItems('Profile'),
+                      ...getAjaxDropdownOptions('Profile'),
                       'value' => Profile::getDefault(),
                       'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
                    ],
                    Entity::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_entities_id',
-                      'values' => getOptionForItems('Entity'),
+                      ...getAjaxDropdownOptions('Entity'),
                       'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                    ],
                    __('Recursive') => [
@@ -2650,18 +2650,8 @@ class User extends CommonDBTM
                    __('Responsible') => ($higherrights) ? [
                       'name' => 'users_id_supervisor',
                       'type' => 'select',
-                      'values' => [0 => Dropdown::EMPTY_VALUE] + ($this->fields['users_id_supervisor'] ? [
-                         $this->fields['users_id_supervisor'] => getUserName($this->fields['users_id_supervisor']),
-                      ] : []),
+                      ...getAjaxUserDropdownOptions('all'),
                       'value' => $this->fields['users_id_supervisor'],
-                      'ajax' => [
-                         'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php',
-                         'type' => 'POST',
-                         'data' => [
-                            'right' => 'all',
-                            'entity_restrict' => -1,
-                         ],
-                      ],
                       'col_lg' => 6,
                    ] : [],
                 ]
@@ -3813,6 +3803,8 @@ class User extends CommonDBTM
      * @param integer         $start            start LIMIT value (default 0)
      * @param integer         $limit            limit LIMIT value (default -1 no limit)
      * @param boolean         $inactive_deleted true to retreive also inactive or deleted users
+     *
+     * @param array $conditions Additional SQL filters applied before pagination
      *
      * @return mysqli_result|boolean
      */

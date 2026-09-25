@@ -67,7 +67,7 @@ class ITILFollowupTemplate extends CommonDropdown
            __('Source of followup') => [
               'name'  => 'requesttypes_id',
               'type'  => 'select',
-              'values' => getOptionForItems('RequestType'),
+              ...getAjaxDropdownOptions('RequestType'),
               'value' => $this->fields['requesttypes_id']
            ],
            __('Private') => [

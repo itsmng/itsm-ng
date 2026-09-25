@@ -829,7 +829,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                     __('Category name') => [
                        'type' => 'select',
                        'name' => 'knowbaseitemcategories_id',
-                       'values' => getOptionForItems('KnowbaseItemCategory'),
+                       ...getAjaxDropdownOptions('KnowbaseItemCategory'),
                        'value' => $this->fields["knowbaseitemcategories_id"],
                     ],
                     __('Created on:') => $this->fields["date"] ? [
@@ -929,31 +929,8 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                               right: "knowbase"
                            },
                            success: function(data) {
-                              const jsonData = JSON.parse(data);
-                              $("#selectForTarget").empty();
+                              setAjaxDropdownOptions("#selectForTarget", typeof data === 'string' ? JSON.parse(data) : data);
                               $("#selectForTarget").attr("name", '_visibility[' + type.toLowerCase() + "s_id]");
-                              for (const [key, value] of Object.entries(jsonData)) {
-                                 if (typeof(value) == 'object') {
-                                    //add optgroup
-                                    const group = $("#selectForTarget").append(
-                                       $("<optgroup></optgroup>")
-                                          .attr("label", key)
-                                    );
-                                    for (const [key, value] of Object.entries(value.children)) {
-                                       group.append(
-                                          $("<option></option>")
-                                             .attr("value", key)
-                                             .text(value)
-                                       );
-                                    }
-                                 } else {
-                                     $("#selectForTarget").append(
-                                        $("<option></option>")
-                                           .attr("value", key)
-                                           .text(value)
-                                     );
-                                 }
-                              }
                            }
                         });
                         JS,
@@ -969,7 +946,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
                        'type' => 'select',
                        'id' => "selectForEntity",
                        'name' => '_visibility[entities_id]',
-                       'values' => getOptionForItems(Entity::class),
+                       ...getAjaxDropdownOptions(Entity::class),
                        'value' => Session::getActiveEntity(),
                        'disabled' => '',
                        'col_lg' => 6,

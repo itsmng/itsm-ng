@@ -47,12 +47,15 @@ if (!isset($_POST['type']) || empty($_POST['type']) || !isset($_POST['right'])) 
 
 switch ($_POST['type']) {
     case 'User':
-        echo json_encode(getOptionsForUsers($_POST['right']));
+        $select = getAjaxUserDropdownOptions($_POST['right']);
+        echo json_encode(expandSelect($select));
         break;
     case 'Group':
-        echo json_encode(getItemByEntity(Group::class, Session::getActiveEntity()));
+        $select = getAjaxDropdownOptionsByEntity(Group::class, Session::getActiveEntity());
+        echo json_encode(expandSelect($select));
         break;
     case 'Profile':
-        echo json_encode(getOptionForItems(Profile::class));
+        $select = getAjaxDropdownOptions(Profile::class);
+        echo json_encode(expandSelect($select));
         break;
 }

@@ -185,10 +185,7 @@ class Itil_Project extends CommonDBRelation
                         $label = __('Add a ticket');
                         break;
                 }
-                $values = getOptionForItems($itemtype::getType());
-                foreach ($used as $usedValue) {
-                    unset($values[$usedValue]);
-                }
+                $values = getAjaxDropdownOptions($itemtype::getType(), [], true, false, $used);
 
                 $form = [
                    'action' => Toolbox::getItemTypeFormURL(__CLASS__),
@@ -216,7 +213,7 @@ class Itil_Project extends CommonDBRelation
                             '' => [
                                'type' => 'select',
                                'name' => 'items_id',
-                               'values' => $values,
+                               ...$values,
                                'col_lg' => 12,
                                'col_md' => 12,
                             ]
@@ -505,7 +502,7 @@ class Itil_Project extends CommonDBRelation
                         '' => [
                            'type' => 'select',
                            'name' => 'projects_id',
-                           'values' => getOptionForItems(Project::class, [], true, false, $used),
+                           ...getAjaxDropdownOptions(Project::class, [], true, false, $used),
                            'col_lg' => 12,
                            'col_md' => 12,
                         ]

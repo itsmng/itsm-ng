@@ -95,7 +95,7 @@ class SolutionTemplate extends CommonDropdown
            SolutionType::getTypeName(1) => [
               'name'  => 'solutiontypes_id',
               'type'  => 'select',
-              'values' => getOptionForItems('SolutionType'),
+              ...getAjaxDropdownOptions('SolutionType'),
               'value' => $this->fields['solutiontypes_id'],
               'actions' => getItemActionButtons(['info', 'add'], 'SolutionType')
            ],

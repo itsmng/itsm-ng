@@ -87,7 +87,7 @@ class Dashboard extends \CommonDBTM
                        'id' => 'ProfileDropdownForDashboard',
                        'name' => 'profileId',
                        'value' => $this->fields['profileId'] ?? '',
-                       'values' => getOptionForItems(Profile::class),
+                       ...getAjaxDropdownOptions(Profile::class),
                        'required' => true,
                     ],
                     __('User') => [
@@ -95,7 +95,7 @@ class Dashboard extends \CommonDBTM
                        'id' => 'UserDropdownForDashboard',
                        'name' => 'userId',
                        'value' => $this->fields['userId'] ?? '',
-                       'values' => getItemByEntity(User::class, Session::getActiveEntity()),
+                       ...getAjaxDropdownOptionsByEntity(User::class, Session::getActiveEntity()),
                        'required' => true,
                     ],
                  ]

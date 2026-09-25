@@ -342,42 +342,42 @@ class Item_OperatingSystem extends CommonDBRelation
                     __("Name") => [
                        'type' => 'select',
                        'name' => 'operatingsystems_id',
-                       'values' => getOptionForItems(OperatingSystem::class),
+                       ...getAjaxDropdownOptions(OperatingSystem::class),
                        'value' => $this->fields['operatingsystems_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], OperatingSystem::class)
                     ],
                     _n('Version', 'Versions', 1) => [
                        'type' => 'select',
                        'name' => 'operatingsystemversions_id',
-                       'values' => getOptionForItems(OperatingSystemVersion::class),
+                       ...getAjaxDropdownOptions(OperatingSystemVersion::class),
                        'value' => $this->fields['operatingsystemversions_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], OperatingSystemVersion::class)
                     ],
                     _n('Architecture', 'Architectures', 1) => [
                        'type' => 'select',
                        'name' => 'operatingsystemarchitectures_id',
-                       'values' => getOptionForItems(OperatingSystemArchitecture::class),
+                       ...getAjaxDropdownOptions(OperatingSystemArchitecture::class),
                        'value' => $this->fields['operatingsystemarchitectures_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], OperatingSystemArchitecture::class)
                     ],
                     OperatingSystemServicePack::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'operatingsystemservicepacks_id',
-                       'values' => getOptionForItems(OperatingSystemServicePack::class),
+                       ...getAjaxDropdownOptions(OperatingSystemServicePack::class),
                        'value' => $this->fields['operatingsystemservicepacks_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], OperatingSystemServicePack::class)
                     ],
                     _n('Kernel', 'Kernels', 1) => [
                        'type' => 'select',
                        'name' => 'operatingsystemkernelversions_id',
-                       'values' => getOptionForItems(OperatingSystemKernelVersion::class),
+                       ...getAjaxDropdownOptions(OperatingSystemKernelVersion::class),
                        'value' => $this->fields['operatingsystemkernelversions_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], OperatingSystemKernelVersion::class)
                     ],
                     _n('Edition', 'Editions', 1) => [
                        'type' => 'select',
                        'name' => 'operatingsystemeditions_id',
-                       'values' => getOptionForItems(OperatingSystemEdition::class),
+                       ...getAjaxDropdownOptions(OperatingSystemEdition::class),
                        'value' => $this->fields['operatingsystemeditions_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], OperatingSystemEdition::class)
                     ],
@@ -708,12 +708,7 @@ class Item_OperatingSystem extends CommonDBRelation
                         itemtype: value
                      },
                      success: function(data) {
-                        const jsonData = JSON.parse(data);
-                        const options = jsonData.options;
-                        $('#DropdownForOsFieldMassiveUpdate').attr('name', jsonData.name);
-                        for (var key in options) {
-                           $('#DropdownForOsFieldMassiveUpdate').append('<option value="' + key + '">' + options[key] + '</option>');
-                        }
+                        setAjaxDropdownOptions("#DropdownForOsFieldMassiveUpdate", typeof data === 'string' ? JSON.parse(data) : data);
                      }
                   });
                JS,

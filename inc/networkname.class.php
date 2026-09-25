@@ -135,7 +135,7 @@ class NetworkName extends FQDNLabel
                     FQDN::getTypeName(1) => [
                        'name' => 'fqdns_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('FQDN'),
+                       ...getAjaxDropdownOptions('FQDN'),
                        'value' => $this->fields['fqdns_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], 'FQDN'),
                     ],
@@ -500,7 +500,7 @@ class NetworkName extends FQDNLabel
                  FQDN::getTypeName(1) => [
                     'name' => 'NetworkName_fqdns_id',
                     'type' => 'select',
-                    'values' => getOptionForItems(FQDN::class),
+                    ...getAjaxDropdownOptions(FQDN::class),
                     'value' => $name->fields['fqdns_id'] ?? '',
                     'actions' => getItemActionButtons(['info', 'add'], 'FQDN'),
                  ],

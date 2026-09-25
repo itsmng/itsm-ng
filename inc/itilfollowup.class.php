@@ -1098,7 +1098,7 @@ class ITILFollowup extends CommonDBChild
                            'type' => 'select',
                            'name' => 'itilfollowuptemplates_id',
                            'id' => 'ITILFollowupTemplateDropdown',
-                           'values' => getOptionForItems(ITILFollowupTemplate::class),
+                           ...getAjaxDropdownOptions(ITILFollowupTemplate::class),
                            'actions' => getItemActionButtons(['info', 'add'], ITILFollowupTemplate::class),
                            'hooks' => [
                               'change' => <<<JS
@@ -1114,7 +1114,7 @@ class ITILFollowup extends CommonDBChild
                                        : parseInt(data.requesttypes_id);
 
                                     TextareaForContentFolloupPopup.setData(data.content)
-                                    $("#dropdownForRequestType").val(requesttypes_id).trigger('change');
+                                    setAjaxDropdownValue('#dropdownForRequestType', requesttypes_id, data.requesttypes_name);
                                     $("#is_privateswitch")
                                        .prop("checked", data.is_private == "0" ? false : true);
                                  });
@@ -1125,9 +1125,8 @@ class ITILFollowup extends CommonDBChild
                            'type' => 'select',
                            'id' => 'dropdownForRequestType',
                            'name' => 'requesttypes_id',
-                           'noLib' => true,
                            'value' => $this->fields["requesttypes_id"],
-                           'values' => getOptionForItems(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
+                           ...getAjaxDropdownOptions(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
                            'actions' => getItemActionButtons(['info', 'add'], RequestType::class),
                         ],
                         __('Private') => !$hide_private_for_requester ? [
@@ -1365,7 +1364,7 @@ class ITILFollowup extends CommonDBChild
            __('Source of followup') => [
               'type' => 'select',
               'name' => 'requesttypes_id',
-              'values' => getOptionForItems(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
+              ...getAjaxDropdownOptions(RequestType::class, ['is_active' => 1, 'is_itilfollowup' => 1]),
               'col_lg' => 12,
               'col_md' => 12,
            ],
