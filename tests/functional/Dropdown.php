@@ -184,7 +184,9 @@ class Dropdown extends DbTestCase
                 $this->integer(substr_count($html, '<option'))->isEqualTo(1);
                 $this->integer(substr_count($html, 'data-dropdown-group'))->isEqualTo(1);
                 $document = new \DOMDocument();
-                $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+                // DOMDocument uses an HTML4 parser and misreads closing tags in inline JavaScript.
+                $markup = preg_replace('~<script\b[^>]*>.*?</script>~is', '', $html);
+                $document->loadHTML($markup, LIBXML_NOERROR | LIBXML_NOWARNING);
                 $this->integer((new \DOMXPath($document))->query('//select/../button')->length)->isEqualTo(2);
             }
             ob_start();
@@ -1384,7 +1386,8 @@ class Dropdown extends DbTestCase
                        'title'  => 'tech - tech',
                     ]
                  ],
-                 'count' => 5
+                 'count' => 5,
+                 'pagination' => ['more' => false]
               ]
            ], [
               'params'    => [
@@ -1415,7 +1418,8 @@ class Dropdown extends DbTestCase
                        'title'  => 'post-only - post-only',
                     ]
                  ],
-                 'count' => 3
+                 'count' => 3,
+                 'pagination' => ['more' => false]
               ]
            ], [
               'params'    => [
@@ -1439,7 +1443,8 @@ class Dropdown extends DbTestCase
                        'title'  => '_test_user - _test_user',
                     ]
                  ],
-                 'count' => 1
+                 'count' => 1,
+                 'pagination' => ['more' => false]
               ]
            ]
         ];

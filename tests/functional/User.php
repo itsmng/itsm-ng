@@ -58,7 +58,7 @@ class User extends \DbTestCase
         global $DB, $CFG_GLPI;
 
         $this->login();
-        $user = getItemByTypeName('User', TU_USER);
+        $user = getItemByTypeName('User', 'normal');
         $id = (int)$user->getID();
         $this->boolean($DB->update('glpi_users', [
             'begin_date' => $begin === null ? null : date('Y-m-d H:i:s', strtotime($begin)),
