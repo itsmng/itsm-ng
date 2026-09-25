@@ -58,7 +58,7 @@ $form = [
             '' => [
                'type' => 'select',
                'name' => 'id',
-               'values' => getOptionsForUsers('reservation'),
+               ...getAjaxUserDropdownOptions('reservation'),
                'col_lg' => 12,
                'col_md' => 12,
             ]

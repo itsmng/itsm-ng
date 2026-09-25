@@ -1495,16 +1495,7 @@ class Dropdown
                         },
                         type: 'POST',
                         success: function(data) {
-                           const jsonDatas = JSON.parse(data);
-                           for (const key in jsonDatas) {
-                             if (typeof jsonDatas[key] === 'object') {
-                                for (const key2 in jsonDatas[key]) {
-                                   $('#selectItemForTicketMassiveAction').append('<option value="' + key2 + '">' + jsonDatas[key][key2] + '</option>');
-                                }
-                             } else {
-                                $('#selectItemForTicketMassiveAction').append('<option value="' + key + '">' + jsonDatas[key] + '</option>');
-                             }
-                           }
+                           setAjaxDropdownOptions("#selectItemForTicketMassiveAction", typeof data === 'string' ? JSON.parse(data) : data);
                         }
                      });
                   }
@@ -2532,7 +2523,7 @@ class Dropdown
                'SELECT' => array_merge(["$table.*"], $addselect),
                'FROM'   => $table,
                'WHERE'  => $where,
-               'ORDER'  => $order,
+               'ORDER'  => array_merge($order, ["$table.id"]),
                'START'  => $start,
                'LIMIT'  => $limit
             ];
@@ -3049,9 +3040,9 @@ class Dropdown
             );
 
             if ($multi) {
-                $criteria['ORDERBY'] = ["$table.entities_id", "$table.$field"];
+                $criteria['ORDERBY'] = ["$table.entities_id", "$table.$field", "$table.id"];
             } else {
-                $criteria['ORDERBY'] = ["$table.$field"];
+                $criteria['ORDERBY'] = ["$table.$field", "$table.id"];
             }
 
             $iterator = $DB->request($criteria);
@@ -3832,20 +3823,13 @@ class Dropdown
             $entity_restrict = Toolbox::jsonDecode($post['entity_restrict']);
         }
 
-        $group_filter = [];
-        if (isset($post['groups_id']) && !empty($post['groups_id'])) {
-            $groups = is_array($post['groups_id']) ? $post['groups_id'] : [$post['groups_id']];
-            foreach ($groups as $group_id) {
-                $group_id = (int)$group_id;
-                if ($group_id <= 0) {
-                    continue;
-                }
-                foreach (Group_User::getGroupUsers($group_id) as $group_user) {
-                    if (isset($group_user['id'])) {
-                        $group_filter[$group_user['id']] = true;
-                    }
-                }
-            }
+        $conditions = $_SESSION['glpicondition'][$post['condition'] ?? ''] ?? [];
+        if (!empty($post['groups_id'])) {
+            $conditions[] = ['glpi_users.id' => new QuerySubQuery([
+                'SELECT' => 'users_id',
+                'FROM' => 'glpi_groups_users',
+                'WHERE' => ['groups_id' => array_map('intval', (array)$post['groups_id'])],
+            ])];
         }
 
         $start  = intval(($post['page'] - 1) * $post['page_limit']);
@@ -3862,7 +3846,8 @@ class Dropdown
             $start,
             (int)$post['page_limit'],
             $inactive_deleted,
-            $with_no_right
+            $with_no_right,
+            $conditions
         );
 
         $users = [];
@@ -3871,9 +3856,6 @@ class Dropdown
         $count = 0;
         if (count($result)) {
             while ($data = $result->next()) {
-                if (count($group_filter) && !isset($group_filter[$data['id']])) {
-                    continue;
-                }
                 $users[$data["id"]] = formatUserName(
                     $data["id"],
                     $data["name"],
@@ -3887,11 +3869,11 @@ class Dropdown
         $results = [];
 
         // Display first if empty search
-        if ($post['page'] == 1 && empty($post['searchText'])) {
+        if ($post['page'] == 1 && empty($post['searchText']) && ($post['display_emptychoice'] ?? true)) {
             if ($post['all'] == 0) {
                 $results[] = [
                    'id' => 0,
-                   'text' => Dropdown::EMPTY_VALUE
+                   'text' => $post['emptylabel'] ?? Dropdown::EMPTY_VALUE
                 ];
             } elseif ($post['all'] == 1) {
                 $results[] = [
@@ -3916,6 +3898,9 @@ class Dropdown
 
         $ret['results'] = $results;
         $ret['count']   = $count;
+        $ret['pagination'] = [
+           'more' => count($result) >= (int)$post['page_limit'],
+        ];
 
         return ($json === true) ? json_encode($ret) : $ret;
     }

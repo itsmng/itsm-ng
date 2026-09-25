@@ -1,7 +1,13 @@
 {% macro wrappedInput(title, input, root_doc) %}
     {% import 'macros/input.twig' as inputMacro %}
+    {% if input.type == 'select' %}
+        {% set input = input|prepare_select %}
+    {% endif %}
     {% set options = ['actions', 'after', 'before', 'col', 'col_md', 'col_lg'] %}
     {% set attributes = input | filter((v, k) => k not in options) %}
+    {% if input.type == 'select' %}
+        {% set attributes = attributes|merge({'actions': [], '_actions_in_wrapper': true}) %}
+    {% endif %}
     {% set id = input.id ? input.id : random() %}
     {% if input.type != 'hidden' and input|length > 0 %}
         <div class="
@@ -12,7 +18,7 @@
             {% if title|length > 0 %}
                 <label for="{{id}}" class="form-label w-100">{{title|raw}}
             {% endif %}
-            <div class="d-flex flex-nowrap w-100 align-items-center input-group my-1">
+            <div {% if input.type == 'select' %}data-dropdown-group{% endif %} class="d-flex flex-nowrap w-100 align-items-center {% if input.type != 'select' or input.before or input.actions %}input-group {% endif %}my-1">
             
     {% endif %}
             {% if input.before %}
@@ -36,7 +42,7 @@
                 {% if action.modal_script is defined %}
                     {{ action.modal_script | raw }}
                 {% endif %}
-                <button type="button" class="btn btn-sm border" aria-label="{{ action.info }}" onclick="{{action.onClick}}">
+                <button type="button" class="btn btn-sm border dropdown-action" aria-label="{{ action.info }}" onclick="{{action.onClick}}">
                     <a class="{{action.icon}}"></a>
                 </button>
             {% endfor %}

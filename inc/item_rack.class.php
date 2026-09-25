@@ -619,18 +619,7 @@ JAVASCRIPT;
                                         entity_restrict: {$rack->fields['entities_id']}
                                     },
                                     success: function(data) {
-                                        const json = JSON.parse(data);
-                                        for (const [key, value] of Object.entries(json)) {
-                                            if (typeof value === 'object') {
-                                                const group = $('#dropdown_items_id').append($('<optgroup>').attr('label', key));
-                                                for (const [k, v] of Object.entries(value)) {
-                                                    group.append($('<option>').val(k).text(v));
-                                                }
-                                            } else {
-                                                $('#dropdown_items_id').append($('<option>').val(key).text(value));
-                                            }
-                                        }
-                                        $('#dropdown_items_id').prop('disabled', false);
+                                       setAjaxDropdownOptions("#dropdown_items_id", typeof data === 'string' ? JSON.parse(data) : data);
                                     }
                                 });
                             JS,
@@ -641,9 +630,9 @@ JAVASCRIPT;
                           'id' => 'dropdown_items_id',
                           'name' => 'items_id',
                           'value' => $this->fields["items_id"] ?? 0,
-                          'values' => isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])
-                              ? getItemByEntity(new $this->fields['itemtype'](), $this->fields['entities_id'])
-                              : []
+                          ...(isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])
+                              ? getAjaxDropdownOptionsByEntity($this->fields['itemtype'], $this->fields['entities_id'])
+                              : [])
                       ],
                       Rack::getTypeName(1) => [
                           'type' => 'select',

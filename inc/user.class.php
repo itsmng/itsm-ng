@@ -283,6 +283,7 @@ class User extends CommonDBTM
         $this->addStandardTab('Change_Item', $ong, $options);
         $this->addStandardTab('Document_Item', $ong, $options);
         $this->addStandardTab('Reservation', $ong, $options);
+        $this->addStandardTab('AppointmentTarget', $ong, $options);
         $this->addStandardTab('Auth', $ong, $options);
         $this->addStandardTab('Link', $ong, $options);
         $this->addStandardTab('Certificate_Item', $ong, $options);
@@ -2585,7 +2586,7 @@ class User extends CommonDBTM
                    _x('person', 'Title') => [
                       'type' => 'select',
                       'name' => 'usertitles_id',
-                      'values' => getOptionForItems('UserTitle'),
+                      ...getAjaxDropdownOptions('UserTitle'),
                       'value' => $this->fields['usertitles_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
                    ],
@@ -2597,14 +2598,14 @@ class User extends CommonDBTM
                    Profile::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_profiles_id',
-                      'values' => getOptionForItems('Profile'),
+                      ...getAjaxDropdownOptions('Profile'),
                       'value' => Profile::getDefault(),
                       'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
                    ],
                    Entity::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_entities_id',
-                      'values' => getOptionForItems('Entity'),
+                      ...getAjaxDropdownOptions('Entity'),
                       'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                    ],
                    __('Recursive') => [
@@ -2635,9 +2636,9 @@ class User extends CommonDBTM
                       'col_lg' => 6,
                    ] : [],
                    __('Responsible') => ($higherrights) ? [
-                      'type' => 'select',
                       'name' => 'users_id_supervisor',
-                      'values' => getOptionsForUsers('all'),
+                      'type' => 'select',
+                      ...getAjaxUserDropdownOptions('all'),
                       'value' => $this->fields['users_id_supervisor'],
                       'col_lg' => 6,
                    ] : [],
@@ -3791,6 +3792,8 @@ class User extends CommonDBTM
      * @param integer         $limit            limit LIMIT value (default -1 no limit)
      * @param boolean         $inactive_deleted true to retreive also inactive or deleted users
      *
+     * @param array $conditions Additional SQL filters applied before pagination
+     *
      * @return mysqli_result|boolean
      */
     public static function getSqlSearchResult(
@@ -3803,9 +3806,10 @@ class User extends CommonDBTM
         $start = 0,
         $limit = -1,
         $inactive_deleted = 0,
-        $with_no_right = 0
+        $with_no_right = 0,
+        array $conditions = []
     ) {
-        global $DB;
+        global $DB, $CFG_GLPI;
 
         // No entity define : use active ones
         if ($entity_restrict < 0) {
@@ -4037,12 +4041,6 @@ class User extends CommonDBTM
                   'glpi_users.is_active'  => 1,
                   [
                      'OR' => [
-                        ['glpi_users.begin_date' => null],
-                        ['glpi_users.begin_date' => ['<', new QueryExpression('NOW()')]]
-                     ]
-                  ],
-                  [
-                     'OR' => [
                         ['glpi_users.end_date' => null],
                         ['glpi_users.end_date' => ['>', new QueryExpression('NOW()')]]
                      ]
@@ -4050,6 +4048,14 @@ class User extends CommonDBTM
 
                 ]
             );
+            if (empty($CFG_GLPI['allow_future_users_in_dropdowns'])) {
+                $WHERE[] = [
+                    'OR' => [
+                        ['glpi_users.begin_date' => null],
+                        ['glpi_users.begin_date' => ['<', new QueryExpression('NOW()')]]
+                    ]
+                ];
+            }
         }
 
         if (
@@ -4135,13 +4141,15 @@ class User extends CommonDBTM
                 $criteria['ORDERBY'] = [
                    'glpi_users.firstname',
                    'glpi_users.realname',
-                   'glpi_users.name'
+                   'glpi_users.name',
+                   'glpi_users.id'
                 ];
             } else {
                 $criteria['ORDERBY'] = [
                    'glpi_users.realname',
                    'glpi_users.firstname',
-                   'glpi_users.name'
+                   'glpi_users.name',
+                   'glpi_users.id'
                 ];
             }
 
@@ -4149,6 +4157,9 @@ class User extends CommonDBTM
                 $criteria['LIMIT'] = $limit;
                 $criteria['START'] = $start;
             }
+        }
+        if ($conditions) {
+            $WHERE[] = $conditions;
         }
         $criteria['WHERE'] = $WHERE;
         return $DB->request($criteria);

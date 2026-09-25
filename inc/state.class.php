@@ -70,7 +70,7 @@ class State extends CommonTreeDropdown
         $fields[__('As child of')] = [
            'name'  => 'states_id',
            'type' => 'select',
-           'values' => getOptionForItems('State', ['NOT' => ['id' => $this->getId()]]),
+           ...getAjaxDropdownOptions('State', ['NOT' => ['id' => $this->getId()]]),
            'value' => $this->fields['states_id'],
         ];
 

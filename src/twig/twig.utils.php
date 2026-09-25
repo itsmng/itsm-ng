@@ -4,66 +4,142 @@ function expandSelect(&$select, $fields = [])
 {
     global $CFG_GLPI;
 
-    if (isset($select["itemtype"]) && !isset($select["values"])) {
-        $restrict =
-            $select["condition"]["entities_id"] ??
-            ($fields["entities_id"] ??
-                (Session::getActiveEntity() == 0
-                    ? -1
-                    : Session::getActiveEntity()));
-        $recursive =
-            $select["condition"]["is_recursive"] ??
-            ($fields["is_recursive"] ?? Session::getIsActiveEntityRecursive());
-        if (isset($select["condition"]["entities_id"])) {
-            unset($select["condition"]["entities_id"]);
+    if (isset($select['itemtype']) && !array_key_exists('actions', $select)) {
+        $item = is_object($select['itemtype']) ? $select['itemtype'] : getItemForItemtype($select['itemtype']);
+        // Child records and relations require a parent form to create them.
+        $select['actions'] = $item && !($item instanceof CommonDBChild) && !($item instanceof CommonDBRelation)
+            ? getItemActionButtons(['info', 'add'], get_class($item)) : [];
+    }
+
+    if (isset($select['itemtype']) && !isset($select['ajax'])) {
+        $itemtype = is_object($select['itemtype']) ? get_class($select['itemtype']) : $select['itemtype'];
+        $condition = $select['condition'] ?? $select['conditions'] ?? [];
+        if (!is_array($condition)) {
+            $condition = $_SESSION['glpicondition'][$condition] ?? [];
         }
-        if (isset($select["condition"]["is_recursive"])) {
-            unset($select["condition"]["is_recursive"]);
+        $restrict = $select['entity_restrict'] ?? $condition['entities_id']
+            ?? $fields['entities_id'] ?? -1;
+        $recursive = $condition['is_recursive'] ?? $fields['is_recursive'] ?? Session::getIsActiveEntityRecursive();
+        unset($condition['entities_id'], $condition['is_recursive']);
+
+        // Only resolve the saved selections. The candidate list is fetched by Select2.
+        $values = $select['values'] ?? [];
+        if ($select['display_emptychoice'] ?? true) {
+            $values += [0 => $select['emptylabel'] ?? Dropdown::EMPTY_VALUE];
         }
-        $select["values"] =
-            ($select["display_emptychoice"] ?? true
-                ? [Dropdown::EMPTY_VALUE]
-                : []) +
-            getItemByEntity(
-                $select["itemtype"],
-                $restrict,
-                $select["condition"] ?? [],
-                $select["used"] ?? [],
-            );
-        if (
-            isset($select["value"]) &&
-            !in_array($select["value"], $select["values"])
-        ) {
-            $item = new ($select["itemtype"])();
-            $item->getFromDB($select["value"]);
-            if (isset($item->fields["name"])) {
-                $select["values"][$select["value"]] = $item->fields["name"];
+        $selected = (array)($select['value'] ?? []);
+        if (is_array($select['value'] ?? null) && !array_is_list($selected)) {
+            $selected = array_keys($selected);
+        }
+        foreach ($selected as $id) {
+            if (!is_numeric($id) || $id <= 0 || isset($values[$id])) {
+                continue;
+            }
+            if (strcasecmp($itemtype, User::class) === 0) {
+                $values[$id] = getUserName($id);
+            } else {
+                $item = getItemForItemtype($itemtype);
+                if ($item && $item->getFromDB($id)) {
+                    $values[$id] = $item->getName();
+                }
             }
         }
-        $ajaxData = [
-            "itemtype" => $select["itemtype"],
-            "display_emptychoice" => $select["display_emptychoice"] ?? 1,
-            "condition" => $select["condition"] ?? [],
-            "permit_parent_select" => 0,
-            "entity_restrict" => $restrict,
-            "recursive" => $recursive,
-            "used" => $select["used"] ?? [],
-            "emptylabel" => Dropdown::EMPTY_VALUE,
-            "permit_select_parent" => 0,
+        $select['values'] = $values;
+        $data = [
+            'itemtype' => $itemtype,
+            'entity_restrict' => is_array($restrict) ? json_encode(array_values($restrict)) : $restrict,
+            'used' => array_values($select['used'] ?? []),
+            'display_emptychoice' => (int)($select['display_emptychoice'] ?? true),
+            'emptylabel' => $select['emptylabel'] ?? Dropdown::EMPTY_VALUE,
         ];
-        if (isset($select["right"])) {
-            $ajaxData["right"] = $select["right"];
+        $isUser = strcasecmp($itemtype, User::class) === 0;
+        if ($isUser) {
+            $data['right'] = $select['right'] ?? 'all';
+            if ($condition) {
+                $data['condition'] = Dropdown::addNewCondition($condition);
+            }
+            foreach (['groups_id', 'inactive_deleted', 'with_no_right'] as $key) {
+                if (isset($select[$key])) {
+                    $data[$key] = $select[$key];
+                }
+            }
+        } else {
+            $data['condition'] = Dropdown::addNewCondition($condition);
+            $data['recursive'] = (int)$recursive;
+            $data['permit_select_parent'] = (int)($select['permit_select_parent'] ?? false);
         }
-        $select["ajax"] = [
-            "url" => $CFG_GLPI["root_doc"] . "/ajax/getDropdownValue.php",
-            "type" => "POST",
-            "data" => $ajaxData,
+        if (isset($select['toadd'])) {
+            $data['toadd'] = $select['toadd'];
+            $select['values'] = $select['toadd'] + $select['values'];
+        }
+        $select['ajax'] = [
+            'url' => $CFG_GLPI['root_doc'] . ($isUser ? '/ajax/getDropdownUsers.php' : '/ajax/getDropdownValue.php'),
+            'type' => 'POST',
+            'data' => $data,
         ];
-        if (isset($fields["noLib"])) {
-            $select["noLib"] = $fields["noLib"];
+        if (isset($fields['noLib'])) {
+            $select['noLib'] = $fields['noLib'];
         }
     }
+    if (
+        ($select['ajax']['url'] ?? null) === $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php'
+        && !isset($select['ajax']['data']['_idor_token'])
+    ) {
+        $select['ajax']['data'] = ($select['ajax']['data'] ?? []) + [
+            'right' => 'all',
+            'entity_restrict' => -1,
+        ];
+        $tokenParams = array_intersect_key($select['ajax']['data'], array_flip([
+            'right', 'entity_restrict', 'condition', 'groups_id',
+        ]));
+        $select['ajax']['data']['_idor_token'] = Session::getNewIDORToken('User', $tokenParams);
+    }
+
     return $select;
+}
+
+/** Support both dependent Select2 fields and legacy HTML replacement callers. */
+function outputAjaxDropdownDefinition(array $select)
+{
+    if (!empty($_POST['_render_dropdown'])) {
+        renderTwigTemplate('macros/input.twig', $select + [
+            'type' => 'select',
+            'name' => $_POST['myname'] ?? $_POST['name'] ?? 'items_id',
+            'value' => $_POST['value'] ?? 0,
+        ]);
+    } else {
+        $select = expandSelect($select);
+        require_once GLPI_ROOT . '/src/twig/twig.class.php';
+        $select['actions_html'] = Twig::load(GLPI_ROOT . '/templates', false)->render(
+            'macros/dropdownActions.twig',
+            ['actions' => $select['actions'] ?? []]
+        );
+        echo json_encode($select);
+    }
+}
+
+/** Describe a database dropdown without querying its candidate records. */
+function getAjaxDropdownOptions($itemtype, $conditions = [], $display_emptychoice = true, $isDevice = false, $used = [])
+{
+    return [
+        'itemtype' => $itemtype,
+        'condition' => $conditions,
+        'display_emptychoice' => $display_emptychoice,
+        'used' => $used,
+    ];
+}
+
+function getAjaxUserDropdownOptions($right, $conditions = [], $display_emptychoice = true)
+{
+    return getAjaxDropdownOptions(User::class, $conditions, $display_emptychoice) + [
+        'right' => $right,
+        'entity_restrict' => $conditions['entities_id'] ?? -1,
+    ];
+}
+
+function getAjaxDropdownOptionsByEntity($itemtype, $entity, $conditions = [], $used = [])
+{
+    return getAjaxDropdownOptions($itemtype, $conditions, true, false, $used) + ['entity_restrict' => $entity];
 }
 
 function expandForm($form, $fields = [], $template = null)
@@ -100,7 +176,7 @@ function expandForm($form, $fields = [], $template = null)
 
                 $filteredInputs[$inputKey] = $input;
 
-                if ($input["type"] ?? "" == "select") {
+                if (($input["type"] ?? "") === "select") {
                     expandSelect($filteredInputs[$inputKey], $fields);
                 }
             }
@@ -560,14 +636,16 @@ function getItemActionButtons(array $actions, string $itemType): array
                 if (!$item->canCreate()) {
                     continue 2;
                 }
+                $modalName = 'add_' . str_replace('\\', '_', $itemType) . '_' . mt_rand();
+                $formUrl = $item->getFormUrl();
                 $modal_script = Ajax::createModalWindow(
-                    "add_" . $itemType,
-                    $item->getFormUrl() . "?_in_modal=1",
+                    $modalName,
+                    $formUrl . (str_contains($formUrl, '?') ? '&' : '?') . '_in_modal=1',
                     ['display' => false]
                 );
                 $content = [
                     "icon" => "fas fa-plus",
-                    "onClick" => "add_" . $itemType . ".dialog('open');",
+                    "onClick" => $modalName . ".dialog('open');",
                     "info" => "Add",
                     "modal_script" => $modal_script,
                 ];

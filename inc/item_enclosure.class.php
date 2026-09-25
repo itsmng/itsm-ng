@@ -228,6 +228,7 @@ class Item_Enclosure extends CommonDBRelation
             $CFG_GLPI["root_doc"] . "/ajax/dropdownAllItems.php",
             [
               'idtable'   => '__VALUE__',
+                            '_render_dropdown' => true,
               'name'      => 'items_id',
               'value'     => $this->fields['items_id'],
               'rand'      => $rand,

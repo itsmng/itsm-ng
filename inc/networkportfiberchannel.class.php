@@ -113,14 +113,14 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
                _n('Network outlet', 'Network outlets', 1) => !$options['several'] ? [
                   'type' => 'select',
                   'name' => 'netpoints_id',
-                  'values' => getOptionForItems(Netpoint::class),
+                  ...getAjaxDropdownOptions(Netpoint::class),
                   'value' => $this->fields['netpoints_id'],
                   'actions' => getItemActionButtons(['info', 'add'], Netpoint::class),
                ] : [],
                DeviceNetworkCard::getTypeName(1) => !$options['several'] ? [
                   'type' => 'select',
                   'name' => 'items_devicenetworkcards_id',
-                  'values' => getOptionForItems(DeviceNetworkCard::class, [], true, true),
+                  ...getAjaxDropdownOptions(DeviceNetworkCard::class, [], true, true),
                   'value' => $this->fields['items_devicenetworkcards_id'],
                   'actions' => getItemActionButtons(['info', 'add'], DeviceNetworkCard::class),
                ] : [],
@@ -175,12 +175,7 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
                         with_empty: true
                      },
                      success: function(data) {
-                        const jsonData = JSON.parse(data);
-                        
-                        $('#NetworkPortConnect_items_id').empty();
-                        for (const key in jsonData) {
-                           $('#NetworkPortConnect_items_id').append('<option value="' + key + '">' + jsonData[key] + '</option>');
-                        }
+                        setAjaxDropdownOptions("#NetworkPortConnect_items_id", typeof data === 'string' ? JSON.parse(data) : data);
                      }
                   });
                JS,

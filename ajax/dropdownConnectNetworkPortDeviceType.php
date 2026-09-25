@@ -58,7 +58,6 @@ if (class_exists($_POST["itemtype"])) {
        ],
     ];
 
-    echo json_encode(getOptionForItems($_POST["itemtype"], ['entities_id' => $_POST["entity_restrict"] ?? Session::getActiveEntity()]));
-
-    // Dropdown::show($_POST['itemtype'], $params);
+    $select = getAjaxDropdownOptionsByEntity($_POST['itemtype'], $params['entity'], $params['condition']);
+    outputAjaxDropdownDefinition($select);
 }

@@ -102,6 +102,7 @@ if (isset($_POST["type"])
                     'name'        => $options['name'],
                     'itemtype'    => User::class,
                     'right'       => $right,
+                    'actions'     => [],
                 ];
                 $hook_lines = [];
                 $hook_lines[] = "$.getJSON('{$CFG_GLPI["root_doc"]}/ajax/v2/itilActorEmail.php', { type: 'user', id: this.value || '0' }).done((response) => { if (response && response.success) { $('#{$email_id}').val(response.email || '').attr('data-default-email', response.email || ''); } });";
@@ -112,9 +113,7 @@ if (isset($_POST["type"])
                     'change' => implode("\n", $hook_lines),
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
-                    'condition' => [
-                        'entities_id' => $options['entity'],
-                    ],
+                    'entities_id' => $options['entity'],
                 ]));
 
                 // Display active tickets for a tech
@@ -179,11 +178,10 @@ if (isset($_POST["type"])
                     'name'        => $param['name'],
                     'conditions' => $cond,
                     'itemtype'    => Group::class,
+                    'actions'     => [],
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
-                    'condition' => [
-                        'entities_id' => $param['entity'],
-                    ],
+                    'entities_id' => $param['entity'],
                 ]));
 
                 if (($_POST["itemtype"] == 'Ticket')
@@ -236,6 +234,7 @@ if (isset($_POST["type"])
                     'id'          => $select_id,
                     'name'        => $options['name'],
                     'itemtype'    => Supplier::class,
+                    'actions'     => [],
                 ];
                 $hook_lines = [];
                 $hook_lines[] = "$.getJSON('{$CFG_GLPI["root_doc"]}/ajax/v2/itilActorEmail.php', { type: 'supplier', id: this.value || '0' }).done((response) => { if (response && response.success) { $('#{$email_id}').val(response.email || '').attr('data-default-email', response.email || ''); } });";
@@ -246,9 +245,7 @@ if (isset($_POST["type"])
                     'change' => implode("\n", $hook_lines),
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
-                    'condition' => [
-                        'entities_id' => $options['entity'],
-                    ],
+                    'entities_id' => $options['entity'],
                 ]));
                 // Display active tickets for a supplier
                 // Need to update information on dropdown changes

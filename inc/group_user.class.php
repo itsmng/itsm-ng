@@ -190,11 +190,11 @@ class Group_User extends CommonDBRelation
             $groups[] = $data;
         }
 
-        $options = getItemByEntity('Group', Session::getActiveEntity(), [ 'is_usergroup' => 1, ]
+        $options = getAjaxDropdownOptionsByEntity('Group', Session::getActiveEntity(), [ 'is_usergroup' => 1, ]
            + getEntitiesRestrictCriteria(Group::getTable(), '', '', true));
 
         foreach ($used as $id) {
-            unset($options[$id]);
+            $options['used'][] = $id;
         }
 
         if ($canedit) {
@@ -220,7 +220,7 @@ class Group_User extends CommonDBRelation
                         __('Group') => [
                            'type' => 'select',
                            'name' => 'groups_id',
-                           'values' => $options,
+                           ...$options,
                            'actions' => getItemActionButtons(['info', 'add'], 'Group')
                         ],
                         __('Manager') => [
@@ -334,8 +334,8 @@ class Group_User extends CommonDBRelation
                         __('User') => [
                            'type' => 'select',
                            'name' => 'users_id',
-                           'values' => getOptionsForUsers('all'),
-                           'condition' => ['entities_id' => $entityrestrict],
+                           ...getAjaxUserDropdownOptions('all', ['entities_id' => $entityrestrict]),
+                           'used' => $used_ids,
                            'actions' => getItemActionButtons(['info', 'add'], 'User')
                         ],
                         __('Manager') => [

@@ -2,6 +2,8 @@
 @import "./spacing";
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
 @import "./colors.scss";
+@import "./components/appointments";
+@import "./components/planning";
 
 :root {
     --header-height: 3.5rem;

@@ -61,7 +61,7 @@ class DevicePci extends CommonDevice
               _n('Model', 'Models', 1) => [
                 'name'  => 'devicepcimodels_id',
                 'type'  => 'select',
-                'values' => getOptionForItems('DevicePciModel'),
+                ...getAjaxDropdownOptions('DevicePciModel'),
                 'value' => $this->fields['devicepcimodels_id'],
                 'actions' => getItemActionButtons(['info', 'add'], 'DevicePciModel'),
                 'col_lg' => 8,

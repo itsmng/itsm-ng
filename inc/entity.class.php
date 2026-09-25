@@ -114,7 +114,8 @@ class Entity extends CommonTreeDropdown
           'inquest_duration','inquest_URL',
           'max_closedate', 'tickettemplates_id',
           'changetemplates_id', 'problemtemplates_id',
-          'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents'
+          'suppliers_as_private', 'autopurge_delay', 'anonymize_support_agents',
+          'lock_ticket_date', 'requesters_private_ticket_content'
        ],
        // Configuration
        'config' => ['enable_custom_css', 'custom_css_code']
@@ -285,6 +286,10 @@ class Entity extends CommonTreeDropdown
         $input['id'] = $result['newID'];
 
         $input['max_closedate'] = $_SESSION["glpi_currenttime"];
+
+        if (!array_key_exists('lock_ticket_date', $input)) {
+            $input['lock_ticket_date'] = self::CONFIG_PARENT;
+        }
 
         if (!Session::isCron()) { // Filter input for connected
             $input = $this->checkRightDatas($input);
@@ -1606,7 +1611,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'authldaps_id',
                        'value' => $entity->getField('authldaps_id'),
-                       'values' => array_merge([__('Default server')], getOptionForItems(AuthLDAP::class, ['is_active' => 1], false)),
+                       ...getAjaxDropdownOptions(AuthLDAP::class, ['is_active' => 1]),
+                       'emptylabel' => __('Default server'),
                        'col_lg' => 12,
                        'col_md' => 12,
                        'actions' => getItemActionButtons(['info'], AuthLDAP::class),
@@ -2362,6 +2368,36 @@ class Entity extends CommonTreeDropdown
         if ($ID == 0) { // Remove parent option for root entity
             unset($anonymizeValues[self::CONFIG_PARENT]);
         }
+        $lockTicketDateValues = self::getLockTicketDateValues();
+        if ($ID == 0) { // Remove parent option for root entity
+            unset($lockTicketDateValues[self::CONFIG_PARENT]);
+        }
+        $hidePrivateTicketContentValues = self::getHidePrivateTicketContentForRequestersValues();
+        if ($ID == 0) { // Remove parent option for root entity
+            unset($hidePrivateTicketContentValues[self::CONFIG_PARENT]);
+        }
+
+        $inheritedSurvey = '';
+        if ($ID > 0) {
+            $parent = $entity->getField('entities_id');
+            $rate = self::getUsedConfig('inquest_config', $parent, 'inquest_rate');
+            $summary = __('Disabled');
+            if ($rate > 0) {
+                $type = self::getUsedConfig('inquest_config', $parent);
+                $delay = self::getUsedConfig('inquest_config', $parent, 'inquest_delay');
+                $summary = TicketSatisfaction::getTypeInquestName($type) . '<br>'
+                    . sprintf(_n('%d day', '%d days', $delay), $delay) . '<br>'
+                    . sprintf(__('%d%%'), $rate);
+                if ($type == 2) {
+                    $summary .= '<br>' . htmlspecialchars(
+                        self::getUsedConfig('inquest_config', $parent, 'inquest_URL'),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                }
+            }
+            $inheritedSurvey = self::inheritedValue($summary, false, false);
+        }
 
         $form = [
            'action' => $canedit ? Toolbox::getItemTypeFormURL(__CLASS__) : '',
@@ -2381,10 +2417,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'tickettemplates_id',
                        'value' => $entity->getField('tickettemplates_id'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(TicketTemplate::class)
-                       ),
+                       ...getAjaxDropdownOptions(TicketTemplate::class),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], TicketTemplate::class),
                        'after' => ($ID > 0 && ($entity->getField('tickettemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('tickettemplates_id', ['tickettemplates_id' => self::getUsedConfig('tickettemplates_id', $ID)]), false, false) : '',
@@ -2393,10 +2427,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'changetemplates_id',
                        'value' => $entity->getField('changetemplates_id'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(ChangeTemplate::class)
-                       ),
+                       ...getAjaxDropdownOptions(ChangeTemplate::class),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], ChangeTemplate::class),
                        'after' => ($ID > 0 && ($entity->getField('changetemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('changetemplates_id', ['changetemplates_id' => self::getUsedConfig('changetemplates_id', $ID)]), false, false) : '',
@@ -2405,10 +2437,8 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'problemtemplates_id',
                        'value' => $entity->getField('problemtemplates_id'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(ProblemTemplate::class)
-                       ),
+                       ...getAjaxDropdownOptions(ProblemTemplate::class),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], ProblemTemplate::class),
                        'after' => ($ID > 0 && ($entity->getField('problemtemplates_id') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('problemtemplates_id', ['problemtemplates_id' => self::getUsedConfig('problemtemplates_id', $ID)]), false, false) : '',
@@ -2422,11 +2452,9 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'calendars_id',
                        'value' => $entity->getField('calendars_id'),
-                       'values' => array_merge(
-                           [__('24/7')],
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           getOptionForItems(Calendar::class, [], false)
-                       ),
+                       ...getAjaxDropdownOptions(Calendar::class),
+                       'emptylabel' => __('24/7'),
+                       'toadd' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
                        'actions' => getItemActionButtons(['info', 'add'], Calendar::class),
                        'col_lg' => 6,
                        'after' => ($ID > 0 && ($entity->getField('calendars_id') == self::CONFIG_PARENT)) ?
@@ -2469,6 +2497,24 @@ class Entity extends CommonTreeDropdown
                        'after' => ($ID > 0 && ($entity->getField('anonymize_support_agents') == self::CONFIG_PARENT)) ?
                                   self::inheritedValue(self::getSpecificValueToDisplay('anonymize_support_agents', ['anonymize_support_agents' => self::getUsedConfig('anonymize_support_agents', $ID)]), false, false) : '',
                   ],
+                  __('Lock ticket creation date') => [
+                       'type'  => 'select',
+                       'name'  => 'lock_ticket_date',
+                       'value' => $entity->fields["lock_ticket_date"],
+                       'values' => $lockTicketDateValues,
+                       'col_lg' => 6,
+                       'after' => ($ID > 0 && ($entity->getField('lock_ticket_date') == self::CONFIG_PARENT)) ?
+                                  self::inheritedValue(self::getSpecificValueToDisplay('lock_ticket_date', ['lock_ticket_date' => self::getUsedConfig('lock_ticket_date', $ID)]), false, false) : '',
+                  ],
+                  __('Hide private followups and tasks from requesters') => [
+                       'type'  => 'select',
+                       'name'  => 'requesters_private_ticket_content',
+                       'value' => $entity->fields['requesters_private_ticket_content'],
+                       'values' => $hidePrivateTicketContentValues,
+                       'col_lg' => 6,
+                       'after' => ($ID > 0 && ($entity->getField('requesters_private_ticket_content') == self::CONFIG_PARENT)) ?
+                                  self::inheritedValue(self::getSpecificValueToDisplay('requesters_private_ticket_content', ['requesters_private_ticket_content' => self::getUsedConfig('requesters_private_ticket_content', $ID)]), false, false) : '',
+                  ],
                ]
               ],
               __('Automatic closing configuration') => [
@@ -2478,9 +2524,9 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'autoclose_delay',
                        'value' => $entity->fields['autoclose_delay'],
-                       'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                       'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           [self::CONFIG_NEVER => __('Never')] +
-                          range(1, 99),
+                          array_combine(range(1, 99), range(1, 99)),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('autoclose_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('autoclose_delay', ['autoclose_delay' => self::getUsedConfig('autoclose_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
@@ -2489,9 +2535,9 @@ class Entity extends CommonTreeDropdown
                        'type'  => 'select',
                        'name'  => 'autopurge_delay',
                        'value' => $entity->fields['autopurge_delay'],
-                       'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                       'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           [self::CONFIG_NEVER => __('Never')] +
-                          range(1, 3650),
+                          array_combine(range(1, 3650), range(1, 3650)),
                        'after' => __('days') . (($ID > 0 && ($entity->getField('autopurge_delay') == self::CONFIG_PARENT)) ?
                                   ' ' . self::inheritedValue(self::getSpecificValueToDisplay('autopurge_delay', ['autopurge_delay' => self::getUsedConfig('autopurge_delay', $ID)]), false, false) : ''),
                        'col_lg' => 6,
@@ -2509,25 +2555,22 @@ class Entity extends CommonTreeDropdown
                   __('Configuring the satisfaction survey') => [
                        'type'  => 'select',
                        'name'  => 'inquest_config',
-                       'value' => $entity->fields['inquest_config'],
-                       'values' => ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [] +
+                       'value' => ($ID == 0 && $entity->fields['inquest_config'] == self::CONFIG_PARENT)
+                           ? 1 : $entity->fields['inquest_config'],
+                       'id' => 'entity_inquest_config_' . $ID,
+                       'values' => (($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : []) +
                           [1 => __('Internal survey')] +
                           [2 => __('External survey')],
                        'col_lg' => 6,
-                       'after' => ($ID > 0 && ($entity->getField('inquest_config') == self::CONFIG_PARENT)) ?
-                                  self::inheritedValue(self::getSpecificValueToDisplay('inquest_config', ['inquest_config' => self::getUsedConfig('inquest_config', $ID)]), false, false) : '',
+                       'after' => $inheritedSurvey,
                   ],
                   __('Create survey after') => [
                        'type'  => 'select',
                        'name'  => 'inquest_delay',
                        'value' => $entity->getfield('inquest_delay'),
-                       'values' => array_merge(
-                           ($ID != 0) ? [self::CONFIG_PARENT => __('Inheritance of the parent entity')] : [],
-                           [self::CONFIG_NEVER => __('As soon as possible')],
-                           range(1, 99)
-                       ),
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_delay') == self::CONFIG_PARENT)) ?
-                                  ' ' . self::inheritedValue(self::getSpecificValueToDisplay('inquest_delay', ['inquest_delay' => self::getUsedConfig('inquest_delay', $ID)]), false, false) : ''),
+                       'values' => [0 => __('As soon as possible')] +
+                          array_combine(range(1, 99), range(1, 99)),
+                       'after' => __('days'),
                        'col_lg' => 6,
                   ],
                   __('Rate to trigger survey') => [
@@ -2538,8 +2581,7 @@ class Entity extends CommonTreeDropdown
                        'min'   => 0,
                        'max'   => 100,
                        'step'  => 1,
-                       'after' => '%' . (($ID > 0 && ($entity->getField('inquest_rate') == self::CONFIG_PARENT)) ?
-                                  ' ' . self::inheritedValue(self::getUsedConfig('inquest_rate', $ID) . '%', false, false) : ''),
+                       'after' => '%',
                   ],
                   __('Duration of survey') => [
                        'type'  => 'number',
@@ -2549,8 +2591,13 @@ class Entity extends CommonTreeDropdown
                        'min'   => 0,
                        'max'   => 180,
                        'step'  => 1,
-                       'after' => __('days') . (($ID > 0 && ($entity->getField('inquest_duration') == self::CONFIG_PARENT)) ?
-                                  ' ' . self::inheritedValue(self::getUsedConfig('inquest_duration', $ID) . ' ' . __('days'), false, false) : ''),
+                       'after' => __('days'),
+                  ],
+                  __('URL') => [
+                       'type'  => 'text',
+                       'name'  => 'inquest_URL',
+                       'value' => $entity->getField('inquest_URL'),
+                       'col_lg' => 12,
                   ],
                   __('For tickets closed after') => [
                        'type'  => 'datetime-local',
@@ -2563,6 +2610,26 @@ class Entity extends CommonTreeDropdown
            ]
         ];
         renderTwigForm($form);
+
+        echo Html::scriptBlock(<<<JAVASCRIPT
+            $(function () {
+                const selector = $('#entity_inquest_config_{$ID}');
+                const form = selector.closest('form');
+                const updateSurveyFields = function () {
+                    const mode = Number(selector.val());
+                    ['inquest_delay', 'inquest_rate', 'inquest_duration', 'max_closedate', 'inquest_URL'].forEach(function (name) {
+                        const input = form.find('[name="' + name + '"]');
+                        const visible = mode > 0 && (name !== 'inquest_URL' || mode === 2);
+                        const wrapper = input.closest('.row > div');
+                        wrapper.find(':input').prop('disabled', !visible);
+                        wrapper.toggle(visible);
+                    });
+                    selector.closest('[data-dropdown-group]').find('.inheritedValue').toggle(mode < 0);
+                };
+                selector.on('change', updateSurveyFields);
+                updateSurveyFields();
+            });
+JAVASCRIPT);
 
         Plugin::doHook("pre_item_form", ['item' => $entity, 'options' => []]);
         Plugin::doHook("post_item_form", ['item' => $entity, 'options' => &$options]);
@@ -2839,6 +2906,31 @@ class Entity extends CommonTreeDropdown
         ];
     }
 
+    public static function getLockTicketDateValues()
+    {
+
+        return [
+           self::CONFIG_PARENT => __('Inheritance of the parent entity'),
+           0                   => __('No'),
+           1                   => __('Yes'),
+        ];
+    }
+
+    /**
+     * Get values for requesters_private_ticket_content
+     *
+     * @return array
+    **/
+    public static function getHidePrivateTicketContentForRequestersValues()
+    {
+
+        return [
+           self::CONFIG_PARENT => __('Inheritance of the parent entity'),
+           0 => __('No'),
+           1 => __('Yes'),
+        ];
+    }
+
     /**
      * @since 0.84
      *
@@ -2882,6 +2974,7 @@ class Entity extends CommonTreeDropdown
             case 'use_domains_alert':
             case 'use_infocoms_alert':
             case 'is_notif_enable_default':
+            case 'lock_ticket_date':
                 if ($values[$field] == self::CONFIG_PARENT) {
                     return __('Inheritance of the parent entity');
                 }
@@ -3063,6 +3156,7 @@ class Entity extends CommonTreeDropdown
             case 'use_certificates_alert':
             case 'use_contracts_alert':
             case 'use_infocoms_alert':
+            case 'lock_ticket_date':
                 $options['name']  = $name;
                 $options['value'] = $values[$field];
                 return Alert::dropdownYesNo($options);

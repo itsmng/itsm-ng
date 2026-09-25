@@ -1,0 +1,8 @@
+{% for action in actions %}
+    {% if action.modal_script is defined %}
+        {{ action.modal_script | raw }}
+    {% endif %}
+    <button type="button" class="btn btn-sm border dropdown-action" aria-label="{{ action.info }}" onclick="{{ action.onClick }}">
+        <i class="{{ action.icon }}" aria-hidden="true"></i>
+    </button>
+{% endfor %}

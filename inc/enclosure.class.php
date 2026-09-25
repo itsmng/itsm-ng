@@ -114,7 +114,7 @@ class Enclosure extends CommonDBTM
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -128,14 +128,14 @@ class Enclosure extends CommonDBTM
                     _n('Model', 'Models', 1) => [
                        'name' => 'enclosuremodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('EnclosureModel'),
+                       ...getAjaxDropdownOptions('EnclosureModel'),
                        'value' => $this->fields['enclosuremodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "EnclosureModel"),
                     ],
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],

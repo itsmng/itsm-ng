@@ -322,21 +322,21 @@ class Printer extends CommonDBTM
                     _n('Type', 'Types', 1) => [
                        'name' => 'printertypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PrinterType'),
+                       ...getAjaxDropdownOptions('PrinterType'),
                        'value' => $this->fields["printertypes_id"],
                        'actions' => getItemActionButtons(['info', 'add'], "PrinterType"),
                     ],
                     __('Technician in charge of the hardware') => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields["users_id_tech"],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields["manufacturers_id"],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -351,7 +351,7 @@ class Printer extends CommonDBTM
                     _n('Model', 'Models', 1) => [
                        'name' => 'printermodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PrinterModel'),
+                       ...getAjaxDropdownOptions('PrinterModel'),
                        'value' => $this->fields["printermodels_id"],
                        'actions' => getItemActionButtons(['info', 'add'], "PrinterModel"),
                     ],
@@ -378,7 +378,7 @@ class Printer extends CommonDBTM
                     User::getTypeName(1) => [
                        'name' => 'users_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('User', ['entities_id' => $this->fields["entities_id"]]),
+                       ...getAjaxDropdownOptions('User', ['entities_id' => $this->fields["entities_id"]]),
                        'value' => $this->fields["users_id"],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
@@ -403,7 +403,7 @@ class Printer extends CommonDBTM
                     _n('Network', 'Networks', 1) => [
                        'name' => 'networks_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Network'),
+                       ...getAjaxDropdownOptions('Network'),
                        'value' => $this->fields["networks_id"],
                        'actions' => getItemActionButtons(['info', 'add'], "Network"),
                     ],

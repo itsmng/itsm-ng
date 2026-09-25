@@ -1242,3 +1242,47 @@ function getAjaxCsrfToken() {
   const meta  = document.querySelector('meta[property="glpi:csrf_token"]');
   return meta !== null ? meta.getAttribute('content') : null;
 }
+
+/** Select a template value even when its AJAX option has not been loaded. */
+function setAjaxDropdownValue(selector, value, label) {
+    const select = $(selector);
+    if (!select.find('option').toArray().some(option => option.value === String(value))) {
+        select.append(new Option(label, value));
+    }
+    select.val(value).trigger('change');
+}
+
+/** Replace a dependent selector without downloading its candidate list. */
+function setAjaxDropdownOptions(selector, definition) {
+    const select = $(selector);
+    if (select.hasClass('select2-hidden-accessible')) {
+        select.select2('destroy');
+    }
+    select.empty();
+    for (const [id, label] of Object.entries(definition.values || {})) {
+        select.append(new Option(label, id, false, String(id) === String(definition.value || 0)));
+    }
+    if (definition.name) {
+        select.attr('name', definition.name);
+    }
+    let group = select.closest('[data-dropdown-group], .input-group');
+    if (!group.length) {
+        select.wrap('<div data-dropdown-group class="d-flex flex-nowrap w-100 align-items-center"></div>');
+        group = select.parent();
+    }
+    group.children('.dropdown-action').remove();
+    group.append(definition.actions_html || '');
+    group.toggleClass('input-group', !!group.children('.dropdown-action, .input-group-text').length);
+    const ajax = definition.ajax;
+    const data = ajax.data;
+    select.select2({
+        theme: 'bootstrap-5',
+        ajax: {
+            ...ajax,
+            dataType: 'json',
+            delay: 250,
+            data: params => ({...data, searchText: params.term, page: params.page || 1, page_limit: 100}),
+        },
+    });
+    select.trigger('change');
+}

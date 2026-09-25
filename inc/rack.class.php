@@ -204,21 +204,21 @@ class Rack extends CommonDBTM
                     __("Type") => [
                        'name' => 'racktypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('RackType'),
+                       ...getAjaxDropdownOptions('RackType'),
                        'value' => $this->fields['racktypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "RackType"),
                     ],
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __("Manufacturer") => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -233,7 +233,7 @@ class Rack extends CommonDBTM
                     __("Model") => [
                        'name' => 'rackmodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('RackModel'),
+                       ...getAjaxDropdownOptions('RackModel'),
                        'value' => $this->fields['rackmodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "RackModel"),
                     ],

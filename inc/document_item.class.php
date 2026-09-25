@@ -729,7 +729,7 @@ class Document_Item extends CommonDBRelation
                         __('Heading') => [
                            'type' => 'select',
                            'name' => 'documentcategories_id',
-                           'values' => getOptionForItems('DocumentCategory'),
+                           ...getAjaxDropdownOptions('DocumentCategory'),
                            'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory'),
                            'col_lg' => 6,
                         ],
@@ -776,28 +776,15 @@ class Document_Item extends CommonDBRelation
                 Document::canView()
                 && ($nb > count($used))
             ) {
-                $values = getItemByEntity(Document::class, $entities);
-                $criteria = [
-                   'FROM'   => 'glpi_documentcategories',
-                   'WHERE'  => [
-                      'id' => new QuerySubQuery([
-                         'SELECT'          => 'documentcategories_id',
-                         'DISTINCT'        => true,
-                         'FROM'            => 'glpi_documents',
-                      ])
-                   ],
-                   'ORDER'  => 'name'
+                $documentDropdown = getAjaxDropdownOptionsByEntity(Document::class, $entities, [], $used);
+                $headingConditions = [
+                    'id' => new QuerySubQuery([
+                        'SELECT' => 'documentcategories_id',
+                        'DISTINCT' => true,
+                        'FROM' => 'glpi_documents',
+                    ]),
                 ];
-                $iterator = $DB->request($criteria);
-
-                $headings = [];
-                while ($data = $iterator->next()) {
-                    $headings[$data['id']] = $data['name'];
-                }
-
-                foreach ($used as $id) {
-                    unset($values[$id]);
-                }
+                $usedJson = json_encode(array_values($used));
                 $form = [
                    'method' => 'post',
                    'action' => Toolbox::getItemTypeFormURL(__CLASS__),
@@ -817,7 +804,7 @@ class Document_Item extends CommonDBRelation
                                'type' => 'select',
                                'id' => 'selectForRubDocId',
                                'name' => '_rubdoc',
-                               'values' => [Dropdown::EMPTY_VALUE] + $headings,
+                               ...getAjaxDropdownOptions(DocumentCategory::class, $headingConditions),
                                'col_lg' => 6,
                                'hooks' => [
                                   'change' => <<<JS
@@ -826,13 +813,9 @@ class Document_Item extends CommonDBRelation
                               $.ajax({
                                  url: "{$CFG_GLPI['root_doc']}/ajax/dropdownRubDocument.php",
                                  method: "POST",
-                                 data: {rubdoc: rubdoc, entity: entity},
+                                 data: {rubdoc: rubdoc, entity: entity, used: $usedJson},
                                  success: function(data) {
-                                    const jsonData = JSON.parse(data);
-                                    $('#selectForDocumentId').empty();
-                                    for (const i in jsonData) {
-                                       $('#selectForDocumentId').append('<option value="' + i + '">' + jsonData[i] + '</option>');
-                                    }
+                                    setAjaxDropdownOptions("#selectForDocumentId", typeof data === 'string' ? JSON.parse(data) : data);
                                  }
                               });
                               JS,
@@ -842,7 +825,7 @@ class Document_Item extends CommonDBRelation
                                'type' => 'select',
                                'id' => 'selectForDocumentId',
                                'name' => 'documents_id',
-                               'itemtype' => Document::class,
+                               ...$documentDropdown,
                                'col_lg' => 6,
                                'actions' => getItemActionButtons(['info'], Document::class)
                             ],

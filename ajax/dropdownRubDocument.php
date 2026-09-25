@@ -63,14 +63,11 @@ if (isset($_POST["rubdoc"])) {
     if (!isset($_POST['entity']) || $_POST['entity'] === '') {
         $_POST['entity'] = $_SESSION['glpiactive_entity'];
     }
-    $values = getItemByEntity(
+    $select = getAjaxDropdownOptionsByEntity(
         Document::class,
         intval($_POST['entity']),
-        ['glpi_documents.documentcategories_id' => (int)$_POST["rubdoc"]]
+        ['glpi_documents.documentcategories_id' => (int)$_POST['rubdoc']],
+        $used
     );
-    foreach ($used as $id) {
-        unset($values[$id]);
-    }
-
-    echo json_encode($values);
+    echo json_encode(expandSelect($select));
 }

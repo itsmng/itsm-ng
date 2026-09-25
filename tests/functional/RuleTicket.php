@@ -56,6 +56,13 @@ class RuleTicket extends DbTestCase
         $rule = new \RuleTicket();
         $actions  = $rule->getActions();
         $this->array($actions)->size->isGreaterThan(20);
+        $this->array($actions)->hasKeys(['task_template', 'followup_template']);
+        $this->string($actions['task_template']['table'])->isIdenticalTo('glpi_tasktemplates');
+        $this->array($actions['task_template']['force_actions'])->isIdenticalTo(['assign']);
+        $this->string($actions['followup_template']['table'])->isIdenticalTo('glpi_itilfollowuptemplates');
+        $this->array($actions['followup_template']['force_actions'])->isIdenticalTo(['assign']);
+        $this->boolean(isset($actions['task_template']['permitseveral']))->isFalse();
+        $this->boolean(isset($actions['followup_template']['permitseveral']))->isFalse();
     }
 
     public function testDefaultRuleExists()
@@ -495,6 +502,130 @@ class RuleTicket extends DbTestCase
 
     }
 
+    public function testTicketTemplatesAssignFromRuleOnAdd()
+    {
+        $this->login();
+
+        [$tasktemplates_id, $itilfollowuptemplates_id] = $this->createTemplateRuleFixtures();
+        $this->createTemplateRule(\RuleTicket::ONADD, $tasktemplates_id, $itilfollowuptemplates_id);
+
+        $ticket = new \Ticket();
+        $tickets_id = $ticket->add([
+           'name'    => 'ticket with rule templates',
+           'content' => 'content matching template rule'
+        ]);
+        $this->integer((int)$tickets_id)->isGreaterThan(0);
+
+        $this->integer((int)countElementsInTable('glpi_tickettasks', [
+           'tickets_id'       => $tickets_id,
+           'tasktemplates_id' => $tasktemplates_id,
+           'content'          => 'content of rule task template',
+        ]))->isIdenticalTo(1);
+        $this->integer((int)countElementsInTable('glpi_itilfollowups', [
+           'itemtype' => 'Ticket',
+           'items_id' => $tickets_id,
+           'content'  => 'content of rule followup template',
+        ]))->isIdenticalTo(1);
+    }
+
+    public function testTicketTemplatesAssignFromRuleOnUpdate()
+    {
+        $this->login();
+
+        [$tasktemplates_id, $itilfollowuptemplates_id] = $this->createTemplateRuleFixtures();
+        $this->createTemplateRule(\RuleTicket::ONUPDATE, $tasktemplates_id, $itilfollowuptemplates_id);
+
+        $ticket = new \Ticket();
+        $tickets_id = $ticket->add([
+           'name'    => 'ticket before rule templates',
+           'content' => 'initial content'
+        ]);
+        $this->integer((int)$tickets_id)->isGreaterThan(0);
+
+        $this->boolean($ticket->update([
+           'id'      => $tickets_id,
+           'content' => 'updated content matching template rule'
+        ]))->isTrue();
+
+        $this->integer((int)countElementsInTable('glpi_tickettasks', [
+           'tickets_id'       => $tickets_id,
+           'tasktemplates_id' => $tasktemplates_id,
+           'content'          => 'content of rule task template',
+        ]))->isIdenticalTo(1);
+        $this->integer((int)countElementsInTable('glpi_itilfollowups', [
+           'itemtype' => 'Ticket',
+           'items_id' => $tickets_id,
+           'content'  => 'content of rule followup template',
+        ]))->isIdenticalTo(1);
+    }
+
+    private function createTemplateRuleFixtures()
+    {
+        $tasktemplate = new \TaskTemplate();
+        $tasktemplates_id = $tasktemplate->add([
+           'name'              => 'rule task template',
+           'content'           => 'content of rule task template',
+           'taskcategories_id' => 0,
+           'actiontime'        => 60,
+           'is_private'        => 1,
+           'users_id_tech'     => 2,
+           'groups_id_tech'    => 0,
+           'state'             => \Planning::TODO,
+        ]);
+        $this->integer((int)$tasktemplates_id)->isGreaterThan(0);
+
+        $itilfollowuptemplate = new \ITILFollowupTemplate();
+        $itilfollowuptemplates_id = $itilfollowuptemplate->add([
+           'name'             => 'rule followup template',
+           'content'          => 'content of rule followup template',
+           'requesttypes_id'  => 0,
+           'is_private'       => 1,
+        ]);
+        $this->integer((int)$itilfollowuptemplates_id)->isGreaterThan(0);
+
+        return [(int)$tasktemplates_id, (int)$itilfollowuptemplates_id];
+    }
+
+    private function createTemplateRule($condition, $tasktemplates_id, $itilfollowuptemplates_id)
+    {
+        $ruleticket = new \RuleTicket();
+        $rulecrit   = new \RuleCriteria();
+        $ruleaction = new \RuleAction();
+
+        $ruletid = $ruleticket->add($ruletinput = [
+           'name'         => 'test to assign ticket templates ' . $condition,
+           'match'        => 'OR',
+           'is_active'    => 1,
+           'sub_type'     => 'RuleTicket',
+           'condition'    => $condition,
+           'is_recursive' => 1,
+        ]);
+        $this->checkInput($ruleticket, $ruletid, $ruletinput);
+
+        $crit_id = $rulecrit->add($crit_input = [
+           'rules_id'  => $ruletid,
+           'criteria'  => 'content',
+           'condition' => \Rule::REGEX_MATCH,
+           'pattern'   => '/(.*?)/',
+        ]);
+        $this->checkInput($rulecrit, $crit_id, $crit_input);
+
+        foreach (
+            [
+              'task_template' => $tasktemplates_id,
+              'followup_template' => $itilfollowuptemplates_id,
+            ] as $field => $value
+        ) {
+            $act_id = $ruleaction->add($act_input = [
+               'rules_id'    => $ruletid,
+               'action_type' => 'assign',
+               'field'       => $field,
+               'value'       => $value,
+            ]);
+            $this->checkInput($ruleaction, $act_id, $act_input);
+        }
+    }
+
     public function testAssignGroup()
     {
         $this->login();
@@ -606,7 +737,7 @@ class RuleTicket extends DbTestCase
         )->isTrue();
     }
 
-    public function testGroupRequesterAssignFromDefaultUserOnCreate()
+    public function testGroupRequesterAssignFromDefaultUserAfterRequesterRuleActionOnCreate()
     {
         $this->login();
 
@@ -634,6 +765,17 @@ class RuleTicket extends DbTestCase
         ]);
         $this->checkInput($rulecrit, $crit_id, $crit_input);
 
+        $users_id = getItemByTypeName('User', 'tech', true);
+
+        //assign requester before copying its default group
+        $action_id = $ruleaction->add($action_input = [
+           'rules_id'    => $ruletid,
+           'action_type' => 'assign',
+           'field'       => '_users_id_requester',
+           'value'       => $users_id,
+        ]);
+        $this->checkInput($ruleaction, $action_id, $action_input);
+
         //create action to put default user group as group requester
         $action_id = $ruleaction->add($action_input = [
            'rules_id'    => $ruletid,
@@ -653,7 +795,7 @@ class RuleTicket extends DbTestCase
 
         //Load user tech
         $user = new \User();
-        $user->getFromDB(getItemByTypeName('User', 'tech', true));
+        $user->getFromDB($users_id);
 
         //add user to group
         $group_user = new Group_User();
@@ -670,12 +812,20 @@ class RuleTicket extends DbTestCase
         // Check ticket that trigger rule on creation
         $ticket = new \Ticket();
         $tickets_id = $ticket->add($ticket_input = [
-           'name'             => 'Add group requester if requester have default group',
-           'content'          => 'test',
-           '_users_id_requester' => $user->fields['id']
+           'name'    => 'Add group requester from requester assigned by rule',
+           'content' => 'test',
         ]);
-        unset($ticket_input['_users_id_requester']); // _users_id_requester is stored in glpi_tickets_users table, so remove it
         $this->checkInput($ticket, $tickets_id, $ticket_input);
+
+        //load requester assigned by rule
+        $ticketUser = new \Ticket_User();
+        $this->boolean(
+            $ticketUser->getFromDBByCrit([
+              'tickets_id' => $tickets_id,
+              'users_id'   => $users_id,
+              'type'       => \CommonITILActor::REQUESTER,
+         ])
+        )->isTrue();
 
         //load TicketGroup
         $ticketGroup = new \Group_Ticket();
