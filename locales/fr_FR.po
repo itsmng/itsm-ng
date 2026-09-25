@@ -25253,6 +25253,32 @@ msgstr "Les rendez-vous existants et les règles de disponibilité seront suppri
 msgid "Authorize appointments"
 msgstr "Autoriser les rendez-vous"
 
+#: templates/item.twig:26 templates/item.twig:28
+msgid "Move to main view"
+msgstr "Déplacer vers la vue principale"
+
+#: templates/itil/actorPanel.twig:310 templates/itil/actorPanel.twig:440
+msgid "Pending"
+msgstr "En attente"
+
+#: inc/planningexternalevent.class.php:315
+msgid "Files"
+msgstr "Fichiers"
+
+#: js/table.jsx:778
+#, javascript-format
+msgid "Showing %1$s of %2$s entries"
+msgstr "Affichage de %1$s éléments sur %2$s"
+
+#: js/table.jsx:830
+#, javascript-format
+msgid "Showing %1$s to %2$s of %3$s entries"
+msgstr "Affichage des éléments %1$s à %2$s sur %3$s"
+
+#: js/table.jsx:1027
+msgid "No matching records found"
+msgstr "Aucun résultat trouvé"
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""
