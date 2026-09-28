@@ -775,9 +775,7 @@ import { batch, signal } from '@preact/signals';
                 <div class="fixed-table-pagination">
                     <div class="float-left pagination-detail">
                         <span class="pagination-info">
-                            {window.__('Showing %1$s of %2$s entries')
-                                .replace('%1$s', Math.min(totalRows, currentPageSize))
-                                .replace('%2$s', totalRows)}
+                            {window.__('Showing %1 of %2 entries', 'glpi', Math.min(totalRows, currentPageSize), totalRows)}
                         </span>
                         {renderPageSizeDropdown()}
                     </div>
@@ -827,10 +825,7 @@ import { batch, signal } from '@preact/signals';
                 <div class="fixed-table-pagination">
                     <div class="float-left pagination-detail">
                         <span class="pagination-info">
-                            {window.__('Showing %1$s to %2$s of %3$s entries')
-                                .replace('%1$s', startRow)
-                                .replace('%2$s', endRow)
-                                .replace('%3$s', totalRows)}
+                            {window.__('Showing %1 to %2 of %3 entries', 'glpi', startRow, endRow, totalRows)}
                         </span>
                         {renderPageSizeDropdown()}
                     </div>

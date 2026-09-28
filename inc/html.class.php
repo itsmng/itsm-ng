@@ -1606,7 +1606,9 @@ class Html
             $locales_url = $CFG_GLPI['root_doc'] . '/front/locale.php?'
                . http_build_query([
                   'domains' => array_keys($locales_domains),
+                  'language' => $_SESSION['glpilanguage'],
                   'version' => sha1(json_encode($locales_domains)),
+                  'catalog' => filemtime(GLPI_I18N_DIR . '/' . $CFG_GLPI['languages'][$_SESSION['glpilanguage']][1]),
                ])
                . ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? '&debug' : '');
             $locales_url = json_encode($locales_url, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
