@@ -25266,16 +25266,14 @@ msgid "Files"
 msgstr "Fichiers"
 
 #: js/table.jsx:778
-#, javascript-format
-msgid "Showing %1$s of %2$s entries"
-msgstr "Affichage de %1$s éléments sur %2$s"
+msgid "Showing %1 of %2 entries"
+msgstr "Affichage de %1 éléments sur %2"
 
-#: js/table.jsx:830
-#, javascript-format
-msgid "Showing %1$s to %2$s of %3$s entries"
-msgstr "Affichage des éléments %1$s à %2$s sur %3$s"
+#: js/table.jsx:828
+msgid "Showing %1 to %2 of %3 entries"
+msgstr "Affichage des éléments %1 à %2 sur %3"
 
-#: js/table.jsx:1027
+#: js/table.jsx:1022
 msgid "No matching records found"
 msgstr "Aucun résultat trouvé"
 
