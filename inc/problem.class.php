@@ -1236,6 +1236,7 @@ class Problem extends CommonITILObject
             return false;
         }
 
+        $ID = $this->isNewID($ID) ? 0 : $ID;
         $default_values = self::getDefaultValues();
 
         // Restore saved value or override with page parameter
@@ -1255,6 +1256,23 @@ class Problem extends CommonITILObject
                     }
                 }
             }
+        }
+
+        if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
+            $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
+            $ticket = new Ticket();
+            if ($ticket->getFromDB($tickets_id)) {
+                if (isset($options['tickets_id'])) {
+                    // Copy the source once; category reloads carry the user's submitted values.
+                    foreach (['content', 'name', 'impact', 'urgency', 'priority', 'itilcategories_id', 'time_to_resolve', 'entities_id'] as $field) {
+                        $options[$field] = $ticket->getField($field);
+                    }
+                }
+            }
+        }
+
+        if (!$ID) {
+            $this->check(-1, CREATE, $options);
         }
 
         $canupdate = !$ID || (Session::getCurrentInterface() == "central" && $this->canUpdateItem());
@@ -1299,24 +1317,29 @@ class Problem extends CommonITILObject
         $predefined_fields = [];
         $tpl_key = $this->getTemplateFormFieldName();
         if (!$ID) {
+            foreach ($options['_predefined_fields'] as $field => $value) {
+                if (array_key_exists($field, $default_values) && !isset($tt->predefined[$field])
+                    && $this->isITILTemplateFieldValue($field, $options[$field] ?? null, $value)) {
+                    $options[$field] = $default_values[$field];
+                }
+            }
             if (isset($tt->predefined) && count($tt->predefined)) {
                 foreach ($tt->predefined as $predeffield => $predefvalue) {
-                    if (isset($default_values[$predeffield])) {
+                    if (array_key_exists($predeffield, $default_values)) {
                         // Is always default value : not set
                         // Set if already predefined field
                         // Set if ticket template change
                         if (
-                            ((count($options['_predefined_fields']) == 0)
-                             && ($options[$predeffield] == $default_values[$predeffield]))
+                            ((count($options['_predefined_fields']) == 0 || (isset($options[$tpl_key]) && $options[$tpl_key] != $tt->getID()))
+                             && ($this->isITILTemplateFieldValue($predeffield, $options[$predeffield], $default_values[$predeffield])))
                             || (isset($options['_predefined_fields'][$predeffield])
-                                && ($options[$predeffield] == $options['_predefined_fields'][$predeffield]))
-                            || (isset($options[$tpl_key])
-                                && ($options[$tpl_key] != $tt->getID()))
+                                && ($this->isITILTemplateFieldValue($predeffield, $options[$predeffield], $options['_predefined_fields'][$predeffield])))
                             // user pref for requestype can't overwrite requestype from template
                             // when change category
                             || (($predeffield == 'requesttypes_id')
                                 && empty($saved))
-                            || (isset($ticket) && $options[$predeffield] == $ticket->getField($predeffield))
+                            || (isset($options['tickets_id'], $ticket->fields[$predeffield])
+                                && $options[$predeffield] == $ticket->getField($predeffield))
                         ) {
                             // Load template data
                             $options[$predeffield]            = $predefvalue;
@@ -1332,7 +1355,7 @@ class Problem extends CommonITILObject
             } else { // No template load : reset predefined values
                 if (count($options['_predefined_fields'])) {
                     foreach ($options['_predefined_fields'] as $predeffield => $predefvalue) {
-                        if ($options[$predeffield] == $predefvalue) {
+                        if (array_key_exists($predeffield, $default_values) && $this->isITILTemplateFieldValue($predeffield, $options[$predeffield] ?? null, $predefvalue)) {
                             $options[$predeffield] = $default_values[$predeffield];
                         }
                     }
@@ -1350,22 +1373,8 @@ class Problem extends CommonITILObject
             }
         }
 
-        if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
-            $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
-            $ticket = new Ticket();
-            if ($ticket->getFromDB($tickets_id)) {
-                $this->fields['content']             = $ticket->getField('content');
-                $this->fields['name']                = $ticket->getField('name');
-                $this->fields['impact']              = $ticket->getField('impact');
-                $this->fields['urgency']             = $ticket->getField('urgency');
-                $this->fields['priority']            = $ticket->getField('priority');
-                if (isset($options['tickets_id'])) {
-                    //page is reloaded on category change, we only want category on the very first load
-                    $this->fields['itilcategories_id']   = $ticket->getField('itilcategories_id');
-                }
-                $this->fields['time_to_resolve']     = $ticket->getField('time_to_resolve');
-                $this->fields['entities_id']         = $ticket->getField('entities_id');
-            }
+        if (!$ID) {
+            $this->fields = array_replace($this->fields, array_intersect_key($options, $this->fields));
         }
 
         // Put ticket template on $options for actors
@@ -1419,7 +1428,7 @@ class Problem extends CommonITILObject
                     __('Opening date') => [
                        'type' => 'datetime-local',
                        'name' => 'date',
-                       'value' => !$ID ? date("Y-m-d H:i:s") : $this->fields["date"]
+                       'value' => $this->fields["date"]
                     ],
                     __('Time to resolve') => [
                        'type' => 'datetime-local',
@@ -1476,6 +1485,7 @@ class Problem extends CommonITILObject
                      'type'  => 'select',
                      'name' => 'itilcategories_id',
                      'itemtype' => ITILCategory::class,
+                     'hooks' => ['change' => !$ID ? "if (this.form.dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}))) { this.form.submit(); }" : ''],
                      'value' => $this->fields['itilcategories_id'],
                      'actions' => getItemActionButtons(['info', 'add'], ITILCategory::class),
                      $canupdate ? '' : 'disabled' => '',
@@ -1566,8 +1576,13 @@ class Problem extends CommonITILObject
               ],
            ]
          ];
-        renderTwigForm($form, '', $this->fields);
-        $this->displayHiddenItemsIdInput($options);
+        if (!$ID) {
+            $form['content'][$this->getTypeName()]['inputs'] = array_merge(
+                $form['content'][$this->getTypeName()]['inputs'],
+                $this->getITILTemplateHiddenInputs($tt, $options, $predefined_fields)
+            );
+        }
+        renderTwigForm($form, '', $this->fields, $tt);
 
         return true;
     }
@@ -1926,6 +1941,9 @@ class Problem extends CommonITILObject
            '_add_validation'            => 0,
            'users_id_validate'          => [],
            '_tasktemplates_id'          => [],
+           '_documents_id'              => [],
+           'date'                       => $_SESSION['glpi_currenttime'],
+           'status'                     => self::INCOMING,
            'items_id'                   => 0,
         ];
     }

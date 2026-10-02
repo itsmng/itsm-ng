@@ -285,7 +285,6 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
         $predeffields = [];
         $used         = [];
-        $numrows      = count($iterator);
         while ($data = $iterator->next()) {
             $predeffields[$data['id']] = $data;
             $used[$data['num']] = $data['num'];
@@ -359,7 +358,6 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         ];
 
         $table_values = [];
-        $massive_action_values = [];
 
         foreach ($predeffields as $data) {
             if (!isset($fields[$data['num']])) {
@@ -380,61 +378,10 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                )
             ];
 
-            if ($canedit) {
-                $selection_value = sprintf('item[%s][%d]', static::class, $data['id']);
-                $row['value'] = $selection_value; // used by table twig for massive actions
-                $massive_action_values[$data['id']] = $selection_value;
-            }
-
             $table_values[$data['id']] = $row;
         }
 
-        $table_id = 'TablePredefinedFields' . $rand;
-
-        if ($canedit && $numrows) {
-            $massiveactionparams = [
-               'num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-               'container'     => $table_id,
-               'display_arrow' => false,
-            ];
-            Html::showMassiveActions($massiveactionparams);
-        }
-
-        $table_params = [
-           'id'     => $table_id,
-           'fields' => $table_fields,
-           'values' => $table_values,
-        ];
-
-        if ($canedit && $numrows) {
-            $table_params['massive_action'] = $massive_action_values;
-        } else {
-            $table_params['noToolBar'] = true;
-        }
-
-        if (function_exists('renderTwigTemplate')) {
-            renderTwigTemplate('table.twig', $table_params);
-        } else {
-            // Fallback to legacy table if twig rendering is unavailable
-            echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
-            echo "<tr class='noHover'><th colspan='3'>";
-            echo self::getTypeName($numrows);
-            echo "</th></tr>";
-
-            if (count($table_values)) {
-                echo "<tr><th>" . __('Name') . "</th><th>" . __('Value') . "</th></tr>";
-                foreach ($table_values as $row) {
-                    echo "<tr class='tab_bg_2'>";
-                    echo "<td>" . $row['name'] . "</td>";
-                    echo "<td>" . $row['value'] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><th colspan='3'>" . __('No item found') . "</th></tr>";
-            }
-
-            echo "</table>";
-        }
+        static::showFieldsTable($table_fields, $table_values, $canedit, 'TablePredefinedFields' . $rand);
 
         echo "</div>";
     }
