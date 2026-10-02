@@ -2067,6 +2067,7 @@ abstract class CommonITILObject extends CommonDBTM
                             // For document mandatory
                             if (
                                 ($key == '_documents_id')
+                                  && empty($input['_documents_id'])
                                   && !isset($input['_filename'])
                                   && !isset($input['_tag_filename'])
                                   && !isset($input['_content'])
@@ -5328,6 +5329,11 @@ abstract class CommonITILObject extends CommonDBTM
                 $this->getITILPendingActorEntries($definitions, $options, $hiddenFields, $existingKeys, $isNew)
             );
 
+            foreach ($values as &$actor) {
+                $actor['hidden'] = $hiddenFields[$definitions[$actor['type']]['field']] ?? false;
+            }
+            unset($actor);
+
             if (!$actorTypes && !$values) {
                 continue;
             }
@@ -5367,6 +5373,7 @@ abstract class CommonITILObject extends CommonDBTM
                 'defaultType' => $defaultType,
                 'fieldMap'    => $fieldMap,
                 'values'      => $values,
+                'hidden'      => !$actorTypes && !array_filter($values, static fn ($actor) => !$actor['hidden']),
                 'selfAssign'  => !empty($panelDefinition['selfAssign']) ? [
                     'fieldName'  => $this->getForeignKeyField(),
                     'itemId'     => $ID,
@@ -9989,6 +9996,63 @@ abstract class CommonITILObject extends CommonDBTM
               )
            ]
         ];
+    }
+
+    /** Compare template defaults with the scalar or array values submitted by actor and item widgets. */
+    protected function isITILTemplateFieldValue(string $field, $value, $expected): bool
+    {
+        $normalize_ids = static function ($ids): array {
+            $ids = array_map('strval', array_filter((array)$ids));
+            sort($ids);
+            return $ids;
+        };
+        if (preg_match('/^_(users|groups|suppliers)_id_(requester|observer|assign)$/', $field)) {
+            return $normalize_ids($value) === $normalize_ids($expected);
+        }
+        if ($field === 'items_id') {
+            $normalize_items = static function ($items) use ($normalize_ids): array {
+                $items = is_array($items) ? $items : [];
+                foreach ($items as &$ids) {
+                    $ids = $normalize_ids($ids);
+                }
+                unset($ids);
+                ksort($items);
+                return $items;
+            };
+            return $normalize_items($value) === $normalize_items($expected);
+        }
+        return $value == $expected;
+    }
+
+    /**
+     * Preserve aggregate template values and track defaults across creation-form reloads.
+     */
+    protected function getITILTemplateHiddenInputs(ITILTemplate $template, array $options, array $predefined_fields, bool $include_items = true): array
+    {
+        $inputs = [];
+        foreach (['_documents_id', '_tasktemplates_id'] as $field) {
+            foreach ($options[$field] ?? [] as $value) {
+                $inputs[] = ['type' => 'hidden', 'name' => $field . '[]', 'value' => $value];
+            }
+        }
+        if ($include_items && is_array($options['items_id'] ?? null)) {
+            foreach ($options['items_id'] as $itemtype => $items) {
+                foreach ($items as $items_id) {
+                    $inputs[] = [
+                        'type' => 'hidden',
+                        'name' => "items_id[$itemtype][$items_id]",
+                        'value' => $items_id,
+                    ];
+                }
+            }
+        }
+        $inputs[] = ['type' => 'hidden', 'name' => $this->getTemplateFormFieldName(), 'value' => $template->getID()];
+        $inputs[] = [
+            'type' => 'hidden',
+            'name' => '_predefined_fields',
+            'value' => Toolbox::prepareArrayForInput($predefined_fields),
+        ];
+        return $inputs;
     }
 
     public function displayHiddenItemsIdInput(array $options): void

@@ -156,7 +156,19 @@ function expandForm($form, $fields = [], $template = null)
                     isset($template) &&
                     $template->isHiddenField($input["name"])
                 ) {
-                    $shouldHide = true;
+                    // Keep the value in the submission without rendering the field or its actions.
+                    $input = [
+                        'type' => 'hidden',
+                        'name' => $input['name'],
+                        'value' => $input['value'] ?? $fields[$input['name']] ?? '',
+                    ];
+                } elseif (
+                    isset($input['name'], $template)
+                    && ($input['type'] ?? '') !== 'hidden'
+                    && $template->isMandatoryField($input['name'])
+                ) {
+                    $input['required'] = true;
+                    $inputKey .= $template->getMandatoryMark($input['name']);
                 }
 
                 if (
