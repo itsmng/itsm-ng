@@ -1069,7 +1069,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
         $out .= "</td></tr>";
         $out .= "<tr><td class='left' colspan='4'><h2>" . __('Content') . "</h2>\n";
 
-        $out .= "<div id='kbanswer'>";
+        $out .= "<div id='kbanswer' class='rich_text_container'>";
         $out .= $this->getAnswer();
         $out .= "</div>";
         $out .= "</td></tr>";
