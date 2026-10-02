@@ -265,7 +265,7 @@ abstract class CommonDBVisible extends CommonDBTM
                        User::getTypeName(1),
                        getUserName($data['users_id']),
                     ];
-                    $massive_action[] = sprintf('item[%s][%s]', Reminder_User::class, $data['id']);
+                    $massive_action[] = sprintf('item[%s][%s]', $this->getType() . '_User', $data['id']);
                 }
             }
         }
@@ -355,7 +355,10 @@ abstract class CommonDBVisible extends CommonDBTM
                        Profile::getTypeName(1),
                        $entname,
                     ];
-                    $massive_action[] = sprintf('item[%s][%s]', 'Profile_' . $this->getType(), $data['id']);
+                    $profile_relation = $this->getType() === KnowbaseItem::class
+                        ? KnowbaseItem_Profile::class
+                        : 'Profile_' . $this->getType();
+                    $massive_action[] = sprintf('item[%s][%s]', $profile_relation, $data['id']);
                 }
             }
         }
