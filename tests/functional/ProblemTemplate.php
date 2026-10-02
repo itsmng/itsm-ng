@@ -248,6 +248,72 @@ class ProblemTemplate extends DbTestCase
         $this->string(trim($xpath->query('//textarea[@name="content"]')->item(0)->textContent))->isEqualTo('Edited promoted description');
     }
 
+    protected function approvalTypeProvider(): array
+    {
+        return [['Change'], ['Ticket']];
+    }
+
+    /**
+     * @dataProvider approvalTypeProvider
+     */
+    public function testHiddenApprovalRequestAlsoHidesExistingApprovalStatus(string $type)
+    {
+        $this->login('itsm', 'itsm');
+        [$template, $category] = $this->createTemplate($type, ['_add_validation']);
+        $new_form = $this->getXPath($this->renderForm($type, ['itilcategories_id' => $category], -1));
+        $this->integer($new_form->query('//select[@name="validatortype"]')->length)->isEqualTo(0);
+
+        $class = '\\' . $type;
+        $item = new $class();
+        $id = $item->add(['name' => 'Hidden approval status', 'content' => 'Approval status template regression', 'entities_id' => 0, 'itilcategories_id' => $category]);
+        $this->integer((int)$id)->isGreaterThan(0);
+        $validation_class = $class . 'Validation';
+        $validation = new $validation_class();
+        $this->integer((int)$validation->add([
+            $item::getForeignKeyField() => $id,
+            'users_id_validate' => getItemByTypeName('User', 'tech', true),
+            'comment_submission' => 'An existing approval request',
+        ]))->isGreaterThan(0);
+
+        $right = strtolower($type) . 'validation';
+        $rights = $_SESSION['glpiactiveprofile'][$right];
+        foreach ([$rights, 0] as $profile_rights) {
+            $_SESSION['glpiactiveprofile'][$right] = $profile_rights;
+            $xpath = $this->getXPath($this->renderForm($type, [], (int)$id));
+            $this->integer($xpath->query('//select[@name="global_validation"]')->length)->isEqualTo(0);
+            $nodes = $xpath->query('//form//input[@type="hidden" and @name="global_validation"]');
+            $this->integer($nodes->length)->isEqualTo(1);
+            $this->integer((int)$nodes->item(0)->getAttribute('value'))->isEqualTo(\CommonITILValidation::WAITING);
+            $this->integer($xpath->query('//label[normalize-space(text())="Approval" or normalize-space(text())="Approvals"]')->length)->isEqualTo(0);
+        }
+        $_SESSION['glpiactiveprofile'][$right] = $rights;
+        $this->boolean($item->update(['id' => $id, 'name' => 'An unrelated edit', 'global_validation' => \CommonITILValidation::WAITING]))->isTrue();
+        $this->boolean($item->getFromDB($id))->isTrue();
+        $this->integer((int)$item->fields['global_validation'])->isEqualTo(\CommonITILValidation::WAITING);
+        $this->integer(countElementsInTable($validation_class::getTable(), [$item::getForeignKeyField() => $id]))->isEqualTo(1);
+
+        $hidden_class = $class . 'TemplateHiddenField';
+        $hidden = new $hidden_class();
+        $this->boolean($hidden->getFromDBByCrit([strtolower($type) . 'templates_id' => $template->getID(), 'num' => -2]))->isTrue();
+        $this->boolean($hidden->delete(['id' => $hidden->getID()], true))->isTrue();
+        $visible = $this->getXPath($this->renderForm($type, [], (int)$id));
+        $this->integer($visible->query('//select[@name="global_validation"]')->length)->isEqualTo(1);
+    }
+
+    public function testHiddenGlobalApprovalStatusDoesNotHideRequestSelector()
+    {
+        $this->login('itsm', 'itsm');
+        [$template, $category] = $this->createTemplate('Ticket', ['global_validation']);
+        $new_form = $this->getXPath($this->renderForm('Ticket', ['itilcategories_id' => $category], -1));
+        $this->integer($new_form->query('//select[@name="validatortype"]')->length)->isEqualTo(1);
+        $ticket = new \Ticket();
+        $id = $ticket->add(['name' => 'Hidden global approval status', 'content' => 'Global approval status regression', 'entities_id' => 0, 'itilcategories_id' => $category]);
+        $this->integer((int)$id)->isGreaterThan(0);
+        $xpath = $this->getXPath($this->renderForm('Ticket', [], (int)$id));
+        $this->integer($xpath->query('//select[@name="global_validation"]')->length)->isEqualTo(0);
+        $this->integer($xpath->query('//input[@type="hidden" and @name="global_validation"]')->length)->isEqualTo(1);
+    }
+
     public function testTicketMandatoryApprovalCanBeSelected()
     {
         $this->login('itsm', 'itsm');

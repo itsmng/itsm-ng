@@ -1070,6 +1070,8 @@ class Change extends CommonITILObject
                         'values' => CommonITILValidation::getAllStatusArray(),
                         'value' => $this->fields['global_validation'],
                       ] : [
+                      'name' => 'global_validation',
+                      'value' => $this->fields['global_validation'],
                       'content' => ChangeValidation::getStatus($this->fields['global_validation'])
                       ]
                   ) : [],
