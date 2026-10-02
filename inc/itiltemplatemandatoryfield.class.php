@@ -182,8 +182,6 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
            'WHERE'  => [static::$items_id => $ID]
         ]);
 
-        $numrows = count($iterator);
-
         $mandatoryfields = [];
         $used            = [];
         while ($data = $iterator->next()) {
@@ -192,93 +190,28 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
         }
 
         if ($canedit) {
-            echo "<div class='firstbloc'>";
-            echo "<form aria-label='hidden Field' name='changeproblem_form$rand' id='changeproblem_form$rand' method='post'
-                  action='" . $ttm->getFormURL() . "'>";
-
-            echo "<table class='tab_cadre_fixe' aria-label='Add a mandatory field'>";
-            echo "<tr class='tab_bg_2'><th colspan='2'>" . __('Add a mandatory field') . "</th></tr>";
-            echo "<tr class='tab_bg_2'><td class='right'>";
-            echo "<input type='hidden' name='" . static::$items_id . "' value='$ID'>";
-
             $select_fields = $fields;
-            foreach ($select_fields as $key => $val) {
-                if (static::$itiltype == Ticket::getType()) {
-                    if (in_array($key, $simplified_fields)) {
-                        $select_fields[$key] = sprintf(__('%1$s (%2$s)'), $val, $both_interfaces);
-                    } else {
-                        $select_fields[$key] = sprintf(__('%1$s (%2$s)'), $val, __('Standard interface'));
-                    }
-                } else {
-                    $select_fields[$key] = $val;
+            if (static::$itiltype == Ticket::getType()) {
+                foreach ($select_fields as $key => $val) {
+                    $interface = in_array($key, $simplified_fields) ? $both_interfaces : __('Standard interface');
+                    $select_fields[$key] = sprintf(__('%1$s (%2$s)'), $val, $interface);
                 }
             }
-
-            Dropdown::showFromArray('num', $select_fields, ['used' => $used]);
-            echo "</td><td class='center'>";
-            echo "&nbsp;<input type='submit' name='add' value=\"" . _sx('button', 'Add') .
-                           "\" class='submit'>";
-            echo "</td></tr>";
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
+            static::showAddFieldForm($tt, __('Add a mandatory field'), $select_fields, $used);
         }
 
-        echo "<div class='spaced'>";
-        if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . $ttm->getType() . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                                         'container'     => 'mass' . $ttm->getType() . $rand,
-                                         'deprecated'    => true];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixehov' aria-label='ITIL Template'>";
-        echo "<tr class='noHover'><th colspan='3'>";
-        echo static::getTypeName(count($iterator));
-        echo "</th></tr>";
-        if ($numrows) {
-            $header_begin  = "<tr>";
-            $header_top    = '';
-            $header_bottom = '';
-            $header_end    = '';
-            if ($canedit) {
-                $header_top    .= "<th width='10'>";
-                $header_top    .= Html::getCheckAllAsCheckbox('mass' . $ttm->getType() . $rand) . "</th>";
-                $header_bottom .= "<th width='10'>";
-                $header_bottom .= Html::getCheckAllAsCheckbox('mass' . $ttm->getType() . $rand) . "</th>";
+        $rows = [];
+        foreach ($mandatoryfields as $data) {
+            if (isset($fields[$data['num']])) {
+                $rows[$data['id']] = [
+                    'name' => $fields[$data['num']],
+                    'interface' => in_array($data['num'], $simplified_fields) ? $both_interfaces : __('Standard interface'),
+                ];
             }
-            $header_end .= "<th>" . __('Name') . "</th>";
-            $header_end .= "<th>" . __("Profile's interface") . "</th>";
-            $header_end .= "</tr>";
-            echo $header_begin . $header_top . $header_end;
-
-            foreach ($mandatoryfields as $data) {
-                echo "<tr class='tab_bg_2'>";
-                if ($canedit) {
-                    echo "<td>" . Html::getMassiveActionCheckBox($ttm->getType(), $data["id"]) . "</td>";
-                }
-                echo "<td>" . $fields[$data['num']] . "</td>";
-                echo "<td>";
-                if (in_array($data['num'], $simplified_fields)) {
-                    echo $both_interfaces;
-                } else {
-                    echo __('Standard interface');
-                }
-                echo "</td>";
-                echo "</tr>";
-            }
-            echo $header_begin . $header_bottom . $header_end;
-        } else {
-            echo "<tr><th colspan='2'>" . __('No item found') . "</th></tr>";
         }
-
-        echo "</table>";
-        if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
-            $massiveactionparams['deprecated'] = true;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        static::showFieldsTable([
+            'name' => __('Name'),
+            'interface' => __("Profile's interface"),
+        ], $rows, $canedit, 'TableMandatoryFields' . $rand);
     }
 }

@@ -551,11 +551,9 @@ abstract class ITILTemplate extends CommonDropdown
      **/
     public function isHiddenField($field)
     {
-
-        if (isset($this->hidden[$field])) {
-            return true;
-        }
-        return false;
+        // Existing ITIL forms display the approval request's status under a different name.
+        return isset($this->hidden[$field])
+            || ($field === 'global_validation' && isset($this->hidden['_add_validation']));
     }
 
 

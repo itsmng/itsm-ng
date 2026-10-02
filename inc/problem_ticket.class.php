@@ -540,12 +540,7 @@ class Problem_Ticket extends CommonDBRelation
             $used[$problem['id']] = $problem['id'];
         }
         if ($canedit) {
-            $options = getOptionForItems(Problem::class, Problem::getOpenCriteria());
-            foreach ($used as $id) {
-                if (isset($options[$id])) {
-                    unset($options[$id]);
-                }
-            }
+            $options = getAjaxDropdownOptions(Problem::class, Problem::getOpenCriteria(), true, false, $used);
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                'buttons' => [
@@ -567,7 +562,7 @@ class Problem_Ticket extends CommonDBRelation
                         Problem::getTypeName() => [
                            'type' => 'select',
                            'name' => 'problems_id',
-                           'values' => $options,
+                           ...$options,
                            'actions' => getItemActionButtons(['info'], Problem::class)
                         ],
                         '' => Session::haveRight('problem', CREATE) ? [

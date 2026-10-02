@@ -131,7 +131,7 @@ class Item_DeviceSimcard extends Item_Devices
               'datatype'   => 'dropdown',
               'formContent' => [
                  'type' => 'select',
-                 'values' => getItemByEntity(Line::class, Session::getActiveEntity()),
+                 ...getAjaxDropdownOptionsByEntity(Line::class, Session::getActiveEntity()),
                  'actions' => getItemActionButtons(['info'], Line::class),
               ]
            ],
@@ -157,7 +157,7 @@ class Item_DeviceSimcard extends Item_Devices
               'dropdown_options' => ['right' => 'all'],
               'formContent' => [
                  'type' => 'select',
-                 'values' => getOptionsForUsers('all'),
+                 ...getAjaxUserDropdownOptions('all'),
               ]
            ],
            'groups_id'        => [
@@ -168,7 +168,7 @@ class Item_DeviceSimcard extends Item_Devices
               'datatype'   => 'dropdown',
               'formContent' => [
                  'type' => 'select',
-                 'values' => getItemByEntity(Group::class, Session::getActiveEntity()),
+                 ...getAjaxDropdownOptionsByEntity(Group::class, Session::getActiveEntity()),
               ]
            ],
         ];

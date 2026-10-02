@@ -687,13 +687,13 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                     _x('item', 'State') => [
                        'type' => 'select',
                        'name' => 'projectstates_id',
-                       'values' => getOptionForItems(ProjectState::class),
+                       ...getAjaxDropdownOptions(ProjectState::class),
                        'value' => $this->fields["projectstates_id"],
                     ],
                     _n('Type', 'Types', 1) => [
                        'type' => 'select',
                        'name' => 'projecttasktypes_id',
-                       'values' => getOptionForItems(ProjectTaskType::class),
+                       ...getAjaxDropdownOptions(ProjectTaskType::class),
                        'value' => $this->fields["projecttasktypes_id"],
                     ],
                     __('Percent done') => [

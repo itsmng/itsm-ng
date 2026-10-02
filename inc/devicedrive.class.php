@@ -65,14 +65,14 @@ class DeviceDrive extends CommonDevice
               __('Interface') => [
                  'name'  => 'interfacetypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('InterfaceType'),
+                 ...getAjaxDropdownOptions('InterfaceType'),
                  'value' => $this->fields['interfacetypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
               ],
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicedrivemodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceDriveModel'),
+                 ...getAjaxDropdownOptions('DeviceDriveModel'),
                  'value' => $this->fields['devicedrivemodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceDriveModel'),
 

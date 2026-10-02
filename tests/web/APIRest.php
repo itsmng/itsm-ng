@@ -50,7 +50,7 @@ class APIRest extends APIBaseClass
 {
     protected function getLogFilePath(): string
     {
-        return __DIR__ . "/../../files/_log/php-errors.log";
+        return GLPI_LOG_DIR . "/php-errors.log";
     }
 
     public function beforeTestMethod($method)

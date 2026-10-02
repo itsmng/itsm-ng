@@ -42,4 +42,6 @@ if (!isset($_POST["itemtype"]) || !($item = getItemForItemtype($_POST['itemtype'
     exit();
 }
 
-echo json_encode(['name' => $item::getForeignKeyField(), 'options' => getOptionForItems($item::class)]);
+$select = getAjaxDropdownOptions($item::class);
+$select['name'] = $item::getForeignKeyField();
+echo json_encode(expandSelect($select));

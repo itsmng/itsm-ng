@@ -66,14 +66,14 @@ class DeviceGraphicCard extends CommonDevice
               __('Interface') => [
                  'name'  => 'interfacetypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('InterfaceType'),
+                 ...getAjaxDropdownOptions('InterfaceType'),
                  'value' => $this->fields['interfacetypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
               ],
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicegraphiccardmodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceGraphicCardModel'),
+                 ...getAjaxDropdownOptions('DeviceGraphicCardModel'),
                  'value' => $this->fields['devicegraphiccardmodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceGraphicCardModel'),
               ],

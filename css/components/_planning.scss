@@ -1,0 +1,156 @@
+#planning_filter {
+  h3 {
+    background: #e1e1e1;
+    border-bottom: 1px solid #d3d3d3;
+    margin: 0;
+    padding: 4px 8px 5px 10px;
+    line-height: 16px;
+    font-size: 12px;
+  }
+
+  ul.filters {
+    margin: 0 0 10px 0;
+    padding: 0px;
+
+    >li {
+      align-items: center;
+      background-color: #F0F0F0;
+      display: grid;
+      grid-template-columns: 18px 18px minmax(0, 1fr) auto auto;
+      min-height: 28px;
+      padding: 3px 6px;
+
+      &.event_filter {
+        grid-template-columns: 18px minmax(0, 1fr) auto;
+      }
+
+      &:nth-child(even) {
+        background-color: #E8E8E8;
+      }
+
+      .form-group-checkbox {
+        align-items: center;
+        display: flex;
+        height: 14px;
+        justify-content: center;
+        margin: 0;
+        width: 14px;
+      }
+
+      input[type=checkbox].new_checkbox {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        background: #FFF;
+        border: 1px solid #9DA3AA;
+        border-radius: 2px;
+        cursor: pointer;
+        display: inline-block;
+        height: 14px;
+        margin: 0;
+        position: relative;
+        vertical-align: middle;
+        width: 14px;
+      }
+
+      input[type=checkbox].new_checkbox:checked {
+        background: #2D3E50;
+        border-color: #2D3E50;
+      }
+
+      input[type=checkbox].new_checkbox:checked::after {
+        border: solid #FFF;
+        border-width: 0 2px 2px 0;
+        content: "";
+        height: 8px;
+        left: 4px;
+        position: absolute;
+        top: 1px;
+        transform: rotate(45deg);
+        width: 4px;
+      }
+
+      input[type=checkbox].new_checkbox:focus {
+        outline: 2px solid rgba(45, 62, 80, .25);
+        outline-offset: 1px;
+      }
+
+      .label-checkbox {
+        display: none;
+      }
+
+      .actor_icon {
+        color: #4B4F54;
+        font-size: 13px;
+        margin: 0 3px 0 0;
+        padding-bottom: 0;
+        vertical-align: middle;
+      }
+
+      label {
+        align-items: center;
+        display: inline-flex;
+        font-size: 13px;
+        line-height: 18px;
+        margin: 0 0 0 4px;
+        min-width: 0;
+        padding-left: 0;
+        width: auto;
+      }
+
+      .filter-icon {
+        float: none;
+      }
+
+      .color_input {
+        align-items: center;
+        display: inline-flex;
+        margin-left: 6px;
+      }
+
+      .color_input input[type=color] {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        height: 22px;
+        padding: 0;
+        width: 34px;
+      }
+
+      .color_input input[type=color]::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      .color_input input[type=color]::-webkit-color-swatch {
+        border: none;
+        border-radius: 4px;
+      }
+
+      .color_input input[type=color]::-moz-color-swatch {
+        border: none;
+        border-radius: 4px;
+      }
+
+      .sp-replacer {
+        float: none;
+      }
+
+      &.group_users {
+        ul.group_listofusers {
+          grid-column: 1 / -1;
+          margin: 4px 0 0 6px;
+          padding: 2px 0 0 6px;
+        }
+
+        &.expanded ul.group_listofusers>li label {
+          width: auto;
+        }
+      }
+    }
+  }
+
+  .filter_option {
+    float: none;
+    margin: 0 2px 0 6px;
+  }
+}

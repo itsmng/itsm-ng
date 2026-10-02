@@ -47,33 +47,15 @@ if ($_POST["idtable"] && class_exists($_POST["idtable"])) {
         $condition = $_POST['condition'];
     }
 
-    $isDevice  = strpos($_POST["idtable"], "Device") === 0;
-    $values = getOptionForItems($_POST['idtable'], ($condition ?? []) + (isset($entity_restrict)
-       ? ['entities_id' => $_POST['entity_restrict']] : []), true, $isDevice);
-
-    if (isset($_POST['used'])) {
-        $_POST['used'] = Toolbox::jsonDecode($_POST['used'], true);
+    $used = $_POST['used'] ?? [];
+    if (is_string($used)) {
+        $used = Toolbox::jsonDecode($used, true);
     }
-    if (isset($_POST['used'][$_POST['idtable']])) {
-        $used = $_POST['used'][$_POST['idtable']];
-        if (isset($used)) {
-            foreach ($used as $usedId) {
-                foreach ($values as $key => $value) {
-                    if (gettype($value) == 'array') {
-                        foreach ($value as $subKey => $subValue) {
-                            if ($usedId == $subKey) {
-                                unset($values[$key][$subKey]);
-                            }
-                        }
-                    } else {
-                        if ($usedId == $key) {
-                            unset($values[$key]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    echo json_encode($values);
+    $select = getAjaxDropdownOptionsByEntity(
+        $_POST['idtable'],
+        $entity_restrict ?? -1,
+        $condition ?? [],
+        $used[$_POST['idtable']] ?? []
+    );
+    outputAjaxDropdownDefinition($select);
 }

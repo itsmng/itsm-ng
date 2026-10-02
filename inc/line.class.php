@@ -165,7 +165,7 @@ class Line extends CommonDBTM
                         __('Line type') => [
                             'name' => 'linetypes_id',
                             'type' => 'select',
-                            'values' => getOptionForItems(LineType::class),
+                            ...getAjaxDropdownOptions(LineType::class),
                             'value' => $this->fields['linetypes_id'] ?? '',
                             'actions' => getItemActionButtons(['info', 'add'], "LineType"),
                         ],

@@ -156,7 +156,7 @@ class TicketRecurrent extends CommonDropdown
            _n('Ticket template', 'Ticket templates', 1) => [
               'name'  => 'tickettemplates_id',
               'type'  => 'select',
-              'values' => getOptionForItems(TicketTemplate::class),
+              ...getAjaxDropdownOptions(TicketTemplate::class),
               'value' => $this->fields['tickettemplates_id'],
               'actions' => getItemActionButtons(['info', 'add'], TicketTemplate::class),
            ],
@@ -196,7 +196,7 @@ class TicketRecurrent extends CommonDropdown
            _n('Calendar', 'Calendars', 1) => [
               'name'  => 'calendars_id',
               'type'  => 'select',
-              'values' => getOptionForItems(Calendar::class),
+              ...getAjaxDropdownOptions(Calendar::class),
               'value' => $this->fields['calendars_id'],
               'actions' => getItemActionButtons(['info', 'add'], Calendar::class),
            ],

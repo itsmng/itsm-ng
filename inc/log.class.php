@@ -1221,7 +1221,7 @@ class Log extends CommonDBTM
                         } elseif ($key === 'itemtype_link') {
                             $values = array_filter(
                                 $values,
-                                fn($value) => getItemForItemtype($value) !== false
+                                fn ($value) => getItemForItemtype($value) !== false
                             );
                         }
 

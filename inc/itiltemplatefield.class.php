@@ -122,6 +122,55 @@ abstract class ITILTemplateField extends CommonDBChild
     **/
     abstract public static function showForITILTemplate(ITILTemplate $tt, $withtemplate = 0);
 
+    protected static function showAddFieldForm(ITILTemplate $tt, string $title, array $fields, array $used): void
+    {
+        renderTwigForm([
+            'action' => static::getFormURL(),
+            'content' => [
+                $title => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => static::$items_id, 'value' => $tt->getID()],
+                        __('Name') => [
+                            'type' => 'select',
+                            'name' => 'num',
+                            'values' => array_diff_key($fields, $used),
+                        ],
+                    ],
+                ],
+            ],
+            'buttons' => [[
+                'type' => 'submit',
+                'name' => 'add',
+                'value' => _sx('button', 'Add'),
+                'class' => 'btn btn-primary',
+            ]],
+        ]);
+    }
+
+    protected static function showFieldsTable(array $fields, array $rows, bool $canedit, string $table_id): void
+    {
+        $params = [
+            'id' => $table_id,
+            'itemtype' => static::class,
+            'fields' => $fields,
+            'values' => $rows,
+            'pageSize' => $_SESSION['glpilist_limit'],
+        ];
+        if ($canedit && count($rows)) {
+            $params['massive_action'] = [];
+            foreach ($rows as $id => $row) {
+                $params['massive_action'][$id] = sprintf('item[%s][%d]', static::class, $id);
+            }
+            Html::showMassiveActions([
+                'num_displayed' => count($rows),
+                'container' => $table_id,
+                'display_arrow' => false,
+            ]);
+        }
+        renderTwigTemplate('table.twig', $params);
+    }
+
 
     /**
      * Get field num from its name

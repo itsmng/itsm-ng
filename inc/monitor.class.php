@@ -179,7 +179,7 @@ class Monitor extends CommonDBTM
                     __("Status") => [
                      'name' => 'states_id',
                      'type' => 'select',
-                     'values' => getOptionForItems('State', ['is_visible_monitor' => 1]),
+                     ...getAjaxDropdownOptions('State', ['is_visible_monitor' => 1]),
                      'value' => $this->fields['states_id'],
                      'actions' => getItemActionButtons(['info', 'add'], "State"),
                  ],
@@ -194,21 +194,21 @@ class Monitor extends CommonDBTM
                     __("Type") => [
                        'name' => 'monitortypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('MonitorType'),
+                       ...getAjaxDropdownOptions('MonitorType'),
                        'value' => $this->fields['monitortypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "MonitorType"),
                     ],
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __("Manufacturer") => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -223,7 +223,7 @@ class Monitor extends CommonDBTM
                     __("Model") => [
                        'name' => 'monitormodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('MonitorModel'),
+                       ...getAjaxDropdownOptions('MonitorModel'),
                        'value' => $this->fields['monitormodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "MonitorModel"),
                     ],
@@ -240,7 +240,7 @@ class Monitor extends CommonDBTM
                       User::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'users_id',
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
