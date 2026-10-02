@@ -30039,3 +30039,7 @@ msgstr ""
 
 msgid "Authorize appointments"
 msgstr ""
+
+#: inc/auth.class.php:1908
+msgid "Link accounts with other auth sources"
+msgstr ""

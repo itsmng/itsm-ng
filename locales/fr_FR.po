@@ -25277,6 +25277,10 @@ msgstr "Affichage des éléments %1 à %2 sur %3"
 msgid "No matching records found"
 msgstr "Aucun résultat trouvé"
 
+#: inc/auth.class.php:1908
+msgid "Link accounts with other auth sources"
+msgstr "Lier les comptes à d'autres sources d'authentification"
+
 #~ msgid ""
 #~ "No time zones are available. Please check your database configuration."
 #~ msgstr ""
