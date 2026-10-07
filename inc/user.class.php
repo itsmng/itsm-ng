@@ -4372,13 +4372,23 @@ JAVASCRIPT;
       if (!empty($IDs)
           && in_array($authtype, [Auth::DB_GLPI, Auth::LDAP, Auth::MAIL, Auth::EXTERNAL])) {
 
+         $fields = [
+           'authtype'        => $authtype,
+           'auths_id'        => $server,
+           'password'        => '',
+           'is_deleted_ldap' => 0
+         ];
+
+         if (in_array($authtype, [Auth::DB_GLPI, Auth::MAIL])) {
+            $fields['user_dn']    = null;
+            $fields['sync_field'] = null;
+            $fields['date_sync']  = null;
+         }
+
          $result = $DB->update(
-            self::getTable(), [
-               'authtype'        => $authtype,
-               'auths_id'        => $server,
-               'password'        => '',
-               'is_deleted_ldap' => 0
-            ], [
+            self::getTable(),
+            $fields,
+            [
                'id' => $IDs
             ]
          );

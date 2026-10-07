@@ -203,7 +203,12 @@ class Rack extends CommonDBTM {
       echo "<td>";
       $rooms = $DB->request(['SELECT' => ['id', 'name'],
                              'FROM'   => DCRoom::getTable(),
-                             'WHERE'  => ['entities_id' => $this->fields['entities_id']]]);
+                             'WHERE'  => getEntitiesRestrictCriteria(
+                                DCRoom::getTable(),
+                                '',
+                                $this->fields['entities_id'],
+                                true
+                             )]);
       $rooms_list = [];
       while ($row = $rooms->next()) {
          $rooms_list[$row['id']] = $row['name'];
