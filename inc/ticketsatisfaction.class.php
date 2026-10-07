@@ -57,6 +57,35 @@ class TicketSatisfaction extends CommonDBTM
         return 'tickets_id';
     }
 
+    // CommonDBTM reloads by the auto-increment id after writes, but this item is
+    // addressed by tickets_id. Reload by tickets_id to keep the current survey.
+    public function addToDB()
+    {
+        $tickets_id = $this->input['tickets_id'] ?? null;
+        $id = parent::addToDB();
+
+        if ($id !== false && !empty($tickets_id)) {
+            if ($this->getFromDB($tickets_id)) {
+                return $this->fields['id'];
+            }
+        }
+
+        return $id;
+    }
+
+
+    public function updateInDB($updates, $oldvalues = [])
+    {
+        $tickets_id = $this->fields['tickets_id'] ?? null;
+        $result = parent::updateInDB($updates, $oldvalues);
+
+        if ($result && !empty($tickets_id)) {
+            $this->getFromDB($tickets_id);
+        }
+
+        return $result;
+    }
+
 
     public function getLogTypeID()
     {
