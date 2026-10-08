@@ -2497,7 +2497,7 @@ class Rule extends CommonDBTM
                     renderTwigTemplate('macros/input.twig', [
                      'type' => 'select',
                      'name' => $name,
-                     'values' => getOptionForItems(getItemTypeForTable($crit['table']), $crit['condition'] ?? []),
+                     ...getAjaxDropdownOptions(getItemTypeForTable($crit['table']), $crit['condition'] ?? []),
                      'value' => $value,
                     ]);
 
@@ -2508,7 +2508,7 @@ class Rule extends CommonDBTM
                     renderTwigTemplate('macros/input.twig', [
                      'type' => 'select',
                      'name' => $name,
-                     'values' => getOptionsForUsers('all'),
+                     ...getAjaxUserDropdownOptions('all'),
                      'value' => $value,
                     ]);
                     $display = true;

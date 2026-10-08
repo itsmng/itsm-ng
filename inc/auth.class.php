@@ -988,7 +988,20 @@ class Auth extends CommonGLPI
                     if (isset($email)) {
                         $this->user->fields['_useremails'] = $email;
                     }
-                    $this->user->update($input);
+                    // Apply rule-generated rights before validating default preferences.
+                    $defaults = [];
+                    if (isset($input['_ruleright_process'])) {
+                        foreach (['entities_id', 'profiles_id'] as $field) {
+                            if (isset($input[$field])) {
+                                $defaults[$field] = $input[$field];
+                                unset($input[$field]);
+                            }
+                        }
+                    }
+
+                    if ($this->user->update($input) && count($defaults)) {
+                        $this->user->update(['id' => $input['id']] + $defaults);
+                    }
                 } elseif ($CFG_GLPI["is_users_auto_add"]) {
                     // Auto add user
                     // First stripslashes to avoid double slashes
@@ -1687,7 +1700,7 @@ class Auth extends CommonGLPI
                           'type' => 'select',
                           'name' => 'ssovariables_id',
                           'value' => $CFG_GLPI["ssovariables_id"],
-                          'values' => getOptionForItems('SsoVariable'),
+                          ...getAjaxDropdownOptions('SsoVariable'),
                           'actions' => getItemActionButtons(['info', 'add'], 'SsoVariable'),
                           'col_lg' => 6,
                        ],

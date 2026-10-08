@@ -3749,7 +3749,7 @@ class Transfer extends CommonDBTM
                'type' => 'select',
                'id' => 'dropdown_id'.$rand,
                'name' => 'id',
-               'values' => getOptionForItems(Transfer::class),
+               ...getAjaxDropdownOptions(Transfer::class),
                'hooks' => [
                    'change' => <<<JS
                     var value = document.getElementById('dropdown_id$rand').value;

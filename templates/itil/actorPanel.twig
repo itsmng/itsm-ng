@@ -233,7 +233,7 @@
 
   <div class="row g-3 justify-content-center">
     {% for panel in panels %}
-      <div class="col-12 col-md-10 col-lg-6 col-xl-4 itil-actor-col">
+      <div class="col-12 col-md-10 col-lg-6 col-xl-4 itil-actor-col{% if panel.hidden %} d-none{% endif %}">
         <section class="itil-actor-card"
                  data-panel-id="{{ panel.id }}"
                  data-actor-role="{{ panel.actorType }}"
@@ -290,7 +290,7 @@
 
           <div class="itil-actor-list" data-role="actor-list">
             {% for actor in panel.values %}
-              <div class="itil-actor-row"
+              <div class="itil-actor-row{% if actor.hidden %} d-none{% endif %}"
                    data-actor-entry
                    data-entry-type="{{ actor.type }}"
                    data-entry-id="{{ actor.id }}"

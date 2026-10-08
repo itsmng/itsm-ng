@@ -254,19 +254,7 @@ class Item_SoftwareLicense extends CommonDBRelation
                         },
                         type: 'POST',
                         success: function(data) {
-                           const jsonData = JSON.parse(data);
-                           for (const key in jsonData) {
-                              if (typeof jsonData[key] === 'object') {
-                                 var group = $('<optgroup label="' + $('<div>').text(key).html() + '"></optgroup>');
-                                 for (const subKey in jsonData[key]) {
-                                    group.append('<option value="' + subKey + '">' + $('<div>').text(jsonData[key][subKey]).html() + '</option>');
-                                 }
-                                 itemsDropdown.append(group);
-                              } else {
-                                 itemsDropdown.append('<option value="' + key + '">' + $('<div>').text(jsonData[key]).html() + '</option>');
-                              }
-                           }
-                           itemsDropdown.val('').trigger('change');
+                           setAjaxDropdownOptions(itemsDropdown, typeof data === 'string' ? JSON.parse(data) : data);
                         }
                      });
                   });

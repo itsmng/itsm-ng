@@ -370,14 +370,14 @@ class SoftwareLicense extends CommonTreeDropdown
                     __('Technician in charge of the license') => [
                        'type' => 'select',
                        'name' => 'users_id_tech',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields["users_id_tech"],
                        'actions' => getItemActionButtons(['info'], 'User')
                     ],
                     __('Publisher') => [
                        'type' => 'select',
                        'name' => 'manufacturers_id',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields["manufacturers_id"],
                        'actions' => getItemActionButtons(['info', 'add'], 'Manufacturer')
                     ],
@@ -397,7 +397,7 @@ class SoftwareLicense extends CommonTreeDropdown
                     User::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'users_id',
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields["users_id"],
                        'actions' => getItemActionButtons(['info'], 'User')
                     ],

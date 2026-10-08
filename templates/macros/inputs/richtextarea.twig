@@ -3,7 +3,7 @@
   {% set editor_id = attributes.id|default("ckEditorInstance" ~ rand) %}
   {% set field_name = attributes.name|default('content') %}
   <textarea id="{{editor_id}}"
-    {% for name, value in attributes|filter((v, k) => k != 'value')  %} {{name}}="{{value}}" {% endfor %}>
+    {% for name, value in attributes|filter((v, k) => k not in ['value', 'uploads'])  %} {{name}}="{{value}}" {% endfor %}>
     {{attributes.value|default('')|raw}}</textarea>
   <div id="{{editor_id}}_uploads" class="d-none"></div>
   <style>

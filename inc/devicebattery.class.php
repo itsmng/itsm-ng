@@ -53,7 +53,7 @@ class DeviceBattery extends CommonDevice
               _n('Type', 'Types', 1) => [
                  'name'  => 'devicebatterytypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceBatteryType'),
+                 ...getAjaxDropdownOptions('DeviceBatteryType'),
                  'value' => $this->fields['devicebatterytypes_id']
               ],
               __('Capacity') => [

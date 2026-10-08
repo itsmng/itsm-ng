@@ -45,4 +45,6 @@ if (strpos($_SERVER['PHP_SELF'], "getDropdownValue.php")) {
 }
 
 Session::checkLoginUser();
+$_POST['page'] = max(1, (int)($_POST['page'] ?? 1));
+$_POST['page_limit'] = min(100, max(1, (int)($_POST['page_limit'] ?? 100)));
 echo Dropdown::getDropdownValue($_POST);

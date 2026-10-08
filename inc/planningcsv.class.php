@@ -110,6 +110,14 @@ class PlanningCsv extends CommonGLPI
                 $dateEnd->setTimeZone(new DateTimeZone('UTC'));
 
                 $itemtype = new $val['itemtype']();
+                $title = $val['name'];
+                if (
+                    $itemtype instanceof CommonITILTask
+                    && empty($val['task_title'])
+                    && !empty($val['parent_name'])
+                ) {
+                    $title = $val['parent_name'];
+                }
 
                 $user = new User();
                 $user->getFromDB($val['users_id']);
@@ -117,9 +125,9 @@ class PlanningCsv extends CommonGLPI
                 //(acteur;titre item;id item;date-heure début,date-heure fin;catégorie)
                 $this->lines[] = [
                    'actor'     => $user->getFriendlyName(),
-                   'title'     => $val['name'],
+                   'title'     => $title,
                    'itemtype'  => $itemtype->getTypeName(1),
-                   'items_id'  => $val[$itemtype->getForeignKeyField()],
+                   'items_id'  => (string)$val[$itemtype->getForeignKeyField()],
                    'begindate' => $dateBegin->format('Y-m-d H:i:s'),
                    'enddate'   => $dateEnd->format('Y-m-d H:i:s')
                 ];

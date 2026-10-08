@@ -2,14 +2,24 @@
   {% set rand = random() %}
   {% set input_id = attributes.id|default(rand) %}
   {% set hidden_id = 'hidden_' ~ input_id %}
-  <input class='form-control' step="1" {% if not attributes.id %} id="{{ input_id }}" {% endif %}
-    {% for name, value in attributes|filter((v, k) => k != 'name') %} {{name}}="{{value|replace({' ': 'T'})}}" {% endfor %}
-      aria-label="{{ attributes.name }}"/>
-  <input type="hidden" id="{{ hidden_id }}" name="{{ attributes.name }}" value="{{ attributes.value|replace({'T': ' '}) }}" {{attributes.disabled ? 'disabled' : ''}}>
+  <div class="flatpickr input-group flex-nowrap w-100" id="picker_{{ input_id }}">
+    <input type="text" class="form-control form-control-sm {{ attributes.class }}" id="{{ input_id }}" data-input
+      {% for name, value in attributes|filter((v, k) => k not in ['name', 'type', 'id', 'class', 'value']) %} {{name}}="{{value}}" {% endfor %}
+      value="{{ attributes.value|replace({'T': ' '}) }}" aria-label="{{ attributes.name }}"/>
+    <button type="button" class="btn btn-sm border" data-toggle aria-label="{{ 'Select Date'|trans }}" {{ attributes.disabled is defined or attributes.readonly is defined ? 'disabled' : '' }}>
+      <i class="far fa-calendar-alt" aria-hidden="true"></i>
+    </button>
+    {% if not attributes.required %}
+      <button type="button" class="btn btn-sm border" data-clear aria-label="{{ 'Clear'|trans }}" {{ attributes.disabled is defined or attributes.readonly is defined ? 'disabled' : '' }}>
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </button>
+    {% endif %}
+  </div>
+  <input type="hidden" id="{{ hidden_id }}" name="{{ attributes.name }}" value="{{ attributes.value|replace({'T': ' '}) }}" {{attributes.disabled is defined ? 'disabled' : ''}}>
   <script>
-    (() => {
-      const visibleInput = document.getElementById('{{ input_id }}');
-      const hiddenInput = document.getElementById('{{ hidden_id }}');
+    $(function() {
+      const visibleInput = document.getElementById({{ input_id|json_encode|raw }});
+      const hiddenInput = document.getElementById({{ hidden_id|json_encode|raw }});
 
       if (!visibleInput || !hiddenInput) {
         return;
@@ -30,10 +40,36 @@
         hiddenInput.disabled = visibleInput.disabled || normalizedValue === '';
       };
 
+      const language = document.documentElement.lang.replace('_', '-').split('-');
+      const wrapper = document.getElementById({{ ('picker_' ~ input_id)|json_encode|raw }});
+      const picker = flatpickr(wrapper, {
+        wrap: true,
+        enableTime: true,
+        enableSeconds: true,
+        disableMobile: true,
+        dateFormat: 'Y-m-d H:i:S',
+        minuteIncrement: 1,
+        allowInput: !visibleInput.readOnly,
+        clickOpens: !visibleInput.disabled && !visibleInput.readOnly,
+        locale: getFlatPickerLocale(language[0], language[1]),
+        minDate: visibleInput.min ? normalizeDateTimeValue(visibleInput.min) : null,
+        maxDate: visibleInput.max ? normalizeDateTimeValue(visibleInput.max) : null,
+        onChange: syncHiddenInput,
+      });
+
+      // Reservation forms enable and disable datetime fields when their duration changes.
+      new MutationObserver(() => {
+        wrapper.querySelectorAll('button').forEach(button => {
+          button.disabled = visibleInput.disabled || visibleInput.readOnly;
+        });
+        picker.set('clickOpens', !visibleInput.disabled && !visibleInput.readOnly);
+        syncHiddenInput();
+      }).observe(visibleInput, { attributes: true, attributeFilter: ['disabled', 'readonly'] });
+
       syncHiddenInput();
       visibleInput.addEventListener('change', syncHiddenInput);
       visibleInput.addEventListener('input', syncHiddenInput);
-    })();
+    });
   </script>
 {% endmacro %}
 {{ _self.datetime(attributes) }}

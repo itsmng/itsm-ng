@@ -115,10 +115,7 @@ class CartridgeItem_PrinterModel extends CommonDBRelation
         }
 
         if ($canedit) {
-            $options = getOptionForItems(PrinterModel::class);
-            foreach ($used as $cartridge) {
-                unset($options[$cartridge]);
-            };
+            $options = getAjaxDropdownOptions(PrinterModel::class, [], true, false, $used);
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                'buttons' => [
@@ -141,7 +138,7 @@ class CartridgeItem_PrinterModel extends CommonDBRelation
                         '' => [
                            'type' => 'select',
                            'name' => 'printermodels_id',
-                           'values' => $options,
+                           ...$options,
                            'col_lg' => 12,
                            'col_md' => 12,
                            'actions' => getItemActionButtons(['info', 'add'], PrinterModel::class)

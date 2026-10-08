@@ -225,7 +225,7 @@ class Item_Disk extends CommonDBChild
                     Filesystem::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'filesystems_id',
-                       'values' => getOptionForItems('Filesystem'),
+                       ...getAjaxDropdownOptions('Filesystem'),
                        'value' => $this->fields['filesystems_id'],
                        'actions' => getItemActionButtons(['info', 'add'], 'Filesystem'),
                     ],

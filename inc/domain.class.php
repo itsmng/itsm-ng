@@ -355,14 +355,14 @@ class Domain extends CommonDropdown
                     __('Types') => [
                        'name' => 'domaintypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems("DomainType"),
+                       ...getAjaxDropdownOptions("DomainType"),
                        'value' => $this->fields['domaintypes_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                     ],
                     __('Technician in charge') => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
                        'value' => $this->fields['users_id_tech'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "DomainType"),
                     ],

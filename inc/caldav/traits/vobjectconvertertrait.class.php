@@ -170,6 +170,8 @@ trait VobjectConverterTrait
                 $vcomp->STATUS = 'NEEDS-ACTION';
             } elseif (\Planning::DONE == $fields['state']) {
                 $vcomp->STATUS = 'COMPLETED';
+            } elseif (\Planning::CANCELLED == $fields['state']) {
+                $vcomp->STATUS = 'CANCELLED';
             }
         }
 
@@ -292,7 +294,14 @@ trait VobjectConverterTrait
             return null;
         }
 
-        return 'COMPLETED' === $vcomponent->STATUS->getValue() ? \Planning::DONE : \Planning::TODO;
+        if ('COMPLETED' === $vcomponent->STATUS->getValue()) {
+            return \Planning::DONE;
+        }
+        if ('CANCELLED' === $vcomponent->STATUS->getValue()) {
+            return \Planning::CANCELLED;
+        }
+
+        return \Planning::TODO;
     }
 
     /**

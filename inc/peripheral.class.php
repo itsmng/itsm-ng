@@ -203,21 +203,21 @@ class Peripheral extends CommonDBTM
                     __('Type') => [
                        'name' => 'peripheraltypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PeripheralType'),
+                       ...getAjaxDropdownOptions('PeripheralType'),
                        'value' => $this->fields['peripheraltypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PeripheralType"),
                     ],
                     __('Technician in charge of the hardware') => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     Manufacturer::getTypeName(1) => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -232,7 +232,7 @@ class Peripheral extends CommonDBTM
                     _n('Model', 'Models', 1) => [
                        'name' => 'peripheralmodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('PeripheralModel'),
+                       ...getAjaxDropdownOptions('PeripheralModel'),
                        'value' => $this->fields['peripheralmodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "PeripheralModel"),
                     ],
@@ -259,7 +259,7 @@ class Peripheral extends CommonDBTM
                     User::getTypeName(1) => [
                        'name' => 'users_id',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],

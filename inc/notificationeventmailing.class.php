@@ -294,6 +294,7 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
             }
 
             self::attachDocuments($mmail, $documents_to_attach);
+            self::attachGeneratedAttachments($mmail, importArrayFromDB($current->fields['generated_attachments']));
 
             $recipient = $current->getField('recipient');
             if (defined('GLPI_FORCE_MAIL')) {
@@ -420,6 +421,29 @@ class NotificationEventMailing extends NotificationEventAbstract implements Noti
                 $path,
                 $document->fields['filename'],
                 $encoding
+            );
+        }
+    }
+
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    private static function attachGeneratedAttachments(GLPIMailer $mmail, $attachments): void
+    {
+        if (!is_array($attachments)) {
+            return;
+        }
+
+        foreach ($attachments as $attachment) {
+            if (empty($attachment['filename']) || !isset($attachment['content'])) {
+                continue;
+            }
+
+            $mmail->addStringAttachment(
+                $attachment['content'],
+                $attachment['filename'],
+                PHPMailer::ENCODING_BASE64,
+                $attachment['type'] ?? PHPMailer::CONTENT_TYPE_PLAINTEXT
             );
         }
     }

@@ -33,6 +33,9 @@ class Twig
     public static function load_filters($twig)
     {
         $twig->addFilter(new TwigFilter('trans', '__'));
+        $twig->addFilter(new TwigFilter('prepare_select', function (array $select) {
+            return expandSelect($select);
+        }));
         $twig->addFilter(new TwigFilter('dump', function ($variable) {
             ob_start();
             dump($variable);

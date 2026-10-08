@@ -46,15 +46,15 @@ if (!Session::haveRight(Log::$rightname, READ)) {
 }
 
 $itemtype = $_GET['itemtype'] ?? '';
-$items_id = isset($_GET['items_id']) ? (int) $_GET['items_id'] : 0;
+$items_id = isset($_GET['items_id']) ? (int) $_GET['items_id'] : -1;
 
-if (!Toolbox::isCommonDBTM($itemtype) || $items_id <= 0) {
+if (!Toolbox::isCommonDBTM($itemtype)) {
     echo json_encode(['total' => 0, 'rows' => []]);
     exit;
 }
 
 $item = getItemForItemtype($itemtype);
-if (!$item || !$item->getFromDB($items_id) || !$item->can($items_id, READ)) {
+if (!$item || $item->isNewID($items_id) || !$item->getFromDB($items_id) || !$item->can($items_id, READ)) {
     echo json_encode(['total' => 0, 'rows' => []]);
     exit;
 }
