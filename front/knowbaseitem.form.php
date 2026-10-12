@@ -103,6 +103,7 @@ if (isset($_POST["add"])) {
     );
     $kb->redirectToList();
 } elseif (isset($_POST["addvisibility"])) {
+    $kb->check($_POST['knowbaseitems_id'] ?? -1, UPDATE);
     if (
         isset($_POST["_type"]) && !empty($_POST["_type"])
         && isset($_POST["knowbaseitems_id"]) && $_POST["knowbaseitems_id"]

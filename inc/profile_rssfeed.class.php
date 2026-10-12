@@ -46,6 +46,7 @@ class Profile_RSSFeed extends CommonDBRelation
     public static $items_id_2          = 'profiles_id';
 
     public static $checkItem_2_Rights  = self::DONT_CHECK_ITEM_RIGHTS;
+    public static $checkAlwaysBothItems = true;
     public static $logs_for_item_2     = false;
 
 
