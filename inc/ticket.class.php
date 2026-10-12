@@ -5494,7 +5494,9 @@ class Ticket extends CommonITILObject
                               getUserName($this->fields["users_id_lastupdater"], $showuserlink)
                           ) : '',
                     ] : [],
-                    __('Time to own') => [
+                    ($tt->isHiddenField('time_to_own') && !$tt->isPredefinedField('time_to_own')
+                       ? ''
+                       : __('Time to own')) => [
                        'content' => (function () use ($tt, $canupdate) {
                            ob_start();
                            (new SLA())->showForTicket($this, SLM::TTO, $tt, $canupdate);
