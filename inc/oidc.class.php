@@ -411,6 +411,22 @@ class Oidc extends CommonDBTM
                 ["id" => $user_id],
             );
         }
+
+        $user = new User();
+        if ($user->getFromDB($id)) {
+            $rules = new RuleRightCollection();
+            $input = $rules->processAllRules(
+                array_column(Group_User::getUserGroups($id), 'id'),
+                Toolbox::stripslashes_deep($user->fields),
+                [
+                    'type'  => Auth::EXTERNAL,
+                    'login' => $user->fields['name'],
+                    'email' => UserEmail::getDefaultForUser($id),
+                ]
+            );
+            $input['_ruleright_process'] = true;
+            $user->update(Toolbox::addslashes_deep($input));
+        }
     }
 
     /**
