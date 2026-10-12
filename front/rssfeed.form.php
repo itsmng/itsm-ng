@@ -71,6 +71,7 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else if (isset($_POST["addvisibility"])) {
+   $rssfeed->check($_POST['rssfeeds_id'] ?? -1, UPDATE);
    if (isset($_POST["_type"]) && !empty($_POST["_type"])
        && isset($_POST["rssfeeds_id"]) && $_POST["rssfeeds_id"]) {
       $item = null;

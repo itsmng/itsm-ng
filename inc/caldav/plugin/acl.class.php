@@ -64,6 +64,8 @@ class Acl extends Plugin {
 
    public $allowUnauthenticatedAccess = false;
 
+   public $hideNodesFromListings = true;
+
    public function getAcl($node) {
       if (is_string($node)) {
          $node = $this->server->tree->getNodeForPath($node);

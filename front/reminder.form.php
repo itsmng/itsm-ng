@@ -74,6 +74,7 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else if (isset($_POST["addvisibility"])) {
+   $remind->check($_POST['reminders_id'] ?? -1, UPDATE);
    if (isset($_POST["_type"]) && !empty($_POST["_type"])
        && isset($_POST["reminders_id"]) && $_POST["reminders_id"]) {
       $item = null;
