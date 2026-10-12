@@ -1262,9 +1262,17 @@ class Planning extends CommonGLPI
 
     public static function editEventForm($params = [])
     {
+        global $CFG_GLPI;
+
+        if (!in_array($params['itemtype'] ?? null, $CFG_GLPI['planning_types'], true)) {
+            Html::displayRightError();
+        }
+
         $item = getItemForItemtype($params['itemtype']);
         if ($item instanceof CommonDBTM) {
-            $item->getFromDB((int) $params['id']);
+            if (!$item->can((int) $params['id'], READ)) {
+                Html::displayRightError();
+            }
             $url = $item->getLinkURL();
 
             $rand = mt_rand();
@@ -1276,7 +1284,13 @@ class Planning extends CommonGLPI
             ];
             if (isset($params['parentitemtype'])) {
                 $options['parent'] = getItemForItemtype($params['parentitemtype']);
-                $options['parent']->getFromDB($params['parentid']);
+                if (
+                    !($options['parent'] instanceof CommonDBTM)
+                    || (int) ($item->fields[$options['parent']::getForeignKeyField()] ?? 0) !== (int) $params['parentid']
+                    || !$options['parent']->can((int) $params['parentid'], READ)
+                ) {
+                    Html::displayRightError();
+                }
                 $url = $options['parent']->getLinkURL();
             }
 
@@ -1884,6 +1898,9 @@ class Planning extends CommonGLPI
                 $param[$key] = $val;
             }
         }
+
+        // The iCal export flag alters permissions and must never come from calendar requests.
+        $param['genical'] = false;
 
         $timezone = new DateTimeZone(date_default_timezone_get());
         $time_begin = strtotime((string) $param['start']) - $timezone->getOffset(new DateTime($param['start']));

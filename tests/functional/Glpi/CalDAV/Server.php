@@ -525,7 +525,7 @@ class Server extends DbTestCase
         ];
 
         $users_access = [
-           'normal' => 'HTTP/1.1 403 Forbidden',
+           'normal' => '',
            'tech'   => 'HTTP/1.1 200 OK',
         ];
 
@@ -544,6 +544,9 @@ class Server extends DbTestCase
                 $this->validateResponseIsOk($response, 207, 'application/xml'); // 207 'Multi-Status'
 
                 $xpath = $this->getXpathFromResponse($response);
+                if ($username === 'normal') {
+                    $this->integer((int) $xpath->evaluate('count(/d:multistatus/d:response)'))->isEqualTo(0);
+                }
                 $result_path = '/d:multistatus/d:response[1]';
                 $this->string($xpath->evaluate('string(' . $result_path . '/d:propstat/d:status)'))->isEqualTo($expected_status);
             }

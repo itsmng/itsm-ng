@@ -37,6 +37,33 @@ namespace tests\units;
 
 class Planning extends \DbTestCase
 {
+    public function testCalendarRequestsCannotChangePermissions()
+    {
+        $this->login();
+        \Planning::initSessionForCurrentUser();
+
+        $_SESSION['glpiactiveprofile']['externalevent'] = READ | UPDATE;
+        foreach ($_SESSION['glpi_plannings']['filters'] as $itemtype => $filter) {
+            $_SESSION['glpi_plannings']['filters'][$itemtype]['display'] = $itemtype === 'PlanningExternalEvent';
+        }
+        $_SESSION['glpi_plannings']['plannings'] = [
+           'user_' . \Session::getLoginUserID() => [
+              'color' => '#000000',
+              'display' => true,
+              'type' => 'user',
+           ],
+        ];
+        $profile = $_SESSION['glpiactiveprofile'];
+
+        \Planning::constructEventsArray([
+           'start' => '2026-10-12 00:00:00',
+           'end' => '2026-10-13 00:00:00',
+           'genical' => true,
+        ]);
+
+        $this->array($_SESSION['glpiactiveprofile'])->isIdenticalTo($profile);
+    }
+
     public function testCloneEvent()
     {
         $this->login();
