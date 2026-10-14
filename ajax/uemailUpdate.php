@@ -45,7 +45,8 @@ $allow_email = !empty($_POST['allow_email']);
 if (isset($_POST['field']) && ($value > 0 || $allow_email)) {
 
    if (preg_match('/[^a-z_\-0-9]/i', $_POST['field'])) {
-      throw new \RuntimeException('Invalid field provided!');
+      http_response_code(400);
+      return;
    }
 
    $default_email = "";
@@ -54,7 +55,8 @@ if (isset($_POST['field']) && ($value > 0 || $allow_email)) {
       $supplier = new Supplier();
       if ($value > 0) {
          if (!$supplier->can($value, READ)) {
-            throw new \RuntimeException('Not allowed');
+            http_response_code(403);
+            return;
          }
          if ($supplier->getFromDB($value)) {
             $default_email = $supplier->fields['email'];
@@ -63,8 +65,10 @@ if (isset($_POST['field']) && ($value > 0 || $allow_email)) {
    } else {
       $user          = new User();
       if ($value > 0) {
-         if (!$user->can($value, READ)) {
-            throw new \RuntimeException('Not allowed');
+         $is_current_user = $value === (int) Session::getLoginUserID();
+         if (!$is_current_user && !$user->can($value, READ)) {
+            http_response_code(403);
+            return;
          }
          if ($user->getFromDB($value)) {
             $default_email = $user->getDefaultEmail();
@@ -91,7 +95,8 @@ if (isset($_POST['field']) && ($value > 0 || $allow_email)) {
       if (NotificationMailing::isUserAddressValid($_POST['alternative_email'][$user_index])) {
          $default_email = $_POST['alternative_email'][$user_index];
       } else {
-         throw new \RuntimeException('Invalid email provided!');
+         http_response_code(400);
+         return;
       }
    }
 
