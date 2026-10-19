@@ -33,14 +33,14 @@
     </div>
     <table id="ObjectTable_{{rand}}" class="w-100 fs-6 table table-sm table-hover align-middle text-center">
       <tbody>
-        {% for object in attributes.values %}
-            <tr data-id="{{object.tickets_id}}" data-type="{{object.link}}">
+        {% for link_id, object in attributes.values %}
+            <tr data-id="{{object.tickets_id}}" data-type="{{object.link}}" data-link-id="{{link_id}}">
               <td>
-                {{ attributes.relations[object.link] }}
+                {{ object.link_name }}
               </td>
               <td> {{object.url|raw}} </td>
               <td class="d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove Object" onClick="removeObject{{rand}}('{{object.link}}', '{{object.tickets_id}}')">
+                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove Object" onClick="removeObject{{rand}}('{{link_id}}')">
                   <i class="fas fa-times"></i>
                 </button>
               </td>
@@ -51,18 +51,29 @@
   </div>
   <script>
 
-  function removeObject{{rand}}(type, id) {
+  function removeObject{{rand}}(linkId) {
+    const row = $(`#ObjectTable_{{rand}} tr[data-link-id='${linkId}']`);
+    const button = row.find('button');
+    button.prop('disabled', true);
     $.ajax({
-      url: "{{root_doc}}/ajax/deleteItilActor.php",
+      url: "{{root_doc}}/ajax/deleteTicketLink.php",
       type: "POST",
+      dataType: "json",
       data: {
-        linkId: 'ticket',
-        objectTypeId: $('#TicketRelationSelector_{{rand}}').val(),
-        objectId: id,
+        id: linkId,
         ticketId: '{{attributes.ticket_id}}',
       },
-    })
-    $(`#ObjectTable_{{rand}} tr[data-id='${id}'][data-type='${type}']`).remove();
+    }).done(function(response) {
+      if (response.success) {
+        row.remove();
+      } else {
+        alert('{{ "Error on executing the action"|trans|e("js") }}');
+      }
+    }).fail(function() {
+      alert('{{ "Error on executing the action"|trans|e("js") }}');
+    }).always(function() {
+      button.prop('disabled', false);
+    });
   }
 
   $(document).ready(() => {
