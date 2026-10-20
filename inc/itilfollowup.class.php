@@ -378,6 +378,8 @@ class ITILFollowup extends CommonDBChild
             $this->getType(),
             Log::HISTORY_ADD_SUBITEM
         );
+
+        TicketChildPropagation::propagateFollowup($this);
     }
 
 
