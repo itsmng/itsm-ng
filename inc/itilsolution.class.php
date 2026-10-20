@@ -396,10 +396,14 @@ class ITILSolution extends CommonDBChild
                 }
             }
 
-            $this->item->update([
+            $update = [
                'id'     => $this->item->getID(),
                'status' => $status
-            ]);
+            ];
+            if (isset($this->input['_disablenotif'])) {
+                $update['_disablenotif'] = true;
+            }
+            $this->item->update($update);
         }
 
         parent::post_addItem();

@@ -1422,6 +1422,7 @@ abstract class CommonITILObject extends CommonDBTM
                 && ($this->countSuppliers(CommonITILActor::ASSIGN) == 0)
                 && ($this->countUsers(CommonITILActor::ASSIGN) == 0)
                 && ($this->countGroups(CommonITILActor::ASSIGN) == 0)
+                && !($this instanceof Ticket && TicketChildPropagation::isUpdatingStatus($this->getID()))
                 && !in_array($this->fields['status'], array_merge(
                     $this->getSolvedStatusArray(),
                     $this->getClosedStatusArray()

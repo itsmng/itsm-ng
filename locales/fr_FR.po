@@ -25301,3 +25301,36 @@ msgstr "Lier les comptes à d'autres sources d'authentification"
 
 #~ msgid "Add another observer"
 #~ msgstr "Ajouter un autre observateur"
+
+#: inc/config.class.php
+msgid "Move new child tickets to processing when their parent starts processing"
+msgstr "Passer les tickets enfants nouveaux en cours de traitement lorsque leur parent commence son traitement"
+
+#: inc/config.class.php
+msgid "Resolve child tickets when their parent is resolved"
+msgstr "Résoudre les tickets enfants lorsque leur parent est résolu"
+
+#: inc/config.class.php
+msgid "Close child tickets when their parent is closed"
+msgstr "Clore les tickets enfants lorsque leur parent est clos"
+
+#: inc/config.class.php
+msgid "Copy newly added public followups to child tickets"
+msgstr "Copier les nouveaux suivis publics vers les tickets enfants"
+
+#: inc/config.class.php
+msgid "Propagation applies to all descendants and respects their permissions and status transitions. Private followups are never copied."
+msgstr "La propagation concerne tous les descendants et respecte leurs droits et transitions de statut. Les suivis privés ne sont jamais copiés."
+
+#: inc/ticketchildpropagation.class.php
+msgid "Some child tickets could not be updated. Check their permissions and status transitions."
+msgstr "Certains tickets enfants n’ont pas pu être mis à jour. Vérifiez leurs droits et transitions de statut."
+
+#: inc/ticketchildpropagation.class.php
+#, php-format
+msgid "Solved through parent ticket #%s."
+msgstr "Résolu via le ticket parent n° %s."
+
+#: inc/ticketchildpropagation.class.php
+msgid "Some child tickets could not receive the public followup. Check your followup permissions."
+msgstr "Certains tickets enfants n’ont pas pu recevoir le suivi public. Vérifiez vos droits sur les suivis."

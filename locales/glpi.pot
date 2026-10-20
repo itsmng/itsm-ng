@@ -30043,3 +30043,36 @@ msgstr ""
 #: inc/auth.class.php:1908
 msgid "Link accounts with other auth sources"
 msgstr ""
+
+#: inc/config.class.php
+msgid "Move new child tickets to processing when their parent starts processing"
+msgstr ""
+
+#: inc/config.class.php
+msgid "Resolve child tickets when their parent is resolved"
+msgstr ""
+
+#: inc/config.class.php
+msgid "Close child tickets when their parent is closed"
+msgstr ""
+
+#: inc/config.class.php
+msgid "Copy newly added public followups to child tickets"
+msgstr ""
+
+#: inc/config.class.php
+msgid "Propagation applies to all descendants and respects their permissions and status transitions. Private followups are never copied."
+msgstr ""
+
+#: inc/ticketchildpropagation.class.php
+msgid "Some child tickets could not be updated. Check their permissions and status transitions."
+msgstr ""
+
+#: inc/ticketchildpropagation.class.php
+#, php-format
+msgid "Solved through parent ticket #%s."
+msgstr ""
+
+#: inc/ticketchildpropagation.class.php
+msgid "Some child tickets could not receive the public followup. Check your followup permissions."
+msgstr ""

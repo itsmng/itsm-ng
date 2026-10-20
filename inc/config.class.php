@@ -1138,7 +1138,36 @@ class Config extends CommonDBTM
                         'matrix' => $matrix,
                        ]
                    ]
-               ]
+               ],
+               __('Child tickets') => [
+                   'visible' => true,
+                   'inputs' => [
+                       '' => [
+                           'content' => '<p>' . __('Propagation applies to all descendants and respects their permissions and status transitions. Private followups are never copied.') . '</p>',
+                           'col_lg' => 12,
+                       ],
+                       __('Move new child tickets to processing when their parent starts processing') => [
+                           'name' => 'child_ticket_propagate_processing',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_processing'] ?? 0,
+                       ],
+                       __('Resolve child tickets when their parent is resolved') => [
+                           'name' => 'child_ticket_propagate_solved',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_solved'] ?? 0,
+                       ],
+                       __('Close child tickets when their parent is closed') => [
+                           'name' => 'child_ticket_propagate_closed',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_closed'] ?? 0,
+                       ],
+                       __('Copy newly added public followups to child tickets') => [
+                           'name' => 'child_ticket_propagate_public_followups',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_public_followups'] ?? 0,
+                       ],
+                   ],
+               ],
             ]
         ];
         //debug matrix
