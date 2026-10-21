@@ -1581,6 +1581,10 @@ class Ticket extends CommonITILObject
         //Action for send_validation rule : do validation before clean
         $this->manageValidationAdd($this->input);
 
+        if (in_array('status', $this->updates)) {
+            TicketChildPropagation::propagateStatus($this);
+        }
+
         // Put same status on duplicated tickets when solving or closing (autoclose on solve)
         if (
             isset($this->input['status'])

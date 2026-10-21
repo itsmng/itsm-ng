@@ -44,6 +44,13 @@ function update213to220(): bool
     $migration->displayTitle(sprintf(__('Update to %s'), '2.2.0'));
     $migration->setVersion('2.2.0');
 
+    $migration->addConfig([
+        'child_ticket_propagate_processing' => 0,
+        'child_ticket_propagate_solved' => 0,
+        'child_ticket_propagate_closed' => 0,
+        'child_ticket_propagate_public_followups' => 0,
+    ]);
+
     if (!$DB->fieldExists('glpi_entities', 'lock_ticket_date')) {
         $migration->addField(
             'glpi_entities',
