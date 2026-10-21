@@ -5332,6 +5332,9 @@ abstract class CommonITILObject extends CommonDBTM
 
             foreach ($values as &$actor) {
                 $actor['hidden'] = $hiddenFields[$definitions[$actor['type']]['field']] ?? false;
+                $actorItemtype = $definitions[$actor['type']]['itemtype'];
+                $actor['url'] = (int)$actor['id'] > 0 && $actorItemtype::canView()
+                    ? $actorItemtype::getFormURLWithID((int)$actor['id']) : '';
             }
             unset($actor);
 
@@ -5348,9 +5351,11 @@ abstract class CommonITILObject extends CommonDBTM
             $fieldMap = [];
             foreach ($actorTypes as $type) {
                 $definition = $definitions[$type];
+                $actorItemtype = $definition['itemtype'];
                 $fieldMap[$type] = [
                     'entity'                 => $entityId,
                     'icon'                   => $definition['icon'],
+                    'formUrl'                => $actorItemtype::canView() ? $actorItemtype::getFormURL() : '',
                     'valueField'             => $definition['field'],
                     'notifField'             => $definition['notif'] ?? '',
                     'tempFieldRoot'          => $definition['temp_field'],

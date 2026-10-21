@@ -197,6 +197,11 @@
       word-break: break-word;
     }
 
+    #{{ panel_id }} .itil-actor-row__name a:hover,
+    #{{ panel_id }} .itil-actor-row__name a:focus-visible {
+      text-decoration: underline;
+    }
+
     #{{ panel_id }} .itil-actor-row__meta {
       color: #61728a;
       font-size: 0.85rem;
@@ -301,7 +306,13 @@
                     <i class="{{ actor.icon|raw }}"></i>
                   </span>
                   <div class="itil-actor-row__text">
-                    <div class="itil-actor-row__name">{{ actor.name|raw }}</div>
+                    <div class="itil-actor-row__name">
+                      {% if actor.url %}
+                        <a href="{{ actor.url }}">{{ actor.name|raw }}</a>
+                      {% else %}
+                        {{ actor.name|raw }}
+                      {% endif %}
+                    </div>
                     {% if actor.subtitle %}
                       <div class="itil-actor-row__meta">{{ actor.subtitle|raw }}</div>
                     {% endif %}
@@ -454,6 +465,12 @@
           </div>
         `);
 
+        if (entry.url) {
+          $body.find('.itil-actor-row__name').empty().append(
+            $('<a>', { href: entry.url, text: entry.name })
+          );
+        }
+
         const $actions = $('<div>', { class: 'itil-actor-row__actions' });
         if (entry.removable) {
           $actions.append(`
@@ -580,6 +597,8 @@
           type: selectedType,
           icon: spec.icon,
           name: actorId !== '0' && actorLabel !== '' ? actorLabel : alternativeEmail,
+          url: Number(actorId) > 0 && spec.formUrl
+            ? `${spec.formUrl}${spec.formUrl.includes('?') ? '&' : '?'}id=${encodeURIComponent(actorId)}` : '',
           subtitle: subtitleParts.join(' | '),
           alternativeEmail,
           persisted: false,
