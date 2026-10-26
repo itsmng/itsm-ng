@@ -637,10 +637,11 @@ function getItemActionButtons(array $actions, string $itemType): array
                 if (!$item->canView()) {
                     continue 2;
                 }
-                $itemSearchUrl = $item->getSearchUrl();
+                $itemFormUrl = json_encode($item->getFormURL(), JSON_HEX_APOS | JSON_HEX_QUOT);
+                $itemSearchUrl = json_encode($item->getSearchURL(), JSON_HEX_APOS | JSON_HEX_QUOT);
                 $content = [
                     "icon" => "fas fa-info",
-                    "onClick" => "window.location.href = '{$itemSearchUrl}'",
+                    "onClick" => "openDropdownItem(this, {$itemFormUrl}, {$itemSearchUrl});",
                     "info" => "Info",
                 ];
                 break;
