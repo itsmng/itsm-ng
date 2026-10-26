@@ -125,16 +125,16 @@ test('shows the pending badge and submits pending observer changes with manual e
   await expect(pendingObserver).toContainText(alternativeEmail);
   await expect(pendingObserver).toContainText('Email followup: No');
   await expect(
-    pendingObserver.locator('input[type="hidden"][name="_itil_observer[_type]"][value="user"]')
+    pendingObserver.locator('input[type="hidden"][name="_itil_observer[0][_type]"][value="user"]')
   ).toHaveCount(1);
   await expect(
-    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[users_id]"][value="${seed.userId}"]`)
+    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[0][users_id]"][value="${seed.userId}"]`)
   ).toHaveCount(1);
   await expect(
-    pendingObserver.locator('input[type="hidden"][name="_itil_observer[use_notification][]"][value="0"]')
+    pendingObserver.locator('input[type="hidden"][name="_itil_observer[0][use_notification][]"][value="0"]')
   ).toHaveCount(1);
   await expect(
-    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[alternative_email][]"][value="${alternativeEmail}"]`)
+    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[0][alternative_email][]"][value="${alternativeEmail}"]`)
   ).toHaveCount(1);
 
   await submitForm(page, 'update');
@@ -173,10 +173,10 @@ test('does not submit a pending observer that was removed before saving', async 
   await pendingObserver.locator('[data-role="remove-actor"]').click();
   await expect(observerPanel.locator('[data-actor-entry]')).toHaveCount(0);
   await expect(observerPanel.locator('[data-role="empty-state"]')).toBeVisible();
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[_type]"]')).toHaveCount(0);
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[users_id]"]')).toHaveCount(0);
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[use_notification][]"]')).toHaveCount(0);
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[alternative_email][]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][_type]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][users_id]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][use_notification][]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][alternative_email][]"]')).toHaveCount(0);
 
   await submitForm(page, 'update');
 
@@ -237,6 +237,30 @@ test('submits multiple pending observers in a single save', async ({ page, reque
     `[data-actor-entry][data-entry-type="user"][data-entry-id="${secondObserverId}"][data-persisted="1"]`
   )).toBeVisible();
 });
+
+for (const role of ['requester', 'observer', 'assign'] as const) {
+  test(`keeps two pending ${role} users and saves both on an existing ticket`, async ({ page, request }) => {
+    const seed = await seedTicket(request, { withoutActors: true });
+    await openTicket(page, seed);
+    await openObserverPanel(page);
+    const panel = getActorPanel(page, role);
+    const [firstUserId, secondUserId] = await getAvailableObserverUserIds(panel, 2);
+    for (const userId of [firstUserId, secondUserId]) {
+      await selectObserver(panel, String(userId));
+      await panel.locator('[data-role="add-actor"]').click();
+    }
+    await expect(panel.locator('[data-actor-entry][data-persisted="0"]')).toHaveCount(2);
+    await expect(panel.locator('.badge.text-bg-warning')).toHaveCount(2);
+    await submitForm(page, 'update');
+    await page.reload();
+    await openObserverPanel(page);
+    for (const userId of [firstUserId, secondUserId]) {
+      await expect(panel.locator(
+        `[data-actor-entry][data-entry-type="user"][data-entry-id="${userId}"][data-persisted="1"]`
+      )).toBeVisible();
+    }
+  });
+}
 
 for (const role of ['assign', 'observer'] as const) {
   test(`associates myself as ${role === 'assign' ? 'technician' : 'observer'} and persists after reload`, async ({ page, request }) => {

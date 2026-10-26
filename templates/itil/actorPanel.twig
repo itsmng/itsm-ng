@@ -380,6 +380,13 @@
       const $list = $panel.find('[data-role="actor-list"]');
       const $emptyState = $panel.find('[data-role="empty-state"]');
       const form = panel.closest('form');
+      let nextActorIndex = 0;
+      $list.find('input[type="hidden"]').each((_, input) => {
+        const match = input.name.match(/^_itil_(?:requester|observer|assign)\[(\d+)\]/);
+        if (match) {
+          nextActorIndex = Math.max(nextActorIndex, Number(match[1]) + 1);
+        }
+      });
 
       const updateEmptyState = () => {
         const hasEntries = $list.find('[data-actor-entry]').length > 0;
@@ -566,20 +573,16 @@
 
         const hiddenFields = [];
         if (itemsId > 0) {
-          $list.find('[data-actor-entry]').filter((_, element) => {
-            const $element = $(element);
-            return $element.data('persisted') !== 1 && $element.data('persisted') !== '1';
-          }).remove();
-
+          const tempFieldRoot = `${spec.tempFieldRoot}[${nextActorIndex++}]`;
           hiddenFields.push(
-            { name: `${spec.tempFieldRoot}[_type]`, value: selectedType },
-            { name: spec.tempValueField, value: actorId }
+            { name: `${tempFieldRoot}[_type]`, value: selectedType },
+            { name: `${tempFieldRoot}[${selectedType}s_id]`, value: actorId }
           );
 
           if (spec.notifField) {
             hiddenFields.push(
-              { name: `${spec.tempFieldRoot}[use_notification][]`, value: useNotification },
-              { name: `${spec.tempFieldRoot}[alternative_email][]`, value: alternativeEmail }
+              { name: `${tempFieldRoot}[use_notification][]`, value: useNotification },
+              { name: `${tempFieldRoot}[alternative_email][]`, value: alternativeEmail }
             );
           }
         } else {

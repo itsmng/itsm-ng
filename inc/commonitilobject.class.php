@@ -1058,51 +1058,51 @@ abstract class CommonITILObject extends CommonDBTM
         // "do not compute" flag set by business rules for "takeintoaccount_delay_stat" field
         $do_not_compute_takeintoaccount = $this->isTakeIntoAccountComputationBlocked($input);
 
-        if (isset($input['_itil_requester'])) {
-            if (isset($input['_itil_requester']['_type'])) {
-                $input['_itil_requester'] = [
+        foreach ($this->normalizeITILActorInputs($input['_itil_requester'] ?? []) as $actor) {
+            if (isset($actor['_type'])) {
+                $actor = [
                    'type'                            => CommonITILActor::REQUESTER,
                    $this->getForeignKeyField()       => $input['id'],
                    '_do_not_compute_takeintoaccount' => $do_not_compute_takeintoaccount,
                    '_from_object'                    => true,
-                ] + $input['_itil_requester'];
+                ] + $actor;
 
-                switch ($input['_itil_requester']['_type']) {
+                switch ($actor['_type']) {
                     case "user":
                         if (
-                            isset($input['_itil_requester']['use_notification'])
-                            && is_array($input['_itil_requester']['use_notification'])
+                            isset($actor['use_notification'])
+                            && is_array($actor['use_notification'])
                         ) {
-                            $input['_itil_requester']['use_notification'] = $input['_itil_requester']['use_notification'][0];
+                            $actor['use_notification'] = $actor['use_notification'][0];
                         }
                         if (
-                            isset($input['_itil_requester']['alternative_email'])
-                            && is_array($input['_itil_requester']['alternative_email'])
+                            isset($actor['alternative_email'])
+                            && is_array($actor['alternative_email'])
                         ) {
-                            $input['_itil_requester']['alternative_email'] = $input['_itil_requester']['alternative_email'][0];
+                            $actor['alternative_email'] = $actor['alternative_email'][0];
                         }
 
                         if (!empty($this->userlinkclass)) {
                             if (
-                                isset($input['_itil_requester']['alternative_email'])
-                                && $input['_itil_requester']['alternative_email']
-                                && !NotificationMailing::isUserAddressValid($input['_itil_requester']['alternative_email'])
+                                isset($actor['alternative_email'])
+                                && $actor['alternative_email']
+                                && !NotificationMailing::isUserAddressValid($actor['alternative_email'])
                             ) {
-                                $input['_itil_requester']['alternative_email'] = '';
+                                $actor['alternative_email'] = '';
                                 Session::addMessageAfterRedirect(__('Invalid email address'), false, ERROR);
                             }
 
                             if (
-                                (isset($input['_itil_requester']['alternative_email'])
-                                 && $input['_itil_requester']['alternative_email'])
-                                || ($input['_itil_requester']['users_id'] > 0)
+                                (isset($actor['alternative_email'])
+                                 && $actor['alternative_email'])
+                                || ($actor['users_id'] > 0)
                             ) {
                                 $useractors = new $this->userlinkclass();
                                 if (
                                     isset($input['_auto_update'])
-                                    || $useractors->can(-1, CREATE, $input['_itil_requester'])
+                                    || $useractors->can(-1, CREATE, $actor)
                                 ) {
-                                    $useractors->add($input['_itil_requester']);
+                                    $useractors->add($actor);
                                     $input['_forcenotif']                     = true;
                                 }
                             }
@@ -1112,14 +1112,14 @@ abstract class CommonITILObject extends CommonDBTM
                     case "group":
                         if (
                             !empty($this->grouplinkclass)
-                            && ($input['_itil_requester']['groups_id'] > 0)
+                            && ($actor['groups_id'] > 0)
                         ) {
                             $groupactors = new $this->grouplinkclass();
                             if (
                                 isset($input['_auto_update'])
-                                || $groupactors->can(-1, CREATE, $input['_itil_requester'])
+                                || $groupactors->can(-1, CREATE, $actor)
                             ) {
-                                $groupactors->add($input['_itil_requester']);
+                                $groupactors->add($actor);
                                 $input['_forcenotif']                     = true;
                             }
                         }
@@ -1128,50 +1128,50 @@ abstract class CommonITILObject extends CommonDBTM
             }
         }
 
-        if (isset($input['_itil_observer'])) {
-            if (isset($input['_itil_observer']['_type'])) {
-                $input['_itil_observer'] = [
+        foreach ($this->normalizeITILActorInputs($input['_itil_observer'] ?? []) as $actor) {
+            if (isset($actor['_type'])) {
+                $actor = [
                    'type'                            => CommonITILActor::OBSERVER,
                    $this->getForeignKeyField()       => $input['id'],
                    '_do_not_compute_takeintoaccount' => $do_not_compute_takeintoaccount,
                    '_from_object'                    => true,
-                ] + $input['_itil_observer'];
+                ] + $actor;
 
-                switch ($input['_itil_observer']['_type']) {
+                switch ($actor['_type']) {
                     case "user":
                         if (
-                            isset($input['_itil_observer']['use_notification'])
-                            && is_array($input['_itil_observer']['use_notification'])
+                            isset($actor['use_notification'])
+                            && is_array($actor['use_notification'])
                         ) {
-                            $input['_itil_observer']['use_notification'] = $input['_itil_observer']['use_notification'][0];
+                            $actor['use_notification'] = $actor['use_notification'][0];
                         }
                         if (
-                            isset($input['_itil_observer']['alternative_email'])
-                            && is_array($input['_itil_observer']['alternative_email'])
+                            isset($actor['alternative_email'])
+                            && is_array($actor['alternative_email'])
                         ) {
-                            $input['_itil_observer']['alternative_email'] = $input['_itil_observer']['alternative_email'][0];
+                            $actor['alternative_email'] = $actor['alternative_email'][0];
                         }
 
                         if (!empty($this->userlinkclass)) {
                             if (
-                                isset($input['_itil_observer']['alternative_email'])
-                                && $input['_itil_observer']['alternative_email']
-                                && !NotificationMailing::isUserAddressValid($input['_itil_observer']['alternative_email'])
+                                isset($actor['alternative_email'])
+                                && $actor['alternative_email']
+                                && !NotificationMailing::isUserAddressValid($actor['alternative_email'])
                             ) {
-                                $input['_itil_observer']['alternative_email'] = '';
+                                $actor['alternative_email'] = '';
                                 Session::addMessageAfterRedirect(__('Invalid email address'), false, ERROR);
                             }
                             if (
-                                (isset($input['_itil_observer']['alternative_email'])
-                                 && $input['_itil_observer']['alternative_email'])
-                                || ($input['_itil_observer']['users_id'] > 0)
+                                (isset($actor['alternative_email'])
+                                 && $actor['alternative_email'])
+                                || ($actor['users_id'] > 0)
                             ) {
                                 $useractors = new $this->userlinkclass();
                                 if (
                                     isset($input['_auto_update'])
-                                    || $useractors->can(-1, CREATE, $input['_itil_observer'])
+                                    || $useractors->can(-1, CREATE, $actor)
                                 ) {
-                                    $useractors->add($input['_itil_observer']);
+                                    $useractors->add($actor);
                                     $input['_forcenotif']                    = true;
                                 }
                             }
@@ -1181,14 +1181,14 @@ abstract class CommonITILObject extends CommonDBTM
                     case "group":
                         if (
                             !empty($this->grouplinkclass)
-                             && ($input['_itil_observer']['groups_id'] > 0)
+                             && ($actor['groups_id'] > 0)
                         ) {
                             $groupactors = new $this->grouplinkclass();
                             if (
                                 isset($input['_auto_update'])
-                                || $groupactors->can(-1, CREATE, $input['_itil_observer'])
+                                || $groupactors->can(-1, CREATE, $actor)
                             ) {
-                                $groupactors->add($input['_itil_observer']);
+                                $groupactors->add($actor);
                                 $input['_forcenotif']                    = true;
                             }
                         }
@@ -1197,42 +1197,42 @@ abstract class CommonITILObject extends CommonDBTM
             }
         }
 
-        if (isset($input['_itil_assign'])) {
-            if (isset($input['_itil_assign']['_type'])) {
-                $input['_itil_assign'] = [
+        foreach ($this->normalizeITILActorInputs($input['_itil_assign'] ?? []) as $actor) {
+            if (isset($actor['_type'])) {
+                $actor = [
                    'type'                            => CommonITILActor::ASSIGN,
                    $this->getForeignKeyField()       => $input['id'],
                    '_do_not_compute_takeintoaccount' => $do_not_compute_takeintoaccount,
                    '_from_object'                    => true,
-                ] + $input['_itil_assign'];
+                ] + $actor;
 
                 if (
-                    isset($input['_itil_assign']['use_notification'])
-                      && is_array($input['_itil_assign']['use_notification'])
+                    isset($actor['use_notification'])
+                      && is_array($actor['use_notification'])
                 ) {
-                    $input['_itil_assign']['use_notification'] = $input['_itil_assign']['use_notification'][0];
+                    $actor['use_notification'] = $actor['use_notification'][0];
                 }
                 if (
-                    isset($input['_itil_assign']['alternative_email'])
-                      && is_array($input['_itil_assign']['alternative_email'])
+                    isset($actor['alternative_email'])
+                      && is_array($actor['alternative_email'])
                 ) {
-                    $input['_itil_assign']['alternative_email'] = $input['_itil_assign']['alternative_email'][0];
+                    $actor['alternative_email'] = $actor['alternative_email'][0];
                 }
 
-                switch ($input['_itil_assign']['_type']) {
+                switch ($actor['_type']) {
                     case "user":
                         if (
                             !empty($this->userlinkclass)
-                            && ((isset($input['_itil_assign']['alternative_email'])
-                                 && $input['_itil_assign']['alternative_email'])
-                                || $input['_itil_assign']['users_id'] > 0)
+                            && ((isset($actor['alternative_email'])
+                                 && $actor['alternative_email'])
+                                || $actor['users_id'] > 0)
                         ) {
                             $useractors = new $this->userlinkclass();
                             if (
                                 isset($input['_auto_update'])
-                                || $useractors->can(-1, CREATE, $input['_itil_assign'])
+                                || $useractors->can(-1, CREATE, $actor)
                             ) {
-                                $useractors->add($input['_itil_assign']);
+                                $useractors->add($actor);
                                 $input['_forcenotif']                  = true;
                                 if (
                                     ((!isset($input['status'])
@@ -1252,15 +1252,15 @@ abstract class CommonITILObject extends CommonDBTM
                     case "group":
                         if (
                             !empty($this->grouplinkclass)
-                            && ($input['_itil_assign']['groups_id'] > 0)
+                            && ($actor['groups_id'] > 0)
                         ) {
                             $groupactors = new $this->grouplinkclass();
 
                             if (
                                 isset($input['_auto_update'])
-                                || $groupactors->can(-1, CREATE, $input['_itil_assign'])
+                                || $groupactors->can(-1, CREATE, $actor)
                             ) {
-                                $groupactors->add($input['_itil_assign']);
+                                $groupactors->add($actor);
                                 $input['_forcenotif']                  = true;
                                 if (
                                     ((!isset($input['status'])
@@ -1280,16 +1280,16 @@ abstract class CommonITILObject extends CommonDBTM
                     case "supplier":
                         if (
                             !empty($this->supplierlinkclass)
-                            && ((isset($input['_itil_assign']['alternative_email'])
-                                 && $input['_itil_assign']['alternative_email'])
-                                || $input['_itil_assign']['suppliers_id'] > 0)
+                            && ((isset($actor['alternative_email'])
+                                 && $actor['alternative_email'])
+                                || $actor['suppliers_id'] > 0)
                         ) {
                             $supplieractors = new $this->supplierlinkclass();
                             if (
                                 isset($input['_auto_update'])
-                                || $supplieractors->can(-1, CREATE, $input['_itil_assign'])
+                                || $supplieractors->can(-1, CREATE, $actor)
                             ) {
-                                $supplieractors->add($input['_itil_assign']);
+                                $supplieractors->add($actor);
                                 $input['_forcenotif']                  = true;
                                 if (
                                     ((!isset($input['status'])
@@ -4813,6 +4813,19 @@ abstract class CommonITILObject extends CommonDBTM
         return $hidden;
     }
 
+    protected function normalizeITILActorInputs($value): array
+    {
+        if (!is_array($value)) {
+            return [];
+        }
+
+        if (isset($value['_type'])) {
+            return [$value];
+        }
+
+        return array_filter($value, static fn ($actor) => is_array($actor) && isset($actor['_type']));
+    }
+
     protected function normalizeITILActorInputValues($value)
     {
         if ($value === null || $value === '') {
@@ -5123,79 +5136,83 @@ abstract class CommonITILObject extends CommonDBTM
                 continue;
             }
 
-            $tempField = $options[$definition['temp_field']] ?? null;
-            if (!is_array($tempField) || (($tempField['_type'] ?? '') !== $type)) {
-                continue;
-            }
+            $tempInput = $options[$definition['temp_field']] ?? [];
+            foreach ($this->normalizeITILActorInputs($tempInput) as $index => $tempField) {
+                if (!is_array($tempField) || (($tempField['_type'] ?? '') !== $type)) {
+                    continue;
+                }
 
-            $valueField = sprintf('%ss_id', $type);
-            $value = (int)($tempField[$valueField] ?? 0);
-            $useNotificationValues = $this->normalizeITILActorInputValues($tempField['use_notification'] ?? []);
-            $alternativeEmailValues = $this->normalizeITILActorInputValues($tempField['alternative_email'] ?? []);
-            $useNotification = $notifField ? (int)($useNotificationValues[0] ?? 1) : 1;
-            $alternativeEmail = $notifField ? trim((string)($alternativeEmailValues[0] ?? '')) : '';
+                $tempFieldRoot = isset($tempInput['_type'])
+                    ? $definition['temp_field'] : $definition['temp_field'] . '[' . $index . ']';
+                $valueField = sprintf('%ss_id', $type);
+                $value = (int)($tempField[$valueField] ?? 0);
+                $useNotificationValues = $this->normalizeITILActorInputValues($tempField['use_notification'] ?? []);
+                $alternativeEmailValues = $this->normalizeITILActorInputValues($tempField['alternative_email'] ?? []);
+                $useNotification = $notifField ? (int)($useNotificationValues[0] ?? 1) : 1;
+                $alternativeEmail = $notifField ? trim((string)($alternativeEmailValues[0] ?? '')) : '';
 
-            if ($value <= 0 && $alternativeEmail === '') {
-                continue;
-            }
+                if ($value <= 0 && $alternativeEmail === '') {
+                    continue;
+                }
 
-            $entryKey = $this->getITILActorEntryKey($type, $value);
-            if (isset($existingKeys[$entryKey])) {
-                continue;
-            }
+                $entryKey = $this->getITILActorEntryKey($type, $value);
+                if (isset($existingKeys[$entryKey])) {
+                    continue;
+                }
 
-            $subtitle = [];
-            if ($notifField) {
-                $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
-            }
-            if ($this->shouldShowITILActorAlternativeEmail(
-                $definition['itemtype'],
-                $value,
-                $alternativeEmail
-            )) {
-                $subtitle[] = $alternativeEmail;
-            }
-
-            $entry = [
-                'id'               => $value,
-                'type'             => $type,
-                'name'             => $this->getITILActorDisplayName(
+                $subtitle = [];
+                if ($notifField) {
+                    $subtitle[] = __('Email followup') . ': ' . Dropdown::getYesNo($useNotification);
+                }
+                if ($this->shouldShowITILActorAlternativeEmail(
                     $definition['itemtype'],
                     $value,
                     $alternativeEmail
-                ),
-                'icon'             => $definition['icon'],
-                'subtitle'         => implode(' | ', $subtitle),
-                'persisted'        => false,
-                'pending'          => true,
-                'locked'           => $hiddenFields[$definition['field']] ?? false,
-                'removable'        => !($hiddenFields[$definition['field']] ?? false),
-                'alternativeEmail' => $alternativeEmail,
-                'hiddenFields'     => [
-                    [
-                        'name'  => $definition['temp_field'] . '[_type]',
-                        'value' => $type,
-                    ],
-                    [
-                        'name'  => sprintf('%s[%s]', $definition['temp_field'], $valueField),
-                        'value' => $value,
-                    ],
-                ],
-            ];
+                )) {
+                    $subtitle[] = $alternativeEmail;
+                }
 
-            if ($notifField) {
-                $entry['hiddenFields'][] = [
-                    'name'  => $definition['temp_field'] . '[use_notification][]',
-                    'value' => $useNotification,
+                $entry = [
+                    'id'               => $value,
+                    'type'             => $type,
+                    'name'             => $this->getITILActorDisplayName(
+                        $definition['itemtype'],
+                        $value,
+                        $alternativeEmail
+                    ),
+                    'icon'             => $definition['icon'],
+                    'subtitle'         => implode(' | ', $subtitle),
+                    'persisted'        => false,
+                    'pending'          => true,
+                    'locked'           => $hiddenFields[$definition['field']] ?? false,
+                    'removable'        => !($hiddenFields[$definition['field']] ?? false),
+                    'alternativeEmail' => $alternativeEmail,
+                    'hiddenFields'     => [
+                        [
+                            'name'  => $tempFieldRoot . '[_type]',
+                            'value' => $type,
+                        ],
+                        [
+                            'name'  => sprintf('%s[%s]', $tempFieldRoot, $valueField),
+                            'value' => $value,
+                        ],
+                    ],
                 ];
-                $entry['hiddenFields'][] = [
-                    'name'  => $definition['temp_field'] . '[alternative_email][]',
-                    'value' => $alternativeEmail,
-                ];
+
+                if ($notifField) {
+                    $entry['hiddenFields'][] = [
+                        'name'  => $tempFieldRoot . '[use_notification][]',
+                        'value' => $useNotification,
+                    ];
+                    $entry['hiddenFields'][] = [
+                        'name'  => $tempFieldRoot . '[alternative_email][]',
+                        'value' => $alternativeEmail,
+                    ];
+                }
+
+                $entries[] = $entry;
+                $existingKeys[$entryKey] = true;
             }
-
-            $entries[] = $entry;
-            $existingKeys[$entryKey] = true;
         }
 
         return $entries;
