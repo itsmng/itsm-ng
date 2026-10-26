@@ -1243,6 +1243,19 @@ function getAjaxCsrfToken() {
   return meta !== null ? meta.getAttribute('content') : null;
 }
 
+/** Open the current dropdown item, or its list when no single item is selected. */
+function openDropdownItem(button, formUrl, searchUrl) {
+    const group = button.closest('[data-dropdown-group]');
+    const select = group ? group.querySelector('select') : null;
+    if (select && select.selectedOptions.length === 1 && /^\d+$/.test(select.value) && Number(select.value) > 0) {
+        const url = new URL(formUrl, window.location.href);
+        url.searchParams.set('id', select.value);
+        window.location.href = url.href;
+    } else {
+        window.location.href = searchUrl;
+    }
+}
+
 /** Select a template value even when its AJAX option has not been loaded. */
 function setAjaxDropdownValue(selector, value, label) {
     const select = $(selector);
