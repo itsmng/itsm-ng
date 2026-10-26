@@ -316,9 +316,50 @@ class User extends CommonDBTM {
       $ol = new ObjectLock();
       $ol->deleteByCriteria(['users_id' => $this->fields['id']]);
 
-      // Reminder does not extends CommonDBConnexity
-      $r = new Reminder();
-      $r->deleteByCriteria(['users_id' => $this->fields['id']]);
+      // Remove the user's visibility first, including visibility on their own notes/feeds.
+      $this->deleteChildrenAndRelationsFromDb([
+         Reminder_User::class,
+         RSSFeed_User::class,
+         Item_Kanban::class,
+      ]);
+
+      // Keep shared notes and feeds available to their remaining audiences.
+      foreach ([new Reminder(), new RSSFeed()] as $item) {
+         $iterator = $DB->request([
+            'SELECT' => ['id'],
+            'FROM'   => $item->getTable(),
+            'WHERE'  => ['users_id' => $this->fields['id']],
+         ]);
+         foreach ($iterator as $row) {
+            if ($item->getFromDB($row['id']) && $item->countVisibilities() === 0) {
+               $item->delete(['id' => $row['id']], 1);
+            }
+         }
+         $DB->update($item->getTable(), ['users_id' => 0], ['users_id' => $this->fields['id']]);
+      }
+
+      $recall = new PlanningRecall();
+      $recall->deleteByCriteria(['users_id' => $this->fields['id']], 1);
+
+      // Stable dashboards use audience rights rather than a per-user owner.
+      $rights = new Glpi\Dashboard\Right();
+      $dashboard = new Glpi\Dashboard\Dashboard();
+      $iterator = $DB->request([
+         'SELECT' => ['glpi_dashboards_dashboards.id', 'glpi_dashboards_dashboards.key'],
+         'FROM' => 'glpi_dashboards_dashboards',
+         'INNER JOIN' => [
+            'glpi_dashboards_rights' => [
+               'FKEY' => ['glpi_dashboards_rights' => 'dashboards_dashboards_id', 'glpi_dashboards_dashboards' => 'id'],
+            ],
+         ],
+         'WHERE' => ['glpi_dashboards_rights.itemtype' => 'User', 'glpi_dashboards_rights.items_id' => $this->fields['id']],
+      ]);
+      foreach ($iterator as $row) {
+         if (countElementsInTable($rights->getTable(), ['dashboards_dashboards_id' => $row['id']]) === 1) {
+            $dashboard->delete(['key' => $row['key']], 1);
+         }
+      }
+      $rights->deleteByCriteria(['itemtype' => 'User', 'items_id' => $this->fields['id']], 1);
 
       // Delete private bookmark
       $ss = new SavedSearch();
@@ -360,8 +401,6 @@ class User extends CommonDBTM {
             Profile_User::class,
             ProjectTaskTeam::class,
             ProjectTeam::class,
-            Reminder_User::class,
-            RSSFeed_User::class,
             SavedSearch_User::class,
             Ticket_User::class,
             UserEmail::class,
