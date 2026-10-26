@@ -1565,9 +1565,12 @@ class AuthLDAP extends CommonDBTM {
                                            $_SERVER['PHP_SELF'].
                                                "?order=".($values['order']=="DESC"?"ASC":"DESC"));
             }
-            echo Search::showHeaderItem(Search::HTML_OUTPUT, User::getTypeName(Session::getPluralNumber()), $num,
+            echo Search::showHeaderItem(Search::HTML_OUTPUT, __('Login'), $num,
                                         $_SERVER['PHP_SELF'].
                                             "?order=".($values['order']=="DESC"?"ASC":"DESC"));
+            echo "<th>".__('First name')."</th>";
+            echo "<th>".__('Surname')."</th>";
+            echo "<th>"._n('Email', 'Emails', 1)."</th>";
             echo "<th>".__('Last update in the LDAP directory')."</th>";
             if ($_SESSION['ldap_import']['mode']) {
                echo "<th>".__('Last update in GLPI')."</th>";
@@ -1581,15 +1584,19 @@ class AuthLDAP extends CommonDBTM {
                echo Html::getMassiveActionCheckBox(__CLASS__, $userinfos['uid']);
                echo "</td>";
                if ($config_ldap->isSyncFieldEnabled()) {
-                  echo "<td>" . $userinfos['uid'] . "</td>";
+                  echo "<td>" . htmlspecialchars($userinfos['uid'], ENT_QUOTES, 'UTF-8') . "</td>";
                }
                echo "<td>";
                if (isset($userinfos['id']) && User::canView()) {
-                  echo "<a href='".$userinfos['link']."'>". $userinfos['name'] . "</a>";
+                  echo "<a href='".$userinfos['link']."'>".
+                       htmlspecialchars($userinfos['name'], ENT_QUOTES, 'UTF-8')."</a>";
                } else {
-                  echo $userinfos['link'];
+                  echo htmlspecialchars($userinfos['link'], ENT_QUOTES, 'UTF-8');
                }
                echo "</td>";
+               foreach (['firstname', 'realname', 'email'] as $field) {
+                  echo "<td>".htmlspecialchars($userinfos['user_details'][$field], ENT_QUOTES, 'UTF-8')."</td>";
+               }
 
                if ($userinfos['stamp'] != '') {
                   echo "<td>" .Html::convDateTime(date("Y-m-d H:i:s", $userinfos['stamp'])). "</td>";
@@ -1597,9 +1604,11 @@ class AuthLDAP extends CommonDBTM {
                   echo "<td>&nbsp;</td>";
                }
                if ($_SESSION['ldap_import']['mode']) {
+                  echo "<td>";
                   if ($userinfos['date_sync'] != '') {
-                     echo "<td>" . Html::convDateTime($userinfos['date_sync']) . "</td>";
+                     echo Html::convDateTime($userinfos['date_sync']);
                   }
+                  echo "</td>";
                }
                echo "</tr>";
             }
@@ -1614,9 +1623,12 @@ class AuthLDAP extends CommonDBTM {
                                            $_SERVER['PHP_SELF'].
                                                "?order=".($values['order']=="DESC"?"ASC":"DESC"));
             }
-            echo Search::showHeaderItem(Search::HTML_OUTPUT, User::getTypeName(Session::getPluralNumber()), $num,
+            echo Search::showHeaderItem(Search::HTML_OUTPUT, __('Login'), $num,
                                         $_SERVER['PHP_SELF'].
                                                 "?order=".($values['order']=="DESC"?"ASC":"DESC"));
+            echo "<th>".__('First name')."</th>";
+            echo "<th>".__('Surname')."</th>";
+            echo "<th>"._n('Email', 'Emails', 1)."</th>";
             echo "<th>".__('Last update in the LDAP directory')."</th>";
             if ($_SESSION['ldap_import']['mode']) {
                echo "<th>".__('Last update in GLPI')."</th>";
@@ -1763,6 +1775,12 @@ class AuthLDAP extends CommonDBTM {
 
               $user_infos[$uid]["user_dn"] = $info[$ligne]['dn'];
               $user_infos[$uid][$field_for_sync] = $uid;
+              $user_infos[$uid][$login_field] = self::getFieldValue($info[$ligne], $login_field);
+              foreach (['firstname' => 'firstname_field', 'realname' => 'realname_field',
+                        'email' => 'email1_field'] as $field => $mapping) {
+                  $attribute = strtolower($config_ldap->fields[$mapping] ?? '');
+                  $user_infos[$uid]['user_details'][$field] = $info[$ligne][$attribute][0] ?? '';
+              }
               if ($config_ldap->isSyncFieldEnabled()) {
                   $user_infos[$uid]['sync'] = $info[$ligne][$login_field][0];
               }
@@ -1847,6 +1865,12 @@ class AuthLDAP extends CommonDBTM {
          if ($field_for_sync != $config_ldap->fields['login_field']) {
             $attrs[] = $field_for_sync;
          }
+         foreach (['firstname_field', 'realname_field', 'email1_field'] as $mapping) {
+            if (!empty($config_ldap->fields[$mapping])) {
+               $attrs[] = $config_ldap->fields[$mapping];
+            }
+         }
+         $attrs = array_values(array_unique($attrs));
 
          // Try a search to find the DN
          if ($values['ldap_filter'] == '') {
@@ -1914,6 +1938,7 @@ class AuthLDAP extends CommonDBTM {
                                    $field_for_sync => (isset($userfound[$config_ldap->fields['sync_field']]) ? $userfound[$config_ldap->fields['sync_field']] : 'NULL'),
                                    'timestamp'  => $user_infos[$userfound[$field_for_sync]]['timestamp'],
                                    'date_sync'  => $tmpuser->fields['date_sync'],
+                                   'user_details' => $userfound['user_details'],
                                    'dn'         => $user['user_dn']];
                } else if (($values['mode'] == self::ACTION_ALL)
                           || (($ldap_users[$user[$field_for_db]] - strtotime($user['date_sync'])) > 0)) {
@@ -1923,6 +1948,7 @@ class AuthLDAP extends CommonDBTM {
                                    $field_for_sync => $user['sync_field'],
                                    'timestamp'  => $user_infos[$user[$field_for_db]]['timestamp'],
                                    'date_sync'  => $user['date_sync'],
+                                   'user_details' => $user_infos[$user[$field_for_db]]['user_details'],
                                    'dn'         => $user['user_dn']];
                }
 
@@ -1950,6 +1976,7 @@ class AuthLDAP extends CommonDBTM {
             //If user dn exists in DB, it means that user login field has changed
             if (!$tmpuser->getFromDBByDn(Toolbox::addslashes_deep($user_infos[$user]["user_dn"]))) {
                $entry  = ["user"      => $user_infos[$user][$config_ldap->fields['login_field']],
+                          "user_details" => $user_infos[$user]['user_details'],
                           "timestamp" => $user_infos[$user]["timestamp"],
                           "date_sync" => Dropdown::EMPTY_VALUE];
                if ($config_ldap->isSyncFieldEnabled()) {
@@ -4127,6 +4154,7 @@ class AuthLDAP extends CommonDBTM {
 
          $user_to_add['stamp']      = (isset($userinfos["timestamp"])) ? $userinfos["timestamp"] : '';
          $user_to_add['date_sync']  = (isset($userinfos["date_sync"])) ? $userinfos["date_sync"] : '';
+         $user_to_add['user_details'] = $userinfos['user_details'];
 
          $user_to_add['uid'] = $userinfos['user'];
          if ($config_ldap->isSyncFieldEnabled()) {
