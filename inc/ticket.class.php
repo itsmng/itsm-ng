@@ -1039,48 +1039,24 @@ class Ticket extends CommonITILObject
             !Session::isCron()
             && !Session::haveRight(self::$rightname, self::ASSIGN)
         ) {
-            if (
-                isset($input["_itil_assign"])
-                && isset($input['_itil_assign']['_type'])
-                && ($input['_itil_assign']['_type'] == 'user')
-            ) {
-                // must own_ticket to grab a non assign ticket
-                if ($this->countUsers(CommonITILActor::ASSIGN) == 0) {
-                    if (
-                        (!Session::haveRightsOr(self::$rightname, [self::STEAL, self::OWN]))
-                        || !isset($input["_itil_assign"]['users_id'])
-                        || ($input["_itil_assign"]['users_id'] != Session::getLoginUserID())
-                    ) {
-                        unset($input["_itil_assign"]);
-                    }
-                } else {
-                    // Can not steal or can steal and not assign to me
-                    if (
-                        !Session::haveRight(self::$rightname, self::STEAL)
-                        || !isset($input["_itil_assign"]['users_id'])
-                        || ($input["_itil_assign"]['users_id'] != Session::getLoginUserID())
-                    ) {
-                        unset($input["_itil_assign"]);
+            foreach ($this->normalizeITILActorInputs($input['_itil_assign'] ?? []) as $index => $actor) {
+                $allowed = true;
+                if ($actor['_type'] === 'user') {
+                    $canTake = $this->countUsers(CommonITILActor::ASSIGN) == 0
+                        ? Session::haveRightsOr(self::$rightname, [self::STEAL, self::OWN])
+                        : Session::haveRight(self::$rightname, self::STEAL);
+                    $allowed = $canTake && ($actor['users_id'] ?? 0) == Session::getLoginUserID();
+                } elseif (in_array($actor['_type'], ['group', 'supplier'], true)) {
+                    $allowed = false;
+                }
+
+                if (!$allowed) {
+                    if (isset($input['_itil_assign']['_type'])) {
+                        unset($input['_itil_assign']);
+                    } else {
+                        unset($input['_itil_assign'][$index]);
                     }
                 }
-            }
-
-            // No supplier assign
-            if (
-                isset($input["_itil_assign"])
-                && isset($input['_itil_assign']['_type'])
-                && ($input['_itil_assign']['_type'] == 'supplier')
-            ) {
-                unset($input["_itil_assign"]);
-            }
-
-            // No group
-            if (
-                isset($input["_itil_assign"])
-                && isset($input['_itil_assign']['_type'])
-                && ($input['_itil_assign']['_type'] == 'group')
-            ) {
-                unset($input["_itil_assign"]);
             }
         }
 
@@ -1117,14 +1093,11 @@ class Ticket extends CommonITILObject
         ];
         foreach ($usertypes as $k => $t) {
             //handle new input
-            if (isset($input['_itil_' . $t]) && isset($input['_itil_' . $t]['_type'])) {
-                $field = $input['_itil_' . $t]['_type'] . 's_id';
-                if (
-                    isset($input['_itil_' . $t][$field])
-                    && !isset($input[$field . '_' . $t])
-                ) {
-                    $input['_' . $field . '_' . $t][]             = $input['_itil_' . $t][$field];
-                    $tocleanafterrules['_' . $field . '_' . $t][] = $input['_itil_' . $t][$field];
+            foreach ($this->normalizeITILActorInputs($input['_itil_' . $t] ?? []) as $actor) {
+                $field = $actor['_type'] . 's_id';
+                if (isset($actor[$field]) && !isset($input[$field . '_' . $t])) {
+                    $input['_' . $field . '_' . $t][]             = $actor[$field];
+                    $tocleanafterrules['_' . $field . '_' . $t][] = $actor[$field];
                 }
             }
 
@@ -1211,9 +1184,13 @@ class Ticket extends CommonITILObject
             $user = new User();
             $user_id = null;
             //try to find user from changes if exist (defined as _itil_requester)
-            if (isset($input["_itil_requester"]["users_id"])) {
-                $user_id = $input["_itil_requester"]["users_id"];
-            } elseif (isset($input["_users_id_requester"])) {  //else try to find user from input
+            foreach ($this->normalizeITILActorInputs($input['_itil_requester'] ?? []) as $actor) {
+                if (($actor['_type'] ?? '') === 'user' && isset($actor['users_id'])) {
+                    $user_id = $actor['users_id'];
+                    break;
+                }
+            }
+            if ($user_id === null && isset($input["_users_id_requester"])) {
                 $user_id = is_array($input["_users_id_requester"]) ? reset($input["_users_id_requester"]) : $input["_users_id_requester"];
             }
 

@@ -229,6 +229,96 @@ class Ticket extends DbTestCase
         ))->isEqualTo(1);
     }
 
+    public function pendingActorBatchProvider()
+    {
+        return [
+            ['requester', \CommonITILActor::REQUESTER],
+            ['observer', \CommonITILActor::OBSERVER],
+            ['assign', \CommonITILActor::ASSIGN],
+        ];
+    }
+
+    /**
+     * @dataProvider pendingActorBatchProvider
+     */
+    public function testUpdateTicketAddsPendingActorBatch($role, $actorType)
+    {
+        $this->login('itsm', 'itsm');
+        $ticket = new \Ticket();
+        $ticketId = (int)$ticket->add([
+            'name'                => 'Pending actor batch',
+            'content'             => 'Pending actor batch',
+            '_users_id_requester' => 0,
+            '_users_id_assign'    => 0,
+        ]);
+        $this->integer($ticketId)->isGreaterThan(0);
+
+        $users = [
+            (int)getItemByTypeName('User', 'normal', true),
+            (int)getItemByTypeName('User', 'tech', true),
+        ];
+        $groupId = $this->resolveItilActorTranslationValue('group');
+        $actors = [
+            ['_type' => 'user', 'users_id' => $users[0], 'use_notification' => [0], 'alternative_email' => ['first@example.com']],
+            ['_type' => 'user', 'users_id' => $users[1], 'use_notification' => [1], 'alternative_email' => ['second@example.com']],
+            ['_type' => 'group', 'groups_id' => $groupId],
+        ];
+        $this->boolean($ticket->update(['id' => $ticketId, '_itil_' . $role => $actors]))->isTrue();
+        $this->boolean($ticket->getFromDB($ticketId))->isTrue();
+        foreach ($users as $index => $userId) {
+            $link = new \Ticket_User();
+            $this->boolean($link->getFromDBByCrit([
+                'tickets_id' => $ticketId,
+                'users_id'   => $userId,
+                'type'       => $actorType,
+            ]))->isTrue();
+            $this->integer((int)$link->fields['use_notification'])->isEqualTo($index);
+            $this->string($link->fields['alternative_email'])->isEqualTo($actors[$index]['alternative_email'][0]);
+        }
+        $this->boolean($ticket->isGroup($actorType, $groupId))->isTrue();
+        if ($role === 'assign') {
+            $this->integer((int)$ticket->fields['status'])->isEqualTo(\CommonITILObject::ASSIGNED);
+        }
+    }
+
+    public function testPendingActorBatchKeepsAssignmentPermissions()
+    {
+        $this->login('itsm', 'itsm');
+        $ticket = new \Ticket();
+        $ticketId = (int)$ticket->add([
+            'name'                => 'Pending actor permissions',
+            'content'             => 'Pending actor permissions',
+            '_auto_import'        => true,
+            '_users_id_requester' => 0,
+            '_users_id_assign'    => 0,
+        ]);
+        $this->integer($ticketId)->isGreaterThan(0);
+        $otherUser = (int)getItemByTypeName('User', 'tech', true);
+        $currentUser = (int)\Session::getLoginUserID();
+        $groupId = $this->resolveItilActorTranslationValue('group');
+        $supplierId = $this->resolveItilActorTranslationValue('supplier');
+        $rights = $_SESSION['glpiactiveprofile']['ticket'];
+        try {
+            $_SESSION['glpiactiveprofile']['ticket'] = ($rights & ~\Ticket::ASSIGN & ~\Ticket::STEAL) | \Ticket::OWN;
+            $this->boolean($ticket->update([
+                'id' => $ticketId,
+                '_itil_assign' => [
+                    ['_type' => 'user', 'users_id' => $otherUser],
+                    ['_type' => 'group', 'groups_id' => $groupId],
+                    ['_type' => 'supplier', 'suppliers_id' => $supplierId],
+                    ['_type' => 'user', 'users_id' => $currentUser],
+                ],
+            ]))->isTrue();
+            $this->boolean($ticket->getFromDB($ticketId))->isTrue();
+            $this->boolean($ticket->isUser(\CommonITILActor::ASSIGN, $currentUser))->isTrue();
+            $this->boolean($ticket->isUser(\CommonITILActor::ASSIGN, $otherUser))->isFalse();
+            $this->boolean($ticket->isGroup(\CommonITILActor::ASSIGN, $groupId))->isFalse();
+            $this->boolean($ticket->isSupplier(\CommonITILActor::ASSIGN, $supplierId))->isFalse();
+        } finally {
+            $_SESSION['glpiactiveprofile']['ticket'] = $rights;
+        }
+    }
+
     public function testTasksFromTemplate()
     {
         $this->login();
