@@ -584,7 +584,7 @@ class Toolbox extends \GLPITestCase
     public function testSaveAndDeletePicture()
     {
         // Save an image twice
-        $test_file = __DIR__ . '/../files/test.png';
+        $test_file = GLPI_TMP_DIR . '/test.png';
         copy(__DIR__ . '/../../pics/add_dropdown.png', $test_file); // saved image will be removed from FS
         $first_pict = \Toolbox::savePicture($test_file);
         $this->string($first_pict)->matches('#[^/]+/.+\.png#'); // generated random name inside subdir
@@ -606,6 +606,11 @@ class Toolbox extends \GLPITestCase
         // Save and delete unexisting files
         $this->boolean(\Toolbox::savePicture('notafile.jpg'))->isFalse();
         $this->boolean(\Toolbox::deletePicture('notafile.jpg'))->isFalse();
+
+        copy(__DIR__ . '/../../pics/add_dropdown.png', $test_file);
+        $prefixed_pict = \Toolbox::savePicture($test_file, '../../azerty_abcd/+~1234|]');
+        $this->string($prefixed_pict)->matches('#^\w{2}/_azerty_abcd_1234_\w+\.png$#');
+        $this->boolean(\Toolbox::deletePicture($prefixed_pict))->isTrue();
     }
 
     protected function getPictureUrlProvider()

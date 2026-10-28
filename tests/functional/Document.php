@@ -112,17 +112,16 @@ class Document extends DbTestCase
 
         $doc = $this->newTestedInstance;
         $this->array($this->testedInstance->prepareInputForAdd($input))
-           ->hasSize(4)
-           ->hasKeys(['tag', 'filename', 'name', 'current_filename'])
+           ->hasSize(3)
+           ->hasKeys(['tag', 'filename', 'name'])
            ->variable['filename']->isEqualTo('A_name.pdf')
-           ->variable['name']->isEqualTo('A_name.pdf')
-           ->variable['current_filename']->isEqualTo('');
+           ->variable['name']->isEqualTo('A_name.pdf');
 
         $this->login();
         $uid = getItemByTypeName('User', TU_USER, true);
         $this->array($this->testedInstance->prepareInputForAdd($input))
-           ->hasSize(5)
-           ->hasKeys(['users_id', 'tag', 'filename', 'name', 'current_filename'])
+           ->hasSize(4)
+           ->hasKeys(['users_id', 'tag', 'filename', 'name'])
            ->variable['users_id']->isEqualTo($uid);
 
         $item = new \Computer();
@@ -143,8 +142,8 @@ class Document extends DbTestCase
         $input['upload_file'] = 'filename.ext';
 
         $this->array($mdoc->prepareInputForAdd($input))
-           ->hasSize(7)
-           ->hasKeys(['users_id', 'tag', 'itemtype', 'items_id', 'filename', 'name', 'current_filename'])
+           ->hasSize(6)
+           ->hasKeys(['users_id', 'tag', 'itemtype', 'items_id', 'filename', 'name'])
            ->variable['users_id']->isEqualTo($uid)
            ->string['itemtype']->isIdenticalTo('Computer')
            ->variable['items_id']->isEqualTo($cid)
@@ -157,10 +156,12 @@ class Document extends DbTestCase
            'name'     => 'legit name',
            'filepath' => '_dumps/dump.sql',
            'sha1sum'  => 'bad',
+           'current_filepath' => '../file-to-preserve.txt',
+           'current_filename' => 'file-to-preserve.txt',
         ];
 
         $this->array($this->newTestedInstance->prepareInputForAdd($input))
-           ->notHasKeys(['filepath', 'sha1sum']);
+           ->notHasKeys(['filepath', 'sha1sum', 'current_filepath', 'current_filename']);
     }
 
     public function testPrepareInputForUpdateIgnoreBlacklistedFields()
@@ -180,6 +181,48 @@ class Document extends DbTestCase
 
         $this->array($doc->prepareInputForUpdate($input))
            ->notHasKeys(['filepath', 'sha1sum']);
+    }
+
+    public function testDocumentCreationPreservesExistingFile()
+    {
+        foreach (['_filename', 'upload_file', '_uploaded_file'] as $upload_field) {
+            $filename = uniqid('document-security-', true) . '.txt';
+            $victim = GLPI_DOC_DIR . '/' . $filename;
+            $source = ($upload_field === 'upload_file' ? GLPI_UPLOAD_DIR : GLPI_TMP_DIR) . '/' . $filename;
+            $prepared = [];
+            file_put_contents($victim, 'File to preserve');
+            file_put_contents($source, uniqid('New document content', true));
+
+            try {
+                $input = [
+                    'name' => 'New document',
+                    'current_filepath' => $filename,
+                    'current_filename' => $filename,
+                ];
+                $input[$upload_field] = match ($upload_field) {
+                    '_filename' => [$filename],
+                    'upload_file' => $filename,
+                    '_uploaded_file' => [
+                        'name' => $filename,
+                        'tmp_name' => $source,
+                        'type' => 'text/plain',
+                        'error' => UPLOAD_ERR_OK,
+                    ],
+                };
+
+                $prepared = (new \Document())->prepareInputForAdd($input);
+                $this->array($prepared)->hasKey('filepath');
+                $this->boolean(is_file($victim))->isTrue();
+                $this->string(file_get_contents($victim))->isIdenticalTo('File to preserve');
+                $this->boolean(is_file(GLPI_DOC_DIR . '/' . $prepared['filepath']))->isTrue();
+            } finally {
+                foreach ([$victim, $source, GLPI_DOC_DIR . '/' . ($prepared['filepath'] ?? '')] as $path) {
+                    if (is_file($path)) {
+                        unlink($path);
+                    }
+                }
+            }
+        }
     }
 
     /** Cannot work without a real document uploaded.
@@ -262,6 +305,7 @@ class Document extends DbTestCase
            [__FILE__, false],
            [__DIR__ . "/../../pics/add_dropdown.png", true],
            [__DIR__ . "/../../pics/corners.gif", true],
+           [__DIR__ . "/../fixtures/blank.webp", true],
            [__DIR__ . "/../../pics/PICS-AUTHORS.txt", false],
            [__DIR__ . "/../notanimage.jpg", false],
            [__DIR__ . "/../notafile.jpg", false]
@@ -274,6 +318,29 @@ class Document extends DbTestCase
     public function testIsImage($file, $expected)
     {
         $this->boolean(\Document::isImage($file))->isIdenticalTo($expected);
+    }
+
+    public function testIsImageRejectsDisguisedFiles()
+    {
+        foreach (['html', 'php', 'svg', ''] as $extension) {
+            $file = GLPI_TMP_DIR . '/' . uniqid('disguised-image-') . ($extension === '' ? '' : '.' . $extension);
+            copy(__DIR__ . '/../../pics/add_dropdown.png', $file);
+            try {
+                $this->boolean(\Document::isImage($file))->isFalse();
+                $this->boolean(\Toolbox::savePicture($file))->isFalse();
+                $this->boolean(is_file($file))->isTrue();
+            } finally {
+                unlink($file);
+            }
+        }
+
+        $file = GLPI_TMP_DIR . '/' . uniqid('image-') . '.PNG';
+        copy(__DIR__ . '/../../pics/add_dropdown.png', $file);
+        try {
+            $this->boolean(\Document::isImage($file))->isTrue();
+        } finally {
+            unlink($file);
+        }
     }
 
     /**
