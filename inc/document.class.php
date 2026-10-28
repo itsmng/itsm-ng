@@ -225,9 +225,9 @@ class Document extends CommonDBTM
 
         $input = $this->filterFields($input);
 
-        // current_filename is not necessary for a new item, but keeping a
-        // request-provided value can lead to wrong file deletion in move*().
-        $input['current_filename'] = '';
+        // A new document has no current file. Request-provided paths could
+        // otherwise cause upload handling to delete an existing file.
+        unset($input['current_filepath'], $input['current_filename']);
 
         if ($uid = Session::getLoginUserID()) {
             $input["users_id"] = Session::getLoginUserID();
@@ -1746,18 +1746,24 @@ class Document extends CommonDBTM
         if (!file_exists($file)) {
             return false;
         }
+
+        // Image signatures alone can be forged in HTML or executable files.
+        if (!in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['bmp', 'gif', 'jpeg', 'jpg', 'png', 'webp'], true)) {
+            return false;
+        }
+
         if (extension_loaded('exif')) {
             if (filesize($file) < 12) {
                 return false;
             }
             $etype = exif_imagetype($file);
-            return in_array($etype, [IMAGETYPE_JPEG, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_BMP]);
+            return in_array($etype, [IMAGETYPE_JPEG, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_BMP, IMAGETYPE_WEBP]);
         } else {
             Toolbox::logWarning('For security reasons, you should consider using exif PHP extension to properly check images.');
             $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
             return in_array(
                 finfo_file($fileinfo, $file),
-                ['image/jpeg', 'image/png','image/gif', 'image/bmp']
+                ['image/jpeg', 'image/png','image/gif', 'image/bmp', 'image/webp']
             );
         }
     }
