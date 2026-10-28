@@ -140,6 +140,7 @@ class SavedSearch_Alert extends CommonDBChild
               self::getTypeName(1) => [
                  'visible' => 'true',
                  'inputs' => [
+                    ['type' => 'hidden', 'name' => '_inline', 'value' => !empty($options['inline']) ? 1 : 0],
                     [
                        'type' => 'hidden',
                        'name' => 'id',
@@ -151,7 +152,7 @@ class SavedSearch_Alert extends CommonDBChild
                        'value' => $options['savedsearches_id'],
                     ] : [],
                     SavedSearch::getTypeName(1) => [
-                       'content' => $search->getLink() . $count ?? '',
+                       'content' => $search->getLink() . ($count === null ? '' : ' (' . $count . ')'),
                     ],
                     __('Name') => [
                        'type' => 'text',
@@ -181,6 +182,12 @@ class SavedSearch_Alert extends CommonDBChild
               ]
            ]
         ];
+        if ($this->isNewID($ID)) {
+            $form['buttons'] = [[
+                'type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Add'),
+                'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+            ]];
+        }
         renderTwigForm($form, '', $this->fields);
 
         return true;
@@ -246,55 +253,32 @@ class SavedSearch_Alert extends CommonDBChild
         }
         echo '</div>';
 
-        if (
-            $canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))
-        ) {
-            echo "<div class='firstbloc'>" .
-                  "<a class='btn btn-secondary' href='" . self::getFormURL() . "?savedsearches_id=$ID&amp;withtemplate=" .
-                     $withtemplate . "'>";
-            echo __('Add an alert');
-            echo "</a></div>\n";
+        if ($canedit && $withtemplate != 2) {
+            (new self())->showForm(-1, ['savedsearches_id' => $ID, 'inline' => true]);
         }
-
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => ['savedsearches_id' => $ID]
+        $values = [];
+        $alert = new self();
+        foreach ($DB->request([
+            'FROM' => self::getTable(), 'WHERE' => ['savedsearches_id' => $ID],
+        ]) as $data) {
+            $alert->fields = $data;
+            $values[$data['id']] = [
+                'name' => $alert->getLink(),
+                'operator' => htmlspecialchars(self::getOperators($data['operator']), ENT_QUOTES, 'UTF-8'),
+                'value' => $data['value'], 'active' => Dropdown::getYesNo($data['is_active']),
+            ];
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
+        }
+        echo '</div>';
+        $id = 'savedSearchAlerts_' . $ID;
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => ['name' => __('Name'), 'operator' => __('Operator'),
+                'value' => __('Value'), 'active' => __('Active')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
         ]);
-
-        echo "<table class='tab_cadre_fixehov' aria-label'Tables for active item'>";
-
-        $colspan = 4;
-        if ($iterator->numrows()) {
-            echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($iterator->numrows()) .
-               "</th></tr>";
-
-            $header = "<tr><th>" . __('Name') . "</th>";
-            $header .= "<th>" . __('Operator') . "</th>";
-            $header .= "<th>" . __('Value') . "</th>";
-            $header .= "<th>" . __('Active') . "</th>";
-            $header .= "</tr>";
-            echo $header;
-
-            $alert = new self();
-            while ($data = $iterator->next()) {
-                $alert->getFromDB($data['id']);
-                echo "<tr class='tab_bg_2'>";
-                echo "<td>" . $alert->getLink() . "</td>";
-                echo "<td>" . self::getOperators($data['operator']) . "</td>";
-                echo "<td>" . $data['value'] . "</td>";
-                echo "<td>" . Dropdown::getYesNo($data['is_active']) . "</td>";
-                echo "</tr>";
-                Session::addToNavigateListItems(__CLASS__, $data['id']);
-            }
-            echo $header;
-        } else {
-            echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
-        }
-
-        echo "</table>";
-        echo "</div>";
     }
+
 
     /**
      * Get operators

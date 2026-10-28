@@ -1022,142 +1022,67 @@ class Reservation extends CommonDBChild
     {
         global $DB, $CFG_GLPI;
 
-        $resaID = 0;
-        if (!Session::haveRight("reservation", READ)) {
+        if (!Session::haveRight('reservation', READ)) {
             return false;
         }
-
-        echo "<div class='firstbloc'>";
-        ReservationItem::showActivationFormForItem($item);
-
-        $ri = new ReservationItem();
-        if ($ri->getFromDBbyItem($item->getType(), $item->getID())) {
-            $now = $_SESSION["glpi_currenttime"];
-
-            // Print reservation in progress
-            $iterator = $DB->request([
-               'FROM'   => 'glpi_reservations',
-               'WHERE'  => [
-                  'end'                   => ['>', $now],
-                  'reservationitems_id'   => $ri->fields['id']
-               ],
-               'ORDER'  => 'begin'
-            ]);
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'><tr><th colspan='5'>";
-
-            if (
-                count($iterator) && $ri->fields["is_active"]
-                && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)
-            ) {
-                echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
-                       $ri->fields['id'] . "'>" . __('Current and future reservations') . "</a>";
-            } else {
-                echo __('Current and future reservations');
-            }
-            echo "</th></tr>\n";
-
-            if (!count($iterator)) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center' colspan='5'>" . __('No reservation') . "</td></tr>\n";
-            } else {
-                echo "<tr><th>" . __('Start date') . "</th>";
-                echo "<th>" . __('End date') . "</th>";
-                echo "<th>" . __('By') . "</th>";
-                echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
-
-                while ($data = $iterator->next()) {
-                    echo "<tr class='tab_bg_2'>";
-                    echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
-                    echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
-                    echo "<td class='center'>";
-                    if (Session::haveRight('user', READ)) {
-                        echo "<a href='" . User::getFormURLWithID($data["users_id"]) . "'>" . getUserName($data["users_id"]) . "</a>";
-                    } else {
-                        echo getUserName($data["users_id"]);
-                    }
-                    echo "</td>";
-                    echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
-                    echo "<td class='center'>";
-                    if (Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
-                        list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
-                        echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
-                              $ri->fields['id'] . "&amp;mois_courant=$mois&amp;annee_courante=$annee' title=\"" .
-                              __s('See planning') . "\">";
-                        echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
-                        echo "<span class='sr-only'>" . __('See planning') . "</span></a>";
-                    } else {
-                        echo "&nbsp;";
-                    }
-                    echo "</td></tr>\n";
-                }
-            }
-            echo "</table></div>\n";
-
-            // Print old reservations
-            $iterator = $DB->request([
-               'FROM'   => 'glpi_reservations',
-               'WHERE'  => [
-                  'end'                   => ['<=', $now],
-                  'reservationitems_id'   => $ri->fields['id']
-               ],
-               'ORDER'  => 'begin DESC'
-            ]);
-
-            echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Past Reservations'><tr><th colspan='5'>";
-
-            if (
-                count($iterator) && $ri->fields["is_active"]
-                && Session::haveRight('reservation', ReservationItem::RESERVEANITEM)
-            ) {
-                echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
-                       $ri->fields['id'] . "' >" . __('Past reservations') . "</a>";
-            } else {
-                echo __('Past reservations');
-            }
-            echo "</th></tr>\n";
-
-            if (!count($iterator)) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center' colspan='5'>" . __('No reservation') . "</td></tr>\n";
-            } else {
-                echo "<tr><th>" . __('Start date') . "</th>";
-                echo "<th>" . __('End date') . "</th>";
-                echo "<th>" . __('By') . "</th>";
-                echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
-
-                while ($data = $iterator->next()) {
-                    echo "<tr class='tab_bg_2'>";
-                    echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
-                    echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
-                    echo "<td class='center'>";
-                    if (Session::haveRight('user', READ)) {
-                        echo "<a href='" . User::getFormURLWithID($data["users_id"]) . "'>" . getUserName($data["users_id"]) . "</a>";
-                    } else {
-                        echo getUserName($data["users_id"]);
-                    }
-                    echo "</td>";
-                    echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
-                    echo "<td class='center'>";
-                    if (Session::haveRight('reservation', ReservationItem::RESERVEANITEM)) {
-                        list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
-                        echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
-                              $ri->fields['id'] . "&amp;mois_courant=$mois&amp;annee_courante=$annee' title=\"" .
-                              __s('See planning') . "\">";
-                        echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
-                        echo "<span class='sr-only'>" . __('See planning') . "</span>";
-                        echo "</a>";
-                    } else {
-                        echo "&nbsp;";
-                    }
-                    echo "</td></tr>\n";
-                }
-            }
-            echo "</table>\n";
+        if ($withtemplate != 2) {
+            ReservationItem::showActivationFormForItem($item);
         }
-        echo "</div>\n";
+        $ri = new ReservationItem();
+        if (!$ri->getFromDBbyItem($item->getType(), $item->getID())) {
+            return;
+        }
+        $canReserve = Session::haveRight('reservation', ReservationItem::RESERVEANITEM);
+        if ($canReserve && $ri->fields['is_active'] && $withtemplate != 2) {
+            $url = $CFG_GLPI['root_doc'] . '/front/reservation.php?reservationitems_id=' . $ri->fields['id'];
+            echo '<div class="mb-3"><a class="btn btn-primary" href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8', false) . '">'
+                . '<i class="fas fa-plus me-2" aria-hidden="true"></i>' . __('New reservation') . '</a></div>';
+        }
+        $now = $_SESSION['glpi_currenttime'];
+        foreach (['current' => __('Current and future reservations'), 'past' => __('Past reservations')] as $period => $title) {
+            $iterator = $DB->request([
+                'FROM' => 'glpi_reservations',
+                'WHERE' => [
+                    'end' => [$period === 'current' ? '>' : '<=', $now],
+                    'reservationitems_id' => $ri->fields['id'],
+                ],
+                'ORDER' => $period === 'current' ? 'begin' : 'begin DESC',
+            ]);
+            echo '<section class="mb-4"><h2 class="h4">';
+            $calendarUrl = $CFG_GLPI['root_doc'] . '/front/reservation.php?reservationitems_id=' . $ri->fields['id'];
+            if (count($iterator) && $ri->fields['is_active'] && $canReserve) {
+                echo '<a href="' . htmlspecialchars($calendarUrl, ENT_QUOTES, 'UTF-8', false) . '">' . $title . '</a>';
+            } else {
+                echo $title;
+            }
+            echo '</h2>';
+            $values = [];
+            foreach ($iterator as $data) {
+                $user = htmlspecialchars(getUserName($data['users_id']), ENT_QUOTES, 'UTF-8', false);
+                if (Session::haveRight('user', READ)) {
+                    $user = '<a href="' . htmlspecialchars(User::getFormURLWithID($data['users_id']), ENT_QUOTES, 'UTF-8', false) . '">' . $user . '</a>';
+                }
+                $planning = '';
+                if ($canReserve) {
+                    $year = substr($data['begin'], 0, 4);
+                    $month = substr($data['begin'], 5, 2);
+                    $url = $calendarUrl . '&mois_courant=' . $month . '&annee_courante=' . $year;
+                    $planning = '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8', false) . '" title="' . __s('See planning') . '">'
+                        . '<i class="far fa-calendar-alt" aria-hidden="true"></i><span class="visually-hidden">' . __('See planning') . '</span></a>';
+                }
+                $values[] = [Html::convDateTime($data['begin']), Html::convDateTime($data['end']), $user,
+                    nl2br(htmlspecialchars($data['comment'] ?? '', ENT_QUOTES, 'UTF-8', false)), $planning];
+            }
+            renderTwigTemplate('table.twig', [
+                'id' => 'reservations_' . $item->getType() . '_' . $item->getID() . '_' . $period,
+                'state_key' => 'Reservation_for_' . $item->getType() . '_' . $period,
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+                'fields' => [__('Start date'), __('End date'), __('By'), __('Comments'), __('See planning')],
+                'values' => $values,
+            ]);
+            echo '</section>';
+        }
     }
-
 
     /**
      * Display reservations for a user
@@ -1168,178 +1093,70 @@ class Reservation extends CommonDBChild
     {
         global $DB, $CFG_GLPI;
 
-        $resaID = 0;
-
-        if (!Session::haveRight("reservation", READ)) {
+        if (!Session::haveRight('reservation', READ)) {
             return false;
         }
-
-        echo "<div class='firstbloc'>";
-        $now = $_SESSION["glpi_currenttime"];
-
-        // Print reservation in progress
-        $iterator = $DB->request([
-           'SELECT'    => [
-              'begin',
-              'end',
-              'items_id',
-              'glpi_reservationitems.entities_id',
-              'users_id',
-              'glpi_reservations.comment',
-              'reservationitems_id',
-              'completename'
-           ],
-           'FROM'      => 'glpi_reservations',
-           'LEFT JOIN' => [
-              'glpi_reservationitems' => [
-                 'ON' => [
-                    'glpi_reservationitems' => 'id',
-                    'glpi_reservations'     => 'reservationitems_id'
-                 ]
-              ],
-              'glpi_entities' => [
-                 'ON' => [
-                    'glpi_reservationitems' => 'entities_id',
-                    'glpi_entities'         => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => [
-              'end'       => ['>', $now],
-              'users_id'  => $ID
-           ],
-           'ORDERBY'   => 'begin'
-        ]);
-
-        $ri = new ReservationItem();
-        echo "<table class='tab_cadre_fixehov' aria-label='Current and future reservations'>";
-        echo "<tr><th colspan='6'>" . __('Current and future reservations') . "</th></tr>\n";
-
-        if (count($iterator) == 0) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='6'>" . __('No reservation') . "</td></tr\n>";
-        } else {
-            echo "<tr><th>" . __('Start date') . "</th>";
-            echo "<th>" . __('End date') . "</th>";
-            echo "<th>" . _n('Item', 'Items', 1) . "</th>";
-            echo "<th>" . Entity::getTypeName(1) . "</th>";
-            echo "<th>" . __('By') . "</th>";
-            echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
-
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
-                echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
-
-                if ($ri->getFromDB($data["reservationitems_id"])) {
-                    $link = "&nbsp;";
-
-                    if ($item = getItemForItemtype($ri->fields['itemtype'])) {
-                        if ($item->getFromDB($ri->fields['items_id'])) {
-                            $link = $item->getLink();
+        $escape = static function ($value) {
+            return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        };
+        $now = $_SESSION['glpi_currenttime'];
+        foreach (['current' => __('Current and future reservations'), 'past' => __('Past reservations')] as $period => $title) {
+            $iterator = $DB->request([
+                'SELECT' => ['glpi_reservations.*', 'glpi_reservationitems.entities_id', 'glpi_entities.completename'],
+                'FROM' => 'glpi_reservations',
+                'LEFT JOIN' => [
+                    'glpi_reservationitems' => ['ON' => [
+                        'glpi_reservationitems' => 'id',
+                        'glpi_reservations' => 'reservationitems_id',
+                    ]],
+                    'glpi_entities' => ['ON' => [
+                        'glpi_reservationitems' => 'entities_id',
+                        'glpi_entities' => 'id',
+                    ]],
+                ],
+                'WHERE' => ['end' => [$period === 'current' ? '>' : '<=', $now], 'users_id' => $ID],
+                'ORDERBY' => $period === 'current' ? 'begin' : 'begin DESC',
+            ]);
+            $values = [];
+            foreach ($iterator as $data) {
+                $link = '';
+                $reservation_item = new ReservationItem();
+                if ($reservation_item->getFromDB($data['reservationitems_id'])) {
+                    $item = getItemForItemtype($reservation_item->fields['itemtype']);
+                    if ($item && $item->getFromDB($reservation_item->fields['items_id'])) {
+                        $link = $escape($item->getNameID());
+                        if ($item->can($item->getID(), READ)) {
+                            $link = '<a href="' . $escape($item->getLinkURL()) . '">' . $link . '</a>';
                         }
                     }
-                    echo "<td class='center'>$link</td>";
-                    echo "<td class='center'>" . $data['completename'] . "</td>";
-                } else {
-                    echo "<td class='center'>&nbsp;</td>";
                 }
-
-                echo "<td class='center'>" . getUserName($data["users_id"]) . "</td>";
-                echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
-                echo "<td class='center'>";
-                list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
-                echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
-                      $data["reservationitems_id"] . "&amp;mois_courant=$mois&amp;" .
-                      "annee_courante=$annee' title=\"" . __s('See planning') . "\">";
-                echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
-                echo "<span class='sr-only'>" . __('See planning') . "</span>";
-                echo "</a></td></tr>\n";
+                $url = $CFG_GLPI['root_doc'] . '/front/reservation.php?' . http_build_query([
+                    'reservationitems_id' => $data['reservationitems_id'],
+                    'mois_courant' => substr($data['begin'], 5, 2),
+                    'annee_courante' => substr($data['begin'], 0, 4),
+                ]);
+                $values[] = [
+                    $escape(Html::convDateTime($data['begin'])),
+                    $escape(Html::convDateTime($data['end'])),
+                    $link,
+                    $escape($data['completename']),
+                    $escape(getUserName($data['users_id'])),
+                    nl2br($escape($data['comment'])),
+                    '<a href="' . $escape($url) . '" aria-label="' . $escape(__('See planning')) . '">'
+                        . '<i class="far fa-calendar-alt" aria-hidden="true"></i></a>',
+                ];
             }
+            echo '<h2 class="h4 mt-4">' . $escape($title) . '</h2>';
+            $id = 'userReservations_' . $ID . '_' . $period;
+            renderTwigTemplate('table.twig', [
+                'id' => $id,
+                'state_key' => $id,
+                'fields' => [__('Start date'), __('End date'), _n('Item', 'Items', 1),
+                    Entity::getTypeName(1), __('By'), __('Comments'), __('See planning')],
+                'values' => $values,
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            ]);
         }
-        echo "</table></div>\n";
-
-        // Print old reservations
-        $iterator = $DB->request([
-           'SELECT'    => [
-              'begin',
-              'end',
-              'items_id',
-              'glpi_reservationitems.entities_id',
-              'users_id',
-              'glpi_reservations.comment',
-              'reservationitems_id',
-              'completename'
-           ],
-           'FROM'      => 'glpi_reservations',
-           'LEFT JOIN' => [
-              'glpi_reservationitems' => [
-                 'ON' => [
-                    'glpi_reservationitems' => 'id',
-                    'glpi_reservations'     => 'reservationitems_id'
-                 ]
-              ],
-              'glpi_entities'         => [
-                 'ON' => [
-                    'glpi_reservationitems' => 'entities_id',
-                    'glpi_entities'         => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => [
-              'end'       => ['<=', $now],
-              'users_id'  => $ID
-           ],
-           'ORDERBY'   => 'begin DESC'
-        ]);
-
-        echo "<div class='spaced'>";
-        echo "<table class='tab_cadre_fixehov' aria-label='Past Reservations'>";
-        echo "<tr><th colspan='6'>" . __('Past reservations') . "</th></tr>\n";
-
-        if (count($iterator) == 0) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='6'>" . __('No reservation') . "</td></tr>\n";
-        } else {
-            echo "<tr><th>" . __('Start date') . "</th>";
-            echo "<th>" . __('End date') . "</th>";
-            echo "<th>" . _n('Item', 'Items', 1) . "</th>";
-            echo "<th>" . Entity::getTypeName(1) . "</th>";
-            echo "<th>" . __('By') . "</th>";
-            echo "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
-
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center'>" . Html::convDateTime($data["begin"]) . "</td>";
-                echo "<td class='center'>" . Html::convDateTime($data["end"]) . "</td>";
-
-                if ($ri->getFromDB($data["reservationitems_id"])) {
-                    $link = "&nbsp;";
-
-                    if ($item = getItemForItemtype($ri->fields['itemtype'])) {
-                        if ($item->getFromDB($ri->fields['items_id'])) {
-                            $link = $item->getLink();
-                        }
-                    }
-                    echo "<td class='center'>$link</td>";
-                    echo "<td class='center'>" . $data['completename'] . "</td>";
-                } else {
-                    echo "<td class='center'>&nbsp;</td>";
-                }
-
-                echo "<td class='center'>" . getUserName($data["users_id"]) . "</td>";
-                echo "<td class='center'>" . nl2br((string) $data["comment"]) . "</td>";
-                echo "<td class='center'>";
-                list($annee, $mois, $jour) = explode("-", (string) $data["begin"]);
-                echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/reservation.php?reservationitems_id=" .
-                      $data["reservationitems_id"] . "&amp;mois_courant=$mois&amp;annee_courante=$annee' " .
-                      "title=\"" . __s('See planning') . "\">";
-                echo "<i class='far fa-calendar-alt' aria-hidden='true'></i>";
-                echo "<span class='sr-only'>" . __('See planning') . "</span>";
-                echo "</td></tr>\n";
-            }
-        }
-        echo "</table></div>\n";
     }
 
 

@@ -338,6 +338,12 @@ class ContractCost extends CommonDBChild
                 ]
             ]
         ];
+        if ($ID <= 0) {
+            $section = $form['content'][array_key_first($form['content'])];
+            $form['content'] = [__('Add a new cost') => $section];
+            $form['buttons'] = [['type' => 'submit', 'name' => 'add', 'value' => __('Add a new cost'),
+                'class' => 'btn btn-primary', 'icon' => 'fas fa-plus']];
+        }
         renderTwigForm($form, '', $this->fields);
 
         return true;
@@ -355,120 +361,41 @@ class ContractCost extends CommonDBChild
     public static function showForContract(Contract $contract, $withtemplate = 0)
     {
         global $DB, $CFG_GLPI;
-
-        $ID = $contract->fields['id'];
-
-        if (
-            !$contract->getFromDB($ID)
-            || !$contract->can($ID, READ)
-        ) {
-            return;
+        $ID = $contract->getID();
+        if (!$contract->getFromDB($ID) || !$contract->can($ID, READ)) {
+            return false;
         }
-        $canedit = $contract->can($ID, UPDATE);
-
-        echo "<div class='center'>";
-
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => ['contracts_id' => $ID],
-           'ORDER'  => 'begin_date'
-        ]);
-        $rand   = mt_rand();
-
-        if (
-            $canedit
-            && ($withtemplate != 2)
-        ) {
-            echo "<div id='viewcost" . $ID . "_$rand'></div>\n";
-            echo "<script type='text/javascript' >\n";
-            echo "function viewAddCost" . $ID . "_$rand() {\n";
-            $params = ['type'         => __CLASS__,
-                            'parenttype'   => 'Contract',
-                            'contracts_id' => $ID,
-                            'id'           => -1];
-            Ajax::updateItemJsCode(
-                "viewcost" . $ID . "_$rand",
-                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
-                $params
-            );
-            echo "};";
-            echo "</script>\n";
-            echo "<div class='center firstbloc'>" .
-                  "<a class='btn btn-secondary' href='javascript:viewAddCost" . $ID . "_$rand();'>";
-            echo __('Add a new cost') . "</a></div>\n";
+        $canedit = $contract->can($ID, UPDATE) && ($withtemplate != 2);
+        $container = 'ContractCostEditor_' . $ID;
+        if ($canedit) {
+            $cost = new self();
+            $cost->showForm(-1, ['parent' => $contract]);
+            echo '<div id="' . $container . '"></div>';
         }
-
-        echo "<table class='tab_cadre_fixehov' aria-label='contract Information'>";
-        echo "<tr><th colspan='5'>" . self::getTypeName(count($iterator)) . "</th></tr>";
-
-        if (count($iterator)) {
-            echo "<tr><th>" . __('Name') . "</th>";
-            echo "<th>" . __('Begin date') . "</th>";
-            echo "<th>" . __('End date') . "</th>";
-            echo "<th>" . Budget::getTypeName(1) . "</th>";
-            echo "<th>" . _n('Cost', 'Costs', 1) . "</th>";
-            echo "</tr>";
-
-            Session::initNavigateListItems(
-                __CLASS__,
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    Contract::getTypeName(1),
-                    $contract->getName()
-                )
-            );
-
-            $total = 0;
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2' " .
-                      ($canedit
-                         ? "style='cursor:pointer' onClick=\"viewEditCost" . $data['contracts_id'] . "_" .
-                         $data['id'] . "_$rand();\"" : '') . ">";
-                $name = (empty($data['name']) ? sprintf(
-                    __('%1$s (%2$s)'),
-                    $data['name'],
-                    $data['id']
-                )
-                                              : $data['name']);
-                echo "<td>";
-                printf(
-                    __('%1$s %2$s'),
-                    $name,
-                    Html::showToolTip($data['comment'], ['display' => false])
-                );
-                if ($canedit) {
-                    echo "\n<script type='text/javascript' >\n";
-                    echo "function viewEditCost" . $data['contracts_id'] . "_" . $data["id"] . "_$rand() {\n";
-                    $params = ['type'         => __CLASS__,
-                                      'parenttype'   => 'Contract',
-                                      'contracts_id' => $data["contracts_id"],
-                                      'id'           => $data["id"]];
-                    Ajax::updateItemJsCode(
-                        "viewcost" . $ID . "_$rand",
-                        $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
-                        $params
-                    );
-                    echo "};";
-                    echo "</script>\n";
-                }
-                echo "</td>";
-                echo "<td>" . Html::convDate($data['begin_date']) . "</td>";
-                echo "<td>" . Html::convDate($data['end_date']) . "</td>";
-                echo "<td>" . Dropdown::getDropdownName('glpi_budgets', $data['budgets_id']) . "</td>";
-                echo "<td class='numeric'>" . Html::formatNumber($data['cost']) . "</td>";
-                $total += $data['cost'];
-                echo "</tr>";
-                Session::addToNavigateListItems(__CLASS__, $data['id']);
+        $values = [];
+        $total = 0;
+        Session::initNavigateListItems(__CLASS__, sprintf(__('%1$s = %2$s'), Contract::getTypeName(1), $contract->getName()));
+        foreach ($DB->request(['FROM' => self::getTable(), 'WHERE' => ['contracts_id' => $ID], 'ORDER' => ['begin_date', 'id']]) as $data) {
+            $name = htmlspecialchars($data['name'] ?: '(' . $data['id'] . ')', ENT_QUOTES, 'UTF-8', false);
+            if ($canedit) {
+                $function = 'ContractCostEdit_' . $ID . '_' . $data['id'];
+                echo '<script>function ' . $function . '() {';
+                Ajax::updateItemJsCode($container, $CFG_GLPI['root_doc'] . '/ajax/viewsubitem.php', [
+                    'type' => __CLASS__, 'parenttype' => 'Contract', 'contracts_id' => $ID, 'id' => $data['id']]);
+                echo '}</script>';
+                $name = '<a href="#" onclick="' . $function . '(); return false;">' . $name . '</a>';
             }
-            echo "<tr class='b noHover'><td colspan='3'>&nbsp;</td>";
-            echo "<td class='right'>" . __('Total cost') . '</td>';
-            echo "<td class='numeric'>" . Html::formatNumber($total) . '</td></tr>';
-        } else {
-            echo "<tr><th colspan='5'>" . __('No item found') . "</th></tr>";
+            $name .= Html::showToolTip(htmlspecialchars($data['comment'] ?? '', ENT_QUOTES, 'UTF-8', false), ['display' => false]);
+            $values[] = [$name, Html::convDate($data['begin_date']), Html::convDate($data['end_date']),
+                htmlspecialchars(Dropdown::getDropdownName('glpi_budgets', $data['budgets_id']), ENT_QUOTES, 'UTF-8', false),
+                Html::formatNumber($data['cost'])];
+            $total += $data['cost'];
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
         }
-        echo "</table>";
-        echo "</div><br>";
+        renderTwigTemplate('table.twig', ['id' => 'ContractCostTable_' . $ID, 'state_key' => 'ContractCost_for_Contract',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [__('Name'), __('Begin date'), __('End date'), Budget::getTypeName(1), _n('Cost', 'Costs', 1)],
+            'values' => $values]);
+        echo '<p class="text-end fw-bold mt-3">' . __('Total cost') . ': ' . Html::formatNumber($total) . '</p>';
     }
 }

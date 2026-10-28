@@ -42,16 +42,11 @@ if (isset($_SESSION["ldap_sortorder"])) {
 }
 
 AuthLDAP::manageValuesInSession([], true);
-echo "<div class='center'><table class='tab_cadre' aria-label='LDAP directory link'>";
-echo "<tr><th>" . __('Bulk import users from a LDAP directory') . "</th></tr>";
-
-echo "<tr class='tab_bg_1'><td class='center b'>" .
-     "<a href='ldap.import.php?mode=1&action=show'>" . __('Synchronizing already imported users') .
-     "</a></td></tr>";
-
-echo "<tr class='tab_bg_1'><td class='center b'>" .
-     "<a href='ldap.import.php?mode=0&action=show'>" . __('Import new users') . "</a></td> </tr>";
-
-echo "</table></div>";
+echo "<nav class='list-group' aria-label='" . __s('Bulk import users from a LDAP directory') . "'>";
+echo "<a class='list-group-item list-group-item-action' href='ldap.import.php?mode=1&amp;action=show'>"
+    . __('Synchronizing already imported users') . '</a>';
+echo "<a class='list-group-item list-group-item-action' href='ldap.import.php?mode=0&amp;action=show'>"
+    . __('Import new users') . '</a>';
+echo '</nav>';
 
 Html::footer();

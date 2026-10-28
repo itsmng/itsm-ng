@@ -54,7 +54,7 @@ $task = new ProjectTask();
 
 if (isset($_POST["add"])) {
     $task->check(-1, CREATE, $_POST);
-    $task->add($_POST);
+    $newID = $task->add($_POST);
 
     Event::log(
         $task->fields['projects_id'],
@@ -64,6 +64,18 @@ if (isset($_POST["add"])) {
         //TRANS: %s is the user login
         sprintf(__('%s adds a task'), $_SESSION["glpiname"])
     );
+    if ($newID && !empty($_POST['_inline'])) {
+        $parentType = is_string($_POST['_inline_parent_type'] ?? null) ? $_POST['_inline_parent_type'] : '';
+        $parentId = (int) ($_POST['_inline_parent_id'] ?? 0);
+        $parentTypes = ['Project' => 'projects_id', 'ProjectTask' => 'projecttasks_id'];
+        if ($parentId > 0 && isset($parentTypes[$parentType]) && (int) $task->fields[$parentTypes[$parentType]] === $parentId) {
+            $parent = new $parentType();
+            if ($parent->can($parentId, READ)
+                && ($parentType === 'Project' || (int) $parent->fields['projects_id'] === (int) $task->fields['projects_id'])) {
+                Html::redirect($parentType::getFormURLWithID($parentId) . '&forcetab=ProjectTask$1');
+            }
+        }
+    }
     if ($_SESSION['glpibackcreated']) {
         Html::redirect($task->getLinkURL());
     } else {

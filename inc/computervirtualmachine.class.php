@@ -93,7 +93,7 @@ class ComputerVirtualMachine extends CommonDBChild
     {
 
         self::showForVirtualMachine($item);
-        self::showForComputer($item);
+        self::showForComputer($item, $withtemplate);
         return true;
     }
 
@@ -123,9 +123,11 @@ class ComputerVirtualMachine extends CommonDBChild
             return false;
         }
 
+        $inline = !empty($options['inline']);
+        $is_new = self::isNewID($ID);
         $comp = new Computer();
 
-        if ($ID > 0) {
+        if (!$is_new) {
             $this->check($ID, READ);
             $comp->getFromDB($this->fields['computers_id']);
         } else {
@@ -134,8 +136,12 @@ class ComputerVirtualMachine extends CommonDBChild
             $comp->getFromDB($options['computers_id']);
         }
 
+        if ($inline && (($options['withtemplate'] ?? 0) == 2 || !$comp->canEdit($comp->getID()))) {
+            return false;
+        }
+
         $autoinventory_information = '';
-        if ($ID && $this->fields['is_dynamic']) {
+        if (!$is_new && $this->fields['is_dynamic']) {
             ob_start();
             Plugin::doHook("autoinventory_information", $this);
             $autoinventory_information = ob_get_clean();
@@ -158,32 +164,33 @@ class ComputerVirtualMachine extends CommonDBChild
                  'type' => 'submit',
                  'name' => self::isNewID($ID) ? 'add' : 'update',
                  'value' => self::isNewID($ID) ? __('Add') : __('Update'),
-                 'class' => 'btn btn-secondary'
+                 'class' => self::isNewID($ID) ? 'btn btn-primary' : 'btn btn-secondary',
+                 'icon' => self::isNewID($ID) ? 'fas fa-plus' : null
               ],
            ],
            'content' => [
-              [
-                 'visible' => false,
+              ($is_new ? __('Add a virtual machine') : self::getTypeName(1)) => [
+                 'visible' => true,
                  'inputs' => [
-                    $this->isNewId($ID) ? [
+                    $is_new ? [
                        'type' => 'hidden',
                        'name' => 'computers_id',
-                       'value' => $options['computers_id']
+                       'value' => $options['computers_id'],
                     ] : [
                        'type' => 'hidden',
                        'name' => 'id',
-                       'value' => $ID
-                    ]
-                 ]
-              ],
-              __('New item') . ' - ' . self::getTypeName(1) => [
-                 'visible' => true,
-                 'inputs' => [
+                       'value' => $ID,
+                    ],
+                    $inline ? [
+                       'type' => 'hidden',
+                       'name' => '_inline',
+                       'value' => 1,
+                    ] : [],
                     Computer::getTypeName() => [
                        'content' => $comp->getLink(['comments' => true]),
                     ],
                     __('Automatic inventory') => Plugin::haveImport() ? [
-                          'content' => $ID && $this->fields['is_dynamic'] ? $autoinventory_information : __('No'),
+                          'content' => !$is_new && $this->fields['is_dynamic'] ? $autoinventory_information : __('No'),
                     ] : [],
                     __('Name') => [
                        'type' => 'text',
@@ -194,6 +201,13 @@ class ComputerVirtualMachine extends CommonDBChild
                        'type' => 'textarea',
                        'name' => 'comment',
                        'value' => $this->fields['comment'],
+                    ],
+                    VirtualMachineType::getTypeName(1) => [
+                       'type' => 'select',
+                       'name' => 'virtualmachinetypes_id',
+                       ...getAjaxDropdownOptions('VirtualMachineType'),
+                       'value' => $this->fields['virtualmachinetypes_id'],
+                       'actions' => getItemActionButtons(['info', 'add'], 'VirtualMachineType')
                     ],
                     VirtualMachineSystem::getTypeName(1) => [
                        'type' => 'select',
@@ -214,9 +228,9 @@ class ComputerVirtualMachine extends CommonDBChild
                        'name' => 'uuid',
                        'value' => $this->fields['uuid'],
                     ],
-                    __('Machine') => [
+                    __('Machine') => !$is_new ? [
                        'content' => $computerValue,
-                    ],
+                    ] : [],
                     sprintf(__('%1$s (%2$s)'), _n('Memory', 'Memories', 1), __('Mio')) => [
                        'type' => 'number',
                        'name' => 'ram',
@@ -255,187 +269,184 @@ class ComputerVirtualMachine extends CommonDBChild
             return;
         }
 
-        echo "<div class='center'>";
+        if (empty($comp->fields['uuid'])) {
+            return;
+        }
 
-        if (isset($comp->fields['uuid']) && ($comp->fields['uuid'] != '')) {
-            $hosts = getAllDataFromTable(
-                self::getTable(),
-                [
-                  'RAW' => [
-                     'LOWER(uuid)' => self::getUUIDRestrictCriteria($comp->fields['uuid'])
-                  ]
-                ]
-            );
+        $hosts = getAllDataFromTable(self::getTable(), [
+            'RAW' => [
+                'LOWER(uuid)' => self::getUUIDRestrictCriteria($comp->fields['uuid']),
+            ],
+        ]);
+        if (empty($hosts)) {
+            return;
+        }
 
-            if (!empty($hosts)) {
-                echo "<table class='tab_cadre_fixehov' aria_label='List of virtualized environments'>";
-                echo  "<tr class='noHover'><th colspan='2' >" . __('List of virtualized environments') . "</th></tr>";
-
-                $header = "<tr><th>" . __('Name') . "</th>";
-                $header .= "<th>" . Entity::getTypeName(1) . "</th>";
-                $header .= "</tr>";
-                echo $header;
-
-                $computer = new Computer();
-                foreach ($hosts as $host) {
-                    echo "<tr class='tab_bg_2'>";
-                    echo "<td>";
-                    if ($computer->can($host['computers_id'], READ)) {
-                        echo "<a href='" . Computer::getFormURLWithID($computer->fields['id']) . "'>";
-                        echo $computer->fields['name'] . "</a>";
-                        $tooltip = "<table aria-label='Virtual Machine Informations'><tr><td>" . __('Name') . "</td><td>" . $computer->fields['name'] .
-                                   '</td></tr>';
-                        $tooltip .= "<tr><td>" . __('Serial number') . "</td><td>" . $computer->fields['serial'] .
-                                   '</td></tr>';
-                        $tooltip .= "<tr><td>" . __('Comments') . "</td><td>" . $computer->fields['comment'] .
-                                   '</td></tr></table>';
-                        echo "&nbsp; " . Html::showToolTip($tooltip, ['display' => false]);
-                    } else {
-                        echo $computer->fields['name'];
-                    }
-                    echo "</td>";
-                    echo "<td>";
-                    echo Dropdown::getDropdownName('glpi_entities', $computer->fields['entities_id']);
-                    echo "</td></tr>";
-                }
-                echo $header;
-                echo "</table>";
+        $values = [];
+        foreach ($hosts as $host) {
+            $computer = new Computer();
+            if (!$computer->getFromDB($host['computers_id'])) {
+                continue;
             }
+            $values[] = [
+                'name' => self::getComputerTableLink($computer),
+                'entity' => htmlspecialchars(
+                    Dropdown::getDropdownName('glpi_entities', $computer->fields['entities_id']),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8',
+                    false
+                ),
+            ];
         }
-        echo "</div>";
-        if (!empty($hosts)) {
-            echo "<br>";
-        }
+
+        renderTwigTemplate('computer/virtualmachines.twig', [
+            'title' => __('List of virtualized environments'),
+            'id' => 'computerVirtualMachineHostsTable_' . $ID,
+            'state_key' => 'ComputerVirtualMachineHosts_' . $ID,
+            'fields' => [
+                'name' => __('Name'),
+                'entity' => Entity::getTypeName(1),
+            ],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 
 
     /**
-     * Print the computers disks
+     * Print the virtual machines hosted by a computer.
      *
      * @param Computer $comp Computer object
+     * @param integer $withtemplate Template mode (2 disables editing)
      *
-     * @return void|boolean (display) Returns false if there is a rights error.
-    **/
-    public static function showForComputer(Computer $comp)
+     * @return void|boolean Returns false if there is a rights error.
+     */
+    public static function showForComputer(Computer $comp, $withtemplate = 0)
     {
-
         $ID = $comp->fields['id'];
-
         if (!$comp->getFromDB($ID) || !$comp->can($ID, READ)) {
             return false;
         }
-        $canedit = $comp->canEdit($ID);
 
-        if ($canedit) {
-            echo "<div class='center firstbloc'>" .
-                   "<a class='btn btn-secondary' href='" . ComputerVirtualMachine::getFormURL() . "?computers_id=$ID'>";
-            echo __('Add a virtual machine');
-            echo "</a></div>\n";
+        $escape = static function ($value) {
+            return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        };
+        $has_import = Plugin::haveImport();
+        $virtualmachines = getAllDataFromTable(self::getTable(), [
+            'WHERE' => [
+                'computers_id' => $ID,
+                'is_deleted' => 0,
+            ],
+            'ORDER' => ['name', 'id'],
+        ]);
+        $fields = [
+            'name' => __('Name'),
+            'comment' => _n('Comment', 'Comments', 1),
+        ];
+        if ($has_import) {
+            $fields['is_dynamic'] = __('Automatic inventory');
         }
-
-        echo "<div class='center'>";
-
-        $virtualmachines = getAllDataFromTable(
-            self::getTable(),
-            [
-              'WHERE'  => [
-                 'computers_id' => $ID,
-                 'is_deleted'   => 0
-              ],
-              'ORDER'  => 'name'
-            ]
-        );
-
-        echo "<table class='tab_cadre_fixehov' aria-label='Virtual Machine table'>";
-
+        $fields += [
+            'type' => VirtualMachineType::getTypeName(1),
+            'system' => VirtualMachineSystem::getTypeName(1),
+            'state' => __('State'),
+            'uuid' => __('UUID'),
+            'vcpu' => _x('quantity', 'Processors number'),
+            'ram' => sprintf(__('%1$s (%2$s)'), _n('Memory', 'Memories', 1), __('Mio')),
+            'computer' => __('Machine'),
+        ];
         Session::initNavigateListItems(
-            'ComputerVirtualMachine',
+            __CLASS__,
             sprintf(
                 __('%1$s = %2$s'),
                 Computer::getTypeName(1),
-                (empty($comp->fields['name'])
-                       ? "($ID)" : $comp->fields['name'])
+                empty($comp->fields['name']) ? "($ID)" : $comp->fields['name']
             )
         );
 
-        if (empty($virtualmachines)) {
-            echo "<tr><th>" . __('No virtualized environment associated with the computer') . "</th></tr>";
-        } else {
-            echo "<tr class='noHover'><th colspan='10'>" . __('List of virtualized environments') . "</th></tr>";
-
-            $header = "<tr><th>" . __('Name') . "</th>";
-            $header .= "<th>" . _n('Comment', 'Comments', 1) . "</th>";
-            if (Plugin::haveImport()) {
-                $header .= "<th>" . __('Automatic inventory') . "</th>";
+        $values = [];
+        $vm = new self();
+        foreach ($virtualmachines as $virtualmachine) {
+            $vm->getFromDB($virtualmachine['id']);
+            $name = $escape($vm->getNameID());
+            if ($vm->can($virtualmachine['id'], READ)) {
+                $name = '<a href="' . $escape($vm->getLinkURL()) . '">' . $name . '</a>';
             }
-            $header .= "<th>" . VirtualMachineType::getTypeName(1) . "</th>";
-            $header .= "<th>" . VirtualMachineSystem::getTypeName(1) . "</th>";
-            $header .= "<th>" . __('State') . "</th>";
-            $header .= "<th>" . __('UUID') . "</th>";
-            $header .= "<th>" . _x('quantity', 'Processors number') . "</th>";
-            $header .= "<th>" . sprintf(__('%1$s (%2$s)'), _n('Memory', 'Memories', 1), __('Mio')) . "</th>";
-            $header .= "<th>" . __('Machine') . "</th>";
-            $header .= "</tr>";
-            echo $header;
-
-            $vm = new self();
-            foreach ($virtualmachines as $virtualmachine) {
-                $vm->getFromDB($virtualmachine['id']);
-                echo "<tr class='tab_bg_2'>";
-                echo "<td>" . $vm->getLink() . "</td>";
-                echo "<td>" . $virtualmachine['comment'] . "</td>";
-                if (Plugin::haveImport()) {
-                    echo "<td>" . Dropdown::getYesNo($vm->isDynamic()) . "</td>";
+            $computer_link = '';
+            if ($link_computer = self::findVirtualMachine($virtualmachine)) {
+                $computer = new Computer();
+                if ($computer->getFromDB($link_computer)) {
+                    $computer_link = self::getComputerTableLink($computer);
                 }
-                echo "<td>";
-                echo Dropdown::getDropdownName(
+            }
+            $values[] = [
+                'name' => $name,
+                'comment' => $escape($virtualmachine['comment']),
+                'type' => $escape(Dropdown::getDropdownName(
                     'glpi_virtualmachinetypes',
                     $virtualmachine['virtualmachinetypes_id']
-                );
-                echo "</td>";
-                echo "<td>";
-                echo Dropdown::getDropdownName(
+                )),
+                'system' => $escape(Dropdown::getDropdownName(
                     'glpi_virtualmachinesystems',
                     $virtualmachine['virtualmachinesystems_id']
-                );
-                echo "</td>";
-                echo "<td>";
-                echo Dropdown::getDropdownName(
+                )),
+                'state' => $escape(Dropdown::getDropdownName(
                     'glpi_virtualmachinestates',
                     $virtualmachine['virtualmachinestates_id']
-                );
-                echo "</td>";
-                echo "<td>" . $virtualmachine['uuid'] . "</td>";
-                echo "<td>" . $virtualmachine['vcpu'] . "</td>";
-                echo "<td>" . $virtualmachine['ram'] . "</td>";
-                echo "<td>";
-                if ($link_computer = self::findVirtualMachine($virtualmachine)) {
-                    $computer = new Computer();
-                    if ($computer->can($link_computer, READ)) {
-                        $url  = "<a href='" . $computer->getFormURLWithID($link_computer) . "'>";
-                        $url .= $computer->fields["name"] . "</a>";
-
-                        $tooltip = "<table aria-label ='virtual Machine Information'><tr><td>" . __('Name') . "</td><td>" . $computer->fields['name'] .
-                                   '</td></tr>';
-                        $tooltip .= "<tr><td>" . __('Serial number') . "</td><td>" . $computer->fields['serial'] .
-                                   '</td></tr>';
-                        $tooltip .= "<tr><td>" . __('Comments') . "</td><td>" . $computer->fields['comment'] .
-                                   '</td></tr></table>';
-
-                        $url .= "&nbsp; " . Html::showToolTip($tooltip, ['display' => false]);
-                    } else {
-                        $url = $computer->fields['name'];
-                    }
-                    echo $url;
-                }
-                echo "</td>";
-                echo "</tr>";
-                Session::addToNavigateListItems('ComputerVirtualMachine', $virtualmachine['id']);
+                )),
+                'uuid' => $escape($virtualmachine['uuid']),
+                'vcpu' => $escape($virtualmachine['vcpu']),
+                'ram' => $escape($virtualmachine['ram']),
+                'computer' => $computer_link,
+            ];
+            if ($has_import) {
+                $values[array_key_last($values)]['is_dynamic'] = $escape(Dropdown::getYesNo($vm->isDynamic()));
             }
-            echo $header;
+            Session::addToNavigateListItems(__CLASS__, $virtualmachine['id']);
         }
-        echo "</table>";
-        echo "</div>";
+
+        if ($withtemplate != 2 && $comp->canEdit($ID) && Session::haveRight('computer', UPDATE)) {
+            $virtualmachine = new self();
+            $virtualmachine->showForm(-1, [
+                'computers_id' => $ID,
+                'inline' => true,
+                'withtemplate' => $withtemplate,
+            ]);
+        }
+
+        renderTwigTemplate('computer/virtualmachines.twig', [
+            'title' => __('List of virtualized environments'),
+            'empty_message' => __('No virtualized environment associated with the computer'),
+            'id' => 'computerVirtualMachinesTable_' . $ID,
+            'state_key' => 'ComputerVirtualMachines_' . $ID,
+            'fields' => $fields,
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
+    }
+
+
+    /**
+     * Build an escaped computer link and inventory tooltip for the VM tables.
+     */
+    private static function getComputerTableLink(Computer $computer)
+    {
+        $escape = static function ($value) {
+            return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        };
+        $name = $escape($computer->fields['name']);
+        if (!$computer->can($computer->getID(), READ)) {
+            return $name;
+        }
+
+        $tooltip = '<table><tr><th>' . $escape(__('Name')) . '</th><td>' . $name . '</td></tr>';
+        $tooltip .= '<tr><th>' . $escape(__('Serial number')) . '</th><td>'
+            . $escape($computer->fields['serial']) . '</td></tr>';
+        $tooltip .= '<tr><th>' . $escape(__('Comments')) . '</th><td>'
+            . $escape($computer->fields['comment']) . '</td></tr></table>';
+
+        return '<a href="' . $escape($computer->getLinkURL()) . '">' . $name . '</a> '
+            . Html::showToolTip($tooltip, ['display' => false]);
     }
 
 

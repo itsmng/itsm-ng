@@ -719,7 +719,8 @@ class Document_Item extends CommonDBRelation
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _sx('button', 'Add a new file'),
-                     'class' => 'btn btn-primary mb-3'
+                     'class' => 'btn btn-primary mb-3',
+                     'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                   ]
                ],
                'content' => [
@@ -793,7 +794,8 @@ class Document_Item extends CommonDBRelation
                          'type' => 'submit',
                          'name' => 'add',
                          'value' => _sx('button', 'Associate an existing document'),
-                         'class' => 'btn btn-secondary'
+                         'class' => $item->getType() === 'Computer' ? 'btn btn-primary' : 'btn btn-secondary',
+                         'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                       ]
                    ],
                    'content' => [

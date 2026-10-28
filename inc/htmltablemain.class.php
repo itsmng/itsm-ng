@@ -181,6 +181,91 @@ class HTMLTableMain extends HTMLTableBase
     }
 
 
+    /** Render existing cell trees as independently paginated v2 groups. */
+    public function displayV2(array $params = [])
+    {
+        $base_id = $params['id'] ?? 'htmlTableV2';
+        $selection_type = $params['selection_itemtype'] ?? null;
+        $rendered = false;
+        $contents = [];
+        foreach ($this->itemtypes as $itemtype => $title) {
+            Session::initNavigateListItems($itemtype, $title);
+        }
+        foreach ($this->groups as $group) {
+            $group->prepareDisplay();
+            $fields = [];
+            foreach ($group->getOrderedHeaders() as $header) {
+                if (in_array($header->getName(), $params['omit_headers'] ?? [], true)) {
+                    continue;
+                }
+                ob_start();
+                $header->displayContent();
+                $fields[$header->getCompositeName()] = ob_get_clean();
+            }
+            $values = [];
+            $selection = [];
+            foreach ($group->getRows() as $row) {
+                if (!$row->notEmpty()) {
+                    continue;
+                }
+                for ($line = 0; $line < $row->getNumberOfSubRows(); $line++) {
+                    $value = array_fill_keys(array_keys($fields), '');
+                    $selected = null;
+                    foreach ($row->cells as $name => $cells) {
+                        foreach ($cells as $cell) {
+                            if (!$cell->isOnLine($line)) {
+                                continue;
+                            }
+                            $item = $cell->getItem();
+                            if ($item) {
+                                Session::addToNavigateListItems($item->getType(), $item->getID());
+                                if ($selection_type && $item->getType() === $selection_type) {
+                                    $selected = sprintf('item[%s][%s]', $selection_type, $item->getID());
+                                }
+                            }
+                            if (!array_key_exists($name, $value)) {
+                                continue;
+                            }
+                            $key = spl_object_id($cell);
+                            if (!array_key_exists($key, $contents)) {
+                                ob_start();
+                                $cell->displayContent();
+                                $contents[$key] = ob_get_clean();
+                            }
+                            $value[$name] .= $contents[$key];
+                        }
+                    }
+                    $values[] = $value;
+                    $selection[] = $selected;
+                }
+            }
+            if (!$values) {
+                continue;
+            }
+            $id = $base_id . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $group->getName());
+            $table = [
+                'id' => $id, 'state_key' => $id, 'fields' => $fields, 'values' => $values,
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            ];
+            if ($selection_type) {
+                Html::showMassiveActions([
+                    'container' => $id, 'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                    'itemtype' => $selection_type, 'display_arrow' => false,
+                ]);
+                $table['massive_action'] = $selection;
+            }
+            renderTwigTemplate('table.twig', $table);
+            $rendered = true;
+        }
+        if (!$rendered) {
+            renderTwigTemplate('table.twig', [
+                'id' => $base_id, 'state_key' => $base_id,
+                'fields' => $fields ?? [], 'values' => [],
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            ]);
+        }
+    }
+
     /**
      * Display the table itself
      *

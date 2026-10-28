@@ -168,73 +168,40 @@ abstract class CommonITILActor extends CommonDBRelation
     **/
     public function showUserNotificationForm($ID, $options = [])
     {
-
         $this->check($ID, UPDATE);
-
         if (!isset($this->fields['users_id'])) {
             return false;
         }
         $item = new static::$itemtype_1();
-
-        echo "<br><form aria-label='Notification' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre' width='80%' aria-label='User Notification'>";
-        echo "<tr class='tab_bg_2'><td>" . $item->getTypeName(1) . "</td>";
-        echo "<td>";
+        $item_name = '';
         if ($item->getFromDB($this->fields[static::getItilObjectForeignKey()])) {
-            echo $item->getField('name');
+            $item_name = $item->getField('name');
         }
-        echo "</td></tr>";
-
-        $user          = new User();
-        $default_email = "";
+        $actor = new User();
         $emails = [];
-        if ($user->getFromDB($this->fields["users_id"])) {
-            $default_email = $user->getDefaultEmail();
-            $emails        = $user->getAllEmails();
+        $default_email = '';
+        if ($actor->getFromDB($this->fields['users_id'])) {
+            $emails = $actor->getAllEmails();
+            $default_email = $actor->getDefaultEmail();
         }
-
-        echo "<tr class='tab_bg_2'><td>" . User::getTypeName(1) . "</td>";
-        echo "<td>" . $user->getName() . "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . __('Email Followup') . "</td>";
-        echo "<td>";
-        Dropdown::showYesNo('use_notification', $this->fields['use_notification']);
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . _n('Email', 'Emails', 1) . "</td>";
-        echo "<td>";
-        if (
-            (count($emails) ==  1)
-            && !empty($default_email)
-            && NotificationMailing::isUserAddressValid($default_email)
-        ) {
-            echo $default_email;
+        if (count($emails) == 1 && !empty($default_email) && NotificationMailing::isUserAddressValid($default_email)) {
+            $email_input = ['content' => htmlspecialchars($default_email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false)];
         } elseif (count($emails) > 1) {
-            // Several emails : select in the list
-            $emailtab = [];
-            foreach ($emails as $new_email) {
-                $emailtab[$new_email] = $new_email;
-            }
-            Dropdown::showFromArray(
-                "alternative_email",
-                $emailtab,
-                ['value'   => $this->fields['alternative_email']]
-            );
+            $email_input = ['type' => 'select', 'name' => 'alternative_email', 'values' => array_combine($emails, $emails), 'value' => $this->fields['alternative_email']];
         } else {
-            echo "<input type='text' size='40' name='alternative_email' value='" .
-                   $this->fields['alternative_email'] . "'>";
+            $email_input = ['type' => 'text', 'name' => 'alternative_email', 'value' => $this->fields['alternative_email']];
         }
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='2'>";
-        echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
-        echo "<input type='hidden' name='id' value='$ID'>";
-        echo "</td></tr>";
-
-        echo "</table></div>";
-        Html::closeForm();
+        renderTwigForm([
+            'action' => $_SERVER['PHP_SELF'],
+            'buttons' => [['type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'), 'class' => 'btn btn-primary']],
+            'content' => [__('Email Followup') => ['visible' => true, 'inputs' => [
+                ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                $item->getTypeName(1) => ['content' => htmlspecialchars($item_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false)],
+                User::getTypeName(1) => ['content' => htmlspecialchars($actor->getName(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false)],
+                __('Email Followup') => ['type' => 'checkbox', 'name' => 'use_notification', 'value' => $this->fields['use_notification']],
+                _n('Email', 'Emails', 1) => $email_input,
+            ]]],
+        ]);
     }
 
 
@@ -250,55 +217,32 @@ abstract class CommonITILActor extends CommonDBRelation
     **/
     public function showSupplierNotificationForm($ID, $options = [])
     {
-
         $this->check($ID, UPDATE);
-
         if (!isset($this->fields['suppliers_id'])) {
             return false;
         }
         $item = new static::$itemtype_1();
-
-        echo "<br><form aria-label='Supplier Notification' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre' width='80%' aria-label='Supplier Notifications'>";
-        echo "<tr class='tab_bg_2'><td>" . $item->getTypeName(1) . "</td>";
-        echo "<td>";
+        $item_name = '';
         if ($item->getFromDB($this->fields[static::getItilObjectForeignKey()])) {
-            echo $item->getField('name');
+            $item_name = $item->getField('name');
         }
-        echo "</td></tr>";
-
-        $supplier      = new Supplier();
-        $default_email = "";
-        if ($supplier->getFromDB($this->fields["suppliers_id"])) {
-            $default_email = $supplier->fields['email'];
-        }
-
-        echo "<tr class='tab_bg_2'><td>" . Supplier::getTypeName(1) . "</td>";
-        echo "<td>" . $supplier->getName() . "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . __('Email Followup') . "</td>";
-        echo "<td>";
-        Dropdown::showYesNo('use_notification', $this->fields['use_notification']);
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . _n('Email', 'Emails', 1) . "</td>";
-        echo "<td>";
+        $actor = new Supplier();
+        $actor->getFromDB($this->fields['suppliers_id']);
         if (empty($this->fields['alternative_email'])) {
-            $this->fields['alternative_email'] = $default_email;
+            $this->fields['alternative_email'] = $actor->fields['email'] ?? '';
         }
-        echo "<input type='text' size='40' name='alternative_email' value='" .
-               $this->fields['alternative_email'] . "'>";
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='2'>";
-        echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
-        echo "<input type='hidden' name='id' value='$ID'>";
-        echo "</td></tr>";
-
-        echo "</table></div>";
-        Html::closeForm();
+        $email_input = ['type' => 'text', 'name' => 'alternative_email', 'value' => $this->fields['alternative_email']];
+        renderTwigForm([
+            'action' => $_SERVER['PHP_SELF'],
+            'buttons' => [['type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'), 'class' => 'btn btn-primary']],
+            'content' => [__('Email Followup') => ['visible' => true, 'inputs' => [
+                ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                $item->getTypeName(1) => ['content' => htmlspecialchars($item_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false)],
+                Supplier::getTypeName(1) => ['content' => htmlspecialchars($actor->getName(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false)],
+                __('Email Followup') => ['type' => 'checkbox', 'name' => 'use_notification', 'value' => $this->fields['use_notification']],
+                _n('Email', 'Emails', 1) => $email_input,
+            ]]],
+        ]);
     }
 
 

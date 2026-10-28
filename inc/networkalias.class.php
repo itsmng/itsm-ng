@@ -100,53 +100,41 @@ class NetworkAlias extends FQDNLabel
     **/
     public function showForm($ID, $options = [])
     {
-
-        // Show only simple form to add / edit
         if (isset($options['parent'])) {
             $options['networknames_id'] = $options['parent']->getID();
         }
-
         $this->initForm($ID, $options);
-
-        $recursiveItems = $this->recursivelyGetItems();
-        if (count($recursiveItems) == 0) {
+        $parents = $this->recursivelyGetItems();
+        if (!$parents) {
             return false;
         }
-
-        $lastItem = $recursiveItems[count($recursiveItems) - 1];
-
-        $options['entities_id'] = $lastItem->getField('entities_id');
-        $this->showFormHeader($options);
-
-        echo "<tr class='tab_bg_1'><td>";
-        $this->displayRecursiveItems($recursiveItems, 'Type');
-        echo "&nbsp;:</td>\n<td>";
-
-        if (!($ID > 0)) {
-            echo "<input type='hidden' name='networknames_id' value='" .
-                  $this->fields["networknames_id"] . "'>\n";
-        }
-        $this->displayRecursiveItems($recursiveItems, "Link");
-        echo "</td><td>" . __('Name') . "</td><td>\n";
-        Html::autocompletionTextField($this, "name");
-        echo "</td></tr>\n";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . FQDN::getTypeName() . "</td><td>";
-        Dropdown::show(
-            getItemTypeForTable(getTableNameForForeignKeyField("fqdns_id")),
-            ['value'        => $this->fields["fqdns_id"],
-                             'name'         => 'fqdns_id',
-                             'entity'       => $this->getEntityID(),
-                             'displaywith'  => ['view']]
-        );
-        echo "</td>";
-        echo "<td>" . __('Comments') . "</td>";
-        echo "<td><textarea cols='45' rows='4' name='comment' >" . $this->fields["comment"];
-        echo "</textarea></td>\n";
-        echo "</tr>\n";
-
-        $this->showFormButtons($options);
+        $parent = $parents[count($parents) - 1];
+        ob_start();
+        $this->displayRecursiveItems($parents, 'Type');
+        $this->displayRecursiveItems($parents, 'Link');
+        $parent_context = ob_get_clean();
+        renderTwigForm([
+            'action' => self::getFormURL(),
+            'buttons' => [[
+                'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+                'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+            ]],
+            'content' => [self::getTypeName(1) => [
+                'visible' => true,
+                'inputs' => [
+                    __('Linked to') => ['content' => $parent_context],
+                    ['type' => 'hidden', 'name' => 'networknames_id', 'value' => $this->fields['networknames_id']],
+                    $this->isNewID($ID) ? [] : ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                    __('Name') => ['type' => 'text', 'name' => 'name', 'value' => $this->fields['name']],
+                    FQDN::getTypeName(1) => [
+                        'type' => 'select', 'name' => 'fqdns_id', 'value' => $this->fields['fqdns_id'],
+                        ...getAjaxDropdownOptionsByEntity(FQDN::class, $parent->getEntityID()),
+                    ],
+                    __('Comments') => ['type' => 'textarea', 'name' => 'comment', 'value' => $this->fields['comment']],
+                ],
+            ]],
+        ]);
         return true;
     }
 
@@ -264,7 +252,7 @@ class NetworkAlias extends FQDNLabel
             return false;
         }
 
-        $canedit = $item->canEdit($ID);
+        $canedit = $item->canEdit($ID) && $withtemplate != 2;
         $rand    = mt_rand();
 
         $iterator = $DB->request([
@@ -279,103 +267,39 @@ class NetworkAlias extends FQDNLabel
         }
 
         if ($canedit) {
-            echo "\n<div class='firstbloc'>";
-            echo "<script type='text/javascript' >\n";
-            echo "function viewAddAlias$rand() {\n";
-            $params = ['type'            => __CLASS__,
-                            'parenttype'      => 'NetworkName',
-                            'networknames_id' => $ID,
-                            'id'              => -1];
-            Ajax::updateItemJsCode(
-                "viewnetworkalias$rand",
-                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
-                $params
-            );
-            echo "};";
-            echo "</script>";
-            echo "<a class='vsubmit' href='javascript:viewAddAlias$rand();'>";
-            echo __('Add a network alias') . "</a>\n";
-            echo "</div>\n";
+            $alias = new self();
+            $alias->showForm(-1, ['parent' => $item]);
         }
-        echo "<div id='viewnetworkalias$rand'></div>";
-
-        echo "<div class='spaced'>";
-        if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass' . __CLASS__ . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixehov' aria-label='Internet Domain'>";
-        $header_begin  = "<tr>";
-        $header_top    = '';
-        $header_bottom = '';
-        $header_end    = '';
-
-        if ($canedit && $number) {
-            $header_top    .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            $header_top    .= "</th>";
-            $header_bottom .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            $header_bottom .= "</th>";
-        }
-        $header_end .= "<th>" . __('Name') . "</th>";
-        $header_end .= "<th>" . _n('Internet domain', 'Internet domains', 1) . "</th>";
-        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
-        $header_end .= "</tr>";
-        echo $header_begin . $header_top . $header_end;
-
+        $values = [];
+        $selection = [];
+        $alias = new self();
         foreach ($aliases as $data) {
-            $showviewjs = ($canedit
-                           ? "style='cursor:pointer' onClick=\"viewEditAlias" . $data['id'] . "$rand();\""
-                           : '');
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-                echo "<td>";
-                Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-                echo "</td>";
-            }
-            $name = $data["name"];
-            if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-            }
-            echo "<td class='center b' $showviewjs>";
-            if ($canedit) {
-                echo "\n<script type='text/javascript' >\n";
-                echo "function viewEditAlias" . $data["id"] . "$rand() {\n";
-                $params = ['type'             => __CLASS__,
-                                'parenttype'       => 'NetworkName',
-                                'networknames_id'  => $ID,
-                                'id'               => $data["id"]];
-                Ajax::updateItemJsCode(
-                    "viewnetworkalias$rand",
-                    $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
-                    $params
-                );
-                echo "};";
-                echo "</script>\n";
-            }
-            echo "<a href='" . static::getFormURLWithID($data["id"]) . "'>" . $name . "</a>";
-            echo "</td>";
-            echo "<td class='center' $showviewjs>" . Dropdown::getDropdownName(
-                "glpi_fqdns",
-                $data["fqdns_id"]
-            );
-            echo "<td class='center' $showviewjs>" . Dropdown::getDropdownName(
-                "glpi_entities",
-                $data["entities_id"]
-            );
-            echo "</tr>";
+            $alias->getFromResultSet($data);
+            $values[] = [
+                $alias->getLink(),
+                htmlspecialchars(Dropdown::getDropdownName('glpi_fqdns', $data['fqdns_id']), ENT_QUOTES, 'UTF-8', false),
+                htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $data['entities_id']), ENT_QUOTES, 'UTF-8', false),
+            ];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['id']);
         }
-        if ($number) {
-            echo $header_begin . $header_bottom . $header_end;
+        $table_id = 'networkAliases_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name'), FQDN::getTypeName(1), Entity::getTypeName(1)],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => count($values),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
         }
-        echo "</table>";
-        if ($canedit && $number) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
     }
 
 
@@ -388,91 +312,37 @@ class NetworkAlias extends FQDNLabel
     public static function showForFQDN(CommonGLPI $item, $withtemplate)
     {
         global $DB;
-
-        $alias   = new self();
-        $address = new NetworkName();
         $item->check($item->getID(), READ);
-
-        if (isset($_GET["start"])) {
-            $start = $_GET["start"];
-        } else {
-            $start = 0;
-        }
-        if (!empty($_GET["order"])) {
-            $order = $_GET["order"];
-        } else {
-            $order = "alias";
-        }
-
-        $number = countElementsInTable($alias->getTable(), ['fqdns_id' => $item->getID() ]);
-
-        echo "<br><div class='center'>";
-
-        if ($number < 1) {
-            echo "<table class='tab_cadre_fixe' aria-labe='Computer's name'>";
-            echo "<tr><th>" . self::getTypeName(1) . "</th><th>" . __('No item found') . "</th></tr>";
-            echo "</table>\n";
-        } else {
-            Html::printAjaxPager(self::getTypeName($number), $start, $number);
-
-            echo "<table class='tab_cadre_fixe' aria-label='Computer's Name'><tr>";
-
-            echo "<th><a href='javascript:reloadTab(\"order=alias\");'>" . self::getTypeName(1) .
-                 "</a></th>"; // Alias
-            echo "<th><a href='javascript:reloadTab(\"order=realname\");'>" . __("Computer's name") .
-                 "</a></th>";
-            echo "<th>" . __('Comments') . "</th>";
-            echo "</tr>\n";
-
-            Session::initNavigateListItems(
-                $item->getType(),
-                //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    self::getTypeName(1),
-                    $item->fields['name']
-                )
-            );
-
-            $iterator = $DB->request([
-               'SELECT'    => [
-                  'glpi_networkaliases.id AS alias_id',
-                  'glpi_networkaliases.name AS alias',
-                  'glpi_networknames.id AS address_id',
-                  'glpi_networkaliases.comment AS comment'
-               ],
-               'FROM'      => 'glpi_networkaliases',
-               'INNER JOIN' => [
-                  'glpi_networknames'  => [
-                     'ON' => [
-                        'glpi_networkaliases'   => 'networknames_id',
-                        'glpi_networknames'     => 'id'
-                     ]
-                  ]
-               ],
-               'WHERE'     => ['glpi_networkaliases.fqdns_id' => $item->getID()],
-               'ORDERBY'   => $order,
-               'LIMIT'     => $_SESSION['glpilist_limit'],
-               'START'     => $start
-            ]);
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems($alias->getType(), $data["alias_id"]);
-                if ($address->getFromDB($data["address_id"])) {
-                    echo "<tr class='tab_bg_1'>";
-                    echo "<td><a href='" . $alias->getFormURLWithID($data['alias_id']) . "'>" .
-                               $data['alias'] . "</a></td>";
-                    echo "<td><a href='" . $address->getLinkURL() . "'>" . $address->getInternetName() .
-                         "</a></td>";
-                    echo "<td>" . $data['comment'] . "</td>";
-                    echo "</tr>\n";
-                }
+        $iterator = $DB->request([
+            'SELECT' => ['glpi_networkaliases.id AS alias_id', 'glpi_networkaliases.name AS alias',
+                'glpi_networknames.id AS address_id', 'glpi_networkaliases.comment AS comment'],
+            'FROM' => self::getTable(),
+            'INNER JOIN' => ['glpi_networknames' => ['ON' => [
+                'glpi_networkaliases' => 'networknames_id', 'glpi_networknames' => 'id',
+            ]]],
+            'WHERE' => ['glpi_networkaliases.fqdns_id' => $item->getID()],
+            'ORDERBY' => 'alias',
+        ]);
+        $address = new NetworkName();
+        $values = [];
+        foreach ($iterator as $data) {
+            if (!$address->getFromDB($data['address_id'])) {
+                continue;
             }
-
-            echo "</table>\n";
-            Html::printAjaxPager(self::getTypeName($number), $start, $number);
+            $values[] = [
+                '<a href="' . htmlspecialchars(self::getFormURLWithID($data['alias_id']), ENT_QUOTES, 'UTF-8', false) . '">'
+                    . htmlspecialchars((string) $data['alias'], ENT_QUOTES, 'UTF-8', false) . '</a>',
+                '<a href="' . htmlspecialchars((string) $address->getLinkURL(), ENT_QUOTES, 'UTF-8', false) . '">'
+                    . htmlspecialchars((string) $address->getInternetName(), ENT_QUOTES, 'UTF-8', false) . '</a>',
+                htmlspecialchars((string) $data['comment'], ENT_QUOTES, 'UTF-8', false),
+            ];
+            Session::addToNavigateListItems(self::class, $data['alias_id']);
         }
-        echo "</div>\n";
+        renderTwigTemplate('table.twig', [
+            'id' => 'fqdnAliases_' . $item->getID(), 'state_key' => 'fqdnAliases_' . $item->getID(),
+            'fields' => [self::getTypeName(1), __("Computer's name"), __('Comments')],
+            'values' => $values, 'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 
 

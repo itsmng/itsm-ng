@@ -929,91 +929,44 @@ abstract class CommonITILValidation extends CommonDBChild
             __('Approver'),
             __('Approval comments')
         ];
-        $nb_colonnes = count($colonnes);
-
-        echo "<table class='tab_cadre_fixehov' aria-label='Summary'>";
-        echo "<tr class='noHover'><th colspan='" . $nb_colonnes . "'>" . __('Approvals for the ticket') .
-            "</th></tr>";
-
-        if ($canadd) {
-            if (
-                !in_array($item->fields['status'], array_merge(
-                    $item->getSolvedStatusArray(),
-                    $item->getClosedStatusArray()
-                ))
-            ) {
-                echo "<tr class='tab_bg_1 noHover'><td class='center' colspan='" . $nb_colonnes . "'>";
-                echo "<a class='btn btn-secondary' href='javascript:viewAddValidation" . $tID . "$rand();'>";
-                echo __('Send an approval request') . "</a></td></tr>\n";
-            }
+        if ($canadd && !in_array($item->fields['status'], array_merge(
+            $item->getSolvedStatusArray(), $item->getClosedStatusArray()
+        ))) {
+            echo '<div class="mb-3"><button type="button" class="btn btn-primary" onclick="viewAddValidation'
+                . $tID . $rand . '()"><i class="fas fa-plus me-2" aria-hidden="true"></i>'
+                . __('Send an approval request') . '</button></div>';
         }
-        if (count($iterator)) {
-            $header = "<tr>";
-            foreach ($colonnes as $colonne) {
-                $header .= "<th>" . $colonne . "</th>";
+        $values = [];
+        Session::initNavigateListItems($this->getType(), sprintf(
+            __('%1$s = %2$s'), $item->getTypeName(1), $item->getName()
+        ));
+        foreach ($iterator as $row) {
+            $canedit = $this->canEdit($row['id']);
+            Session::addToNavigateListItems($this->getType(), $row['id']);
+            $status = '<span class="d-block rounded px-2 py-1" style="background-color:'
+                . self::getStatusColor($row['status']) . '">' . self::getStatus($row['status']) . '</span>';
+            if ($canedit) {
+                $function = 'viewEditValidation' . $tID . $row['id'] . $rand;
+                echo '<script>function ' . $function . '() {';
+                Ajax::updateItemJsCode('viewvalidation' . $tID . $rand,
+                    $CFG_GLPI['root_doc'] . '/ajax/viewsubitem.php', [
+                        'type' => $this->getType(), 'parenttype' => static::$itemtype,
+                        static::$items_id => $tID, 'id' => $row['id'],
+                    ]);
+                echo '}</script>';
+                $status = '<button type="button" class="btn p-0 w-100 text-start" onclick="' . $function . '()">' . $status . '</button>';
             }
-            $header .= "</tr>";
-            echo $header;
-
-            Session::initNavigateListItems(
-                $this->getType(),
-                //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item->getTypeName(1),
-                    $item->fields["name"]
-                )
-            );
-
-            while ($row = $iterator->next()) {
-                $canedit = $this->canEdit($row["id"]);
-                Session::addToNavigateListItems($this->getType(), $row["id"]);
-                $bgcolor = self::getStatusColor($row['status']);
-                $status = self::getStatus($row['status']);
-
-                echo "<tr class='tab_bg_1' " .
-                    ($canedit ? "style='cursor:pointer' onClick=\"viewEditValidation" .
-                        $item->fields['id'] . $row["id"] . "$rand();\""
-                        : '') .
-                    " id='viewvalidation" . $this->fields[static::$items_id] . $row["id"] . "$rand'>";
-                echo "<td>";
-                if ($canedit) {
-                    echo "\n<script type='text/javascript' >\n";
-                    echo "function viewEditValidation" . $item->fields['id'] . $row["id"] . "$rand() {\n";
-                    $params = [
-                        'type' => $this->getType(),
-                        'parenttype' => static::$itemtype,
-                        static::$items_id => $this->fields[static::$items_id],
-                        'id' => $row["id"]
-                    ];
-                    Ajax::updateItemJsCode(
-                        "viewvalidation" . $item->fields['id'] . "$rand",
-                        $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
-                        $params
-                    );
-                    echo "};";
-                    echo "</script>\n";
-                }
-
-                echo "<div style='background-color:" . $bgcolor . ";'>" . $status . "</div></td>";
-
-                echo "<td>" . Html::convDateTime($row["submission_date"]) . "</td>";
-                echo "<td>" . getUserName($row["users_id"]) . "</td>";
-                echo "<td>" . $row["comment_submission"] . "</td>";
-                echo "<td>" . Html::convDateTime($row["validation_date"]) . "</td>";
-                echo "<td>" . getUserName($row["users_id_validate"]) . "</td>";
-                echo "<td>" . $row["comment_validation"] . "</td>";
-                echo "</tr>";
-            }
-            echo $header;
-        } else {
-            //echo "<div class='center b'>".__('No item found')."</div>";
-            echo "<tr class='tab_bg_1 noHover'><th colspan='" . $nb_colonnes . "'>";
-            echo __('No item found') . "</th></tr>\n";
+            $values[] = [$status, Html::convDateTime($row['submission_date']), getUserName($row['users_id']),
+                htmlspecialchars((string) $row['comment_submission'], ENT_QUOTES, 'UTF-8', false),
+                Html::convDateTime($row['validation_date']), getUserName($row['users_id_validate']),
+                htmlspecialchars((string) $row['comment_validation'], ENT_QUOTES, 'UTF-8', false)];
         }
-        echo "</table>";
+        $id = 'approvalSummary_' . $this->getType() . '_' . $tID;
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id, 'fields' => $colonnes, 'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
-
 
     /**
      * Print the validation form

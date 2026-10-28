@@ -153,90 +153,51 @@ class State extends CommonTreeDropdown
             }
         }
 
-        if (count($states)) {
-            // Produce headline
-            echo "<div class='center'><table class='tab_cadrehov' aria-label='Status'><tr>";
-
-            // Type
-            echo "<th>" . __('Status') . "</th>";
-
-            foreach ($state_type as $key => $itemtype) {
-                if ($item = getItemForItemtype($itemtype)) {
-                    echo "<th>" . $item->getTypeName(Session::getPluralNumber()) . "</th>";
-                    $total[$itemtype] = 0;
-                } else {
-                    unset($state_type[$key]);
-                }
-            }
-
-            echo "<th>" . __('Total') . "</th>";
-            echo "</tr>";
-
-            $iterator = $DB->request([
-               'FROM'   => 'glpi_states',
-               'WHERE'  => getEntitiesRestrictCriteria('glpi_states', '', '', true),
-               'ORDER'  => 'completename'
-            ]);
-
-            // No state
-            $tot = 0;
-            echo "<tr class='tab_bg_2'><td>---</td>";
-            foreach ($state_type as $itemtype) {
-                echo "<td class='numeric'>";
-
-                if (isset($states[0][$itemtype])) {
-                    echo $states[0][$itemtype];
-                    $total[$itemtype] += $states[0][$itemtype];
-                    $tot              += $states[0][$itemtype];
-                } else {
-                    echo "&nbsp;";
-                }
-
-                echo "</td>";
-            }
-            echo "<td class='numeric b'>$tot</td></tr>";
-
-            while ($data = $iterator->next()) {
-                $tot = 0;
-                echo "<tr class='tab_bg_2'><td class='b'>";
-
-                $opt = ['reset'    => 'reset',
-                            'sort'     => 1,
-                            'start'    => 0,
-                            'criteria' => ['0' => ['value' => '$$$$' . $data['id'],
-                                                             'searchtype' => 'contains',
-                                                             'field' => 31]]];
-                echo "<a href='" . $CFG_GLPI['root_doc'] . "/front/allassets.php?" . Toolbox::append_params($opt, '&amp;') . "'>" . $data["completename"] . "</a></td>";
-
-                foreach ($state_type as $itemtype) {
-                    echo "<td class='numeric'>";
-
-                    if (isset($states[$data["id"]][$itemtype])) {
-                        echo $states[$data["id"]][$itemtype];
-                        $total[$itemtype] += $states[$data["id"]][$itemtype];
-                        $tot              += $states[$data["id"]][$itemtype];
-                    } else {
-                        echo "&nbsp;";
-                    }
-
-                    echo "</td>";
-                }
-                echo "<td class='numeric b'>$tot</td>";
-                echo "</tr>";
-            }
-            echo "<tr class='tab_bg_2'><td class='center b'>" . __('Total') . "</td>";
-            $tot = 0;
-
-            foreach ($state_type as $itemtype) {
-                echo "<td class='numeric b'>" . $total[$itemtype] . "</td>";
-                $tot += $total[$itemtype];
-            }
-
-            echo "<td class='numeric b'>$tot</td></tr>";
-            echo "</table></div>";
-        } else {
-            echo "<div class='center b'>" . __('No item found') . "</div>";
+        $fields = ['status' => __('Status')];
+        $totals = [];
+        foreach ($state_type as $itemtype) {
+            $fields[$itemtype] = $itemtype::getTypeName(Session::getPluralNumber());
+            $totals[$itemtype] = 0;
         }
+        $fields['total'] = __('Total');
+        $state_rows = $states ? [['id' => 0, 'completename' => '---']] : [];
+        foreach ($DB->request([
+            'FROM' => self::getTable(), 'WHERE' => getEntitiesRestrictCriteria(self::getTable(), '', '', true), 'ORDER' => 'completename',
+        ]) as $state) {
+            if ($states) {
+                $state_rows[] = $state;
+            }
+        }
+        $values = [];
+        foreach ($state_rows as $state) {
+            $label = htmlspecialchars((string) $state['completename'], ENT_QUOTES, 'UTF-8', false);
+            if ($state['id']) {
+                $options = ['reset' => 'reset', 'sort' => 1, 'start' => 0, 'criteria' => [[
+                    'value' => '$$$$' . $state['id'], 'searchtype' => 'contains', 'field' => 31,
+                ]]];
+                $url = $CFG_GLPI['root_doc'] . '/front/allassets.php?' . Toolbox::append_params($options, '&amp;');
+                $label = '<a href="' . $url . '">' . $label . '</a>';
+            }
+            $row = ['status' => $label];
+            $total = 0;
+            foreach ($state_type as $itemtype) {
+                $count = (int) ($states[$state['id']][$itemtype] ?? 0);
+                $row[$itemtype] = $count;
+                $totals[$itemtype] += $count;
+                $total += $count;
+            }
+            $row['total'] = $total;
+            $values[] = $row;
+        }
+        renderTwigTemplate('table.twig', [
+            'id' => 'stateSummary', 'state_key' => 'stateSummary', 'fields' => $fields,
+            'values' => $values, 'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
+        echo '<dl class="d-flex flex-wrap gap-3 mt-3">';
+        foreach ($totals as $itemtype => $count) {
+            echo '<div><dt>' . $itemtype::getTypeName(Session::getPluralNumber()) . '</dt><dd>' . $count . '</dd></div>';
+        }
+        echo '<div><dt>' . __('Total') . '</dt><dd>' . array_sum($totals) . '</dd></div></dl>';
     }
 
 

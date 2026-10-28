@@ -125,6 +125,7 @@ class Itil_Project extends CommonDBRelation
      **/
     public static function showForProject(Project $project)
     {
+
         global $DB;
 
         $ID = $project->getField('id');
@@ -132,7 +133,7 @@ class Itil_Project extends CommonDBRelation
             return false;
         }
 
-        $canedit = $project->canEdit($ID);
+        $canedit = $project->canEdit($ID) && (($_GET['withtemplate'] ?? 0) != 2);
 
         /** @var CommonITILObject $itemtype */
         foreach ([Change::class, Problem::class, Ticket::class] as $itemtype) {
@@ -193,7 +194,8 @@ class Itil_Project extends CommonDBRelation
                       [
                          'name' => 'add',
                          'value' => _x('button', 'Add'),
-                         'class' => 'btn btn-secondary',
+                         'class' => 'btn btn-primary',
+                         'icon' => 'fas fa-plus',
                       ]
                    ],
                    'content' => [
@@ -224,195 +226,21 @@ class Itil_Project extends CommonDBRelation
                 renderTwigForm($form);
             }
 
-            $massContainerId = 'tableForitilProject' . $itemtype;
-            if ($canedit && $numrows) {
-                $massiveactionparams = [
-                   'container'     => $massContainerId,
-                   'specific_actions' => [
-                      'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
-                   ],
-                   'display_arrow' => false,
-                ];
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            $fields = [
-               __('Status'),
-               _n('Date', 'Dates', 1),
-               __('Last update'),
-               __('Priority'),
-               _n('Requester', 'Requesters', 1),
-               __('Assigned'),
-               __('Category'),
-               __('Title'),
-               __('Planification'),
-            ];
-            if ($itemtype == 'Ticket') {
-                $fields[] = _n('Associated element', 'Associated elements', Session::getPluralNumber());
-            }
-            if (count($_SESSION["glpiactiveentities"]) > 1) {
-                $fields[] = Entity::getTypeName(Session::getPluralNumber());
-            }
-
-            $values = [];
-            $massive_action = [];
+            $visible = [];
+            $selection = [];
             foreach ($items as $data) {
-                $item = new $itemtype();
-                $item->getFromDB($data['id']);
-                $newValue = [
-                   CommonITILObject::getStatusIcon($data['status']),
-                ];
-                if ($data['status'] == CommonITILObject::CLOSED) {
-                    $newValue[] = sprintf(__('Closed on %s'), Html::convDateTime($data['closedate']));
-                } elseif ($data['status'] == CommonITILObject::SOLVED) {
-                    $newValue[] = sprintf(__('Solved on %s'), Html::convDateTime($data['solvedate']));
-                } elseif ($data['begin_waiting_date']) {
-                    $newValue[] = sprintf(__('Put on hold on %s'), Html::convDateTime($data['begin_waiting_date']));
-                } elseif ($data['time_to_resolve']) {
-                    $newValue[] = sprintf(__('%1$s: %2$s'), __('Time to resolve'), Html::convDateTime($data['time_to_resolve']));
-                } else {
-                    $newValue[] = sprintf(__('Opened on %s'), Html::convDateTime($data['date']));
-                }
-                $newValue[] = Html::convDateTime($data["date_mod"]);
-                $newValue[] = CommonITILObject::getPriorityName($data["priority"]);
-
-                $actors = '';
-                foreach ($item->getUsers(CommonITILActor::REQUESTER) as $d) {
-                    $userdata    = getUserName($d["users_id"], 2);
-                    $actors .= sprintf(
-                        __('%1$s %2$s'),
-                        "<span class='b'>" . $userdata['name'] . "</span>",
-                        Html::showToolTip(
-                            $userdata["comment"],
-                            ['link'    => $userdata["link"],
-                            'display' => false]
-                        )
-                    );
-                    $actors .= "<br>";
-                }
-                foreach ($item->getGroups(CommonITILActor::REQUESTER) as $d) {
-                    $actors .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
-                    $actors .= "<br>";
-                }
-                $newValue[] = $actors;
-
-                $actors = '';
-                foreach ($item->getUsers(CommonITILActor::ASSIGN) as $d) {
-                    if (Entity::getUsedConfig('anonymize_support_agents', Session::getActiveEntity())) {
-                        $actors .= __("Helpdesk");
-                    } else {
-                        $userdata   = getUserName($d["users_id"], 2);
-                        $actors .= sprintf(
-                            __('%1$s %2$s'),
-                            "<span class='b'>" . $userdata['name'] . "</span>",
-                            Html::showToolTip(
-                                $userdata["comment"],
-                                ['link'    => $userdata["link"],
-                                                    'display' => false]
-                            )
-                        );
-                    }
-
-                    $actors .= "<br>";
-                }
-
-                foreach ($item->getGroups(CommonITILActor::ASSIGN) as $d) {
-                    if (Entity::getUsedConfig('anonymize_support_agents', Session::getActiveEntity())) {
-                        $actors .= __("Helpdesk group");
-                    } else {
-                        $actors .= Dropdown::getDropdownName("glpi_groups", $d["groups_id"]);
-                    }
-                    $actors .= "<br>";
-                }
-
-                foreach ($item->getSuppliers(CommonITILActor::ASSIGN) as $d) {
-                    $actors .= Dropdown::getDropdownName("glpi_suppliers", $d["suppliers_id"]);
-                    $actors .= "<br>";
-                }
-                $newValue[] = $actors;
-
-                $newValue[] = Dropdown::getDropdownName('glpi_itilcategories', $data["itilcategories_id"]);
-
-                $name = $item->getName();
-                if ($item->canViewItem()) {
-                    $name = "<a id='" . $item->getType() . $item->fields["id"] . "$rand' href=\"" . $item->getLinkURL()
-                                   . "\">$name</a>";
-                }
-                $newValue[] = $name;
-
-                $planned_infos = '';
-                $tasktype      = $item->getType() . "Task";
-                $plan          = new $tasktype();
-                $items         = [];
-
-                $result = $DB->request(
-                    [
-                      'FROM'  => $plan->getTable(),
-                      'WHERE' => [
-                         $item->getForeignKeyField() => $item->fields['id'],
-                      ],
-                    ]
-                );
-                foreach ($result as $plan) {
-                    if (isset($plan['begin']) && $plan['begin']) {
-                        $items[$plan['id']] = $plan['id'];
-                        $planned_infos .= sprintf(
-                            __('From %s') .
-                                                   ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
-                            Html::convDateTime($plan['begin'])
-                        );
-                        $planned_infos .= sprintf(
-                            __('To %s') .
-                                                   ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
-                            Html::convDateTime($plan['end'])
-                        );
-                        if ($plan['users_id_tech']) {
-                            $planned_infos .= sprintf(
-                                __('By %s') .
-                                                       ($p['output_type'] == Search::HTML_OUTPUT ? '<br>' : ''),
-                                getUserName($plan['users_id_tech'])
-                            );
-                        }
-                        $planned_infos .= "<br>";
-                    }
-                }
-
-                $newValue[] = $planned_infos;
-                $newValue[] = count($items);
-
-                $values[] = $newValue;
-                $massive_action[] = sprintf('item[%s][%s]', Itil_Project::class, $data['id']);
-            }
-            renderTwigTemplate('table.twig', [
-               'id' => $massContainerId,
-               'fields' => $fields,
-               'values' => $values,
-               'massive_action' => $massive_action,
-            ]);
-            echo '<div class="spaced">';
-            echo '<table class="tab_cadre_fixehov" aria-label="Item Detail">';
-            if ($numrows) {
-                $i = 0;
-                foreach ($items as $data) {
-                    $itemtype::showShort(
-                        $data['id'],
-                        [
-                          'row_num'                => $i,
-                          'type_for_massiveaction' => __CLASS__,
-                          'id_for_massiveaction'   => $data['linkid']
-                        ]
-                    );
-                    $i++;
+                $itil = new $itemtype();
+                if ($itil->can($data['id'], READ)) {
+                    $visible[] = $data;
+                    $selection[$data['id']] = 'item[Itil_Project][' . $data['linkid'] . ']';
                 }
             }
-            echo '</table>';
-
-            if ($canedit && $numrows) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-                Html::closeForm();
+            $tableId = 'itilForProject' . $ID . $itemtype . 'Direct';
+            if ($canedit) {
+                Html::showMassiveActions(['container' => $tableId, 'display_arrow' => false, 'is_deleted' => false,
+                    'specific_actions' => ['MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements')]]);
             }
-            echo '</div>';
+            $itemtype::showItemListTable($visible, $project, false, $canedit ? $selection : null);
         }
     }
 

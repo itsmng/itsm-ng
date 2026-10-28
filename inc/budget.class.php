@@ -628,6 +628,7 @@ class Budget extends CommonDropdown
      **/
     public function showValuesByEntity()
     {
+
         global $DB;
 
         $budgets_id = $this->fields['id'];
@@ -802,64 +803,35 @@ class Budget extends CommonDropdown
         $budget = new self();
         $budget->getFromDB($budgets_id);
 
-        $colspan = count($found_types) + 2;
-        echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Total Spent on the Budget Table'>";
-        echo "<tr class='noHover'><th colspan='$colspan'>" . __('Total spent on the budget') . "</th></tr>";
-        echo "<tr><th>" . Entity::getTypeName(1) . "</th>";
-        if (count($found_types)) {
-            foreach ($found_types as $type => $typename) {
-                echo "<th>$typename</th>";
-            }
+        $fields = [Entity::getTypeName(1)];
+        foreach ($found_types as $typename) {
+            $fields[] = $typename;
         }
-        echo "<th>" . __('Total') . "</th>";
-        echo "</tr>";
-
-        // get all entities ordered by names
+        $fields[] = __('Total');
+        $rows = [];
         $allentities = getAllDataFromTable('glpi_entities', ['ORDER' => 'completename'], true);
-
         foreach (array_keys($allentities) as $entity) {
-            if (isset($entities_values[$entity])) {
-                echo "<tr class='tab_bg_1'>";
-                echo "<td class='b'>" . Dropdown::getDropdownName('glpi_entities', $entity) . "</td>";
-                if (count($found_types)) {
-                    foreach ($found_types as $type => $typename) {
-                        echo "<td class='numeric'>";
-                        $typevalue = 0;
-                        if (isset($entitiestype_values[$entity][$type])) {
-                            $typevalue = $entitiestype_values[$entity][$type];
-                        }
-                        echo Html::formatNumber($typevalue);
-                        echo "</td>";
-                    }
-                }
-
-                echo "<td class='right b'>" . Html::formatNumber($entities_values[$entity]) . "</td>";
-                echo "</tr>";
+            if (!isset($entities_values[$entity])) {
+                continue;
             }
-        }
-        if (count($found_types)) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td class='right b'>" . __('Total') . "</td>";
+            $row = [htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $entity), ENT_QUOTES, 'UTF-8', false)];
             foreach ($found_types as $type => $typename) {
-                echo "<td class='numeric b'>";
-                echo Html::formatNumber($totalbytypes[$type]);
-                echo "</td>";
+                $row[] = Html::formatNumber($entitiestype_values[$entity][$type] ?? 0);
             }
-            echo "<td class='numeric b'>" . Html::formatNumber($total) . "</td>";
-            echo "</tr>";
+            $row[] = Html::formatNumber($entities_values[$entity]);
+            $rows[] = $row;
         }
-        echo "<tr class='tab_bg_1 noHover'><th colspan='$colspan'><br></th></tr>";
-        echo "<tr class='tab_bg_1 noHover'>";
-        echo "<td class='right' colspan='" . ($colspan - 1) . "'>" . __('Total spent on the budget') . "</td>";
-        echo "<td class='numeric b'>" . Html::formatNumber($total) . "</td></tr>";
+        renderTwigTemplate('table.twig', ['id' => 'budgetEntities_' . $budgets_id, 'state_key' => 'Budget_by_Entity',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $rows]);
+        echo '<div class="d-flex flex-wrap gap-4 justify-content-end mt-3">';
+        foreach ($found_types as $type => $typename) {
+            echo '<span>' . htmlspecialchars($typename, ENT_QUOTES, 'UTF-8', false) . ': ' . Html::formatNumber($totalbytypes[$type]) . '</span>';
+        }
+        echo '<strong>' . __('Total spent on the budget') . ': ' . Html::formatNumber($total) . '</strong>';
         if ($_SESSION['glpiactive_entity'] == $budget->fields['entities_id']) {
-            echo "<tr class='tab_bg_1 noHover'>";
-            echo "<td class='right' colspan='" . ($colspan - 1) . "'>" . __('Total remaining on the budget') .
-                "</td>";
-            echo "<td class='numeric b'>" . Html::formatNumber($budget->fields['value'] - $total) .
-                "</td></tr>";
+            echo '<strong>' . __('Total remaining on the budget') . ': ' . Html::formatNumber($budget->fields['value'] - $total) . '</strong>';
         }
-        echo "</table></div>";
+        echo '</div>';
     }
 
 

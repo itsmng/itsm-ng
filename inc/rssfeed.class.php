@@ -791,47 +791,32 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
      **/
     public function showFeedContent()
     {
-
         if (!$this->canViewItem()) {
             return false;
         }
         $feed = self::getRSSFeed($this->fields['url'], $this->fields['refresh_rate']);
-        echo "<div class='firstbloc'>";
         if (!$feed || $feed->error()) {
-            echo __('Error retrieving RSS feed');
+            echo '<p class="text-muted">' . __('Error retrieving RSS feed') . '</p>';
             $this->setError(true);
-        } else {
-            $this->setError(false);
-            echo "<table class='tab_cadre_fixehov' aria-label='RSS feed table'>";
-            echo "<tr><th colspan='3'>" . $feed->get_title() . "</th>";
-            foreach ($feed->get_items(0, $this->fields['max_items']) as $item) {
-                $link = URL::sanitizeURL($item->get_permalink());
-                echo "<tr class='tab_bg_1'><td>";
-                echo Html::convDateTime($item->get_date('Y-m-d H:i:s'));
-                echo "</td><td>";
-                if (!empty($link)) {
-                    echo '<a target="_blank" href="' . str_replace("&amp;", "&", htmlspecialchars($link)) . '">' . $item->get_title() . '</a>';
-                } else {
-                    echo $item->get_title();
-                }
-                echo "</td><td>";
-                $rand = mt_rand();
-                echo "<span id='rssitem$rand' class='pointer'>";
-                echo Html::resume_text(
-                    Html::clean(Toolbox::unclean_cross_side_scripting_deep($item->get_content())),
-                    1000
-                );
-                echo "</span>";
-                Html::showToolTip(
-                    Toolbox::unclean_html_cross_side_scripting_deep($item->get_content()),
-                    ['applyto' => "rssitem$rand",
-                    'display' => true]
-                );
-                echo "</td></tr>";
-            }
-            echo "</table>";
+            return;
         }
-        echo "</div>";
+        $this->setError(false);
+        $values = [];
+        foreach ($feed->get_items(0, $this->fields['max_items']) as $item) {
+            $link = URL::sanitizeURL($item->get_permalink());
+            $title = htmlspecialchars($item->get_title(), ENT_QUOTES, 'UTF-8', false);
+            if (!empty($link)) {
+                $title = '<a target="_blank" rel="noopener noreferrer" href="' . htmlspecialchars($link, ENT_QUOTES, 'UTF-8', false) . '">' . $title . '</a>';
+            }
+            $target = 'rssitem' . mt_rand();
+            $content = '<span id="' . $target . '" class="pointer">'
+                . htmlspecialchars(Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($item->get_content())), 1000), ENT_QUOTES, 'UTF-8', false) . '</span>';
+            $content .= Html::showToolTip(Toolbox::unclean_html_cross_side_scripting_deep($item->get_content()), ['applyto' => $target, 'display' => false]);
+            $values[] = [Html::convDateTime($item->get_date('Y-m-d H:i:s')), $title, $content];
+        }
+        echo '<h5 class="my-3">' . htmlspecialchars($feed->get_title(), ENT_QUOTES, 'UTF-8', false) . '</h5>';
+        renderTwigTemplate('table.twig', ['id' => 'rssFeedContent_' . $this->getID(), 'state_key' => 'RSSFeed_content',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => [__('Date'), __('Name'), __('Content')], 'values' => $values]);
     }
 
 
@@ -993,54 +978,37 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             }
         }
 
-        echo "<br><table class='tab_cadrehov' aria-label='RSS feed'>";
-        echo "<tr class='noHover'><th colspan='2'><div class='relative'><span>$titre</span>";
-
-        if (
-            ($personal && self::canCreate())
-            || (!$personal && Session::haveRight('rssfeed_public', CREATE))
-        ) {
-            echo "<span class='floatright'>";
-            echo "<a href='" . RSSFeed::getFormURL() . "'>";
-            echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/plus.png' alt='" . __s('Add') . "' title=\"" .
-                __s('Add') . "\"></a></span>";
+        echo '<div class="d-flex align-items-center justify-content-between gap-3 my-3"><h5 class="mb-0">' . $titre . '</h5>';
+        if (($personal && self::canCreate()) || (!$personal && Session::haveRight('rssfeed_public', CREATE))) {
+            echo '<a class="btn btn-primary" href="' . htmlspecialchars(self::getFormURL(), ENT_QUOTES, 'UTF-8') . '">'
+                . '<i class="fas fa-plus me-2" aria-hidden="true"></i>' . __s('Add') . '</a>';
         }
-
-        echo "</div></th></tr>\n";
-
-        if ($nb) {
-            usort($items, ['SimplePie\SimplePie', 'sort_items']);
-            foreach ($items as $item) {
-                echo "<tr class='tab_bg_1'><td>";
-                echo Html::convDateTime($item->get_date('Y-m-d H:i:s'));
-                echo "</td><td>";
-                $feed_link = URL::sanitizeURL($item->feed->get_permalink());
-                if (empty($feed_link)) {
-                    echo $item->feed->get_title();
-                } else {
-                    echo '<a target="_blank" href="' . htmlspecialchars($feed_link) . '">' . $item->feed->get_title() . '</a>';
-                }
-
-                $item_link = URL::sanitizeURL($item->get_permalink());
-                $rand = mt_rand();
-                echo "<div id='rssitem$rand' class='pointer rss'>";
-                if (!empty($item_link)) {
-                    echo '<a target="_blank" href="' . htmlspecialchars($item_link) . '">';
-                }
-                echo $item->get_title();
-                if (!empty($item_link)) {
-                    echo "</a>";
-                }
-                echo "</div>";
-                Html::showToolTip(
-                    Toolbox::unclean_html_cross_side_scripting_deep($item->get_content()),
-                    ['applyto' => "rssitem$rand",
-                    'display' => true]
-                );
-                echo "</td></tr>";
+        echo '</div>';
+        usort($items, ['SimplePie\\SimplePie', 'sort_items']);
+        $values = [];
+        foreach ($items as $item) {
+            $feedLink = URL::sanitizeURL($item->feed->get_permalink());
+            $feedTitle = htmlspecialchars($item->feed->get_title(), ENT_QUOTES, 'UTF-8', false);
+            if (!empty($feedLink)) {
+                $feedTitle = '<a target="_blank" rel="noopener noreferrer" href="' . htmlspecialchars($feedLink, ENT_QUOTES, 'UTF-8', false) . '">' . $feedTitle . '</a>';
             }
+            $itemLink = URL::sanitizeURL($item->get_permalink());
+            $title = htmlspecialchars($item->get_title(), ENT_QUOTES, 'UTF-8', false);
+            if (!empty($itemLink)) {
+                $title = '<a target="_blank" rel="noopener noreferrer" href="' . htmlspecialchars($itemLink, ENT_QUOTES, 'UTF-8', false) . '">' . $title . '</a>';
+            }
+            $target = 'rssitem' . mt_rand();
+            $title = '<span id="' . $target . '" class="pointer rss">' . $title . '</span>'
+                . Html::showToolTip(Toolbox::unclean_html_cross_side_scripting_deep($item->get_content()), ['applyto' => $target, 'display' => false]);
+            $values[] = [Html::convDateTime($item->get_date('Y-m-d H:i:s')), $feedTitle, $title];
         }
-        echo "</table>\n";
+        renderTwigTemplate('table.twig', [
+            'id' => 'centralRSSFeeds_' . ($personal ? 'personal' : 'public') . '_' . $users_id,
+            'state_key' => 'RSSFeed_central_' . ($personal ? 'personal' : 'public'),
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [__('Date'), _n('RSS feed', 'RSS feeds', 1), __('Name')], 'values' => $values,
+        ]);
+
     }
 
     /**

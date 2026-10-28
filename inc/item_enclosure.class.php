@@ -69,7 +69,7 @@ class Item_Enclosure extends CommonDBRelation
      *
      * @return void
     **/
-    public static function showItems(Enclosure $enclosure)
+    public static function showItems(Enclosure $enclosure, $withtemplate = 0)
     {
         global $DB;
 
@@ -82,7 +82,7 @@ class Item_Enclosure extends CommonDBRelation
         ) {
             return false;
         }
-        $canedit = $enclosure->canEdit($ID);
+        $canedit = $enclosure->canEdit($ID) && $withtemplate != 2;
 
         $items = $DB->request([
            'FROM'   => self::getTable(),
@@ -102,191 +102,107 @@ class Item_Enclosure extends CommonDBRelation
             )
         );
 
-        if ($enclosure->canAddItem('itemtype')) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                Item_Enclosure::getFormURL(),
-                '_add_fromitem',
-                __('Add new item to this enclosure...'),
-                [
-                  'enclosure'   => $enclosure->getID(),
-                  'position'  => 1
-                ]
-            );
-            echo "</div>";
+        if ($canedit && $enclosure->canAddItem('itemtype')) {
+            $relation = new self();
+            $relation->getEmpty();
+            $relation->fields['enclosures_id'] = $ID;
+            $relation->showForm(-1, ['enclosures_id' => $ID, 'position' => 1]);
         }
-
-        $items = iterator_to_array($items);
-
-        if (!count($items)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table>";
-        } else {
-            if ($canedit) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = [
-                   'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-                   'container'       => 'mass' . __CLASS__ . $rand
-                ];
-                Html::showMassiveActions($massiveactionparams);
+        $values = [];
+        $selection = [];
+        foreach ($items as $row) {
+            $item = getItemForItemtype($row['itemtype']);
+            if (!$item || !$item->getFromDB($row['items_id'])) {
+                continue;
             }
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Item Details'>";
-            $header = "<tr>";
-            if ($canedit) {
-                $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header .= "</th>";
-            }
-            $header .= "<th>" . _n('Item', 'Items', 1) . "</th>";
-            $header .= "<th>" . __('Position') . "</th>";
-            $header .= "</tr>";
-
-            echo $header;
-            foreach ($items as $row) {
-                $item = new $row['itemtype']();
-                $item->getFromDB($row['items_id']);
-                echo "<tr lass='tab_bg_1'>";
-                if ($canedit) {
-                    echo "<td>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-                    echo "</td>";
-                }
-                echo "<td>" . $item->getLink() . "</td>";
-                echo "<td>{$row['position']}</td>";
-                echo "</tr>";
-            }
-            echo $header;
-            echo "</table>";
-
-            if ($canedit && count($items)) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-            }
-            if ($canedit) {
-                Html::closeForm();
-            }
+            $values[] = [$item->getLink(), (int) $row['position']];
+            $selection[] = sprintf('item[%s][%s]', self::class, $row['id']);
         }
+        $table_id = 'item_enclosure_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [_n('Item', 'Items', 1), __('Position')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
     public function showForm($ID, $options = [])
     {
         global $DB, $CFG_GLPI;
-
-        echo "<div class='center'>";
-
         $this->initForm($ID, $options);
-        $this->showFormHeader();
-
         $enclosure = new Enclosure();
         $enclosure->getFromDB($this->fields['enclosures_id']);
-
-        $rand = mt_rand();
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_itemtype$rand'>" . __('Item type') . "</label></td>";
-        echo "<td>";
-        $types = $CFG_GLPI['rackable_types'];
-        $translated_types = [];
-        unset($types[array_search('Enclosure', $types)]);
-        foreach ($types as $type) {
-            $translated_types[$type] = $type::getTypeName(1);
-        }
-        Dropdown::showFromArray(
-            'itemtype',
-            $translated_types,
-            [
-              'display_emptychoice'   => true,
-              'value'                 => $this->fields["itemtype"],
-              'rand'                  => $rand
-            ]
-        );
-
-        //get all used items
         $used = [];
-        $iterator = $DB->request([
-           'FROM'   => $this->getTable()
+        foreach ($DB->request(['FROM' => self::getTable()]) as $row) {
+            $used[$row['itemtype']][] = $row['items_id'];
+        }
+        foreach ($DB->request(['FROM' => Item_Rack::getTable(), 'WHERE' => ['is_reserved' => 0]]) as $row) {
+            $used[$row['itemtype']][] = $row['items_id'];
+        }
+        $types = [];
+        foreach ($CFG_GLPI['rackable_types'] as $type) {
+            if ($type !== 'Enclosure') {
+                $types[$type] = $type::getTypeName(1);
+            }
+        }
+        $current_type = $this->fields['itemtype'] ?? '';
+        $used_json = json_encode($used);
+        $dropdown_id = 'enclosureItems_' . ($ID > 0 ? $ID : $enclosure->getID());
+        $load_items = <<<JS
+            $.post({
+                url: "{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php",
+                data: {idtable: this.value, used: $used_json},
+                success: function(data) {
+                    setAjaxDropdownOptions('#$dropdown_id', typeof data === 'string' ? JSON.parse(data) : data);
+                }
+            });
+        JS;
+        $positions = array_combine(range(1, 100), range(1, 100));
+        $positions = array_diff_key($positions, $enclosure->getFilled($current_type, $this->fields['items_id'] ?? 0));
+        renderTwigForm([
+            'action' => self::getFormURL(),
+            'buttons' => [[
+                'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+                'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+            ]],
+            'content' => [__('Add new item to this enclosure...') => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID) ? [] : ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                    __('Item type') => [
+                        'type' => 'select', 'name' => 'itemtype', 'values' => [0 => Dropdown::EMPTY_VALUE] + $types,
+                        'value' => $current_type, 'hooks' => ['change' => $load_items],
+                    ],
+                    _n('Item', 'Items', 1) => [
+                        'type' => 'select', 'id' => $dropdown_id, 'name' => 'items_id',
+                        'value' => $this->fields['items_id'] ?? 0,
+                        ...($current_type ? getAjaxDropdownOptions($current_type, [], true, false, $used[$current_type] ?? []) : []),
+                    ],
+                    Enclosure::getTypeName(1) => [
+                        'type' => 'select', 'name' => 'enclosures_id', 'value' => $enclosure->getID(),
+                        ...getAjaxDropdownOptions(Enclosure::class),
+                    ],
+                    __('Position') => [
+                        'type' => 'select', 'name' => 'position', 'values' => $positions,
+                        'value' => $this->fields['position'] ?: ($options['position'] ?? array_key_first($positions)),
+                    ],
+                ],
+            ]],
         ]);
-        while ($row = $iterator->next()) {
-            $used [$row['itemtype']][] = $row['items_id'];
-        }
-
-        // get used items by racks
-        $iterator = $DB->request([
-           'FROM'  => Item_Rack::getTable(),
-           'WHERE' => [
-              'is_reserved' => 0
-           ]
-        ]);
-        while ($row = $iterator->next()) {
-            $used [$row['itemtype']][] = $row['items_id'];
-        }
-
-        Ajax::updateItemOnSelectEvent(
-            "dropdown_itemtype$rand",
-            "items_id",
-            $CFG_GLPI["root_doc"] . "/ajax/dropdownAllItems.php",
-            [
-              'idtable'   => '__VALUE__',
-                            '_render_dropdown' => true,
-              'name'      => 'items_id',
-              'value'     => $this->fields['items_id'],
-              'rand'      => $rand,
-              'used'      => $used
-            ]
-        );
-
-        //TODO: update possible positions according to selected item number of units
-        //TODO: update positions on rack selection
-        //TODO: update hpos from item model info is_half_rack
-        //TODO: update orientation according to item model depth
-
-        echo "</td>";
-        echo "<td><label for='dropdown_items_id$rand'>" . _n('Item', 'Items', 1) . "</label></td>";
-        echo "<td id='items_id'>";
-        if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
-            $itemtype = $this->fields['itemtype'];
-            $itemtype = new $itemtype();
-            $itemtype::dropdown([
-               'name'   => "items_id",
-               'value'  => $this->fields['items_id'],
-               'rand'   => $rand
-            ]);
-        } else {
-            Dropdown::showFromArray(
-                'items_id',
-                [],
-                [
-                  'display_emptychoice'   => true,
-                  'rand'                  => $rand
-                ]
-            );
-        }
-
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_enclosures_id$rand'>" . Enclosure::getTypeName(1) . "</label></td>";
-        echo "<td>";
-        Enclosure::dropdown(['value' => $this->fields["enclosures_id"], 'rand' => $rand]);
-        echo "</td>";
-        echo "<td><label for='dropdown_position$rand'>" . __('Position') . "</label></td>";
-        echo "<td>";
-        Dropdown::showNumber(
-            'position',
-            [
-              'value'  => $this->fields["position"],
-              'min'    => 1,
-              'step'   => 1,
-              'used'   => $enclosure->getFilled($this->fields['itemtype'], $this->fields['items_id']),
-              'rand'   => $rand
-            ]
-        );
-        echo "</td>";
-        echo "</tr>";
-
-        $this->showFormButtons($options);
+        return true;
     }
 
     public function prepareInputForAdd($input)

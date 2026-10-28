@@ -604,24 +604,19 @@ class Link extends CommonDBTM
 
         $iterator = self::getLinksDataForItem($item);
 
-        echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Item Detail'>";
-
-        if (count($iterator)) {
-            echo "<tr><th>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
-            while ($data = $iterator->next()) {
-                $links = self::getAllLinksFor($item, $data);
-
-                foreach ($links as $link) {
-                    echo "<tr class='tab_bg_2'>";
-                    echo "<td class='center'>$link</td></tr>";
-                }
+        $values = [];
+        foreach ($iterator as $data) {
+            foreach (self::getAllLinksFor($item, $data) as $link) {
+                $values[] = [$link];
             }
-            echo "</table></div>";
-        } else {
-            echo "<tr class='tab_bg_2'><th>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
-            echo "<tr class='tab_bg_2'><td class='center b'>" . __('No link defined') . "</td></tr>";
-            echo "</table></div>";
         }
+        renderTwigTemplate('table.twig', [
+            'id' => 'externalLinks_' . $item->getType() . '_' . $item->getID(),
+            'state_key' => 'Link_for_' . $item->getType(),
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [self::getTypeName(Session::getPluralNumber())],
+            'values' => $values,
+        ]);
     }
 
     /**

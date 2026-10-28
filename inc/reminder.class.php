@@ -889,63 +889,38 @@ class Reminder extends CommonDBVisible implements
         $iterator = $DB->request($criteria);
         $nb = count($iterator);
 
-        echo "<br><table class='tab_cadrehov' aria-label='Reminders'>";
-        echo "<tr class='noHover'><th><div class='relative'><span>$titre</span>";
-
-        if (
-            ($personal && self::canCreate())
-            || (!$personal && Session::haveRight(self::$rightname, CREATE))
-        ) {
-            echo "<span class='floatright'>";
-            echo "<a href='" . Reminder::getFormURL() . "'>";
-            echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/plus.png' alt='" . __s('Add') . "'
-                title=\"" . __s('Add') . "\"></a></span>";
+        echo '<div class="d-flex align-items-center justify-content-between gap-3 my-3"><h5 class="mb-0">' . $titre . '</h5>';
+        if (($personal && self::canCreate()) || (!$personal && Session::haveRight(self::$rightname, CREATE))) {
+            echo '<a class="btn btn-primary" href="' . htmlspecialchars(self::getFormURL(), ENT_QUOTES, 'UTF-8') . '">'
+                . '<i class="fas fa-plus me-2" aria-hidden="true"></i>' . __s('Add') . '</a>';
         }
-
-        echo "</div></th></tr>\n";
-
-        if ($nb) {
-            $rand = mt_rand();
-
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'><td>";
-                $name = $data['name'];
-
-                if (isset($data['transname']) && !empty($data['transname'])) {
-                    $name = $data['transname'];
-                }
-                $link = "<a id='content_reminder_" . $data["id"] . $rand . "'
-                      href='" . Reminder::getFormURLWithID($data["id"]) . "'>" .
-                        $name . "</a>";
-                $text = $data["text"];
-                if (isset($data['transtext']) && !empty($data['transtext'])) {
-                    $text = $data['transtext'];
-                }
-                $tooltip = Html::showToolTip(
-                    Toolbox::unclean_html_cross_side_scripting_deep($text),
-                    ['applyto' => "content_reminder_" . $data["id"] . $rand,
-                                              'display' => false]
-                );
-                printf(__('%1$s %2$s'), $link, $tooltip);
-
-                if ($data["is_planned"]) {
-                    $tab      = explode(" ", $data["begin"] ?? '');
-                    $date_url = $tab[0];
-                    echo "<a href='" . $CFG_GLPI["root_doc"] . "/front/planning.php?date=" . $date_url .
-                          "&amp;type=day' class='pointer floatright' title=\"" . sprintf(
-                              __s('From %1$s to %2$s'),
-                              Html::convDateTime($data["begin"]),
-                              Html::convDateTime($data["end"])
-                          ) . "\">";
-                    echo "<i class='fa fa-bell' aria-hidden='true'></i>";
-                    echo "<span class='sr-only'>" . __s('Planning') . "</span>";
-                    echo "</a>";
-                }
-
-                echo "</td></tr>\n";
+        echo '</div>';
+        $values = [];
+        $rand = mt_rand();
+        while ($data = $iterator->next()) {
+            $name = !empty($data['transname']) ? $data['transname'] : $data['name'];
+            $target = 'content_reminder_' . $data['id'] . $rand;
+            $link = '<a id="' . $target . '" href="' . htmlspecialchars(self::getFormURLWithID($data['id']), ENT_QUOTES, 'UTF-8') . '">'
+                . htmlspecialchars($name, ENT_QUOTES, 'UTF-8', false) . '</a>';
+            $text = !empty($data['transtext']) ? $data['transtext'] : $data['text'];
+            $link .= Html::showToolTip(Toolbox::unclean_html_cross_side_scripting_deep($text), ['applyto' => $target, 'display' => false]);
+            $planning = '';
+            if ($data['is_planned']) {
+                $date = explode(' ', $data['begin'] ?? '')[0];
+                $title = sprintf(__('From %1$s to %2$s'), Html::convDateTime($data['begin']), Html::convDateTime($data['end']));
+                $planning = '<a href="' . $CFG_GLPI['root_doc'] . '/front/planning.php?date=' . rawurlencode($date)
+                    . '&amp;type=day" title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '">'
+                    . '<i class="fa fa-bell" aria-hidden="true"></i><span class="visually-hidden">' . __s('Planning') . '</span></a>';
             }
+            $values[] = [$link, $planning];
         }
-        echo "</table>\n";
+        renderTwigTemplate('table.twig', [
+            'id' => 'centralReminders_' . ($personal ? 'personal' : 'public') . '_' . $users_id,
+            'state_key' => 'Reminder_central_' . ($personal ? 'personal' : 'public'),
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [__('Name'), __('Planning')], 'values' => $values,
+        ]);
+
     }
 
     /**

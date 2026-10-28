@@ -174,6 +174,12 @@ class SoftwareVersion extends CommonDBChild
            ]
         ];
 
+        if (!empty($options['inline'])) {
+            $section = $form['content'][array_key_first($form['content'])];
+            $form['content'] = [_x('button', 'Add a version') => $section];
+            $form['buttons'] = [['type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Add a version'),
+                'class' => 'btn btn-primary', 'icon' => 'fas fa-plus']];
+        }
         renderTwigForm($form, '', $this->fields);
 
         // Only count softwareversions_id_buy (don't care of softwareversions_id_use if no installation)
@@ -330,25 +336,14 @@ class SoftwareVersion extends CommonDBChild
     {
         global $DB;
 
-        $softwares_id = $soft->getField('id');
-
+        $softwares_id = $soft->getID();
         if (!$soft->can($softwares_id, READ)) {
             return false;
         }
-        $canedit = $soft->canEdit($softwares_id);
-
-        echo "<div class='spaced'>";
-
-        if ($canedit) {
-            $action = SoftwareVersion::getFormURL() . "?softwares_id=$softwares_id";
-            $label  = _x('button', 'Add a version');
-            echo <<<HTML
-         <div class='center b mb-3'>
-            <a class="btn btn-secondary" href="{$action}">{$label}</a>
-         </div>
-         HTML;
+        if ($soft->canEdit($softwares_id) && (($_GET['withtemplate'] ?? 0) != 2)) {
+            $version = new self();
+            $version->showForm(-1, ['softwares_id' => $softwares_id, 'inline' => true]);
         }
-
         $iterator = $DB->request([
            'SELECT'    => [
               'glpi_softwareversions.*',
@@ -380,42 +375,31 @@ class SoftwareVersion extends CommonDBChild
             )
         );
 
-        if (count($iterator)) {
-            echo "<table class='tab_cadre_fixehov' aria-label='Comments'><tr>";
-            echo "<th>" . self::getTypeName(Session::getPluralNumber()) . "</th>";
-            echo "<th>" . __('Status') . "</th>";
-            echo "<th>" . OperatingSystem::getTypeName(1) . "</th>";
-            echo "<th>" . _n('Installation', 'Installations', Session::getPluralNumber()) . "</th>";
-            echo "<th>" . __('Comments') . "</th>";
-            echo "</tr>\n";
-
-            for ($tot = $nb = 0; $data = $iterator->next(); $tot += $nb) {
-                Session::addToNavigateListItems('SoftwareVersion', $data['id']);
-                $nb = Item_SoftwareVersion::countForVersion($data['id']);
-
-                echo "<tr class='tab_bg_2'>";
-                echo "<td><a href='" . SoftwareVersion::getFormURLWithID($data['id']) . "'>";
-                echo $data['name'] . (empty($data['name']) ? "(" . $data['id'] . ")" : "") . "</a></td>";
-                echo "<td>" . $data['sname'] . "</td>";
-                echo "<td class='right'>" . Dropdown::getDropdownName(
-                    'glpi_operatingsystems',
-                    $data['operatingsystems_id']
-                );
-                echo "</td>";
-                echo "<td class='numeric'>$nb</td>";
-                echo "<td>" . nl2br((string) $data['comment']) . "</td></tr>\n";
-            }
-
-            echo "<tr class='tab_bg_1 noHover'><td class='right b' colspan='3'>" . __('Total') . "</td>";
-            echo "<td class='numeric b'>$tot</td><td></td></tr>";
-            echo "</table>\n";
-        } else {
-            echo "<table class='tab_cadre_fixe' aria-label='No item found'>";
-            echo "<tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table>\n";
+        $values = [];
+        $total = 0;
+        foreach ($iterator as $data) {
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
+            $count = Item_SoftwareVersion::countForVersion($data['id']);
+            $total += $count;
+            $name = $data['name'] ?: '(' . $data['id'] . ')';
+            $values[] = [
+                '<a href="' . htmlspecialchars(self::getFormURLWithID($data['id']), ENT_QUOTES, 'UTF-8') . '">'
+                    . htmlspecialchars($name, ENT_QUOTES, 'UTF-8', false) . '</a>',
+                htmlspecialchars($data['sname'] ?? '', ENT_QUOTES, 'UTF-8', false),
+                htmlspecialchars(Dropdown::getDropdownName('glpi_operatingsystems', $data['operatingsystems_id']), ENT_QUOTES, 'UTF-8', false),
+                $count,
+                nl2br(htmlspecialchars($data['comment'] ?? '', ENT_QUOTES, 'UTF-8', false)),
+            ];
         }
-
-        echo "</div>";
+        renderTwigTemplate('table.twig', [
+            'id' => 'softwareVersions_' . $softwares_id,
+            'state_key' => 'SoftwareVersion_for_Software',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [self::getTypeName(Session::getPluralNumber()), __('Status'), OperatingSystem::getTypeName(1),
+                _n('Installation', 'Installations', Session::getPluralNumber()), __('Comments')],
+            'values' => $values,
+        ]);
+        echo '<p class="text-end fw-bold mt-3">' . __('Total') . ': ' . $total . '</p>';
     }
 
 

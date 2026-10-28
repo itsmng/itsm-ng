@@ -37,7 +37,8 @@
     "dataSource": {
         "type": {{ (has_remote_data ? 'remote' : 'local')|json_encode|raw }},
         "url": {{ has_remote_data ? url|json_encode|raw : "null" }},
-        "rows": {{ has_remote_data ? '[]' : values|json_encode|raw }}
+        "rows": {{ has_remote_data ? '[]' : values|json_encode|raw }},
+        "rowOrder": {{ has_remote_data ? 'null' : values|default([])|keys|json_encode|raw }}
     },
     "selection": {
         "type": {{ (has_radio_selection ? 'radio' : (has_massive_action ? 'massive-action' : 'none'))|json_encode|raw }},

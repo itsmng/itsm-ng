@@ -74,17 +74,25 @@ class Lock extends CommonGLPI
             return false;
         }
 
-        echo "<div width='50%'>";
-        echo "<form aria-label='Locked Form' method='post' id='lock_form'
-             name='lock_form' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-        echo "<input type='hidden' name='id' value='$ID'>\n";
-        echo "<input type='hidden' name='itemtype' value='$itemtype'>\n";
-        echo "<table class='tab_cadre_fixe' aria-label='Locked Item'>";
-        echo "<tr><th colspan='2'>" . __('Locked items') . "</th></tr>";
+        $values = [];
+        $selection = [];
+        $add_lock = static function (CommonDBTM $locked_item, $id, $type_name, $name) use (&$values, &$selection, &$header) {
+            $type = $locked_item->getType();
+            $key = $type . '_' . $id;
+            $values[$key] = [
+                htmlspecialchars((string) $type_name, ENT_QUOTES, 'UTF-8', false),
+                htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8', false),
+            ];
+            if ($locked_item->can($id, UPDATE) || $locked_item->can($id, PURGE)) {
+                $selection[$key] = $type . '[' . $id . ']';
+                $header = true;
+            }
+        };
 
-        //Use a hook to allow external inventory tools to manage per field lock
-        $results =  Plugin::doHookFunction('display_locked_fields', ['item'   => $item,
-                                                                          'header' => $header]);
+        // Inventory plugins still provide table rows through this hook.
+        ob_start();
+        $results = Plugin::doHookFunction('display_locked_fields', ['item' => $item, 'header' => $header]);
+        $plugin_fields = ob_get_clean();
         $header |= $results['header'];
 
         //Special locks for computers only
@@ -98,27 +106,11 @@ class Lock extends CommonGLPI
                                 'computers_id'  => $ID,
                                 'itemtype'      => $type];
                 $params['FIELDS'] = ['id', 'items_id'];
-                $first  = true;
                 foreach ($DB->request('glpi_computers_items', $params) as $line) {
                     /** @var CommonDBTM $asset */
                     $asset = new $type();
                     $asset->getFromDB($line['items_id']);
-                    if ($first) {
-                        echo "<tr><th colspan='2'>" . $type::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                        $first = false;
-                    }
-
-                    echo "<tr class='tab_bg_1'>";
-
-                    echo "<td class='center' width='10'>";
-                    if ($computer_item->can($line['id'], UPDATE) || $computer_item->can($line['id'], PURGE)) {
-                        $header = true;
-                        echo "<input type='checkbox' name='Computer_Item[" . $line['id'] . "]'>";
-                    }
-                    echo "</td>";
-
-                    echo "<td class='left' width='95%'>" . $asset->getName() . "</td>";
-                    echo "</tr>\n";
+                    $add_lock($computer_item, $line['id'], $type::getTypeName(1), $asset->getName());
                 }
             }
 
@@ -131,24 +123,8 @@ class Lock extends CommonGLPI
                'itemtype'     => $itemtype
             ];
             $params['FIELDS'] = ['id', 'name'];
-            $first  = true;
             foreach ($DB->request($item_disk->getTable(), $params) as $line) {
-                if ($first) {
-                    echo "<tr><th colspan='2'>" . $item_disk->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                    $first = false;
-                }
-
-                echo "<tr class='tab_bg_1'>";
-
-                echo "<td class='center' width='10'>";
-                if ($item_disk->can($line['id'], UPDATE) || $item_disk->can($line['id'], PURGE)) {
-                    $header = true;
-                    echo "<input type='checkbox' name='Item_Disk[" . $line['id'] . "]'>";
-                }
-                echo "</td>";
-
-                echo "<td class='left' width='95%'>" . $line['name'] . "</td>";
-                echo "</tr>\n";
+                $add_lock($item_disk, $line['id'], $item_disk->getTypeName(1), $line['name']);
             }
 
             $computer_vm = new ComputerVirtualMachine();
@@ -156,24 +132,8 @@ class Lock extends CommonGLPI
                             'is_deleted'    => 1,
                             'computers_id'  => $ID];
             $params['FIELDS'] = ['id', 'name'];
-            $first  = true;
             foreach ($DB->request($computer_vm->getTable(), $params) as $line) {
-                if ($first) {
-                    echo "<tr><th colspan='2'>" . $computer_vm->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                    $first = false;
-                }
-
-                echo "<tr class='tab_bg_1'>";
-
-                echo "<td class='center' width='10'>";
-                if ($computer_vm->can($line['id'], UPDATE) || $computer_vm->can($line['id'], PURGE)) {
-                    $header = true;
-                    echo "<input type='checkbox' name='ComputerVirtualMachine[" . $line['id'] . "]'>";
-                }
-                echo "</td>";
-
-                echo "<td class='left' width='95%'>" . $line['name'] . "</td>";
-                echo "</tr>\n";
+                $add_lock($computer_vm, $line['id'], $computer_vm->getTypeName(1), $line['name']);
             }
         }
 
@@ -209,19 +169,8 @@ class Lock extends CommonGLPI
               'isv.itemtype'    => $itemtype,
            ]
         ]);
-        echo "<tr><th colspan='2'>" . Software::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
         while ($data = $iterator->next()) {
-            echo "<tr class='tab_bg_1'>";
-
-            echo "<td class='center' width='10'>";
-            if ($item_sv->can($data['id'], UPDATE) || $item_sv->can($data['id'], PURGE)) {
-                $header = true;
-                echo "<input type='checkbox' name='Item_SoftwareVersion[" . $data['id'] . "]'>";
-            }
-            echo "</td>";
-
-            echo "<td class='left' width='95%'>" . $data['software'] . " " . $data['version'] . "</td>";
-            echo "</tr>\n";
+            $add_lock($item_sv, $data['id'], Software::getTypeName(1), $data['software'] . ' ' . $data['version']);
         }
 
         //Software licenses
@@ -257,22 +206,10 @@ class Lock extends CommonGLPI
            ]
         ]);
 
-        echo "<tr><th colspan='2'>" . SoftwareLicense::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
         while ($data = $iterator->next()) {
-            echo "<tr class='tab_bg_1'>";
-
-            echo "<td class='center' width='10'>";
-            if ($item_sl->can($data['id'], UPDATE) || $item_sl->can($data['id'], PURGE)) {
-                $header = true;
-                echo "<input type='checkbox' name='Item_SoftwareLicense[" . $data['id'] . "]'>";
-            }
-            echo "</td>";
-
-            echo "<td class='left' width='95%'>" . $data['software'] . " " . $data['version'] . "</td>";
-            echo "</tr>\n";
+            $add_lock($item_sl, $data['id'], SoftwareLicense::getTypeName(1), $data['software'] . ' ' . $data['version']);
         }
 
-        $first  = true;
         $networkport = new NetworkPort();
         $params = ['is_dynamic' => 1,
                         'is_deleted' => 1,
@@ -281,25 +218,9 @@ class Lock extends CommonGLPI
         $params['FIELDS'] = ['id'];
         foreach ($DB->request($networkport->getTable(), $params) as $line) {
             $networkport->getFromDB($line['id']);
-            if ($first) {
-                echo "<tr><th colspan='2'>" . $networkport->getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                $first = false;
-            }
-
-            echo "<tr class='tab_bg_1'>";
-
-            echo "<td class='center' width='10'>";
-            if ($networkport->can($line['id'], UPDATE) || $networkport->can($line['id'], PURGE)) {
-                $header = true;
-                echo "<input type='checkbox' name='NetworkPort[" . $line['id'] . "]'>";
-            }
-            echo "</td>";
-
-            echo "<td class='left' width='95%'>" . $networkport->getName() . "</td>";
-            echo "</tr>\n";
+            $add_lock($networkport, $line['id'], NetworkPort::getTypeName(1), $networkport->getName());
         }
 
-        $first = true;
         $networkname = new NetworkName();
         $params = [
            'glpi_networknames.is_dynamic' => 1,
@@ -312,25 +233,9 @@ class Lock extends CommonGLPI
         $params['FIELDS'] = ['glpi_networknames' => 'id'];
         foreach ($DB->request(['glpi_networknames', 'glpi_networkports'], $params) as $line) {
             $networkname->getFromDB($line['id']);
-            if ($first) {
-                echo "<tr><th colspan='2'>" . NetworkName::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                $first = false;
-            }
-
-            echo "<tr class='tab_bg_1'>";
-
-            echo "<td class='center' width='10'>";
-            if ($networkname->can($line['id'], UPDATE) || $networkname->can($line['id'], PURGE)) {
-                $header = true;
-                echo "<input type='checkbox' name='NetworkName[" . $line['id'] . "]'>";
-            }
-            echo "</td>";
-
-            echo "<td class='left' width='95%'>" . $networkname->getName() . "</td>";
-            echo "</tr>\n";
+            $add_lock($networkname, $line['id'], NetworkName::getTypeName(1), $networkname->getName());
         }
 
-        $first  = true;
         $ipaddress = new IPAddress();
         $params = [
            'glpi_ipaddresses.is_dynamic' => 1,
@@ -349,98 +254,58 @@ class Lock extends CommonGLPI
                                     'glpi_networkports'], $params) as $line
         ) {
             $ipaddress->getFromDB($line['id']);
-            if ($first) {
-                echo "<tr><th colspan='2'>" . IPAddress::getTypeName(Session::getPluralNumber()) . "</th></tr>\n";
-                $first = false;
-            }
-
-            echo "<tr class='tab_bg_1'>";
-
-            echo "<td class='center' width='10'>";
-            if ($ipaddress->can($line['id'], UPDATE) || $ipaddress->can($line['id'], PURGE)) {
-                $header = true;
-                echo "<input type='checkbox' name='IPAddress[" . $line['id'] . "]'>";
-            }
-            echo "</td>";
-
-            echo "<td class='left' width='95%'>" . $ipaddress->getName() . "</td>";
-            echo "</tr>\n";
+            $add_lock($ipaddress, $line['id'], IPAddress::getTypeName(1), $ipaddress->getName());
         }
 
         $types = Item_Devices::getDeviceTypes();
-        $nb    = 0;
         foreach ($types as $type) {
-            $nb += countElementsInTable(
-                getTableForItemType($type),
-                ['items_id'   => $ID,
-                                         'itemtype'   => $itemtype,
-                                         'is_dynamic' => 1,
-                                         'is_deleted' => 1 ]
-            );
-        }
-        if ($nb) {
-            echo "<tr><th colspan='2'>" . _n('Component', 'Components', Session::getPluralNumber()) . "</th></tr>\n";
-            foreach ($types as $type) {
-                $type_item = new $type();
+            $type_item = new $type();
 
-                $associated_type  = str_replace('Item_', '', $type);
-                $associated_table = getTableForItemType($associated_type);
-                $fk               = getForeignKeyFieldForTable($associated_table);
+            $associated_type  = str_replace('Item_', '', $type);
+            $associated_table = getTableForItemType($associated_type);
+            $fk               = getForeignKeyFieldForTable($associated_table);
 
-                $iterator = $DB->request([
-                   'SELECT'    => [
-                      'i.id',
-                      't.designation AS name'
-                   ],
-                   'FROM'      => getTableForItemType($type) . ' AS i',
-                   'LEFT JOIN' => [
-                      "$associated_table AS t"   => [
-                         'ON' => [
-                            't'   => 'id',
-                            'i'   => $fk
-                         ]
-                      ]
-                   ],
-                   'WHERE'     => [
-                      'itemtype'     => $itemtype,
-                      'items_id'     => $ID,
-                      'is_dynamic'   => 1,
-                      'is_deleted'   => 1
-                   ]
-                ]);
+            $iterator = $DB->request([
+               'SELECT'    => [
+                  'i.id',
+                  't.designation AS name'
+               ],
+               'FROM'      => getTableForItemType($type) . ' AS i',
+               'LEFT JOIN' => [
+                  "$associated_table AS t"   => [
+                     'ON' => [
+                        't'   => 'id',
+                        'i'   => $fk
+                     ]
+                  ]
+               ],
+               'WHERE'     => [
+                  'itemtype'     => $itemtype,
+                  'items_id'     => $ID,
+                  'is_dynamic'   => 1,
+                  'is_deleted'   => 1
+               ]
+            ]);
 
-                while ($data = $iterator->next()) {
-                    echo "<tr class='tab_bg_1'>";
-
-                    echo "<td class='center' width='10'>";
-                    if ($type_item->can($data['id'], UPDATE) || $type_item->can($data['id'], PURGE)) {
-                        $header = true;
-                        echo "<input type='checkbox' name='" . $type . "[" . $data['id'] . "]'>";
-                    }
-                    echo "</td>";
-
-                    echo "<td class='left' width='95%'>";
-                    printf(__('%1$s: %2$s'), $associated_type::getTypeName(), $data['name']);
-                    echo "</td></tr>\n";
-                }
+            while ($data = $iterator->next()) {
+                $add_lock($type_item, $data['id'], $associated_type::getTypeName(1), $data['name']);
             }
         }
-        if ($header) {
-            echo "<tr><th>";
-            echo Html::getCheckAllAsCheckbox('lock_form');
-            echo "</th><th>&nbsp</th></tr>\n";
-            echo "</table>";
-            Html::openArrowMassives('lock_form', true);
-            Html::closeArrowMassives(['unlock' => _sx('button', 'Unlock'),
-                                      'purge'  => _sx('button', 'Delete permanently')]);
-        } else {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='2'>" . __('No locked item') . "</td></tr>";
-            echo "</table>";
-        }
-
+        echo "<form aria-label='" . __s('Locked items') . "' method='post' id='lock_form' name='lock_form' action='"
+            . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
+        echo Html::hidden('id', ['value' => $ID]);
+        echo Html::hidden('itemtype', ['value' => $itemtype]);
+        renderTwigTemplate('locks.twig', [
+            'table_id' => 'LockedItems_' . $itemtype . '_' . $ID,
+            'page_size' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'values' => $values,
+            'selection' => $selection,
+            'plugin_fields' => $plugin_fields,
+            'can_unlock' => $header,
+            'unlock_label' => _sx('button', 'Unlock'),
+            'purge_label' => _sx('button', 'Delete permanently'),
+        ]);
         Html::closeForm();
-        echo "</div>\n";
     }
 
 

@@ -360,97 +360,57 @@ class CalendarSegment extends CommonDBChild
     {
         global $DB;
 
-        $ID = $calendar->getField('id');
+        $ID = $calendar->getID();
         if (!$calendar->can($ID, READ)) {
             return false;
         }
-
         $canedit = $calendar->can($ID, UPDATE);
-        $rand    = mt_rand();
-
-        $iterator = $DB->request([
-           'FROM'   => 'glpi_calendarsegments',
-           'WHERE'  => [
-              'calendars_id' => $ID
-           ],
-           'ORDER'  => [
-              'day',
-              'begin',
-              'end'
-           ]
-        ]);
-        $numrows = count($iterator);
-
+        $id = 'calendarSegments_' . $ID;
+        $days = Toolbox::getDaysOfWeekArray();
         if ($canedit) {
-            echo "<div class='firstbloc'>";
-            echo "<form name='calendarsegment_form$rand' aria-label='Add a Schedule' id='calendarsegment_form$rand' method='post'
-                action='";
-            echo Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Add Schedule Table'>";
-            echo "<tr class='tab_bg_1'><th colspan='7'>" . __('Add a schedule') . "</tr>";
-
-            echo "<tr class='tab_bg_2'><td class='center'>" . _n('Day', 'Days', 1) . "</td><td>";
-            echo "<input type='hidden' name='calendars_id' value='$ID'>";
-            Dropdown::showFromArray('day', Toolbox::getDaysOfWeekArray());
-            echo "</td><td class='center'>" . __('Start') . '</td><td>';
-            Dropdown::showHours("begin", ['value' => date('H') . ":00"]);
-            echo "</td><td class='center'>" . __('End') . '</td><td>';
-            Dropdown::showHours("end", ['value' => (date('H') + 1) . ":00"]);
-            echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-            echo "</td></tr>";
-
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
+            ob_start();
+            Dropdown::showHours('begin', ['value' => date('H') . ':00']);
+            $begin = ob_get_clean();
+            ob_start();
+            Dropdown::showHours('end', ['value' => (date('H') + 1) . ':00']);
+            $end = ob_get_clean();
+            renderTwigForm([
+                'action' => static::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Add'),
+                    'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                ]],
+                'content' => [__('Add a schedule') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'calendars_id', 'value' => $ID],
+                        _n('Day', 'Days', 1) => ['type' => 'select', 'name' => 'day', 'values' => $days],
+                        __('Start') => ['content' => $begin],
+                        __('End') => ['content' => $end],
+                    ],
+                ]],
+            ]);
         }
-
-        echo "<div class='spaced'>";
-        if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $numrows),
-                              'container'     => 'mass' . __CLASS__ . $rand];
-            Html::showMassiveActions($massiveactionparams);
+        $values = $selection = [];
+        foreach ($DB->request([
+            'FROM' => static::getTable(), 'WHERE' => ['calendars_id' => $ID],
+            'ORDER' => ['day', 'begin', 'end'],
+        ]) as $data) {
+            $values[$data['id']] = [
+                'day' => $days[$data['day']], 'begin' => $data['begin'], 'end' => $data['end'],
+            ];
+            $selection[$data['id']] = 'item[' . static::class . '][' . $data['id'] . ']';
         }
-        echo "<table class='tab_cadre_fixehov' aria-label='Schedule Details Table'>";
-        echo "<tr>";
-        if ($canedit && $numrows) {
-            echo "<th width='10'>";
-            echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            echo "</th>";
+        if ($canedit && $values) {
+            Html::showMassiveActions(['container' => $id, 'display_arrow' => false,
+                'num_displayed' => count($values)]);
         }
-        echo "<th>" . _n('Day', 'Days', 1) . "</th>";
-        echo "<th>" . __('Start') . "</th>";
-        echo "<th>" . __('End') . "</th>";
-        echo "</tr>";
-
-        $daysofweek = Toolbox::getDaysOfWeekArray();
-
-        if ($numrows) {
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_1'>";
-
-                if ($canedit) {
-                    echo "<td>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-                    echo "</td>";
-                }
-
-                echo "<td>";
-                echo $daysofweek[$data['day']];
-                echo "</td>";
-                echo "<td>" . $data["begin"] . "</td>";
-                echo "<td>" . $data["end"] . "</td>";
-            }
-            echo "</tr>";
-        }
-        echo "</table>";
-        if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => ['day' => _n('Day', 'Days', 1), 'begin' => __('Start'), 'end' => __('End')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ] + ($canedit ? ['massive_action' => $selection] : []));
+        return true;
     }
 
 

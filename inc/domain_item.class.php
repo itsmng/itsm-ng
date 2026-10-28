@@ -206,7 +206,8 @@ class Domain_Item extends CommonDBRelation
                   [
                      'name' => 'additem',
                      'value' => _x('button', 'Add'),
-                     'class' => 'btn btn-secondary',
+                     'class' => 'btn btn-primary',
+                     'icon' => 'fas fa-plus',
                   ]
                   ],
                   'content' => [
@@ -273,7 +274,7 @@ class Domain_Item extends CommonDBRelation
 
         if ($canedit && $number) {
             $massiveactionparams = [
-               'container' => 'tableForDomainItem',
+               'container' => 'domainItems_' . $instID,
                'display_arrow' => false,
             ];
             Html::showMassiveActions($massiveactionparams);
@@ -368,106 +369,17 @@ class Domain_Item extends CommonDBRelation
                 }
             }
         }
-        renderTwigTemplate('table.twig', [
-           'id' => 'tableForDomainItem',
-           'fields' => $fields,
-           'values' => $values,
-           'massive_action' => $massive_action,
-        ]);
-        echo "<div class='spaced'>";
-        echo "<table class='tab_cadre_fixe' aria-label='Show Domain'>";
-        echo "<tr>";
-
-        while ($data = $iterator->next()) {
-            $itemtype = $data['itemtype'];
-            if (!($item = getItemForItemtype($itemtype))) {
-                continue;
-            }
-
-            if ($item->canView()) {
-                $itemTable = getTableForItemType($itemtype);
-                $linked_criteria = [
-                   'SELECT' => [
-                      "$itemTable.*",
-                      'glpi_domains_items.id AS items_id',
-                      'glpi_domains_items.domainrelations_id',
-                      'glpi_entities.id AS entity'
-                   ],
-                   'FROM'   => self::getTable(),
-                   'INNER JOIN'   => [
-                      $itemTable  => [
-                         'ON'  => [
-                            $itemTable  => 'id',
-                            self::getTable()  => 'items_id'
-                         ]
-                      ]
-                   ],
-                   'LEFT JOIN'    => [
-                      'glpi_entities'   => [
-                         'ON'  => [
-                            'glpi_entities'   => 'id',
-                            $itemTable        => 'entities_id'
-                         ]
-                      ]
-                   ],
-                   'WHERE'        => [
-                      self::getTable() . '.itemtype'   => $itemtype,
-                      self::getTable() . '.domains_id' => $instID
-                   ] + getEntitiesRestrictCriteria($itemTable, '', '', $item->maybeRecursive())
-                ];
-
-                if ($item->maybeTemplate()) {
-                    $linked_criteria['WHERE']["$itemTable.is_template"] = 0;
-                }
-
-                $linked_iterator = $DB->request($linked_criteria);
-
-                if (count($linked_iterator)) {
-                    Session::initNavigateListItems($itemtype, Domain::getTypeName(2) . " = " . $domain->fields['name']);
-
-                    while ($data = $linked_iterator->next()) {
-                        Session::addToNavigateListItems($itemtype, $data["id"]);
-                        $item->getFromDB($data["id"]);
-
-                        $ID = "";
-
-                        if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                            $ID = " (" . $data["id"] . ")";
-                        }
-
-                        $link = Toolbox::getItemTypeFormURL($itemtype);
-                        $name = "<a href=\"" . $link . "?id=" . $data["id"] . "\">"
-                                 . $data["name"] . "$ID</a>";
-
-                        echo "<tr class='tab_bg_1'>";
-
-                        if ($canedit) {
-                            echo "<td width='10'>";
-                            Html::showMassiveActionCheckBox(__CLASS__, $data["items_id"]);
-                            echo "</td>";
-                        }
-                        echo "<td class='center'>" . $item->getTypeName(1) . "</td>";
-
-                        echo "<td class='center' " . (isset($data['is_deleted']) && $data['is_deleted'] ? "class='tab_bg_2_2'" : "") .
-                              ">" . $name . "</td>";
-                        if (Session::isMultiEntitiesMode()) {
-                            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entity']) . "</td>";
-                        }
-                        echo "<td class='center'>" . Dropdown::getDropdownName("glpi_domainrelations", $data['domainrelations_id']) . "</td>";
-                        echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") . "</td>";
-                        echo "<td class='center'>" . (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
-
-                        echo "</tr>";
-                    }
-                }
-            }
+        $table = [
+            'id' => 'domainItems_' . $instID,
+            'state_key' => 'Domain_Item_for_Domain_' . $instID,
+            'fields' => $fields,
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            $table['massive_action'] = $massive_action;
         }
-        echo "</table>";
-
-        if ($canedit && $number) {
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
     }
 
     /**
@@ -590,11 +502,12 @@ class Domain_Item extends CommonDBRelation
                        [
                           'name' => 'additem',
                           'value' => __('Associate a domain'),
-                          'class' => 'btn btn-secondary',
+                          'class' => $item->getType() === 'Computer' ? 'btn btn-primary' : 'btn btn-secondary',
+                          'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                        ]
                     ],
                     'content' => [
-                        '' => [
+                        ($item->getType() === 'Computer' ? __('Associate a domain') : '') => [
                             'visible' => true,
                             'inputs' => [
                                 DomainRelation::getTypeName() => [
@@ -640,7 +553,7 @@ class Domain_Item extends CommonDBRelation
             }
         }
 
-        $massivactionId = 'mass' . __CLASS__ . $rand;
+        $massivactionId = 'domainsFor_' . $item->getType() . '_' . $ID;
         $fields = [
           'name' => __('Name'),
           'groups_id_tech' => __('Group in charge'),
@@ -683,7 +596,7 @@ class Domain_Item extends CommonDBRelation
                 $used[$domainID] = $domainID;
 
                 if ($canedit && ($withtemplate < 2)) {
-                    $massive_action[$i] = sprintf('item[%s][%s]', self::class, $domainID);
+                    $massive_action[$i] = sprintf('item[%s][%s]', self::class, $data['assocID']);
                 }
                 $newValue = [
                     'name' => $link,
@@ -702,12 +615,15 @@ class Domain_Item extends CommonDBRelation
                 $i++;
             }
         }
-        renderTwigTemplate('table.twig', [
-           'id' => $massivactionId,
-           'fields' => $fields,
-           'values' => $values,
-           'massive_action' => $massive_action,
-        ]);
+        $table = [
+            'id' => $massivactionId, 'state_key' => $massivactionId,
+            'fields' => $fields, 'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit && $withtemplate < 2) {
+            $table['massive_action'] = $massive_action;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
     public function rawSearchOptions()

@@ -178,19 +178,23 @@ class Item_Disk extends CommonDBChild
             $item->getFromDB($options['items_id']);
         }
 
+        $inline = !empty($options['inline']) && $this->isNewID($ID);
+        $form_title = $inline ? __('Add a volume') : __('New item') . ' ' . $this->getTypeName(1);
         $form = [
            'action' => self::getFormURL(),
            'buttons' => [
               [
                  'type' => 'submit',
-                 'name' => 'add',
-                 'value' => '<i class="fas fa-plus" aria-hidden="true"></i>' . __('Add'),
-                 'class' => 'btn btn-secondary'
+                 'name' => $this->isNewID($ID) ? 'add' : 'update',
+                 'value' => $this->isNewID($ID) ? __('Add') : __('Update'),
+                 'class' => $this->isNewID($ID) ? 'btn btn-primary' : 'btn btn-secondary',
+                 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null
               ]
            ],
            'content' => [
               [
                  'visible' => false,
+                 'attributes' => ['hidden' => 'hidden'],
                  'inputs' => [
                     $this->isNewID($ID) ? [
                        'type' => 'hidden',
@@ -202,9 +206,19 @@ class Item_Disk extends CommonDBChild
                        'name' => 'items_id',
                        'value' => $options['items_id']
                     ] : [],
+                    $inline ? [
+                       'type' => 'hidden',
+                       'name' => '_inline',
+                       'value' => 1,
+                    ] : [],
+                    $inline && !empty($options['withtemplate']) ? [
+                       'type' => 'hidden',
+                       'name' => 'withtemplate',
+                       'value' => $options['withtemplate'],
+                    ] : [],
                  ]
                     ],
-              __('New item') . ' ' . $this->getTypeName(1) => [
+              $form_title => [
                  'visible' => true,
                  'inputs' => [
                     __('Name') => [
@@ -274,7 +288,19 @@ class Item_Disk extends CommonDBChild
                'content' => $hook,
             ];
         }
-        renderTwigForm($form);
+        $readonly = !$item->canEdit($item->getID()) || (($options['withtemplate'] ?? $_GET['withtemplate'] ?? 0) == 2);
+        if ($readonly) {
+            $form['buttons'] = [[]];
+            echo '<fieldset disabled>';
+        }
+        $form_fields = $this->fields;
+        if ($inline) {
+            $form_fields['noEntity'] = true;
+        }
+        renderTwigForm($form, '', $form_fields);
+        if ($readonly) {
+            echo '</fieldset>';
+        }
 
         return true;
     }
@@ -341,108 +367,66 @@ class Item_Disk extends CommonDBChild
             $canedit
             && !(!empty($withtemplate) && ($withtemplate == 2))
         ) {
-            echo "<div class='center firstbloc'>" .
-                  "<a class='btn btn-secondary' href='" . self::getFormURL() . "?itemtype=$itemtype&items_id=$ID&amp;withtemplate=" .
-                     $withtemplate . "'>";
-            echo __('Add a volume');
-            echo "</a></div>\n";
-        }
-
-        echo "<div class='center'>";
-
-        $iterator = self::getFromItem($item);
-        echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
-        $colspan = 8;
-        if (Plugin::haveImport()) {
-            $colspan++;
-        }
-        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName(count($iterator)) .
-              "</th></tr>";
-
-        if (count($iterator)) {
-            $header = "<tr><th>" . __('Name') . "</th>";
-            if (Plugin::haveImport()) {
-                $header .= "<th>" . __('Automatic inventory') . "</th>";
-            }
-            $header .= "<th>" . __('Partition') . "</th>";
-            $header .= "<th>" . __('Mount point') . "</th>";
-            $header .= "<th>" . Filesystem::getTypeName(1) . "</th>";
-            $header .= "<th>" . __('Global size') . "</th>";
-            $header .= "<th>" . __('Free size') . "</th>";
-            $header .= "<th>" . __('Free percentage') . "</th>";
-            $header .= "<th>" . __('Encryption') . "</th>";
-            $header .= "</tr>";
-            echo $header;
-
-            Session::initNavigateListItems(
-                __CLASS__,
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item::getTypeName(1),
-                    $item->getName()
-                )
-            );
-
             $disk = new self();
-            while ($data = $iterator->next()) {
-                $disk->getFromResultSet($data);
-                echo "<tr class='tab_bg_2" . (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'") . "'>";
-                echo "<td>" . $disk->getLink() . "</td>";
-                if (Plugin::haveImport()) {
-                    echo "<td>" . Dropdown::getYesNo($data['is_dynamic']) . "</td>";
-                }
-                echo "<td>" . $data['device'] . "</td>";
-                echo "<td>" . $data['mountpoint'] . "</td>";
-                echo "<td>" . $data['fsname'] . "</td>";
-                //TRANS: %s is a size
-                $tmp = Toolbox::getSize($data['totalsize'] * 1024 * 1024);
-                echo "<td class='right'>$tmp<span class='small_space'></span></td>";
-                $tmp = Toolbox::getSize($data['freesize'] * 1024 * 1024);
-                echo "<td class='right'>$tmp<span class='small_space'></span></td>";
-                echo "<td>";
-                $percent = 0;
-                if ($data['totalsize'] > 0) {
-                    $percent = round(100 * $data['freesize'] / $data['totalsize']);
-                }
-                $rand = mt_rand();
-                Html::progressBar("percent$rand", [
-                   'create'  => true,
-                   'percent' => $percent,
-                   'message' => "$percent %",
-                ]);
-                echo "</td>";
-                echo "<td class=\"center\">";
-
-                if ($data['encryption_status'] != self::ENCRYPTION_STATUS_NO) {
-                    $encryptionTooltip = "<strong>" . __('Partial encryption') . "</strong> : " .
-                       Dropdown::getYesNo($data['encryption_status'] == self::ENCRYPTION_STATUS_PARTIALLY) .
-                       "<br/>" .
-                       "<strong>" . __('Encryption tool') . "</strong> : " . $data['encryption_tool'] .
-                       "</br>" .
-                       "<strong>" . __('Encryption algorithm') . "</strong> : " .
-                       $data['encryption_algorithm'] . "</br>" .
-                       "<strong>" . __('Encryption type') . "</strong> : " . $data['encryption_type'] .
-                       "</br>";
-
-                    Html::showTooltip($encryptionTooltip, [
-                       'awesome-class' => "fas fa-lock"
-                    ]);
-                }
-
-                echo "</td>";
-                echo "</tr>";
-                Session::addToNavigateListItems(__CLASS__, $data['id']);
-            }
-            echo $header;
-        } else {
-            echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
+            $disk->showForm(-1, [
+                'itemtype' => $itemtype,
+                'items_id' => $ID,
+                'withtemplate' => $withtemplate,
+                'inline' => true,
+            ]);
         }
 
-        echo "</table>";
-        echo "</div>";
+        $fields = [__('Name')];
+        $import = Plugin::haveImport();
+        if ($import) {
+            $fields[] = __('Automatic inventory');
+        }
+        $fields = array_merge($fields, [__('Partition'), __('Mount point'), Filesystem::getTypeName(1),
+            __('Global size'), __('Free size'), __('Free percentage'), __('Encryption')]);
+        $values = [];
+        Session::initNavigateListItems(__CLASS__, sprintf(__('%1$s = %2$s'), $item::getTypeName(1), $item->getName()));
+        $disk = new self();
+        foreach (self::getFromItem($item) as $data) {
+            $disk->getFromResultSet($data);
+            $row = [$disk->getLink()];
+            if (!empty($data['is_deleted'])) {
+                $row[0] .= ' <span class="badge text-bg-warning">' . Lock::getTypeName(1) . '</span>';
+            }
+            if ($import) {
+                $row[] = Dropdown::getYesNo($data['is_dynamic']);
+            }
+            $row[] = htmlspecialchars($data['device'] ?? '', ENT_QUOTES, 'UTF-8', false);
+            $row[] = htmlspecialchars($data['mountpoint'] ?? '', ENT_QUOTES, 'UTF-8', false);
+            $row[] = htmlspecialchars($data['fsname'] ?? '', ENT_QUOTES, 'UTF-8', false);
+            $row[] = Toolbox::getSize($data['totalsize'] * 1024 * 1024);
+            $row[] = Toolbox::getSize($data['freesize'] * 1024 * 1024);
+            $percent = $data['totalsize'] > 0 ? round(100 * $data['freesize'] / $data['totalsize']) : 0;
+            $barPercent = max(0, min(100, $percent));
+            $row[] = '<div class="progress" role="progressbar" aria-valuenow="' . $barPercent
+                . '" aria-valuemin="0" aria-valuemax="100" aria-label="' . __s('Free percentage') . '">'
+                . '<div class="progress-bar" style="width: ' . $barPercent . '%">' . $percent . ' %</div></div>';
+            $encryption = Dropdown::getYesNo($data['encryption_status'] != self::ENCRYPTION_STATUS_NO);
+            if ($data['encryption_status'] != self::ENCRYPTION_STATUS_NO) {
+                $details = [__('Partial encryption') . ': ' . Dropdown::getYesNo($data['encryption_status'] == self::ENCRYPTION_STATUS_PARTIALLY),
+                    __('Encryption tool') . ': ' . ($data['encryption_tool'] ?? ''),
+                    __('Encryption algorithm') . ': ' . ($data['encryption_algorithm'] ?? ''),
+                    __('Encryption type') . ': ' . ($data['encryption_type'] ?? '')];
+                $encryption = '<span title="' . htmlspecialchars(implode("\n", $details), ENT_QUOTES, 'UTF-8', false)
+                    . '"><i class="fas fa-lock" aria-hidden="true"></i> ' . $encryption . '</span>';
+            }
+            $row[] = $encryption;
+            $values[] = $row;
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
+        }
+        renderTwigTemplate('table.twig', [
+            'id' => 'volumes_' . $itemtype . '_' . $ID,
+            'state_key' => 'Item_Disk_for_' . $itemtype,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => $fields,
+            'values' => $values,
+        ]);
     }
+
 
     public function rawSearchOptions()
     {

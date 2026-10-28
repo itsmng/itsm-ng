@@ -541,7 +541,9 @@ class NetworkPort extends CommonDBChild
     {
         global $DB;
 
-        $rand     = mt_rand();
+        $escape = static function ($value) {
+            return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        };
 
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
@@ -589,11 +591,12 @@ class NetworkPort extends CommonDBChild
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _sx('button', 'Add'),
-                     'class' => 'btn btn-secondary'
+                     'class' => 'btn btn-primary',
+                     'icon' => 'fas fa-plus'
                   ]
                ],
                'content' => [
-                  '' => [
+                  __('New item') . ' - ' . self::getTypeName(1) => [
                      'visible' => true,
                      'inputs' => [
                         [
@@ -677,7 +680,9 @@ class NetworkPort extends CommonDBChild
             $c_network = null;
         }
 
+        echo "<div class='mb-3'>" . $table_name . '</div>';
         foreach ($porttypes as $portType) {
+            $table_options['canedit'] = $canedit && !empty($portType);
             if (empty($portType)) {
                 $group_name  = 'Migration';
                 $group_title = __('Network ports waiting for manual migration');
@@ -798,23 +803,23 @@ class NetworkPort extends CommonDBChild
                             $content .= "<a href=\"" . NetworkPortMigration::getFormURLWithID($netport->fields["id"]) . "\">";
                         }
                     }
-                    $content .= $netport->fields["logical_number"];
+                    $content .= $escape($netport->fields["logical_number"]);
 
                     if (
-                        $canedit
+                        $save_canedit
                           && ($withtemplate != 2)
                     ) {
                         $content .= "</a>";
                     }
                     $content .= "</span>";
                     $content .= Html::showToolTip(
-                        $netport->fields['comment'],
+                        $escape($netport->fields['comment']),
                         ['display' => false]
                     );
 
                     $t_row->addCell($c_number, $content);
 
-                    $value = $netport->fields["name"];
+                    $value = $escape($netport->fields["name"]);
                     $t_row->addCell($c_name, $value, null, $netport);
 
                     if ($table_options['display_isDynamic']) {
@@ -837,41 +842,32 @@ class NetworkPort extends CommonDBChild
                     } elseif ($display_options['internet']) {
                         NetworkName::getHTMLTableCellsForItem($t_row, $netport, null, $table_options);
                     }
-                    $headers = $t_row->getGroup()->headers;
-                    if (!isset($categories)) {
-                        $categories = [];
-                        foreach ($headers as $header) {
-                            foreach ($header as $key => $value) {
-                                ob_start();
-                                $value->displayContent();
-                                $categories[$key] = ob_get_clean();
-                            }
-                        }
-                    }
                     $newValue = [];
-                    foreach ($t_row->cells as $name => $cell) {
-                        foreach ($cell as $key => $value) {
-                            $content = $value->content;
-                            if (gettype($content) == 'array') {
-                                $classtype = $content[0]['function'][0];
-                                $funcname = $content[0]['function'][1];
-                                ob_start();
-                                $classtype::$funcname($netport);
-                                $content = ob_get_clean();
-                            }
-                            $headerName = explode(':', (string) $name)[1];
-                            $newValue[$headerName] = $content;
+                    foreach ($t_row->cells as $header_name => $cells) {
+                        $contents = [];
+                        foreach ($cells as $cell) {
+                            ob_start();
+                            $cell->displayContent();
+                            $contents[] = ob_get_clean();
                         }
+                        $newValue[$header_name] = implode('<br>', $contents);
                     }
                     $values[] = $newValue;
                     $massive_actions[] = sprintf('item[%s][%s]', $netport->getType(), $netport->getID());
                 }
                 $canedit = $save_canedit;
-                echo '<hr><h2>' . $group_title . '</h2>';
-                $fields = $categories;
-                $rand = mt_rand();
-                $massiveContainerId = 'mass' . $netport->getType() . $rand;
-                if ($canedit) {
+                echo "<h2 class='h5 mt-4'>" . $escape($group_title) . '</h2>';
+                $fields = [];
+                foreach ($t_group->headers as $headers) {
+                    foreach ($headers as $header) {
+                        ob_start();
+                        $header->displayContent();
+                        $fields[$header->getCompositeName()] = ob_get_clean();
+                    }
+                }
+                $massiveContainerId = 'networkPortsTable_' . $itemtype . '_' . $items_id . '_' . $group_name;
+                $group_canedit = $canedit && !empty($portType);
+                if ($group_canedit) {
                     Html::showMassiveActions([
                        'display_arrow' => false,
                        'container' => $massiveContainerId,
@@ -881,12 +877,17 @@ class NetworkPort extends CommonDBChild
                        'itemtype' => $netport->getType(),
                     ]);
                 }
-                renderTwigTemplate('table.twig', [
-                   'id' => $massiveContainerId,
-                   'fields' => $fields,
-                   'values' => $values,
-                   'massive_action' => $massive_actions,
-                ]);
+                $table_vars = [
+                    'id' => $massiveContainerId,
+                    'state_key' => $massiveContainerId,
+                    'fields' => $fields,
+                    'values' => $values,
+                    'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+                ];
+                if ($group_canedit) {
+                    $table_vars['massive_action'] = $massive_actions;
+                }
+                renderTwigTemplate('table.twig', $table_vars);
             }
         }
     }

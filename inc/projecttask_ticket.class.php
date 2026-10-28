@@ -146,110 +146,56 @@ class ProjectTask_Ticket extends CommonDBRelation
      **/
     public static function showForProjectTask(ProjectTask $projecttask)
     {
-        $ID = $projecttask->getField('id');
+        $ID = $projecttask->getID();
         if (!$projecttask->can($ID, READ)) {
             return false;
         }
-
         $canedit = $projecttask->canEdit($ID);
-        $rand    = mt_rand();
-
-        $iterator = self::getListForItem($projecttask);
-        $numrows = count($iterator);
-
         $tickets = [];
-        $used    = [];
-        while ($data = $iterator->next()) {
+        $used = [];
+        $selection = [];
+        foreach (self::getListForItem($projecttask) as $data) {
             $tickets[$data['id']] = $data;
-            $used[$data['id']]    = $data['id'];
+            $used[] = $data['id'];
+            $selection[$data['id']] = 'item[ProjectTask_Ticket][' . $data['linkid'] . ']';
         }
-
         if ($canedit) {
-            echo "<div class='firstbloc'>";
-            echo "<form aria-label='Project Task' name='projecttaskticket_form$rand' id='projecttaskticket_form$rand'
-                method='post' action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-            echo "<table class='tab_cadre_fixe' aria-label='Add a ticket'>";
-            echo "<tr class='tab_bg_2'><th colspan='3'>" . __('Add a ticket') . "</th></tr>";
-
-            echo "<tr class='tab_bg_2'><td class='right'>";
-            echo "<input type='hidden' name='projecttasks_id' value='$ID'>";
             $condition = [
-               'NOT' => [
-                  'glpi_tickets.status'    => array_merge(
-                      Ticket::getSolvedStatusArray(),
-                      Ticket::getClosedStatusArray()
-                  )
-               ]
+                'NOT' => ['glpi_tickets.status' => array_merge(Ticket::getSolvedStatusArray(), Ticket::getClosedStatusArray())],
+                'is_recursive' => $projecttask->isRecursive(),
             ];
-            Ticket::dropdown([
-               'used'        => $used,
-               'entity'      => $projecttask->getEntityID(),
-               'entity_sons' => $projecttask->isRecursive(),
-               'condition'   => $condition,
-               'displaywith' => ['id']
+            renderTwigForm([
+                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Add'),
+                    'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                ]],
+                'content' => [__('Add a ticket') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'projecttasks_id', 'value' => $ID],
+                        Ticket::getTypeName(1) => [
+                            'type' => 'select', 'name' => 'tickets_id', 'value' => 0,
+                            ...getAjaxDropdownOptionsByEntity('Ticket', $projecttask->getEntityID(), $condition, $used),
+                            'col_lg' => 8, 'col_md' => 8,
+                        ],
+                        '' => ['content' => '<a class="btn btn-outline-primary" href="'
+                            . htmlspecialchars(Ticket::getFormURL() . '?_projecttasks_id=' . $ID, ENT_QUOTES, 'UTF-8', false)
+                            . '"><i class="fas fa-plus me-2" aria-hidden="true"></i>' . __('Create a ticket from this task') . '</a>',
+                            'col_lg' => 4, 'col_md' => 4],
+                    ],
+                ]],
             ]);
-
-            echo "</td><td width='20%'>";
-            echo "<a href='" . Toolbox::getItemTypeFormURL('Ticket') . "?_projecttasks_id=$ID'>";
-            echo __('Create a ticket from this task');
-            echo "</a>";
-            echo "</td><td class='center'>";
-            echo "<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-            echo "</td></tr>";
-
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
         }
-
-        echo "<div class='spaced'>";
-        if ($canedit && $numrows) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = [
-               'num_displayed'    => min($_SESSION['glpilist_limit'], $numrows),
-               'container'        => 'mass' . __CLASS__ . $rand
-            ];
-            Html::showMassiveActions($massiveactionparams);
+        $canselect = $canedit && (Ticket::canDelete() || Session::haveRight(Ticket::$rightname, UPDATE));
+        if ($canselect && $tickets) {
+            Html::showMassiveActions([
+                'container' => 'itilForProjectTask' . $ID . 'TicketDirect',
+                'num_displayed' => count($tickets),
+                'display_arrow' => false,
+            ]);
         }
-
-        echo "<table class='tab_cadre_fixehov' aria-label='Ticket'>";
-        echo "<tr><th colspan='12'>" . Ticket::getTypeName($numrows) . "</th>";
-        echo "</tr>";
-        if ($numrows) {
-            Ticket::commonListHeader(Search::HTML_OUTPUT, 'mass' . __CLASS__ . $rand);
-            Session::initNavigateListItems(
-                'Ticket',
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    ProjectTask::getTypeName(1),
-                    $projecttask->fields["name"]
-                )
-            );
-
-            $i = 0;
-            foreach ($tickets as $data) {
-                Session::addToNavigateListItems('Ticket', $data["id"]);
-                Ticket::showShort(
-                    $data['id'],
-                    [
-                      'row_num'                => $i,
-                      'type_for_massiveaction' => __CLASS__,
-                      'id_for_massiveaction'   => $data['linkid']
-                    ]
-                );
-                $i++;
-            }
-        }
-        echo "</table>";
-        if ($canedit && $numrows) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        Ticket::showItemListTable($tickets, $projecttask, false, $canselect ? $selection : null);
     }
 
 

@@ -1276,49 +1276,20 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-        echo "<br><div class='center'>";
-        echo "<table class='tab_cadre' aria-label='Statistics'>";
-        echo "<tr><th colspan='2'>&nbsp;" . __('Statistics') . "</th></tr>\n";
-
-        $nbstart = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => CronTaskLog::STATE_START
-            ]
-        );
-        $nbstop = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => CronTaskLog::STATE_STOP
-            ]
-        );
-        $nberror = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => CronTaskLog::STATE_ERROR
-            ]
-        );
-
-        echo "<tr class='tab_bg_2'><td>" . __('Run count') . "</td><td class='right'>";
-        if ($nbstart == $nbstop) {
-            echo $nbstart;
-        } else {
-            // This should not appen => task crash ?
-            //TRANS: %s is the number of starts
-            printf(_n('%s start', '%s starts', $nbstart), $nbstart);
-            echo "<br>";
-            //TRANS: %s is the number of stops
-            printf(_n('%s stop', '%s stops', $nbstop), $nbstop);
-            echo "<br>";
-            //TRANS: %s is the number of errors
-            printf(_n('%s error', '%s errors', $nberror), $nberror);
+        $counts = [];
+        foreach (['start' => CronTaskLog::STATE_START, 'stop' => CronTaskLog::STATE_STOP,
+            'error' => CronTaskLog::STATE_ERROR] as $key => $state) {
+            $counts[$key] = countElementsInTable('glpi_crontasklogs', [
+                'crontasks_id' => $this->getID(), 'state' => $state,
+            ]);
         }
-        echo "</td></tr>";
-
-        if ($nbstop) {
+        $count = $counts['start'] == $counts['stop'] ? $counts['start'] : implode('<br>', [
+            sprintf(_n('%s start', '%s starts', $counts['start']), $counts['start']),
+            sprintf(_n('%s stop', '%s stops', $counts['stop']), $counts['stop']),
+            sprintf(_n('%s error', '%s errors', $counts['error']), $counts['error']),
+        ]);
+        $values = [['name' => __('Run count'), 'value' => $count]];
+        if ($counts['stop']) {
             $data = $DB->request([
                 'SELECT' => [
                     'MIN' => [
@@ -1346,72 +1317,31 @@ class CronTask extends CommonDBTM
                 ]
             ])->next();
 
-            echo "<tr class='tab_bg_1'><td>" . __('Start date') . "</td>";
-            echo "<td class='right'>" . Html::convDateTime($data['datemin']) . "</td></tr>";
 
-            echo "<tr class='tab_bg_2'><td>" . __('Minimal time') . "</td>";
-            echo "<td class='right'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedmin']),
-                number_format($data['elapsedmin'], 2)
-            );
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'><td>" . __('Maximal time') . "</td>";
-            echo "<td class='right'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedmax']),
-                number_format($data['elapsedmax'], 2)
-            );
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_2'><td>" . __('Average time') . "</td>";
-            echo "<td class='right b'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedavg']),
-                number_format($data['elapsedavg'], 2)
-            );
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'><td>" . __('Total duration') . "</td>";
-            echo "<td class='right'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedtot']),
-                number_format($data['elapsedtot'], 2)
-            );
-            echo "</td></tr>";
-
+            $values[] = ['name' => __('Start date'), 'value' => Html::convDateTime($data['datemin'])];
+            foreach (['elapsedmin' => __('Minimal time'), 'elapsedmax' => __('Maximal time'),
+                'elapsedavg' => __('Average time'), 'elapsedtot' => __('Total duration')] as $key => $label) {
+                $values[] = ['name' => $label, 'value' => sprintf(
+                    _n('%s second', '%s seconds', $data[$key]), number_format($data[$key], 2)
+                )];
+            }
             if ($data['voltot'] > 0) {
-                echo "<tr class='tab_bg_2'><td>" . __('Minimal count') . "</td>";
-                echo "<td class='right'>" . sprintf(
-                    _n('%s item', '%s items', $data['volmin']),
-                    $data['volmin']
-                ) . "</td></tr>";
-
-                echo "<tr class='tab_bg_1'><td>" . __('Maximal count') . "</td>";
-                echo "<td class='right'>" . sprintf(
-                    _n('%s item', '%s items', $data['volmax']),
-                    $data['volmax']
-                ) . "</td></tr>";
-
-                echo "<tr class='tab_bg_2'><td>" . __('Average count') . "</td>";
-                echo "<td class='right b'>" . sprintf(
-                    _n('%s item', '%s items', $data['volavg']),
-                    number_format($data['volavg'], 2)
-                ) .
-                    "</td></tr>";
-
-                echo "<tr class='tab_bg_1'><td>" . __('Total count') . "</td>";
-                echo "<td class='right'>" . sprintf(
-                    _n('%s item', '%s items', $data['voltot']),
-                    $data['voltot']
-                ) . "</td></tr>";
-
-                echo "<tr class='tab_bg_2'><td>" . __('Average speed') . "</td>";
-                echo "<td class='left'>" . sprintf(
-                    __('%s items/sec'),
-                    number_format($data['voltot'] / $data['elapsedtot'], 2)
-                );
-                echo "</td></tr>";
+                foreach (['volmin' => __('Minimal count'), 'volmax' => __('Maximal count'),
+                    'volavg' => __('Average count'), 'voltot' => __('Total count')] as $key => $label) {
+                    $values[] = ['name' => $label, 'value' => sprintf(
+                        _n('%s item', '%s items', $data[$key]),
+                        $key === 'volavg' ? number_format($data[$key], 2) : $data[$key]
+                    )];
+                }
+                $values[] = ['name' => __('Average speed'), 'value' => $data['elapsedtot'] > 0
+                    ? sprintf(__('%s items/sec'), number_format($data['voltot'] / $data['elapsedtot'], 2)) : NOT_AVAILABLE];
             }
         }
-        echo "</table></div>";
+        renderTwigTemplate('table.twig', [
+            'id' => 'cronStatistics_' . $this->getID(), 'state_key' => 'cronStatistics_' . $this->getID(),
+            'fields' => ['name' => __('Name'), 'value' => __('Value')],
+            'values' => $values, 'pageSize' => 15, 'minimal' => true, 'show_export' => false,
+        ]);
     }
 
 
@@ -1488,7 +1418,7 @@ class CronTask extends CommonDBTM
         $sort = $options['sort'] ?? '';
         $order = [];
         if (is_string($sort) && in_array($sort, ['date', 'state', 'elapsed', 'volume', 'content'], true)) {
-            $order[] = $sort . (strtolower($options['order'] ?? 'asc') === 'desc' ? ' DESC' : ' ASC');
+            $order[] = $sort . (is_string($options['order'] ?? null) && strtolower($options['order']) === 'desc' ? ' DESC' : ' ASC');
         }
         $order[] = $logid > 0 ? 'id ASC' : 'id DESC';
         $iterator = $DB->request([

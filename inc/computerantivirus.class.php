@@ -276,8 +276,10 @@ class ComputerAntivirus extends CommonDBChild
             return false;
         }
 
+        $inline = !empty($options['inline']);
+        $is_new = self::isNewID($ID);
         $comp = new Computer();
-        if ($ID > 0) {
+        if (!$is_new) {
             $this->check($ID, READ);
             $comp->getFromDB($this->fields['computers_id']);
         } else {
@@ -285,8 +287,13 @@ class ComputerAntivirus extends CommonDBChild
             $comp->getFromDB($options['computers_id']);
         }
 
+        if ($inline && (($options['withtemplate'] ?? 0) == 2 || !$comp->canEdit($comp->getID())
+            || !Session::haveRight('computer', UPDATE))) {
+            return false;
+        }
+
         $plugin = __('No');
-        if (Plugin::haveImport() && $ID && $this->fields['is_dynamic']) {
+        if (Plugin::haveImport() && !$is_new && $this->fields['is_dynamic']) {
             ob_start();
             Plugin::doHook("autoinventory_form", $this);
             $plugin = ob_get_clean();
@@ -299,14 +306,15 @@ class ComputerAntivirus extends CommonDBChild
                  'type' => 'submit',
                  'name' => self::isNewID($ID) ? 'add' : 'update',
                  'value' => self::isNewID($ID) ? __('Add') : __('Update'),
-                 'class' => 'btn btn-secondary'
+                 'class' => self::isNewID($ID) ? 'btn btn-primary' : 'btn btn-secondary',
+                 'icon' => self::isNewID($ID) ? 'fas fa-plus' : null
               ] : []
            ],
            'content' => [
-              [
-                 'visible' => false,
+              ($is_new ? __('Add an antivirus') : self::getTypeName(1)) => [
+                 'visible' => true,
                  'inputs' => [
-                    $this->isNewID($ID) ? [
+                    $is_new ? [
                        'type' => 'hidden',
                        'name' => 'computers_id',
                        'value' => $options['computers_id'],
@@ -314,12 +322,12 @@ class ComputerAntivirus extends CommonDBChild
                        'type' => 'hidden',
                        'name' => 'id',
                        'value' => $ID,
-                    ]
-                 ]
-              ],
-              'New item - ' . self::getTypeName(1) => [
-                 'visible' => true,
-                 'inputs' => [
+                    ],
+                    $inline ? [
+                       'type' => 'hidden',
+                       'name' => '_inline',
+                       'value' => 1,
+                    ] : [],
                     Computer::getTypeName(1) => [
                        'content' => $comp->getLink(),
                     ],
@@ -394,93 +402,79 @@ class ComputerAntivirus extends CommonDBChild
         }
         $canedit = $comp->canEdit($ID);
 
-        if (
-            $canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))
-        ) {
-            echo "<div class='center firstbloc'>" .
-                  "<a class='btn btn-secondary' href='" . ComputerAntivirus::getFormURL() . "?computers_id=$ID&amp;withtemplate=" .
-                     $withtemplate . "'>";
-            echo __('Add an antivirus');
-            echo "</a></div>\n";
+        $canadd = $canedit && $withtemplate != 2 && Session::haveRight('computer', UPDATE);
+        $escape = static function ($value) {
+            return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        };
+        $has_import = Plugin::haveImport();
+        $result = $DB->request([
+            'FROM' => self::getTable(),
+            'WHERE' => [
+                'computers_id' => $ID,
+                'is_deleted' => 0,
+            ],
+            'ORDER' => ['name', 'id'],
+        ]);
+
+        $fields = ['name' => __('Name')];
+        if ($has_import) {
+            $fields['is_dynamic'] = __('Automatic inventory');
         }
+        $fields += [
+            'manufacturer' => Manufacturer::getTypeName(1),
+            'antivirus_version' => __('Antivirus version'),
+            'signature_version' => __('Signature database version'),
+            'is_active' => __('Active'),
+            'is_uptodate' => __('Up to date'),
+            'date_expiration' => __('Expiration date'),
+        ];
 
-        echo "<div class='spaced center'>";
-
-        $result = $DB->request(
-            [
-              'FROM'  => ComputerAntivirus::getTable(),
-              'WHERE' => [
-                 'computers_id' => $ID,
-                 'is_deleted'   => 0,
-              ],
-            ]
+        Session::initNavigateListItems(
+            __CLASS__,
+            sprintf(__('%1$s = %2$s'), Computer::getTypeName(1), $comp->getName())
         );
 
-        echo "<table class='tab_cadre_fixehov' aria-label='Antivirus information'>";
-        $colspan = 7;
-        if (Plugin::haveImport()) {
-            $colspan++;
-        }
-        echo "<tr class='noHover'><th colspan='$colspan'>" . self::getTypeName($result->numrows()) .
-             "</th></tr>";
-
-        if ($result->numrows() != 0) {
-            $header = "<tr><th>" . __('Name') . "</th>";
-            if (Plugin::haveImport()) {
-                $header .= "<th>" . __('Automatic inventory') . "</th>";
+        $values = [];
+        $antivirus = new self();
+        foreach ($result as $data) {
+            $antivirus->getFromDB($data['id']);
+            $name = $escape($antivirus->getNameID());
+            if ($antivirus->can($data['id'], READ)) {
+                $name = '<a href="' . $escape($antivirus->getLinkURL()) . '">' . $name . '</a>';
             }
-            $header .= "<th>" . Manufacturer::getTypeName(1) . "</th>";
-            $header .= "<th>" . __('Antivirus version') . "</th>";
-            $header .= "<th>" . __('Signature database version') . "</th>";
-            $header .= "<th>" . __('Active') . "</th>";
-            $header .= "<th>" . __('Up to date') . "</th>";
-            $header .= "<th>" . __('Expiration date') . "</th>";
-            $header .= "</tr>";
-            echo $header;
+            $values[] = [
+                'name' => $name,
+                'manufacturer' => $data['manufacturers_id']
+                    ? $escape(Dropdown::getDropdownName('glpi_manufacturers', $data['manufacturers_id']))
+                    : '',
+                'antivirus_version' => $escape($data['antivirus_version']),
+                'signature_version' => $escape($data['signature_version']),
+                'is_active' => $escape(Dropdown::getYesNo($data['is_active'])),
+                'is_uptodate' => $escape(Dropdown::getYesNo($data['is_uptodate'])),
+                'date_expiration' => $escape(Html::convDate($data['date_expiration'])),
+            ];
+            if ($has_import) {
+                $values[array_key_last($values)]['is_dynamic'] = $escape(Dropdown::getYesNo($data['is_dynamic']));
+            }
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
+        }
 
-            Session::initNavigateListItems(
-                __CLASS__,
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    Computer::getTypeName(1),
-                    $comp->getName()
-                )
-            );
-
+        if ($canadd) {
             $antivirus = new self();
-            foreach ($result as $data) {
-                $antivirus->getFromDB($data['id']);
-                echo "<tr class='tab_bg_2'>";
-                echo "<td>" . $antivirus->getLink() . "</td>";
-                if (Plugin::haveImport()) {
-                    echo "<td>" . Dropdown::getYesNo($data['is_dynamic']) . "</td>";
-                }
-                echo "<td>";
-                if ($data['manufacturers_id']) {
-                    echo Dropdown::getDropdownName(
-                        'glpi_manufacturers',
-                        $data['manufacturers_id']
-                    ) . "</td>";
-                } else {
-                    echo "</td>";
-                }
-                echo "<td>" . $data['antivirus_version'] . "</td>";
-                echo "<td>" . $data['signature_version'] . "</td>";
-                echo "<td>" . Dropdown::getYesNo($data['is_active']) . "</td>";
-                echo "<td>" . Dropdown::getYesNo($data['is_uptodate']) . "</td>";
-                echo "<td>" . Html::convDate($data['date_expiration']) . "</td>";
-                echo "</tr>";
-                Session::addToNavigateListItems(__CLASS__, $data['id']);
-            }
-            echo $header;
-        } else {
-            echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
+            $antivirus->showForm(-1, [
+                'computers_id' => $ID,
+                'inline' => true,
+                'withtemplate' => $withtemplate,
+            ]);
         }
 
-        echo "</table>";
-        echo "</div>";
+        renderTwigTemplate('computer/antivirus.twig', [
+            'title' => self::getTypeName(count($values)),
+            'id' => 'computerAntivirusTable_' . $ID,
+            'state_key' => 'ComputerAntivirus_' . $ID,
+            'fields' => $fields,
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 }

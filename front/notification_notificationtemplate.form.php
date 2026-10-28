@@ -46,6 +46,10 @@ if (isset($_POST["add"])) {
     $notiftpl->check(-1, CREATE, $_POST);
 
     if ($notiftpl->add($_POST)) {
+        if (!empty($_POST['_inline'])) {
+            Html::redirect(Notification::getFormURLWithID($notiftpl->fields['notifications_id'])
+                . '&forcetab=' . urlencode('Notification_NotificationTemplate$1'));
+        }
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($notiftpl->getLinkURL());
         }

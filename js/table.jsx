@@ -53,6 +53,7 @@ import { batch, signal } from '@preact/signals';
                 type: isRemote ? 'remote' : 'local',
                 url: isRemote ? dataSource.url : null,
                 rows: isRemote ? [] : (dataSource.rows || []),
+                rowOrder: !isRemote && Array.isArray(dataSource.rowOrder) ? dataSource.rowOrder : null,
             },
             selection: {
                 type: selection.type || 'none',
@@ -312,9 +313,22 @@ import { batch, signal } from '@preact/signals';
                 getSortedRowModel: getSortedRowModel(),
                 data: initialData,
                 ...restOptions,
-                initialState,
+                initialState: {
+                    ...initialState,
+                    pagination: {
+                        ...initialState.pagination,
+                        pageIndex: 0,
+                    },
+                },
             });
-            tableStateSignal.value = tableInstance.initialState;
+            // Restore the current page without making it the target of TanStack's filter resets.
+            tableStateSignal.value = {
+                ...tableInstance.initialState,
+                pagination: {
+                    ...tableInstance.initialState.pagination,
+                    ...initialState.pagination,
+                },
+            };
             return tableInstance;
         };
 
@@ -360,7 +374,13 @@ import { batch, signal } from '@preact/signals';
         }));
         columns = columns.concat(dataColumns);
 
-        const data = Object.values(values).map(value => {
+        // JSON objects with numeric record IDs enumerate in ID order in JavaScript.
+        // Keep the server's query order without changing the keys used for selection.
+        const rowKeys = config.dataSource.rowOrder
+            ? [...new Set([...config.dataSource.rowOrder.map(String), ...Object.keys(values)])]
+            : Object.keys(values);
+        const data = rowKeys.filter(key => values[key]).map(key => {
+            const value = values[key];
             const row = {};
             fieldKeys.forEach(field => {
                 row[String(field)] = value[String(field)];

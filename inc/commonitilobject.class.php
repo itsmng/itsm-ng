@@ -3684,9 +3684,8 @@ abstract class CommonITILObject extends CommonDBTM
                            'observer',
                         ];
                         $('#DropdownTypeActorsMassiveAction').prop('disabled', val === 0);
-                        $('#DropdownActorsMassiveAction').prop('disabled', val === 0 || $('#DropdownTypeActorsMassiveAction').val() === '0');
-                        $('#DropdownTypeActorsMassiveAction').val(0);
                         $('#DropdownTypeActorsMassiveAction').attr('name', '_itil_' + values[val] + '[_type]');
+                        $('#DropdownTypeActorsMassiveAction').val(0).trigger('change');
                      JS
                       ]
                    ],
@@ -3711,44 +3710,37 @@ abstract class CommonITILObject extends CommonDBTM
                            'observer',
                         ];
                         const actorType = values[$('#DropdownActorsTypeMassiveAction').val()];
+                        $('#DropdownActorsMassiveAction').empty();
+                        if (!actorType || (val !== 'user' && val !== 'group')) {
+                           return;
+                        }
                         $.ajax({
                            url: '{$CFG_GLPI['root_doc']}/ajax/dropdownItilActors.php',
                            method: 'POST',
                            data: {
                               type: val,
-                              actorType: actorType,
+                              actortype: actorType,
                               itemtype: 'Ticket',
                               allow_email: false,
                               entity_restrict: $entity,
                               use_notif: 1,
                            },
+                           dataType: 'html',
                            success: function(data) {
-                              const jsonData = JSON.parse(data);
-                              $('#DropdownActorsMassiveAction').empty();
-                              for (const key in jsonData) {
-                                 if (jsonData.hasOwnProperty(key)) {
-                                    $('#DropdownActorsMassiveAction').append($('<option>', {
-                                       value: key,
-                                       text: jsonData[key]
-                                    }));
-                                 }
+                              if ($('#DropdownTypeActorsMassiveAction').val() !== val
+                                 || values[$('#DropdownActorsTypeMassiveAction').val()] !== actorType) {
+                                 return;
                               }
-                              const ITIL_type = parseInt($('#DropdownActorsTypeMassiveAction').val());
-                              $('#DropdownActorsMassiveAction').prop('disabled', val === '0');
-                              $('#DropdownActorsMassiveAction').val(0);
-                              $('#DropdownActorsMassiveAction').attr('name', '_itil_' + values[ITIL_type] + '[' + val + 's_id]');
+                              $('#DropdownActorsMassiveAction').html(data);
                            }
                         });
                      JS,
                       ]
                    ],
                    __('Actor') => [
-                      'type' => 'select',
-                      'id' => 'DropdownActorsMassiveAction',
-                      'name' => 'actor',
+                      'content' => '<div id="DropdownActorsMassiveAction" class="w-100"></div>',
                       'col_lg' => 12,
                       'col_md' => 12,
-                      'disabled' => '',
                    ],
 
                 ];
@@ -7494,6 +7486,7 @@ abstract class CommonITILObject extends CommonDBTM
      *      type_for_massiveaction : itemtype for massive action
      *      id_for_massaction      : default 0 means no massive action
      *      followups              : show followup columns
+     *      return_values          : return cell values instead of printing the row
      *
      * @since 9.5.6 Usage of "followups" option is deprecated
      */
@@ -7507,6 +7500,7 @@ abstract class CommonITILObject extends CommonDBTM
            'type_for_massiveaction' => 0,
            'id_for_massiveaction'   => 0,
            'followups'              => false,
+           'return_values'          => false,
         ];
 
         if (count($options)) {
@@ -7514,6 +7508,16 @@ abstract class CommonITILObject extends CommonDBTM
                 $p[$key] = $val;
             }
         }
+
+        $values = [];
+        $renderItem = static function ($type, $value, &$num, $row, $extra = '') use ($p, &$values) {
+            if ($p['return_values']) {
+                $values[] = $value;
+                $num++;
+                return '';
+            }
+            return Search::showItem($type, $value, $num, $row, $extra);
+        };
 
         if ($p['followups']) {
             Toolbox::deprecated('Usage of "followups" option is deprecated.');
@@ -7546,7 +7550,9 @@ abstract class CommonITILObject extends CommonDBTM
             $item_num = 1;
             $bgcolor  = $_SESSION["glpipriority_" . $item->fields["priority"]];
 
-            echo Search::showNewLine($p['output_type'], $p['row_num'] % 2, $item->isDeleted());
+            if (!$p['return_values']) {
+                echo Search::showNewLine($p['output_type'], $p['row_num'] % 2, $item->isDeleted());
+            }
 
             $check_col = '';
             if (
@@ -7556,7 +7562,7 @@ abstract class CommonITILObject extends CommonDBTM
             ) {
                 $check_col = Html::getMassiveActionCheckBox($p['type_for_massiveaction'], $p['id_for_massiveaction']);
             }
-            echo Search::showItem($p['output_type'], $check_col, $item_num, $p['row_num'], $align);
+            echo $renderItem($p['output_type'], $check_col, $item_num, $p['row_num'], $align);
 
             // First column
             $first_col = sprintf(__('%1$s: %2$s'), __('ID'), $item->fields["id"]);
@@ -7570,7 +7576,7 @@ abstract class CommonITILObject extends CommonDBTM
                 );
             }
 
-            echo Search::showItem($p['output_type'], $first_col, $item_num, $p['row_num'], $align);
+            echo $renderItem($p['output_type'], $first_col, $item_num, $p['row_num'], $align);
 
             // Second column
             if ($item->fields['status'] == static::CLOSED) {
@@ -7606,16 +7612,16 @@ abstract class CommonITILObject extends CommonDBTM
                 );
             }
 
-            echo Search::showItem($p['output_type'], $second_col, $item_num, $p['row_num'], $align . " width=130");
+            echo $renderItem($p['output_type'], $second_col, $item_num, $p['row_num'], $align . " width=130");
 
             // Second BIS column
             $second_col = Html::convDateTime($item->fields["date_mod"]);
-            echo Search::showItem($p['output_type'], $second_col, $item_num, $p['row_num'], $align . " width=90");
+            echo $renderItem($p['output_type'], $second_col, $item_num, $p['row_num'], $align . " width=90");
 
             // Second TER column
             if (count($_SESSION["glpiactiveentities"]) > 1) {
                 $second_col = Dropdown::getDropdownName('glpi_entities', $item->fields['entities_id']);
-                echo Search::showItem(
+                echo $renderItem(
                     $p['output_type'],
                     $second_col,
                     $item_num,
@@ -7625,7 +7631,7 @@ abstract class CommonITILObject extends CommonDBTM
             }
 
             // Third Column
-            echo Search::showItem(
+            echo $renderItem(
                 $p['output_type'],
                 "<span class='b'>" . static::getPriorityName($item->fields["priority"]) .
                                     "</span>",
@@ -7656,7 +7662,7 @@ abstract class CommonITILObject extends CommonDBTM
                 $fourth_col .= "<br>";
             }
 
-            echo Search::showItem($p['output_type'], $fourth_col, $item_num, $p['row_num'], $align);
+            echo $renderItem($p['output_type'], $fourth_col, $item_num, $p['row_num'], $align);
 
             // Fifth column
             $fifth_col = "";
@@ -7698,7 +7704,7 @@ abstract class CommonITILObject extends CommonDBTM
                 $fifth_col .= "<br>";
             }
 
-            echo Search::showItem($p['output_type'], $fifth_col, $item_num, $p['row_num'], $align);
+            echo $renderItem($p['output_type'], $fifth_col, $item_num, $p['row_num'], $align);
 
             // Sixth Colum
             // Ticket : simple link to item
@@ -7731,11 +7737,11 @@ abstract class CommonITILObject extends CommonDBTM
                     $sixth_col = __('General');
                 }
 
-                echo Search::showItem($p['output_type'], $sixth_col, $item_num, $p['row_num'], ($is_deleted ? " class='center deleted' " : $align));
+                echo $renderItem($p['output_type'], $sixth_col, $item_num, $p['row_num'], ($is_deleted ? " class='center deleted' " : $align));
             }
 
             // Seventh column
-            echo Search::showItem(
+            echo $renderItem(
                 $p['output_type'],
                 "<span class='b'>" .
                                     Dropdown::getDropdownName(
@@ -7798,7 +7804,7 @@ abstract class CommonITILObject extends CommonDBTM
                 );
             }
 
-            echo Search::showItem(
+            echo $renderItem(
                 $p['output_type'],
                 $eigth_column,
                 $item_num,
@@ -7863,7 +7869,7 @@ abstract class CommonITILObject extends CommonDBTM
                     )
                 );
             }
-            echo Search::showItem(
+            echo $renderItem(
                 $p['output_type'],
                 $tenth_column,
                 $item_num,
@@ -7872,11 +7878,96 @@ abstract class CommonITILObject extends CommonDBTM
             );
 
             // Finish Line
-            echo Search::showEndLine($p['output_type']);
-        } else {
+            if (!$p['return_values']) {
+                echo Search::showEndLine($p['output_type']);
+            }
+        } elseif (!$p['return_values']) {
             echo "<tr class='tab_bg_2'>";
             echo "<td colspan='6' ><i>" . __('No item in progress.') . "</i></td></tr>";
         }
+        if ($p['return_values']) {
+            return $values;
+        }
+    }
+
+    protected static function showItemCreateForm($label, array $fields)
+    {
+        $inputs = [];
+        foreach ($fields as $name => $value) {
+            $inputs[] = ['type' => 'hidden', 'name' => $name, 'value' => $value];
+        }
+        echo '<div class="d-flex justify-content-start mb-3">';
+        renderTwigForm([
+            'action' => static::getFormURL(),
+            'buttons' => [[
+                'type' => 'submit',
+                'name' => '_add_fromitem',
+                'value' => $label,
+                'class' => 'btn btn-primary',
+                'icon' => 'fas fa-plus',
+            ]],
+            'content' => [[
+                'visible' => false,
+                'attributes' => ['hidden' => 'hidden'],
+                'inputs' => $inputs,
+            ]],
+        ]);
+        echo '</div>';
+    }
+
+    /**
+     * Display the existing ITIL summary cells in the shared paginated table.
+     */
+    public static function showItemListTable($iterator, CommonDBTM $item, $linked = false, ?array $massiveActions = null)
+    {
+        $fields = [__('Status'), _n('Date', 'Dates', 1), __('Last update')];
+        if (count($_SESSION['glpiactiveentities']) > 1) {
+            $fields[] = Entity::getTypeName(Session::getPluralNumber());
+        }
+        $fields = array_merge($fields, [
+            __('Priority'), _n('Requester', 'Requesters', 1), __('Assigned'),
+        ]);
+        if (static::getType() === 'Ticket') {
+            $fields[] = _n('Associated element', 'Associated elements', Session::getPluralNumber());
+        }
+        $fields = array_merge($fields, [__('Category'), __('Title'), __('Planification')]);
+
+        $values = [];
+        $selection = [];
+        if (!$linked) {
+            Session::initNavigateListItems(
+                static::getType(),
+                sprintf(__('%1$s = %2$s'), $item->getTypeName(1), $item->getName())
+            );
+        }
+        foreach ($iterator as $data) {
+            $row = static::showShort($data['id'], ['return_values' => true]);
+            if (empty($row)) {
+                continue;
+            }
+            // The legacy summary's first cell is an unused selection placeholder.
+            array_shift($row);
+            $values[] = $row;
+            if ($massiveActions !== null) {
+                $selection[] = $massiveActions[$data['id']] ?? '';
+            }
+            if (!$linked) {
+                Session::addToNavigateListItems(static::getType(), $data['id']);
+            }
+        }
+        $id = ($item->getType() === 'Computer' ? 'computer' : 'itilFor' . $item->getType())
+            . $item->getID() . static::getType() . ($linked ? 'Linked' : 'Direct');
+        $table = [
+            'id' => $id,
+            'state_key' => $id,
+            'fields' => $fields,
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($massiveActions !== null) {
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
     /**

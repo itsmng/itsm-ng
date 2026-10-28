@@ -2913,6 +2913,7 @@ JAVASCRIPT
         }
 
         $identifier = $p['container'];
+        $sidecar_fields = json_encode(array_values($p['extraparams']['massive_action_fields'] ?? []));
         $max        = Toolbox::get_max_input_vars();
         $out = '';
 
@@ -2956,11 +2957,16 @@ JAVASCRIPT
                   for (let i = 0; i < rows.length; i++) {
                      fields[rows[i].value] = 1;
                   }
-                  $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
-                     fields[$(this).attr('name')] = $(this).attr('value');
-                     if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {
-                        fields[$(this).attr('name')] = 0;
-                     }
+                  const selectedItems = new Set(rows.map(row => row.value));
+                  const configuredFields = $sidecar_fields;
+                  const sidecarFields = $('[data-itsm-table-fields="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').filter(function() {
+                     const name = this.name || '';
+                     return configuredFields.includes(name.split('[')[0])
+                        && (!this.dataset.itsmTableRow || selectedItems.has(this.dataset.itsmTableRow));
+                  });
+                  $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').add(sidecarFields).each(function() {
+                     if (!this.name || this.disabled) return;
+                     fields[this.name] = this.type === 'checkbox' ? (this.checked ? $(this).val() : 0) : $(this).val();
                   });
                JS;
                 } else {

@@ -1531,6 +1531,7 @@ class NotificationTarget extends CommonDBChild
 
         $iterator = $DB->request([
            'SELECT'       => [Notification::getTable() . '.id'],
+           'DISTINCT'     => true,
            'FROM'         => self::getTable(),
            'INNER JOIN'   => [
               Notification::getTable() => [
@@ -1549,59 +1550,41 @@ class NotificationTarget extends CommonDBChild
            ] + getEntitiesRestrictCriteria(Notification::getTable(), '', '', true)
         ]);
 
-        echo "<table class='tab_cadre_fixe' aria-label='notification Method'>";
-
-        if (count($iterator)) {
-            echo "<tr><th>" . __('Name') . "</th>";
-            echo "<th>" . Entity::getTypeName(1) . "</th>";
-            echo "<th>" . __('Active') . "</th>";
-            echo "<th>" . _n('Type', 'Types', 1) . "</th>";
-            echo "<th>" . __('Notification method') . "</th>";
-            echo "<th>" . NotificationEvent::getTypeName(1) . "</th>";
-            echo "<th>" . NotificationTemplate::getTypeName(1) . "</th></tr>";
-
-            $notif = new Notification();
-
-            Session::initNavigateListItems(
-                'Notification',
-                //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    Group::getTypeName(1),
-                    $group->getName()
-                )
-            );
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Notification', $data['id']);
-
-                if ($notif->getFromDB($data['id'])) {
-                    echo "<tr class='tab_bg_2'><td>" . $notif->getLink();
-                    echo "</td><td>" . Dropdown::getDropdownName('glpi_entities', $notif->getEntityID());
-                    echo "</td><td>" . Dropdown::getYesNo($notif->getField('is_active')) . "</td><td>";
-                    $itemtype = $notif->getField('itemtype');
-                    if ($tmp = getItemForItemtype($itemtype)) {
-                        echo $tmp->getTypeName(1);
-                    } else {
-                        echo "&nbsp;";
-                    }
-                    echo "</td><td>" . Notification_NotificationTemplate::getMode($notif->getField('mode'));
-                    echo "</td><td>" . NotificationEvent::getEventName(
-                        $itemtype,
-                        $notif->getField('event')
-                    );
-                    echo "</td>" .
-                         "<td>" . Dropdown::getDropdownName(
-                             'glpi_notificationtemplates',
-                             $notif->getField('notificationtemplates_id')
-                         );
-                    echo "</td></tr>";
-                }
+        $values = [];
+        $notification = new Notification();
+        foreach ($iterator as $row) {
+            if (!$notification->getFromDB($row['id'])) {
+                continue;
             }
-        } else {
-            echo "<tr class='tab_bg_2'><td class='b center'>" . __('No item found') . "</td></tr>";
+            $itemtype = $notification->getField('itemtype');
+            $object = getItemForItemtype($itemtype);
+            $modes = [];
+            $templates = [];
+            foreach ($DB->request([
+                'FROM' => Notification_NotificationTemplate::getTable(),
+                'WHERE' => ['notifications_id' => $row['id']],
+            ]) as $relation) {
+                $mode = Notification_NotificationTemplate::getMode($relation['mode']);
+                $modes[] = htmlspecialchars(is_array($mode) ? $mode['label'] : $mode, ENT_QUOTES, 'UTF-8', false);
+                $templates[] = htmlspecialchars(Dropdown::getDropdownName('glpi_notificationtemplates', $relation['notificationtemplates_id']), ENT_QUOTES, 'UTF-8', false);
+            }
+            $values[] = [
+                $notification->getLink(),
+                htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $notification->getEntityID()), ENT_QUOTES, 'UTF-8', false),
+                Dropdown::getYesNo($notification->getField('is_active')),
+                $object ? $object->getTypeName(1) : '', implode('<br>', $modes),
+                NotificationEvent::getEventName($itemtype, $notification->getField('event')),
+                implode('<br>', $templates),
+            ];
+            Session::addToNavigateListItems(Notification::class, $row['id']);
         }
-        echo "</table>";
+        $id = 'notificationsForGroup_' . $group->getID();
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => [__('Name'), Entity::getTypeName(1), __('Active'), _n('Type', 'Types', 1),
+                __('Notification method'), NotificationEvent::getTypeName(1), NotificationTemplate::getTypeName(1)],
+            'values' => $values, 'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 
 

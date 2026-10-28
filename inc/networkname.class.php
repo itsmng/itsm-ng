@@ -115,10 +115,17 @@ class NetworkName extends FQDNLabel
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
+           'buttons' => [[
+               'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+               'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+               'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+           ]],
            'content' => [
               $this->getTypeName() => [
                  'visible' => 'true',
                  'inputs' => [
+                    isset($options['items_id']) ? ['type' => 'hidden', 'name' => 'items_id', 'value' => $options['items_id']] : [],
+                    isset($options['itemtype']) ? ['type' => 'hidden', 'name' => 'itemtype', 'value' => $options['itemtype']] : [],
                     __('Linked to') => [
                        'content' => $content,
                     ],
@@ -791,39 +798,33 @@ class NetworkName extends FQDNLabel
             ($item->getType() == 'NetworkPort')
             && Session::haveRight('internet', UPDATE)
             && $item->canUpdateItem()
+            && $withtemplate != 2
         ) {
             $items_id = $item->getID();
             $itemtype = $item->getType();
 
-            echo "<div class='firstbloc'>\n";
-            echo "<form aria-label='Network' method='post' action='" . static::getFormURL() . "'>\n";
-            echo "<table class='tab_cadre_fixe' aria-label='Network'>\n";
-            echo "<tr><th colspan='4'>" . __('Add a network name') . "</th></tr>";
-
-            echo "<tr class='tab_bg_1'><td class='right'>";
-            echo "<input type='hidden' name='items_id' value='$items_id'>\n";
-            echo "<input type='hidden' name='itemtype' value='$itemtype'>\n";
-            echo __('Not associated');
-            echo "</td><td class='left'>";
-            self::dropdown([
-               'name'      => 'addressID',
-               'condition' => ['items_id' => 0]
+            renderTwigForm([
+                'action' => static::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'assign_address', 'value' => _x('button', 'Associate'),
+                    'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                ]],
+                'content' => [__('Add a network name') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'items_id', 'value' => $items_id],
+                        ['type' => 'hidden', 'name' => 'itemtype', 'value' => $itemtype],
+                        __('Not associated') => [
+                            'type' => 'select', 'name' => 'addressID',
+                            ...getAjaxDropdownOptions(self::class, ['items_id' => 0]),
+                        ],
+                    ],
+                ]],
             ]);
-            echo "</td><td class='left'>";
-            echo "<input type='submit' name='assign_address' value='" . _sx('button', 'Associate') .
-                   "' class='submit'>";
-            echo "</td>";
             if (static::canCreate()) {
-                echo "<td class='right' width='30%'>";
-                echo "<a href=\"" . static::getFormURL() . "?items_id=$items_id&amp;itemtype=$itemtype\">";
-                echo __('Create a new network name') . "</a>";
-                echo "</td>";
+                $networkname = new self();
+                $networkname->showForm(-1, ['items_id' => $items_id, 'itemtype' => $itemtype]);
             }
-            echo "</tr>\n";
-
-            echo "</table>\n";
-            Html::closeForm();
-            echo "</div>\n";
         }
 
         $table_options = ['createRow' => true];
@@ -832,40 +833,15 @@ class NetworkName extends FQDNLabel
             ($item->getType() == 'FQDN')
             || ($item->getType() == 'NetworkEquipment')
         ) {
-            if (isset($_GET["start"])) {
-                $start = $_GET["start"];
-            } else {
-                $start = 0;
-            }
-
-            if (!empty($_GET["order"])) {
-                $table_options['order'] = $_GET["order"];
-            } else {
-                $table_options['order'] = 'name';
-            }
-
-            if ($item->getType() == 'FQDN') {
-                $table_options['column_links'] = ['NetworkName'
-                                                             => 'javascript:reloadTab("order=name");',
-                                                       'NetworkAlias'
-                                                             => 'javascript:reloadTab("order=alias");',
-                                                       'IPAddress'
-                                                             => 'javascript:reloadTab("order=ip");'];
-            }
-
-            $table_options['SQL_options']  = [
-               'LIMIT'  => $_SESSION['glpilist_limit'],
-               'START'  => $start
-            ];
-
+            $table_options['order'] = 'name';
             $canedit = false;
         } else {
-            $canedit = Session::haveRight('internet', UPDATE) && $item->canUpdateItem();
+            $canedit = Session::haveRight('internet', UPDATE) && $item->canUpdateItem() && $withtemplate != 2;
         }
 
         $table_options['canedit']                  = false;
         $table_options['rand']                     = $rand;
-        $table_options['massiveactionnetworkname'] = $canedit;
+        $table_options['massiveactionnetworkname'] = false;
         $table                                     = new HTMLTableMain();
         $column                                    = $table->addHeader(
             'Internet',
@@ -879,47 +855,10 @@ class NetworkName extends FQDNLabel
 
         self::getHTMLTableCellsForItem($t_row, $item, null, $table_options);
 
-        if ($table->getNumberOfRows() > 0) {
-            $number = $table->getNumberOfRows();
-            if ($item->getType() == 'FQDN') {
-                $number = min($_SESSION['glpilist_limit'], $table->getNumberOfRows());
-                Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, self::countForItem($item));
-            }
-            Session::initNavigateListItems(
-                __CLASS__,
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item->getTypeName(1),
-                    $item->getName()
-                )
-            );
-            if ($canedit && $number) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = ['num_displayed'    => min($_SESSION['glpilist_limit'], $number),
-                                  'container'        => 'mass' . __CLASS__ . $rand];
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            $table->display(['display_title_for_each_group'          => false,
-                                  'display_thead'                         => false,
-                                  'display_tfoot'                         => false,
-                                  'display_header_on_foot_for_each_group' => true]);
-
-            if ($canedit && $number) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-                Html::closeForm();
-            }
-
-            if ($item->getType() == 'FQDN') {
-                Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, self::countForItem($item));
-            }
-        } else {
-            echo "<table class='tab_cadre_fixe' aria-label='no network name found'><tr><th>" . __('No network name found') . "</th></tr>";
-            echo "</table>";
-        }
+        $table->displayV2([
+            'id' => 'networkNames_' . $item->getType() . '_' . $ID,
+            'selection_itemtype' => $canedit ? self::class : null,
+        ]);
     }
 
 

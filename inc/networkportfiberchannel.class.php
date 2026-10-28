@@ -155,7 +155,7 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
            !$oppositePort ? [
               'type' => 'hidden',
               'name' => 'NetworkPortConnect_networkports_id_1',
-              'values' => $netport->getID(),
+              'value' => $netport->getID(),
            ] : [],
            __('Connected to') => !$oppositePort ? [
               'type' => 'select',
@@ -201,8 +201,9 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
                         
                         $('#NetworkPortConnect_networkports_id_2').empty();
                         for (const key in jsonData) {
-                           $('#NetworkPortConnect_networkports_id_2').append('<option value="' + key + '">' + jsonData[key] + '</option>');
+                           $('#NetworkPortConnect_networkports_id_2').append(new Option(jsonData[key], key));
                         }
+                        $('#NetworkPortConnect_networkports_id_2').trigger('change');
                      }
                   });
                JS,
@@ -211,6 +212,7 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
            __('Network port') => !$oppositePort ? [
               'type' => 'select',
               'name' => 'NetworkPortConnect_networkports_id_2',
+              'id' => 'NetworkPortConnect_networkports_id_2',
            ] : [],
         ];
         return $returnValue;

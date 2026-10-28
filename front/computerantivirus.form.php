@@ -57,6 +57,13 @@ if (isset($_POST["add"])) {
             //TRANS: %s is the user login
             sprintf(__('%s adds an antivirus'), $_SESSION["glpiname"])
         );
+        if (!empty($_POST['_inline'])) {
+            $computer = new Computer();
+            if ($computer->getFromDB($antivirus->fields['computers_id'])) {
+                Html::redirect(Computer::getFormURLWithID($computer->getID()) . '&forcetab=' . urlencode('ComputerAntivirus$1')
+                    . (!empty($computer->fields['is_template']) ? '&withtemplate=1' : ''));
+            }
+        }
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($antivirus->getLinkURL());
         }

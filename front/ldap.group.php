@@ -63,10 +63,9 @@ if (isset($_SESSION["ldap_group_filter2"])) {
     unset($_SESSION["ldap_group_filter2"]);
 }
 
-echo "<div class='center'><table class='tab_cadre' aria-label='LDAP directory link'>";
-echo "<tr><th>" . __('Bulk import groups from a LDAP directory') . "</th></tr>";
-echo "<tr class='tab_bg_1'><td class='center b'>" .
-     "<a href=\"ldap.group.import.php?next=servers\">" . __('Import of new groups') . "</a></td></tr>";
-echo "</table></div>";
+echo "<nav class='list-group' aria-label='" . __s('Bulk import groups from a LDAP directory') . "'>";
+echo "<a class='list-group-item list-group-item-action' href='ldap.group.import.php?next=servers'>"
+    . __('Import of new groups') . '</a>';
+echo '</nav>';
 
 Html::footer();

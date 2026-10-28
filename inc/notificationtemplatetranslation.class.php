@@ -372,59 +372,34 @@ class NotificationTemplateTranslation extends CommonDBChild
     {
         $target = NotificationTarget::getInstanceByType(stripslashes((string) $itemtype));
         $target->getTags();
-
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre_fixe' aria-label='Available Tags'>";
-        echo "<tr><th>" . __('Tag') . "</th>
-                <th>" . __('Label') . "</th>
-                <th>" . _n('Event', 'Events', 1) . "</th>
-                <th>" . _n('Type', 'Types', 1) . "</th>
-                <th>" . __('Possible values') . "</th>
-            </tr>";
-
         $tags = [];
-
-        foreach ($target->tag_descriptions as $tag_type => $infos) {
-            foreach ($infos as $key => $val) {
-                $infos[$key]['type'] = $tag_type;
+        foreach ($target->tag_descriptions as $type => $descriptions) {
+            foreach ($descriptions as $tag => $description) {
+                $description['type'] = $type;
+                $tags[$tag] = $description;
             }
-            $tags = array_merge($tags, $infos);
         }
         ksort($tags);
-        foreach ($tags as $tag => $values) {
-            if ($values['events'] == NotificationTarget::TAG_FOR_ALL_EVENTS) {
-                $event = __('All');
-            } else {
-                $event = implode(', ', $values['events']);
-            }
-
-            $action = '';
-
-            if ($values['foreach']) {
-                $action = __('List of values');
-            } else {
-                $action = __('Single value');
-            }
-
-            if (!empty($values['allowed_values'])) {
-                $allowed_values = implode(',', $values['allowed_values']);
-            } else {
-                $allowed_values = '';
-            }
-
-            echo "<tr class='tab_bg_1'><td>" . $tag . "</td>" .
-                "<td>";
-            if ($values['type'] == NotificationTarget::TAG_LANGUAGE) {
-                printf(__('%1$s: %2$s'), __('Label'), $values['label']);
-            } else {
-                echo $values['label'];
-            }
-            echo "</td><td>" . $event . "</td>" .
-                "<td>" . $action . "</td>" .
-                "<td>" . $allowed_values . "</td>" .
-                "</tr>";
+        $rows = [];
+        foreach ($tags as $tag => $data) {
+            $label = $data['type'] == NotificationTarget::TAG_LANGUAGE
+                ? sprintf(__('%1$s: %2$s'), __('Label'), $data['label']) : $data['label'];
+            $rows[] = [
+                'tag' => '<code>' . htmlspecialchars($tag, ENT_QUOTES, 'UTF-8', false) . '</code>',
+                'label' => htmlspecialchars($label, ENT_QUOTES, 'UTF-8', false),
+                'event' => $data['events'] == NotificationTarget::TAG_FOR_ALL_EVENTS
+                    ? __('All') : htmlspecialchars(implode(', ', $data['events']), ENT_QUOTES, 'UTF-8', false),
+                'type' => $data['foreach'] ? __('List of values') : __('Single value'),
+                'values' => htmlspecialchars((!empty($data['allowed_values']) ? implode(',', $data['allowed_values']) : ''), ENT_QUOTES, 'UTF-8', false),
+            ];
         }
-        echo "</table></div>";
+        $id = 'notificationTags_' . md5((string) $itemtype);
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => ['tag' => __('Tag'), 'label' => __('Label'), 'event' => _n('Event', 'Events', 1),
+                'type' => _n('Type', 'Types', 1), 'values' => __('Possible values')],
+            'values' => $rows, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
     }
 
 
