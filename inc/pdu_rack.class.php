@@ -239,145 +239,86 @@ class PDU_Rack extends CommonDBRelation
             $used[] = $racked['items_id'];
         };
 
-        echo "<div class='center'>";
-
         $this->initForm($ID, $options);
-        $this->showFormHeader();
-
         $rack = new Rack();
         $rack->getFromDB($this->fields['racks_id']);
-
-        $rand = mt_rand();
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_pdus_id$rand'>" . PDU::getTypeName(1) . "</label></td>";
-        echo "<td>";
-        PDU::dropdown([
-           'value'       => $this->fields["pdus_id"],
-           'rand'        => $rand,
-           'used'        => $used,
-           'entity'      => $rack->fields['entities_id'],
-           'entity_sons' => $rack->fields['is_recursive'],
+        $entities = $rack->fields['entities_id'];
+        if ($rack->fields['is_recursive']) {
+            $entities = getSonsOf('glpi_entities', $entities);
+        }
+        renderTwigForm([
+            'action' => self::getFormURL(),
+            'buttons' => [[
+                'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+                'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+                'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+            ]],
+            'content' => [PDU::getTypeName(1) => [
+                'visible' => true,
+                'inputs' => [
+                    $this->isNewID($ID) ? [] : ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                    PDU::getTypeName(1) => [
+                        'type' => 'select', 'name' => 'pdus_id', 'value' => $this->fields['pdus_id'],
+                        ...getAjaxDropdownOptionsByEntity(PDU::class, $entities, [], $used),
+                    ],
+                    __('Side (from rear perspective)') => [
+                        'type' => 'select', 'name' => 'side', 'value' => $this->fields['side'], 'values' => self::getSides(),
+                    ],
+                    Rack::getTypeName(1) => [
+                        'type' => 'select', 'name' => 'racks_id', 'value' => $rack->getID(),
+                        ...getAjaxDropdownOptions(Rack::class),
+                    ],
+                    __('Position') => [
+                        'type' => 'number', 'name' => 'position', 'value' => max(1, (int) $this->fields['position']),
+                        'min' => 1, 'max' => $rack->fields['number_units'], 'step' => 1,
+                    ],
+                    __('Background color') => ['type' => 'color', 'name' => 'bgcolor', 'value' => $this->fields['bgcolor']],
+                ],
+            ]],
         ]);
-        echo "</td>";
-        echo "<td><label for='dropdown_side$rand'>" . __('Side (from rear perspective)') . "</label></td>";
-        echo "<td >";
-        Dropdown::showFromArray(
-            'side',
-            self::getSides(),
-            [
-              'value' => $this->fields["side"],
-              'rand'  => $rand,
-            ]
-        );
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_racks_id$rand'>" . Rack::getTypeName(1) . "</label></td>";
-        echo "<td>";
-        Rack::dropdown(['value' => $this->fields["racks_id"], 'rand' => $rand]);
-        echo "</td>";
-        echo "<td><label for='dropdown_position$rand'>" . __('Position') . "</label></td>";
-        echo "<td >";
-        Dropdown::showNumber(
-            'position',
-            [
-              'value'  => $this->fields["position"],
-              'min'    => 1,
-              'max'    => $rack->fields['number_units'],
-              'step'   => 1,
-              // 'used'   => $rack->getFilled($this->fields['itemtype'], $this->fields['items_id']),
-              'rand'   => $rand
-            ]
-        );
-        echo "</td>";
-
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='bgcolor$rand'>" . __('Background color') . "</label></td>";
-        echo "<td>";
-        Html::showColorField(
-            'bgcolor',
-            [
-              'value'  => $this->fields['bgcolor'],
-              'rand'   => $rand
-            ]
-        );
-        echo "</td>";
-        echo "</tr>";
-
-        $this->showFormButtons($options);
+        return true;
     }
 
     public static function showListForRack(Rack $rack)
     {
         global $DB;
-
-        echo "<h2>" . __("Side pdus") . "</h2>";
-
-        $pdu     = new PDU();
-        $canedit = $rack->canEdit($rack->getID());
-        $rand    = mt_rand();
-        $items   = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => [
-              'racks_id' => $rack->getID()
-           ]
-        ]);
-
-        if (!count($items)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table>";
-        } else {
-            if ($canedit) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = [
-                   'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-                   'container'       => 'mass' . __CLASS__ . $rand
-                ];
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Rack Stats'>";
-            $header = "<tr>";
-            if ($canedit) {
-                $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header .= "</th>";
-            }
-            $header .= "<th>" . _n('Item', 'Items', 1) . "</th>";
-            $header .= "<th>" . __('Side') . "</th>";
-            $header .= "<th>" . __('Position') . "</th>";
-            $header .= "</tr>";
-
-            echo $header;
-            foreach ($items as $row) {
-                if ($pdu->getFromDB($row['pdus_id'])) {
-                    echo "<tr lass='tab_bg_1'>";
-                    if ($canedit) {
-                        echo "<td>";
-                        Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-                        echo "</td>";
-                    }
-                    echo "<td>" . $pdu->getLink() . "</td>";
-                    echo "<td>" . self::getSideName($row['side']) . "</td>";
-                    echo "<td>{$row['position']}</td>";
-                    echo "</tr>";
-                }
-            }
-            echo $header;
-            echo "</table>";
-
-            if ($canedit && count($items)) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-            }
-            if ($canedit) {
-                Html::closeForm();
-            }
+        if (!$rack->can($rack->getID(), READ)) {
+            return false;
         }
+        $canedit = $rack->canEdit($rack->getID());
+        $items = $DB->request(['FROM' => self::getTable(), 'WHERE' => ['racks_id' => $rack->getID()]]);
+        if ($canedit && $rack->canAddItem('PDU')) {
+            $relation = new self();
+            $relation->showForm(-1, ['racks_id' => $rack->getID()]);
+        }
+        $values = [];
+        $selection = [];
+        $pdu = new PDU();
+        foreach ($items as $row) {
+            if (!$pdu->getFromDB($row['pdus_id'])) {
+                continue;
+            }
+            $values[] = [$pdu->getLink(), self::getSideName($row['side']), (int) $row['position']];
+            $selection[] = sprintf('item[%s][%s]', self::class, $row['id']);
+        }
+        $table_id = 'rackSidePdus_' . $rack->getID();
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [_n('Item', 'Items', 1), __('Side'), __('Position')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
     public static function showStatsForRack(Rack $rack)

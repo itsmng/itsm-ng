@@ -6579,19 +6579,19 @@ class Ticket extends CommonITILObject
         $options['criteria'][0]['value']      = 'process';
         $options['criteria'][0]['link']       = 'AND';
 
-        echo "<table class='tab_cadrehov' aria-label='Table Descritpion'>";
-        echo "<tr class='noHover'><th colspan='2'>";
+        echo "<table class='table table-striped align-middle' aria-label='" . __s('Ticket followup') . "'>";
+        echo "<caption class='caption-top'>";
 
         if (Session::getCurrentInterface() != "central") {
-            echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1\" class='pointer'>" .
+            echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php?create_ticket=1\" class='btn btn-primary'>" .
                __('Create a ticket') . "&nbsp;<i class='fa fa-plus' aria-hidden='true'></i><span class='sr-only'>" . __s('Add') . "</span></a>";
         } else {
-            echo "<p class='table-title mt-0'><a href=\"" . Ticket::getSearchURL() . "?" .
+            echo "<p class='mb-0'><a href=\"" . Ticket::getSearchURL() . "?" .
                Toolbox::append_params($options, '&amp;') . "\">" . __('Ticket followup') . "</a></p>";
         }
-        echo "</th></tr>";
+        echo "</caption>";
         echo "<tr><th>" . _n('Ticket', 'Tickets', Session::getPluralNumber()) . "</th>
-            <th class='numeric'>" . _x('quantity', 'Number') . "</th></tr>";
+            <th class='text-end'>" . _x('quantity', 'Number') . "</th></tr>";
 
         if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
             $number_waitapproval = TicketValidation::getNumberToValidate(Session::getLoginUserID());
@@ -6610,26 +6610,26 @@ class Ticket extends CommonITILObject
             $opt['criteria'][1]['value']      = Session::getLoginUserID();
             $opt['criteria'][1]['link']       = 'AND';
 
-            echo "<tr class='tab_bg_2'>";
+            echo "<tr>";
             echo "<td><a href=\"" . Ticket::getSearchURL() . "?" .
                Toolbox::append_params($opt, '&amp;') . "\">" . __('Ticket waiting for your approval') . "</a></td>";
-            echo "<td class='numeric'>" . $number_waitapproval . "</td></tr>";
+            echo "<td class='text-end'>" . $number_waitapproval . "</td></tr>";
         }
 
         foreach ($status as $key => $val) {
             $options['criteria'][0]['value'] = $key;
-            echo "<tr class='tab_bg_2'>";
+            echo "<tr>";
             echo "<td><a href=\"" . Ticket::getSearchURL() . "?" .
                Toolbox::append_params($options, '&amp;') . "\">" . self::getStatus($key) . "</a></td>";
-            echo "<td class='numeric'>$val</td></tr>";
+            echo "<td class='text-end'>$val</td></tr>";
         }
 
         $options['criteria'][0]['value'] = 'all';
         $options['is_deleted']  = 1;
-        echo "<tr class='tab_bg_2'>";
+        echo "<tr>";
         echo "<td><a href=\"" . Ticket::getSearchURL() . "?" .
            Toolbox::append_params($options, '&amp;') . "\">" . __('Deleted') . "</a></td>";
-        echo "<td class='numeric'>" . $number_deleted . "</td></tr>";
+        echo "<td class='text-end'>" . $number_deleted . "</td></tr>";
 
         echo "</table><br>";
     }
@@ -6664,27 +6664,30 @@ class Ticket extends CommonITILObject
             $options['criteria'][0]['value']   = $_SESSION['INCOMING'];
             $options['criteria'][0]['link']       = 'AND';
 
-            echo "<div class='center'><table class='tab_cadre_fixe' style='min-width: 85%' aria-label='New Ticket'>";
-            //TRANS: %d is the number of new tickets
-            echo "<tr><p class='table-title mt-0' style='font-size :16px'>" . sprintf(_n('%d new ticket', '%d new tickets', $number), $number);
-            echo "<a href='" . Ticket::getSearchURL() . "?" .
-               Toolbox::append_params($options, '&amp;') . "' class='btn btn-link'>" . __('Show all') . "</a>";
-            echo "</p></tr>";
-
-            self::commonListHeader(Search::HTML_OUTPUT);
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Ticket', $data["id"]);
-                self::showShort($data["id"]);
+            echo '<p class="my-3">' . sprintf(_n('%d new ticket', '%d new tickets', $number), $number)
+                . ' <a href="' . Ticket::getSearchURL() . '?' . Toolbox::append_params($options, '&amp;') . '">'
+                . __('Show all') . '</a></p>';
+            $fields = [__('Status'), _n('Date', 'Dates', 1), __('Last update')];
+            if (count($_SESSION['glpiactiveentities']) > 1) {
+                $fields[] = Entity::getTypeName(Session::getPluralNumber());
             }
-            echo "</table></div>";
+            $fields = array_merge($fields, [__('Priority'), _n('Requester', 'Requesters', 1), __('Assigned'),
+                _n('Associated element', 'Associated elements', Session::getPluralNumber()), __('Category'), __('Title'), __('Planification')]);
+            $values = [];
+            while ($data = $iterator->next()) {
+                Session::addToNavigateListItems('Ticket', $data['id']);
+                $row = self::showShort($data['id'], ['return_values' => true]);
+                if ($row) {
+                    array_shift($row);
+                    $values[] = $row;
+                }
+            }
+            renderTwigTemplate('table.twig', ['id' => 'centralNewTickets', 'state_key' => 'Ticket_central_new',
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $values]);
         } else {
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe' style='min-width: 85%' aria-label='No ticket Found'>";
-            echo "<tr><th>" . __('No ticket found.') . "</th></tr>";
-            echo "</table>";
-            echo "</div><br>";
+            echo '<p class="text-muted my-3">' . __('No ticket found.') . '</p>';
         }
+
     }
 
     /**
@@ -6773,23 +6776,25 @@ class Ticket extends CommonITILObject
                 break;
 
             case 'Group':
-                // Mini search engine
+                $tree = 0;
                 if ($item->haveChildren()) {
                     $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-                    echo "<table class='tab_cadre_fixe' aria-label='Last Ticket'>";
-                    echo "<tr class='tab_bg_1'><th>" . __('Last tickets') . "</th></tr>";
-                    echo "<tr class='tab_bg_1'><td class='center'>";
-                    echo __('Child groups') . "&nbsp;";
-                    Dropdown::showYesNo(
-                        'tree',
-                        $tree,
-                        -1,
-                        ['on_change' => 'reloadTab("start=0&tree="+this.value)']
-                    );
-                } else {
-                    $tree = 0;
+                    renderTwigForm([
+                        'action' => $item->getFormURL(),
+                        'buttons' => [[]],
+                        'content' => [[
+                            'visible' => false,
+                            'inputs' => [
+                                __('Child groups') => [
+                                    'type' => 'checkbox',
+                                    'name' => 'tree',
+                                    'value' => $tree,
+                                    'hooks' => ['change' => 'reloadTab("start=0&tree=" + (this.checked ? 1 : 0));'],
+                                ],
+                            ],
+                        ]],
+                    ]);
                 }
-                echo "</td></tr></table>";
 
                 $restrict['glpi_groups_tickets.groups_id'] = ($tree ? getSonsOf('glpi_groups', $item->getID()) : $item->getID());
                 $restrict['glpi_groups_tickets.type'] = CommonITILActor::REQUESTER;
@@ -6839,7 +6844,6 @@ class Ticket extends CommonITILObject
 
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
         $criteria['WHERE']['glpi_tickets.is_deleted'] = 0;
-        $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
         $iterator = $DB->request($criteria);
         $number = count($iterator);
 
@@ -6858,17 +6862,10 @@ class Ticket extends CommonITILObject
             && !(!empty($withtemplate) && ($withtemplate == 2))
             && (!isset($item->fields['is_template']) || ($item->fields['is_template'] == 0))
         ) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                Ticket::getFormURL(),
-                '_add_fromitem',
+            self::showItemCreateForm(
                 __('New ticket for this item...'),
-                [
-                  'itemtype' => $item->getType(),
-                  'items_id' => $item->getID()
-                ]
+                ['itemtype' => $item->getType(), 'items_id' => $item->getID()]
             );
-            echo "</div>";
         }
 
         if (
@@ -6877,57 +6874,14 @@ class Ticket extends CommonITILObject
             && self::canCreate()
             && !(!empty($withtemplate) && ($withtemplate == 2))
         ) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                Ticket::getFormURL(),
-                '_add_fromitem',
+            self::showItemCreateForm(
                 __('New ticket for this item...'),
                 ['_users_id_requester' => $item->getID()]
             );
-            echo "</div>";
         }
 
-        echo "<div>";
+        self::showItemListTable($iterator, $item);
 
-        if ($number > 0) {
-            echo "<table class='tab_cadre_fixehov' aria-label='Ticket'>";
-            if (Session::haveRight(self::$rightname, self::READALL)) {
-                Session::initNavigateListItems(
-                    'Ticket',
-                    //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                    sprintf(
-                        __('%1$s = %2$s'),
-                        $item->getTypeName(1),
-                        $item->getName()
-                    )
-                );
-
-                echo "<tr class='noHover'><th colspan='$colspan'>";
-                $title = sprintf(_n('Last %d ticket', 'Last %d tickets', $number), $number);
-                $link = "<a href='" . Ticket::getSearchURL() . "?" .
-                   Toolbox::append_params($options, '&amp;') . "'>" . __('Show all') . "</a>";
-                $title = printf(__('%1$s (%2$s)'), $title, $link);
-                echo "</th></tr>";
-            } else {
-                echo "<tr><th colspan='$colspan'>" . __("You don't have right to see all tickets") . "</th></tr>";
-            }
-        } else {
-            echo "<table class='tab_cadre_fixe' aria-label='No ticket Found'>";
-            echo "<tr><th>" . __('No ticket found.') . "</th></tr>";
-        }
-
-        // Ticket list
-        if ($number > 0) {
-            self::commonListHeader(Search::HTML_OUTPUT);
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Ticket', $data["id"]);
-                self::showShort($data["id"]);
-            }
-            self::commonListHeader(Search::HTML_OUTPUT);
-        }
-
-        echo "</table></div>";
 
         // Tickets for linked items
         $linkeditems = $item->getLinkedItems();
@@ -6950,21 +6904,8 @@ class Ticket extends CommonITILObject
             $iterator = $DB->request($criteria);
             $number = count($iterator);
 
-            echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Ticket on linked item'>";
-            echo "<tr><th colspan='12'>";
-            echo _n('Ticket on linked items', 'Tickets on linked items', $number);
-            echo "</th></tr>";
-            if ($number > 0) {
-                self::commonListHeader(Search::HTML_OUTPUT);
-                while ($data = $iterator->next()) {
-                    // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
-                    self::showShort($data["id"]);
-                }
-                self::commonListHeader(Search::HTML_OUTPUT);
-            } else {
-                echo "<tr><th>" . __('No ticket found.') . "</th></tr>";
-            }
-            echo "</table></div>";
+            echo '<h2 class="mt-4">' . _n('Ticket on linked items', 'Tickets on linked items', $number) . '</h2>';
+            self::showItemListTable($iterator, $item, true);
         } // Subquery for linked item
     }
 

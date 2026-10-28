@@ -708,49 +708,31 @@ class DisplayPreference extends CommonDBTM
            'GROUPBY' => 'itemtype'
         ]);
 
-        if (count($iterator) > 0) {
-            $rand = mt_rand();
-            echo "<div class='spaced'>";
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['width'            => 400,
-                              'height'           => 200,
-                              'container'        => 'mass' . __CLASS__ . $rand,
-                              'specific_actions' => [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'delete_for_user'
-                                                          => _x('button', 'Delete permanently')],
-                              'extraparams'      => ['massive_action_fields' => ['users_id']]];
-
-            Html::showMassiveActions($massiveactionparams);
-
-            echo Html::hidden('users_id', ['value'                 => $users_id,
-                                                'data-glpicore-ma-tags' => 'common']);
-            echo "<table class='tab_cadre_fixe' aria-label='List of Items with Actions'>";
-            echo "<tr>";
-            echo "<th width='10'>";
-            echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            echo "</th>";
-            echo "<th colspan='2'>" . _n('Type', 'Types', 1) . "</th></tr>";
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_1'><td width='10'>";
-                Html::showMassiveActionCheckBox(__CLASS__, $data["itemtype"]);
-                echo "</td>";
-                if ($item = getItemForItemtype($data["itemtype"])) {
-                    $name = $item->getTypeName(1);
-                } else {
-                    $name = $data["itemtype"];
-                }
-                echo "<td>$name</td><td class='numeric'>" . $data['nb'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-            echo "</div>";
-        } else {
-            echo "<table class='tab_cadre_fixe' aria-label='No item found'>";
-            echo "<tr class='tab_bg_2'><td class='b center'>" . __('No item found') . "</td></tr>";
-            echo "</table>";
+        $id = 'displayPreferencesForUser_' . (int) $users_id;
+        $values = [];
+        $selection = [];
+        foreach ($iterator as $data) {
+            $object = getItemForItemtype($data['itemtype']);
+            $values[] = [$object ? $object->getTypeName(1) : htmlspecialchars((string) $data['itemtype'], ENT_QUOTES, 'UTF-8', false), (int) $data['nb']];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['itemtype']);
         }
+        $table = [
+            'id' => $id, 'state_key' => $id,
+            'fields' => [_n('Type', 'Types', 1), __('Number')], 'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ((int) $users_id === (int) Session::getLoginUserID()) {
+            echo '<div hidden data-itsm-table-fields="' . $id . '">';
+            echo Html::hidden('users_id', ['value' => $users_id, 'data-glpicore-ma-tags' => 'common']);
+            echo '</div>';
+            Html::showMassiveActions([
+                'container' => $id, 'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)), 'display_arrow' => false,
+                'specific_actions' => [self::class . MassiveAction::CLASS_ACTION_SEPARATOR . 'delete_for_user' => _x('button', 'Delete permanently')],
+                'extraparams' => ['massive_action_fields' => ['users_id']],
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
 

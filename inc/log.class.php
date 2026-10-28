@@ -301,11 +301,7 @@ class Log extends CommonDBTM
         $total_number    = countElementsInTable("glpi_logs", ['items_id' => $items_id, 'itemtype' => $itemtype ]);
         // No Events in database
         if ($total_number < 1) {
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe' aria-label='No historical'>";
-            echo "<tr><th>" . __('No historical') . "</th></tr>";
-            echo "</table>";
-            echo "</div><br>";
+            echo '<div class="alert alert-info" role="status">' . __('No historical') . '</div>';
             return;
         }
 

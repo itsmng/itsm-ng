@@ -736,11 +736,11 @@ class Item_Ticket extends CommonItilObject_Item
                },
                success: function(response) {
                   const jsonResp = JSON.parse(response);
-                  $('#itemIdDropdownForItemTicket').empty();
-                  for (const value of jsonResp.results) {
-                     console.log(value);
-                     $('#itemIdDropdownForItemTicket').append($('<option value="' + value.id + '">' + value.text + '</option>'));
+                  const select = $('#itemIdDropdownForItemTicket').empty();
+                  for (const value of jsonResp.results || []) {
+                     select.append(new Option(value.text, value.id));
                   }
+                  select.trigger('change');
                }
             });
          JS;
@@ -748,6 +748,7 @@ class Item_Ticket extends CommonItilObject_Item
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                'itemtype' => self::class,
+               'buttons' => [['name' => 'add', 'value' => _x('button', 'Add'), 'class' => 'btn btn-primary', 'icon' => 'fas fa-plus']],
                'content' => [
                   __('Add an item') => [
                      'visible' => true,
@@ -823,6 +824,7 @@ class Item_Ticket extends CommonItilObject_Item
                     ) {
                         $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
                     }
+                    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8', false);
                     if ((Session::getCurrentInterface() != 'helpdesk') && $item::canView()) {
                         $link     = $itemtype::getFormURLWithID($data['id']);
                         $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
@@ -830,86 +832,35 @@ class Item_Ticket extends CommonItilObject_Item
                         $namelink = $name;
                     }
 
+                    if (!empty($data['is_deleted'])) {
+                        $namelink .= ' <span class="badge bg-secondary">' . __('Deleted') . '</span>';
+                    }
                     $values[] = [
-                       $itemtype::getTypeName(),
-                       Dropdown::getDropdownName("glpi_entities", $data['entity']),
+                       htmlspecialchars($itemtype::getTypeName(), ENT_QUOTES, 'UTF-8', false),
+                       htmlspecialchars(Dropdown::getDropdownName("glpi_entities", $data['entity']), ENT_QUOTES, 'UTF-8', false),
                        $namelink,
-                       (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
-                       (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
+                       (isset($data["serial"]) ? htmlspecialchars($data["serial"], ENT_QUOTES, 'UTF-8', false) : "-"),
+                       (isset($data["otherserial"]) ? htmlspecialchars($data["otherserial"], ENT_QUOTES, 'UTF-8', false) : "-"),
                     ];
-                    $massive_action[] = sprintf('item[%s][%s]', self::class, $data["linkid"]);
+                    if ($canedit) {
+                        $massive_action[] = sprintf('item[%s][%s]', self::class, $data["linkid"]);
+                    }
                 }
             }
         }
 
-        renderTwigTemplate('table.twig', [
+        $table = [
            'id' => 'TableForItemTicket',
+           'state_key' => 'Item_Ticket_for_Ticket',
+           'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
            'fields' => $fields,
            'values' => $values,
-           'massive_action' => $massive_action,
-        ]);
-        echo "<table class='tab_cadre_fixehov' aria-label='Item Detail'>";
-        $totalnb = 0;
-        while ($row = $types_iterator->next()) {
-            $itemtype = $row['itemtype'];
-            if (!($item = getItemForItemtype($itemtype))) {
-                continue;
-            }
-
-            if (in_array($itemtype, $_SESSION["glpiactiveprofile"]["helpdesk_item_type"])) {
-                $iterator = self::getTypeItems($instID, $itemtype);
-                $nb = count($iterator);
-
-                $prem = true;
-                while ($data = $iterator->next()) {
-                    $name = $data["name"];
-                    if (
-                        $_SESSION["glpiis_ids_visible"]
-                        || empty($data["name"])
-                    ) {
-                        $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-                    }
-                    if ((Session::getCurrentInterface() != 'helpdesk') && $item::canView()) {
-                        $link     = $itemtype::getFormURLWithID($data['id']);
-                        $namelink = "<a href=\"" . $link . "\">" . $name . "</a>";
-                    } else {
-                        $namelink = $name;
-                    }
-
-                    echo "<tr class='tab_bg_1'>";
-                    if ($canedit) {
-                        echo "<td width='10'>";
-                        Html::showMassiveActionCheckBox(__CLASS__, $data["linkid"]);
-                        echo "</td>";
-                    }
-                    if ($prem) {
-                        $typename = $item->getTypeName($nb);
-                        echo "<td class='center top' rowspan='$nb'>" .
-                               (($nb > 1) ? sprintf(__('%1$s: %2$s'), $typename, $nb) : $typename) . "</td>";
-                        $prem = false;
-                    }
-                    echo "<td class='center'>";
-                    echo Dropdown::getDropdownName("glpi_entities", $data['entity']) . "</td>";
-                    echo "<td class='center" .
-                             (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
-                    echo ">" . $namelink . "</td>";
-                    echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") .
-                         "</td>";
-                    echo "<td class='center'>" .
-                           (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
-                    echo "</tr>";
-                }
-                $totalnb += $nb;
-            }
+        ];
+        if ($canedit) {
+            $table['massive_action'] = $massive_action;
         }
-
-        echo "</table>";
-        if ($canedit && $number) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
+        echo '</div>';
     }
 
 

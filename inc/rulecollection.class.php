@@ -399,34 +399,15 @@ class RuleCollection extends CommonDBTM
 
     public function showEngineSummary()
     {
-
-        echo "<table class='tab_cadre_fixe' aria-label='Engine'><tr><th>";
-
-        //Display information about the how the rules engine process the rules
-        if ($this->stop_on_first_match) {
-            //The engine stop on the first matched rule
-            echo "<span class='center b'>" . __('The engine stops on the first checked rule.') .
-                "</span><br>";
-        } else {
-            //The engine process all the rules
-            echo "<span class='center b'>" . __('The engine treats all the rules.') . "</span><br>";
-        }
-
+        echo "<div class='alert alert-info'>";
+        echo $this->stop_on_first_match ? __('The engine stops on the first checked rule.') : __('The engine treats all the rules.');
         if ($this->use_output_rule_process_as_next_input) {
-            //The engine keep the result of a rule to be processed further
-            echo "<span class='center b'>" .
-                __('The engine passes the result of a rule to the following one.') . "</span><br>";
+            echo '<br>' . __('The engine passes the result of a rule to the following one.');
         }
-
         if ($this->isRuleUseConditions()) {
-            //The engine keep the result of a rule to be processed further
-            echo "<span class='center b'>" .
-                __('Rules are conditionals. Each one can be used on multiple actions.');
-            echo "</span><br>";
+            echo '<br>' . __('Rules are conditionals. Each one can be used on multiple actions.');
         }
-
-        echo "</th></tr>";
-        echo "</table>\n";
+        echo '</div>';
     }
 
 
@@ -474,13 +455,11 @@ class RuleCollection extends CommonDBTM
             }
             $use_conditions = true;
             // Mini Search engine
-            echo "<table class='tab_cadre_fixe' aria-label='Search Engine'>";
-            echo "<tr class='tab_bg_1'><td class='center' width='50%'>";
-            echo __('Rules used for') . "</td><td>";
+            echo "<div class='d-flex align-items-center gap-3 mb-3'><label>" . __('Rules used for') . "</label>";
             $rule->dropdownConditions(['value' => $p['condition'],
                 'on_change'  => 'reloadTab("start=0&inherited=' . $p['inherited']
                 . '&childrens=' . $p['childrens'] . '&condition="+this.value)']);
-            echo "</td></tr></table>";
+            echo "</div>";
         }
 
         $nb         = $this->getCollectionSize($p['inherited'], $p['condition'], $p['childrens']);
@@ -524,10 +503,7 @@ class RuleCollection extends CommonDBTM
                 'condition' => $p['condition'],
             ]),
             'pageSize' => (int) $_SESSION['glpilist_limit'],
-            'massive_action' => [],
-        ]);
-
-        Html::closeForm();
+        ] + ($canedit ? ['massive_action' => []] : []));
 
         echo "<div class='spaced center'>";
 
@@ -1068,20 +1044,14 @@ class RuleCollection extends CommonDBTM
      **/
     public static function displayImportRulesForm()
     {
-
-        echo "<form aria-label='Import' name='form' method='post' action='rule.backup.php' " .
-            "enctype='multipart/form-data' >";
-        echo "<div class='center'>";
-
-        echo "<h2>" . __("Import rules from a XML file") . "</h2>";
-        echo "<input type='file' name='xml_file'>&nbsp;";
-        echo "<input type='hidden' name='action' value='preview_import'>";
-        echo "<input type='submit' name='import' value=\"" . _sx('button', 'Import') .
-            "\" class='submit'>";
-
-        // Close for Form
-        echo "</div>";
-        Html::closeForm();
+        renderTwigForm([
+            'action' => 'rule.backup.php',
+            'buttons' => [['type' => 'submit', 'name' => 'import', 'value' => _x('button', 'Import'), 'class' => 'btn btn-primary']],
+            'content' => [__('Import rules from a XML file') => ['visible' => true, 'inputs' => [
+                ['type' => 'hidden', 'name' => 'action', 'value' => 'preview_import'],
+                __('File') => ['content' => "<input class='form-control' type='file' name='xml_file' accept='.xml,text/xml,application/xml'>"],
+            ]]],
+        ]);
     }
 
 
@@ -1260,136 +1230,55 @@ class RuleCollection extends CommonDBTM
             Html::redirect("rule.backup.php?action=process_import");
         }
 
-        //print report
-        echo "<form aria-label='Rejection' name='form' method='post' action='rule.backup.php' >";
-        echo "<div class='spaced' id='tabsbody'>";
-        echo "<table class='tab_cadre' aria-label='Print Report'>";
-        echo "<input type='hidden' name='action' value='process_import'>";
-        echo "<tr><th colspan='3'>" . __('Rules refused') . "</th></tr>";
-        echo "<tr>";
-        echo "<th>" . _n('Type', 'Type', 1) . "</th>";
-        echo "<th>" . __('Name') . "</th>";
-        echo "<th>" . __('Reason of rejection') . "</th>";
-        echo "</tr>";
-
-        $odd = true;
-        foreach ($rules_refused as $k_rule => $refused) {
-            $odd = !$odd;
-            if ($odd) {
-                $class = " class='tab_bg_1' ";
-            } else {
-                $class = " class='tab_bg_2' ";
+        $values = [];
+        $inputs = [['type' => 'hidden', 'name' => 'action', 'value' => 'process_import']];
+        $entity_inputs = [];
+        foreach ($rules_refused as $key => $refused) {
+            $data = $rules['rule'][$key];
+            $item = new $data['sub_type']();
+            $reasons = [];
+            if (!isset($refused['criterias']) && !isset($refused['actions']) && isset($refused['entity'])) {
+                $reasons[] = sprintf(__('%1$s (%2$s)'), __('Entity not found'),
+                    htmlspecialchars((string) $data['entities_id'], ENT_QUOTES, 'UTF-8', false));
+                ob_start();
+                Dropdown::show('Entity', ['comments' => false, 'name' => 'new_entities[' . $data['uuid'] . ']']);
+                $control = ob_get_clean();
+                ob_start();
+                renderTwigTemplate('macros/wrappedInput.twig', [
+                    'title' => htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8', false) . ' — ' . __('Select the desired entity'),
+                    'input' => ['content' => $control, 'col_lg' => 6, 'col_md' => 6],
+                ]);
+                $entity_inputs[] = ob_get_clean();
             }
-
-            $sub_type = $rules['rule'][$k_rule]['sub_type'];
-            $item     = new $sub_type();
-
-            echo "<tr $class>";
-            echo "<td>" . $item->getTitle() . "</td>";
-            echo "<td>" . $rules['rule'][$k_rule]['name'] . "</td>";
-            echo "<td>";
-
-            echo "<table class='tab_cadre' style='width:100%' aria-label='Entity'>";
-            //show entity select
-            if (!isset($refused['criterias']) && !isset($refused['actions'])) {
-                if (isset($refused['entity'])) {
-                    echo "<tr class='tab_bg_1_2'>";
-                    echo "<td>";
-                    printf(
-                        __('%1$s (%2$s)'),
-                        __('Entity not found'),
-                        $rules['rule'][$k_rule]['entities_id']
-                    );
-                    echo "</td>";
-                    echo "<td>";
-                    echo __('Select the desired entity') . "&nbsp;";
-                    Dropdown::show(
-                        'Entity',
-                        ['comments' => false,
-                        'name'     => "new_entities[" .
-                        $rules['rule'][$k_rule]['uuid'] . "]"]
-                    );
-                    echo "</td>";
-                    echo "</tr>";
-                }
+            foreach ($refused['criterias'] ?? [] as $index) {
+                $criterion = $data['rulecriteria'][$index];
+                $reasons[] = __('Criteria refused') . ': ' . $item->getCriteriaName($criterion['criteria']) . ' '
+                    . RuleCriteria::getConditionByID($criterion['condition'], get_class($item), $criterion['criteria']) . ' '
+                    . htmlspecialchars((string) $criterion['pattern'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
             }
-
-            //show criterias refused for this rule
-            if (isset($refused['criterias'])) {
-                echo "<tr class='tab_bg_1_2'>";
-                echo "<td>" . __('Criteria refused') . "</td>";
-                echo "<td>";
-
-                echo "<table class='tab_cadre' style='width:100%' aria-label='Criteria refused'>";
-                echo "<tr class='tab_bg_2'>";
-                echo "<th class='center b'>" . _n('Criterion', 'Criteria', 1) . "</th>\n";
-                echo "<th class='center b'>" . __('Condition') . "</th>\n";
-                echo "<th class='center b'>" . __('Reason') . "</th>\n";
-                echo "</tr>\n";
-                foreach ($refused['criterias'] as $k_criteria) {
-                    $criteria = $rules['rule'][$k_rule]['rulecriteria'][$k_criteria];
-
-                    //fix empty empty array values
-                    if (empty($criteria['value'])) {
-                        $criteria['value'] = null;
-                    }
-                    echo "<tr class='tab_bg_1'>";
-                    echo "<td>" . $item->getCriteriaName($criteria["criteria"]) . "</td>";
-                    echo "<td>" . RuleCriteria::getConditionByID(
-                        $criteria["condition"],
-                        get_class($item),
-                        $criteria["criteria"]
-                    ) . "</td>";
-                    echo "<td>" . $criteria["pattern"] . "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>\n";
-                echo "</td>";
-                echo "</tr>";
+            foreach ($refused['actions'] ?? [] as $index) {
+                $action = $data['ruleaction'][$index];
+                $reasons[] = __('Actions refused') . ': ' . $item->getActionName($action['field']) . ' '
+                    . RuleAction::getActionByID($action['action_type']) . ' '
+                    . htmlspecialchars((string) ($action['value'] ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
             }
-
-            //show actions refused for this rule
-            if (isset($refused['actions'])) {
-                echo "<tr class='tab_bg_1_2'>";
-                echo "<td>" . __('Actions refused') . "</td>";
-                echo "<td>";
-
-                echo "<table class='tab_cadre' style='width:100%' aria-label='Action Refused'>";
-                echo "<tr class='tab_bg_2'>";
-                echo "<th class='center b'>" . _n('Field', 'Fields', Session::getPluralNumber()) . "</th>";
-                echo "<th class='center b'>" . __('Action type') . "</th>";
-                echo "<th class='center b'>" . __('Value') . "</th>";
-                echo "</tr>\n";
-                foreach ($refused['actions'] as $k_action) {
-                    $action = $rules['rule'][$k_rule]['ruleaction'][$k_action];
-                    //fix empty empty array values
-                    if (empty($action['value'])) {
-                        $action['value'] = null;
-                    }
-                    echo "<tr class='tab_bg_1'>";
-                    echo "<td>" . $item->getActionName($action["field"]) . "</td>";
-                    echo "<td>" . RuleAction::getActionByID($action["action_type"]) . "</td>";
-                    echo "<td>" . $action["value"] . "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>\n";
-                echo "</td>";
-                echo "</tr>";
-            }
-            echo "</table>\n";
-            echo "</td></tr>";
+            $values[$key] = ['type' => $item->getTitle(),
+                'name' => htmlspecialchars($data['name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
+                'reason' => implode('<br>', $reasons)];
         }
-
-        //display buttons
-        $class = ($odd ? " class='tab_bg_1' " : " class='tab_bg_2' ");
-        echo "<tr $class><td colspan='3' class='center'>";
-        echo "<input type='submit' name='import' value=\"" . _sx('button', 'Post') .
-            "\" class='submit'>";
-        echo "</td></tr>";
-
-        // Close for Form
-        echo "</table></div>";
-        Html::closeForm();
+        if ($entity_inputs) {
+            $inputs[''] = ['content' => '<div class="row">' . implode('', $entity_inputs) . '</div>', 'col_lg' => 12, 'col_md' => 12];
+        }
+        renderTwigForm([
+            'action' => 'rule.backup.php',
+            'buttons' => [['type' => 'submit', 'name' => 'import', 'value' => _x('button', 'Post'), 'class' => 'btn btn-primary']],
+            'content' => [__('Rules refused') => ['visible' => true, 'inputs' => $inputs]],
+        ]);
+        renderTwigTemplate('table.twig', [
+            'id' => 'ruleImportRefused', 'state_key' => 'ruleImportRefused',
+            'fields' => ['type' => _n('Type', 'Type', 1), 'name' => __('Name'), 'reason' => __('Reason of rejection')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
 
         return true;
     }
@@ -1602,58 +1491,40 @@ class RuleCollection extends CommonDBTM
     public function showRulesEnginePreviewCriteriasForm($target, array $values, $condition = 0)
     {
         $input = $this->prepareInputDataForTestProcess($condition);
-
-        if (count($input)) {
-            $rule      = $this->getRuleClass();
-            $criterias = $rule->getAllCriteria();
-            echo "<form aria-label='Test Rule Engine' name='testrule_form' id='testrulesengine_form' method='post' action='$target'>";
-            echo "\n<div class='center'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Rule collection preview'>";
-            echo "<tr><th colspan='2'>" . _n('Criterion', 'Criteria', Session::getPluralNumber()) . "</th></tr>\n";
-
-            //Brower all criterias
-            foreach ($input as $criteria) {
-                echo "<tr class='tab_bg_1'>";
-
-                if (isset($criterias[$criteria])) {
-                    $criteria_constants = $criterias[$criteria];
-                    echo "<td>" . $criteria_constants["name"] . "</td>";
-                } else {
-                    echo "<td>" . $criteria . "</td>";
-                }
-
-                echo "<td>";
-                $rule->displayCriteriaSelectPattern(
-                    $criteria,
-                    $criteria,
-                    Rule::PATTERN_IS,
-                    isset($values[$criteria]) ? $values[$criteria] : ''
-                );
-                echo "</td></tr>\n";
-            }
-
-            // Add all used criteria on rule as `Rule::showSpecificCriteriasForPreview()`
-            // adapt its output depending on used criteria
-            $rule->criterias = [];
-            foreach ($input as $criteria) {
-                $rule->criterias[] = (object)[
-                    'fields' => ['criteria' => $criteria],
-                ];
-            }
-            $rule->showSpecificCriteriasForPreview($_POST);
-
-            echo "<tr><td class='tab_bg_2 center' colspan='2'>";
-            echo "<input type='submit' name='test_all_rules' value='" . _sx('button', 'Test') . "'
-                class='submit'>";
-            echo "<input type='hidden' name='sub_type' value='" . $this->getRuleClassName() . "'>";
-            echo "<input type='hidden' name='condition' value='$condition'>";
-            echo "</td></tr>\n";
-            echo "</table></div>";
-            Html::closeForm();
-        } else {
-            echo '<br><div class="center b">' . __('No element to be tested') . '</div>';
+        if (!$input) {
+            echo "<p class='text-muted'>" . __('No element to be tested') . '</p>';
+            return $input;
         }
-
+        $rule = $this->getRuleClass();
+        $criteria = $rule->getAllCriteria();
+        $inputs = [
+            ['type' => 'hidden', 'name' => 'sub_type', 'value' => $this->getRuleClassName()],
+            ['type' => 'hidden', 'name' => 'condition', 'value' => $condition],
+        ];
+        $controls = [];
+        foreach ($input as $field) {
+            ob_start();
+            $rule->displayCriteriaSelectPattern($field, $field, Rule::PATTERN_IS, $values[$field] ?? '');
+            $control = ob_get_clean();
+            ob_start();
+            renderTwigTemplate('macros/wrappedInput.twig', [
+                'title' => htmlspecialchars($criteria[$field]['name'] ?? $field, ENT_QUOTES, 'UTF-8', false),
+                'input' => ['content' => $control, 'col_lg' => 6, 'col_md' => 6],
+            ]);
+            $controls[] = ob_get_clean();
+        }
+        $rule->criterias = [];
+        foreach ($input as $field) {
+            $rule->criterias[] = (object) ['fields' => ['criteria' => $field]];
+        }
+        ob_start();
+        $rule->showSpecificCriteriasForPreview($_POST);
+        $inputs[''] = ['content' => '<div class="row">' . implode('', $controls) . '</div>' . ob_get_clean(), 'col_lg' => 12, 'col_md' => 12];
+        renderTwigForm([
+            'action' => $target, 'attributes' => ['name' => 'testrule_form', 'id' => 'testrulesengine_form'],
+            'buttons' => [['type' => 'submit', 'name' => 'test_all_rules', 'value' => _x('button', 'Test'), 'class' => 'btn btn-primary']],
+            'content' => [_n('Criterion', 'Criteria', Session::getPluralNumber()) => ['visible' => true, 'inputs' => $inputs]],
+        ]);
         return $input;
     }
 
@@ -1817,53 +1688,25 @@ class RuleCollection extends CommonDBTM
      **/
     public function showRulesEnginePreviewResultsForm($target, array $input, $condition = 0)
     {
-
-        $output = [];
-
-        if ($this->use_output_rule_process_as_next_input) {
-            $output = $input;
-        }
-
-        $output = $this->testAllRules($input, $output, $input, $condition);
-
-        $rule   = $this->getRuleClass();
-
-        echo "<div class='center'>";
-
-        if (isset($output["result"])) {
-            echo "<table class='tab_cadrehov' aria-label='Rule engine preview'>";
-            echo "<tr><th colspan='2'>" . __('Result details') . "</th></tr>\n";
-
-            foreach ($output["result"] as $ID => $rule_result) {
-                echo "<tr class='tab_bg_1'>";
+        $output = $this->testAllRules($input, $this->use_output_rule_process_as_next_input ? $input : [], $input, $condition);
+        $rule = $this->getRuleClass();
+        if (isset($output['result'])) {
+            $values = [];
+            foreach ($output['result'] as $ID => $result) {
                 $rule->getFromDB($ID);
-                echo "<td>" . $rule->fields["name"] . "</td>";
-                echo "<td class='b'>";
-
-                switch ($rule_result["result"]) {
-                    case 0:
-                    case 1:
-                        echo Dropdown::getYesNo($rule_result["result"]);
-                        break;
-
-                    case 2:
-                        echo __('Inactive');
-                        break;
-                }
-
-                echo "</td></tr>\n";
+                $values[$ID] = ['name' => htmlspecialchars($rule->fields['name'], ENT_QUOTES, 'UTF-8', false),
+                    'result' => $result['result'] == 2 ? __('Inactive') : Dropdown::getYesNo($result['result'])];
             }
-
-            echo "</table>";
+            $id = 'ruleEnginePreview_' . $this->getType();
+            renderTwigTemplate('table.twig', [
+                'id' => $id, 'state_key' => $id,
+                'fields' => ['name' => __('Name'), 'result' => _n('Validation', 'Validations', 1)],
+                'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+            ]);
         }
-
-        $output        = $this->cleanTestOutputCriterias($output);
-        unset($output["result"]);
-        $global_result = (count($output) ? 1 : 0);
-
-        echo "<br><table class='tab_cadrehov' aria-label='Test result'>";
-        $this->showTestResults($rule, $output, $global_result);
-        echo "</table></div>";
+        $output = $this->cleanTestOutputCriterias($output);
+        unset($output['result']);
+        $this->showTestResults($rule, $output, count($output) ? 1 : 0);
     }
 
 
@@ -1901,26 +1744,20 @@ class RuleCollection extends CommonDBTM
      **/
     public function showTestResults($rule, array $output, $global_result)
     {
-
         $actions = $rule->getAllActions();
-        echo "<table class='tab_cadrehov' aria-label='Rule Results'>";
-        echo "<tr><th colspan='2'>" . __('Rule results') . "</th></tr>\n";
-        echo "<tr class='tab_bg_1'>";
-        echo "<td class='center'>" . _n('Validation', 'Validations', 1) . "</td>";
-        echo "<td><span class='b'>" . Dropdown::getYesNo($global_result) . "</span></td>";
-
-        $output = $this->preProcessPreviewResults($output);
-
-        foreach ($output as $criteria => $value) {
-            if (isset($actions[$criteria])) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td>" . $actions[$criteria]["name"] . "</td>";
-                $action_type = (isset($actions[$criteria]['action_type']) ? $actions[$criteria]['action_type'] : '');
-                echo "<td>" . $rule->getActionValue($criteria, $action_type, $value);
-                echo "</td></tr>\n";
+        $values = [['field' => _n('Validation', 'Validations', 1), 'value' => Dropdown::getYesNo($global_result)]];
+        foreach ($this->preProcessPreviewResults($output) as $field => $value) {
+            if (isset($actions[$field])) {
+                $values[] = ['field' => $actions[$field]['name'],
+                    'value' => $rule->getActionValue($field, $actions[$field]['action_type'] ?? '', $value)];
             }
         }
-        echo "</tr></table>\n";
+        $id = 'ruleEngineResults_' . $this->getType();
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => ['field' => _n('Field', 'Fields', 1), 'value' => __('Value')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
     }
 
 

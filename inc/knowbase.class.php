@@ -128,14 +128,13 @@ class Knowbase extends CommonGLPI
         $ki->searchForm($_GET);
 
         if (!isset($_GET['contains']) || empty($_GET['contains'])) {
-            echo "<div><table class='center-h' width='950px' aria-label='Search View'><tr class='noHover'><td class='center top'>";
+            echo "<div class='row g-4'><div class='col-12 col-xl-4'>";
             KnowbaseItem::showRecentPopular("recent");
-            echo "</td><td class='center top'>";
+            echo "</div><div class='col-12 col-xl-4'>";
             KnowbaseItem::showRecentPopular("lastupdate");
-            echo "</td><td class='center top'>";
+            echo "</div><div class='col-12 col-xl-4'>";
             KnowbaseItem::showRecentPopular("popular");
-            echo "</td></tr>";
-            echo "</table></div>";
+            echo "</div></div>";
         } else {
             KnowbaseItem::showList($_GET, 'search');
         }

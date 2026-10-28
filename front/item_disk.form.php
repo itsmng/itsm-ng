@@ -60,6 +60,13 @@ if (isset($_POST["add"])) {
             //TRANS: %s is the user login
             sprintf(__('%s adds a volume'), $_SESSION["glpiname"])
         );
+        if (!empty($_POST['_inline'])) {
+            $parent = getItemForItemtype($disk->fields['itemtype']);
+            if ($parent && $parent->getFromDB($disk->fields['items_id'])) {
+                Html::redirect($parent->getLinkURL() . '&forcetab=' . urlencode('Item_Disk$1')
+                    . (!empty($parent->fields['is_template']) ? '&withtemplate=1' : ''));
+            }
+        }
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($disk->getLinkURL());
         }

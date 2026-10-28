@@ -143,148 +143,60 @@ class Item_OperatingSystem extends CommonDBRelation
     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB;
-
-        //default options
-        $params = ['rand' => mt_rand()];
-
-        $columns = [
-           __('Name'),
-           _n('Version', 'Versions', 1),
-           _n('Architecture', 'Architectures', 1),
-           OperatingSystemServicePack::getTypeName(1)
-        ];
-
-        if (isset($_GET["order"]) && ($_GET["order"] == "ASC")) {
-            $order = "ASC";
-        } else {
-            $order = "DESC";
+        if (!$item->can($item->getID(), READ)) {
+            return false;
         }
 
-        if (
-            (isset($_GET["sort"]) && !empty($_GET["sort"]))
-            && isset($columns[$_GET["sort"]])
-        ) {
-            $sort = $_GET["sort"];
-        } else {
-            $sort = "glpi_items_operatingsystems.id";
-        }
-
-        if (empty($withtemplate)) {
-            $withtemplate = 0;
-        }
-
-        $iterator = self::getFromItem($item, $sort, $order);
-        $number = count($iterator);
-        $i      = 0;
-
-        $os = [];
-        while ($data = $iterator->next()) {
-            $os[$data['assocID']] = $data;
-        }
-
-        $canedit = $item->canEdit($item->getID());
-
-        //multi OS for an item is not an existing feature right now.
-        /*if ($canedit && $number >= 1
-            && !(!empty($withtemplate) && ($withtemplate == 2))) {
-           echo "<div class='center firstbloc'>".
-              "<a class='vsubmit' href='" . Toolbox::getItemTypeFormURL(self::getType()) . "?items_id=" . $item->getID() .
-              "&amp;itemtype=" . $item->getType() . "&amp;withtemplate=" . $withtemplate."'>";
-           echo __('Add an operating system');
-           echo "</a></div>\n";
-        }*/
-
-        if ($number <= 1) {
-            $id = -1;
+        $os = iterator_to_array(self::getFromItem($item));
+        $canedit = $item->canEdit($item->getID()) && ($withtemplate != 2);
+        if (count($os) <= 1) {
             $instance = new self();
-            if ($number > 0) {
-                $id = array_keys($os)[0];
+            $id = -1;
+            if ($os) {
+                $id = reset($os)['assocID'];
             } else {
-                //set itemtype and items_id
-                $instance->fields['itemtype']    = $item->getType();
-                $instance->fields['items_id']    = $item->getID();
+                $instance->fields['itemtype'] = $item->getType();
+                $instance->fields['items_id'] = $item->getID();
                 $instance->fields['entities_id'] = $item->fields['entities_id'];
             }
             $instance->showForm($id, ['canedit' => $canedit]);
             return;
         }
 
-        echo "<div class='spaced'>";
-        if (
-            $canedit
-            && $number
-            && ($withtemplate < 2)
-        ) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $params['rand']);
-            $massiveactionparams = ['num_displayed'  => min($_SESSION['glpilist_limit'], $number),
-                                         'container'      => 'mass' . __CLASS__ . $params['rand']];
-            Html::showMassiveActions($massiveactionparams);
+        $tableId = 'operatingSystems_' . $item->getType() . '_' . $item->getID();
+        if ($canedit) {
+            Html::showMassiveActions(['container' => $tableId, 'display_arrow' => false]);
         }
-
-        echo "<table class='tab_cadre_fixehov' aria-label='Editable Table'>";
-
-        $header_begin  = "<tr>";
-        $header_top    = '';
-        $header_bottom = '';
-        $header_end    = '';
-        if (
-            $canedit
-            && $number
-            && ($withtemplate < 2)
-        ) {
-            $header_top    .= "<th width='11'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $params['rand']);
-            $header_top    .= "</th>";
-            $header_bottom .= "<th width='11'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $params['rand']);
-            $header_bottom .= "</th>";
-        }
-
-        foreach ($columns as $key => $val) {
-            $header_end .= "<th" . ($sort == $key ? " class='order_$order'" : '') . ">" .
-                           "<a href='javascript:reloadTab(\"sort=$key&amp;order=" .
-                             (($order == "ASC") ? "DESC" : "ASC") . "&amp;start=0\");'>$val</a></th>";
-        }
-
-        $header_end .= "</tr>";
-        echo $header_begin . $header_top . $header_end;
-
-        if ($number) {
-            foreach ($os as $data) {
-                $linkname = $data['name'];
-                if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                    $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["assocID"]);
-                }
-                $link = Toolbox::getItemTypeFormURL(self::getType());
-                $name = "<a href=\"" . $link . "?id=" . $data["assocID"] . "\">" . $linkname . "</a>";
-
-                echo "<tr class='tab_bg_1'>";
-                if (
-                    $canedit
-                    && ($withtemplate < 2)
-                ) {
-                    echo "<td width='10'>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-                    echo "</td>";
-                }
-                echo "<td class='center'>{$name}</td>";
-                echo "<td class='center'>{$data['version']}</td>";
-                echo "<td class='center'>{$data['architecture']}</td>";
-                echo "<td class='center'>{$data['servicepack']}</td>";
-
-                echo "</tr>";
-                $i++;
+        $values = [];
+        $selection = [];
+        foreach ($os as $data) {
+            $name = $data['name'];
+            if ($_SESSION['glpiis_ids_visible'] || empty($name)) {
+                $name = sprintf(__('%1$s (%2$s)'), $name, $data['assocID']);
             }
-            echo $header_begin . $header_bottom . $header_end;
+            $values[] = [
+                '<a href="' . htmlspecialchars(self::getFormURLWithID($data['assocID']), ENT_QUOTES, 'UTF-8', false) . '">'
+                    . htmlspecialchars($name, ENT_QUOTES, 'UTF-8', false) . '</a>',
+                htmlspecialchars($data['version'] ?? '', ENT_QUOTES, 'UTF-8', false),
+                htmlspecialchars($data['architecture'] ?? '', ENT_QUOTES, 'UTF-8', false),
+                htmlspecialchars($data['servicepack'] ?? '', ENT_QUOTES, 'UTF-8', false),
+            ];
+            $selection[] = 'item[Item_OperatingSystem][' . $data['assocID'] . ']';
         }
-
-        echo "</table>";
-        if ($canedit && $number && ($withtemplate < 2)) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
+        $table = [
+            'id' => $tableId,
+            'state_key' => 'Item_OperatingSystem_for_' . $item->getType(),
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [__('Name'), _n('Version', 'Versions', 1), _n('Architecture', 'Architectures', 1),
+                OperatingSystemServicePack::getTypeName(1)],
+            'values' => $values,
+        ];
+        if ($canedit) {
+            $table['massive_action'] = $selection;
         }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
     }
+
 
     public function getConnexityItem(
         $itemtype,
@@ -321,7 +233,7 @@ class Item_OperatingSystem extends CommonDBRelation
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
            'content' => [
-              '' => [
+              OperatingSystem::getTypeName(1) => [
                  'visible' => true,
                  'inputs' => [
                     !$this->isNewID($ID) ? [
@@ -396,7 +308,35 @@ class Item_OperatingSystem extends CommonDBRelation
            ]
         ];
 
+        if ($this->isNewID($ID)) {
+            $form['buttons'] = [self::canCreate() ? [
+                'type' => 'submit',
+                'name' => 'add',
+                'value' => __('Add'),
+                'class' => 'btn btn-primary',
+                'icon' => 'fas fa-plus',
+            ] : []];
+        }
+
+        $readonly = isset($options['canedit']) && !$options['canedit'];
+        if ($readonly) {
+            $form['buttons'] = [[]];
+            foreach ($form['content'] as &$section) {
+                foreach ($section['inputs'] as &$input) {
+                    if (!empty($input['type']) && $input['type'] !== 'hidden') {
+                        $input['disabled'] = true;
+                        $input['actions'] = [];
+                    }
+                }
+                unset($input);
+            }
+            unset($section);
+            echo '<fieldset disabled>';
+        }
         renderTwigForm($form, '', $this->fields);
+        if ($readonly) {
+            echo '</fieldset>';
+        }
         return true;
     }
 

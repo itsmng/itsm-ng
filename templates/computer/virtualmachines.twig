@@ -1,0 +1,6 @@
+<section class="mb-4" aria-label="{{ title }}">
+    {% if values is empty and empty_message %}
+        <p class="text-muted">{{ empty_message }}</p>
+    {% endif %}
+    {% include 'table.twig' %}
+</section>

@@ -1,0 +1,29 @@
+{% include 'table.twig' %}
+<div class="modal fade" id="{{ id }}_infocom" tabindex="-1" aria-label="{{ infocom_label }}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h5">{{ infocom_label }}</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe class="w-100 border-0" style="height:70vh" title="{{ infocom_label }}"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(function() {
+    const table = document.getElementById({{ id|json_encode|raw }});
+    const dialog = document.getElementById({{ (id ~ '_infocom')|json_encode|raw }});
+    table.addEventListener('click', function(event) {
+        const link = event.target.closest('a[data-event-infocom]');
+        if (link && window.bootstrap && window.bootstrap.Modal) {
+            event.preventDefault();
+            dialog.querySelector('iframe').src = link.href;
+            window.bootstrap.Modal.getOrCreateInstance(dialog).show();
+        }
+    });
+    dialog.addEventListener('hidden.bs.modal', function() { dialog.querySelector('iframe').removeAttribute('src'); });
+})();
+</script>

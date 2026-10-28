@@ -1123,20 +1123,14 @@ class IPNetwork extends CommonImplicitTreeDropdown
             Session::haveRight('internet', UPDATE)
             && Session::canViewAllEntities()
         ) {
-            echo "<div class='spaced' id='tabsbody'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Reinit Newtork'>";
-
-            echo "<tr><td class='center'>";
-            Html::showSimpleForm(
-                IPNetwork::getFormURL(),
-                'reinit_network',
-                __('Reinit the network topology')
-            );
-
-            echo "</td></tr>";
-
-            echo "</table>";
-            echo "</div>";
+            renderTwigForm([
+                'action' => self::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'reinit_network',
+                    'value' => __('Reinit the network topology'), 'class' => 'btn btn-primary',
+                ]],
+                'content' => [],
+            ]);
         }
     }
 }

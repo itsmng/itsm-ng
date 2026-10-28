@@ -99,263 +99,125 @@ class Accessibility extends CommonDBTM
 
     public function showAccessForm($data = [], $displayShortcut = true)
     {
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
-        $user = new User();
-        $user->getFromDB(session::getLoginUserID());
-
-        $userpref  = false;
-        $url       = Toolbox::getItemTypeFormURL(__CLASS__);
-        $rand      = mt_rand();
-
-        $canedit = Config::canUpdate();
-        $canedituser = Session::haveRight('accessibility', UPDATE);
-
-        if (array_key_exists('last_login', $data)) {
-            $userpref = true;
-            if ($data["id"] === Session::getLoginUserID()) {
-                $url  = $CFG_GLPI['root_doc'] . "/front/accessibility.form.php";
-            } else {
-                $url  = Accessibility::getFormURL();
-            }
-        }
-
-        if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
-            echo "<form aria-label='form' name='form' action='$url' method='post' data-track-changes='true'>";
-        }
-
+        $userpref = array_key_exists('last_login', $data);
+        $url = Toolbox::getItemTypeFormURL(__CLASS__);
         if ($userpref) {
-            echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
+            $url = $data['id'] === Session::getLoginUserID()
+                ? $CFG_GLPI['root_doc'] . '/front/accessibility.form.php' : Accessibility::getFormURL();
         }
-
-        echo "<div class='center' id='tabsbody'>";
-        echo "<table class='tab_cadre_fixe' style='position: relative' aria-label='Accessibility settings'>";
-        echo "<tr><th colspan='4'>" . __('Interface') . "</th></tr>";
-        echo "<tr class='tab_bg_1' >";
-        echo "<td width='40%'><label for='access_zoom_level_drop$rand'>" . __('UI Scale') . "</label></td>";
-
-        $zooms = [
-            100 => '100%',
-            110 => '110%',
-            120 => '120%',
-            130 => '130%',
-            140 => '140%',
-            150 => '150%',
-            160 => '160%',
-            170 => '170%',
-            180 => '180%',
-            190 => '190%',
-            200 => '200%'
+        $canedit = $userpref ? Session::haveRight('accessibility', UPDATE) : Config::canUpdate();
+        $zooms = [];
+        for ($zoom = 100; $zoom <= 200; $zoom += 10) {
+            $zooms[$zoom] = $zoom . '%';
+        }
+        $inputs = [
+            __('UI Scale') => ['type' => 'select', 'name' => 'access_zoom_level', 'value' => $data['access_zoom_level'], 'values' => $zooms],
+            __('UI Font') => ['type' => 'select', 'name' => 'access_font', 'value' => $data['access_font'], 'values' => [
+                '' => 'Default', 'OpenDyslexic' => 'Open Dyslexic Regular', 'OpenDyslexicAlta' => 'Open Dyslexic Alta', 'Tiresias Infofont' => 'Tiresias Infofont',
+            ]],
+            __('Enable shortcuts') => ['type' => 'checkbox', 'name' => 'access_shortcuts', 'value' => $data['access_shortcuts']],
         ];
-
-        echo "<td width='40%'>";
-        Dropdown::showFromArray('access_zoom_level', $zooms, ['value' => $data["access_zoom_level"], 'rand' => $rand]);
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1' >";
-        echo "<td width='40%'><label for='access_font_drop$rand'>" . __('UI Font') . "</label></td>";
-
-        $fonts = [
-            ""                  => "Default",
-            "OpenDyslexic"      => "Open Dyslexic Regular",
-            "OpenDyslexicAlta"  => "Open Dyslexic Alta",
-            "Tiresias Infofont" => "Tiresias Infofont"
-        ];
-
-        echo "<td width='40%'>";
-        Dropdown::showFromArray('access_font', $fonts, ['value' => $data["access_font"], 'rand' => $rand]);
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1' >";
-        echo "<td width='40%'><label for='access_shortcuts_drop$rand'>" . __('Enable shortcuts') . "</label></td>";
-        echo "<td width='40%'>";
-        Dropdown::showYesNo('access_shortcuts', $data["access_shortcuts"], -1, ['rand' => $rand]);
-        echo "</td></tr>";
-
+        if (!$canedit) {
+            foreach ($inputs as &$input) {
+                $input['disabled'] = true;
+            }
+            unset($input);
+        }
+        if ($userpref) {
+            $inputs[] = ['type' => 'hidden', 'name' => 'id', 'value' => $data['id']];
+        }
+        $content = [__('Interface') => ['visible' => true, 'inputs' => $inputs]];
+        $shortcut_values = [];
         if ($displayShortcut) {
-            echo "<tr><th colspan='4'>" . __('Shortcuts') . "<span id ='alert_save' style='display:none; position: absolute; left: 50.5%; color: #ae0c2a; '><i>" . __("Don't forget to save") . "</i></span>" . " <a style='position: absolute; right: 25px; cursor: pointer; user-select: none;' onclick='\$(\".togshortcuts\").toggle(400);'>[" . __("Toggle view") . "]</a></th></tr>";
-
-            if (is_null($data["access_custom_shortcuts"])) {
-                $shortcuts = [];
-            } else {
-                $shortcuts = json_decode($data["access_custom_shortcuts"], true);
-            }
-            $font = $user->fields["access_font"];
-            $cpt = 1;
+            $shortcuts = json_decode($data['access_custom_shortcuts'] ?? '', true) ?? [];
             $classes = [];
-
             foreach (get_declared_classes() as $class) {
-                if (is_subclass_of($class, "CommonGLPI")) {
-                    $tabs = array($class => $class::getTypeName());
-                    $classes = array_merge($classes, $tabs);
+                if (is_subclass_of($class, 'CommonGLPI')) {
+                    $classes[$class] = $class::getTypeName();
                 }
             }
-
-            unset($classes["no_all_tab"]); // Remove superfluous element
+            unset($classes['no_all_tab']);
             ksort($classes);
-
-            foreach ($classes as $tab => $display) {
-                $shortcut = $shortcuts[$tab] ?? __("shift+alt+" . $cpt);
-
-                echo "<tr class='togshortcuts' style='display: none;' enctype='application/json'>";
-                echo "<input type='hidden' id='$tab' name='$tab' value='$shortcut' >";
-                echo "<td width='40%'><label for='$tab$rand'>" . $display . "</label></td>";
-                echo "<td width='40%'>";
-
-                if (!is_array($shortcut)) {
-                    $shortcutHtml = "<kbd style='font-family:$font'>$shortcut</kbd>";
-                } else {
-                    $shortcutHtml = "<kbd style='font-family:$font'>" . implode("</kbd>+<kbd>", $shortcut) . "</kbd>";
-                }
-
-                Html::accessibilityHeader();
-                echo "<span class='$tab' name='$tab' style='cursor: pointer;' onclick='myFunction($tab)'>$shortcutHtml</span>"; // Clicking this should edit the value in the hidden input for the HTML form.
-                echo "&nbsp;";
-                echo "<span id='infoBulle_$tab' style='background: orange; position: absolute;  height: 14.7px; margin-top: 0.2px;color: orange; border-radius: 3px;'></span>";
-                echo "</td></tr>";
+            $shortcut_inputs = [];
+            $cpt = 1;
+            foreach ($classes as $class => $label) {
+                $shortcut = $shortcuts[$class] ?? __('shift+alt+' . $cpt);
+                $shortcut = is_array($shortcut) ? implode('+', $shortcut) : $shortcut;
+                $shortcut_values[$class] = $shortcut;
+                $escaped_class = htmlspecialchars($class, ENT_QUOTES, 'UTF-8', false);
+                $escaped_shortcut = htmlspecialchars($shortcut, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+                ob_start();
+                renderTwigTemplate('macros/wrappedInput.twig', [
+                    'title' => htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
+                    'input' => ['content' => '<input type="hidden" id="shortcut_' . $escaped_class . '" name="' . $escaped_class . '" value="' . $escaped_shortcut . '">'
+                        . '<button type="button" class="btn btn-outline-primary" data-shortcut-target="' . $escaped_class . '"' . ($canedit ? '' : ' disabled') . '><kbd>' . $escaped_shortcut . '</kbd></button>',
+                        'col_lg' => 6, 'col_md' => 6],
+                ]);
+                $shortcut_inputs[] = ob_get_clean();
                 $cpt++;
             }
-
-
-            $currentShortcut = json_decode((string) $user->fields["access_custom_shortcuts"], true);
-
-            unset($currentShortcut["DCRoom"]);
-            unset($currentShortcut["update"]);
-            $all_shotcuts = array();
-            $all_classes = array();
-
-            if (!is_null($currentShortcut)) {
-                foreach ($currentShortcut as $name => $shortcut) {
-                    if (is_subclass_of($name, "CommonGLPI")) {
-                        $url = Toolbox::getItemTypeFormURL($name);
-                        array_push($all_shotcuts, $shortcut);
-                        array_push($all_classes, $name);
-                    }
-                }
+            $content[__('Shortcuts')] = ['visible' => true, 'inputs' => [
+                ['content' => '<button type="button" class="btn btn-outline-secondary mb-3" onclick="$(\'.togshortcuts\').toggle();">' . __('Toggle view') . '</button>'
+                    . '<span id="alert_save" class="text-danger ms-3" hidden>' . __("Don't forget to save") . '</span>'
+                    . '<div class="row togshortcuts" style="display:none">' . implode('', $shortcut_inputs) . '</div>', 'col_lg' => 12, 'col_md' => 12],
+            ]];
+        }
+        renderTwigForm([
+            'action' => $url, 'attributes' => ['name' => 'form', 'data-track-changes' => 'true'],
+            'buttons' => $canedit ? [['type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'), 'class' => 'btn btn-primary']] : [[]],
+            'content' => $content,
+        ]);
+        if (!$displayShortcut || !$canedit) {
+            return;
+        }
+        echo '<div id="modalForm" class="modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="shortcut_title" style="display:none">'
+            . '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header">'
+            . '<h2 id="shortcut_title" class="modal-title h5">' . __('Shortcuts') . '</h2>'
+            . '<button type="button" id="btnClose" class="btn-close" aria-label="' . __('Close') . '"></button></div>'
+            . '<div class="modal-body"><p id="shortcut_added" class="text-break"></p><p id="shortcut_existant" class="text-danger"></p></div>'
+            . '<div class="modal-footer"><button type="button" id="submit_in_modal" class="btn btn-primary">' . _x('button', 'Update') . '</button></div>'
+            . '</div></div></div>';
+        echo Html::scriptBlock('$(function () {
+            const shortcuts = ' . json_encode($shortcut_values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';
+            const modal = document.getElementById("modalForm");
+            let target = null, keys = [];
+            function closeShortcut() {
+                modal.style.display = "none";
+                document.removeEventListener("keydown", getShortcut);
+                if (target) target.focus();
             }
-
-            echo Html::scriptBlock('
-            
-            function myFunction(rack) {
-                    var entity_element = $(this);
-                    let all_shotcuts = ' . json_encode($all_shotcuts) . '; // Retrieve all shortcuts
-                    let all_classes  = ' . json_encode($all_classes) . ';  // Retrieve all classes
-                    
-                    let id_span = document.getElementsByClassName(rack.id)[0]; // the span 
-                    let id_input_hidden  = document.getElementById(rack.name); // the input hidden
-               
-                    
-                    let alertSave = document.getElementById("alert_save"); // message do not forget to save the form
-                    
-                    modal = document.getElementById("modalForm"); //The modal
-                    if(modal.style.display === "none"){
-                        modal.style.display = "block";
-                        document.addEventListener(' . "'keydown'" . ', getShortcut); // Instanciation get short 
-                          
-                    } else {
-                        modal.style.display = "none";
-     
-                    }
-                
-                   
-                    let keyPressed="";
-                    let btnClose = document.getElementById("btnClose"); // Close boutton in the modal
-                    btnClose.addEventListener("click", function() {
-                        modal.style.display = "none";
-                        // Remove all text in the modal
-                        keyPressed="";
-                        document.getElementById("shortcut_added").innerHTML =""; //
-                        document.getElementById("shortcut_existant").innerHTML ="";
-                        document.removeEventListener(' . "'keydown'" . ', getShortcut);
-                    });
-                    
-                    
-                    
-                    let id_infoBulle ="infoBulle_"+rack.name;
-                    let btn_infoBulle = document.getElementById(id_infoBulle); // info bulle
-                    
-                    function getShortcut(event){
-                        event.preventDefault();                 
-                        const btn_submit_in_modal = document.getElementById("submit_in_modal");
-                        keyPressed += event.key;
-                        document.getElementById("shortcut_added").innerHTML = keyPressed;
-                        document.getElementById("shortcut_existant").innerHTML ="";
-                        keyPressed +="+";
-                        var testExistShortcut = 0;
-
-                        if(all_shotcuts.includes(keyPressed.slice(0, -1))){
-                            testExistShortcut++;
-                        }
-
-                        if(testExistShortcut == 0){
-                            // Set the custom shortcut in currents fields
-                            btn_submit_in_modal.addEventListener("click", function() {
-                                if(keyPressed != ""){
-                                    id_input_hidden.value=keyPressed.slice(0 , -1);   //Remove(slice) the last + before updating
-                                    id_span.innerHTML = "<kbd>"+keyPressed.slice(0 , -1)+"</kbd>";
-            
-                                    modal.style.display = "none";
-                                    document.removeEventListener(' . "'keydown'" . ', getShortcut);
-                                    document.getElementById("shortcut_added").innerHTML ="";
-                                    btn_infoBulle.innerHTML ="&nbsp;&nbsp;&nbsp;";
-                                    alertSave.style.display = "inline";
-                                }
-                                keyPressed="";
-                        
-                            });
-                        } else {
-                            document.getElementById("shortcut_existant").innerHTML ="Already exist enter another shortcut";
-                            keyPressed="";
-                        }  
-                    }
-                };
-            ');
-        }
-
-        if ((!$userpref && $canedit) || ($userpref && $canedituser)) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td colspan='4' class='center'>";
-            echo "<input type='submit' name='update' class='submit' value=\"" . _sx('button', 'Save') . "\">";
-            echo "</td></tr>";
-        }
-
-        echo "</table></div>";
-        Html::closeForm();
-
-        if ($displayShortcut) {
-            echo "<div id='modalForm'  tabindex='-1' role='dialog' class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable' style='position: fixed; height: 150px; width: 300px; top: 30%; left: 40%; display:none;' >";
-
-            echo "<div class='ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle'>";
-            echo "<span id='ui-id-8' class='ui-dialog-title'>Enter your shortcut &nbsp;</span>";
-            echo "<button type='button' id='btnClose'class='ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close' title='Close'>";
-            echo "<span class='ui-button-icon ui-icon ui-icon-closethick'></span>";
-            echo "<span class='ui-button-icon-space'> </span>";
-            echo "Close";
-            echo "</button>";
-            echo "</div>";
-
-            echo "<div class='spaced'>";
-            echo "<table class='tab_cadre_fixe' style=' height: 120px; overflow-y: scroll;' aria-label='Shortcuts'>";
-            echo "<tr >";
-            echo "<td width='100%' style='position: absolute;  left: 50%; transform: translate(-50%, 0%);'>";
-            echo "<p style='width: 100%; overflow-wrap: break-word;' class='center' id='shortcut_added'></p>";
-            echo "</td></tr>";
-
-            echo "<tr >";
-            echo "<td width='100%' style='position: absolute; left: 50%; transform: translate(-50%, 0%);'>
-                <p  id='shortcut_existant' class='center' style='color: red; width: 100%;'></p>
-            </td>";
-            echo "</tr>";
-
-            echo "<tr >";
-            echo "<td  style='position: absolute; margin: 0; left: 50%; transform: translate(-50%, 0%); '>";
-            echo "<input type='submit'  id='submit_in_modal'  name='submit_in_modal' class='vsubmit' value=\"" . _sx('button', 'Update') . "\">";
-            echo "</td>";
-            echo "</tr>";
-
-            echo "</table>";
-            echo "</div>";
-            echo "</div>";
-        }
+            function getShortcut(event) {
+                event.preventDefault();
+                keys.push(event.key);
+                document.getElementById("shortcut_added").textContent = keys.join("+");
+                const duplicate = Object.values(shortcuts).includes(keys.join("+"));
+                document.getElementById("shortcut_existant").textContent = duplicate ? ' . json_encode(__('Already exist enter another shortcut')) . ' : "";
+                document.getElementById("submit_in_modal").disabled = duplicate;
+                if (duplicate) keys = [];
+            }
+            document.querySelectorAll("[data-shortcut-target]").forEach(button => {
+                button.addEventListener("click", function () {
+                    target = button; keys = [];
+                    document.getElementById("shortcut_added").textContent = "";
+                    document.getElementById("shortcut_existant").textContent = "";
+                    document.getElementById("submit_in_modal").disabled = true;
+                    modal.style.display = "block";
+                    document.addEventListener("keydown", getShortcut);
+                    document.getElementById("btnClose").focus();
+                });
+            });
+            document.getElementById("btnClose").addEventListener("click", closeShortcut);
+            document.getElementById("submit_in_modal").addEventListener("click", function () {
+                if (!target || !keys.length) return;
+                const name = target.dataset.shortcutTarget, value = keys.join("+");
+                document.getElementById("shortcut_" + name).value = value;
+                target.querySelector("kbd").textContent = value;
+                shortcuts[name] = value;
+                document.getElementById("alert_save").hidden = false;
+                closeShortcut();
+            });
+        });');
     }
 }

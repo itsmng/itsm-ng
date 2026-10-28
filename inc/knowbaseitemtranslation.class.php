@@ -161,20 +161,20 @@ class KnowbaseItemTranslation extends CommonDBChild
             $linkusers_id = false;
         }
 
-        echo "<table class='tab_cadre_fixe' aria-label='Show Full'>";
+        echo "<article class='kb-article'>";
 
-        echo "<tr><td class='left' colspan='4'><h2>" . __('Subject') . "</h2>";
-        echo $this->fields["name"];
+        echo "<header class='mb-4'><p class='text-muted mb-1'>" . __('Subject') . "</p><h1 class='h3'>";
+        echo htmlspecialchars((string) $this->fields['name'], ENT_QUOTES, 'UTF-8', false);
 
-        echo "</td></tr>";
-        echo "<tr><td class='left' colspan='4'><h2>" . __('Content') . "</h2>\n";
+        echo "</h1></header>";
+        echo "<section><h2 class='h5'>" . __('Content') . "</h2>\n";
 
-        echo "<div id='kbanswer'>";
+        echo "<div id='kbanswer' class='rich_text_container'>";
         $answer = $this->fields["answer"];
         echo Toolbox::unclean_html_cross_side_scripting_deep($answer);
         echo "</div>";
-        echo "</td></tr>";
-        echo "</table>";
+        echo "</section>";
+        echo "</article>";
 
         return true;
     }
@@ -188,85 +188,38 @@ class KnowbaseItemTranslation extends CommonDBChild
     **/
     public static function showTranslations(KnowbaseItem $item)
     {
-        global $CFG_GLPI;
-
         $canedit = $item->can($item->getID(), UPDATE);
-        $rand    = mt_rand();
+        $id = 'KnowbaseItemTranslation_' . $item->getID();
         if ($canedit) {
-            echo "<div id='viewtranslation" . $item->getID() . "$rand'></div>\n";
-            echo "<script type='text/javascript' >\n";
-            echo "function addTranslation" . $item->getID() . "$rand() {\n";
-            $params = ['type'             => __CLASS__,
-                            'parenttype'       => get_class($item),
-                            'knowbaseitems_id' => $item->fields['id'],
-                            'id'               => -1];
-            Ajax::updateItemJsCode(
-                "viewtranslation" . $item->getID() . "$rand",
-                $CFG_GLPI["root_doc"] . "/ajax/viewsubitem.php",
-                $params
-            );
-            echo "};";
-            echo "</script>\n";
-
-            echo "<div class='center'>" .
-                 "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . "$rand();'>" .
-                 __('Add a new translation') . "</a></div><br>";
+            (new self())->showForm(-1, ['parent' => $item]);
         }
-
-        $obj   = new self();
-        $found = $obj->find(['knowbaseitems_id' => $item->getID()], "language ASC");
-
-        if (count($found) > 0) {
+        $obj = new self();
+        $found = $obj->find(['knowbaseitems_id' => $item->getID()], 'language ASC');
+        Session::initNavigateListItems(self::class, __('Entry translations list'));
+        $values = $selection = [];
+        foreach ($found as $data) {
+            $name = htmlspecialchars($data['name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
             if ($canedit) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
-                Html::showMassiveActions($massiveactionparams);
+                $name = "<a href='" . static::getFormURLWithID($data['id']) . "'>$name</a>";
+                $selection[$data['id']] = 'item[' . self::class . '][' . $data['id'] . ']';
             }
-
-            Session::initNavigateListItems('KnowbaseItemTranslation', __('Entry translations list'));
-
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2' aria-label='Language'>";
-            echo "<th colspan='4'>" . __("List of translations") . "</th></tr>";
-            if ($canedit) {
-                echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                echo "</th>";
+            if (!empty($data['answer'])) {
+                ob_start();
+                Html::showToolTip(Toolbox::unclean_html_cross_side_scripting_deep($data['answer']));
+                $name .= ' ' . ob_get_clean();
             }
-            echo "<th>" . __("Language") . "</th>";
-            echo "<th>" . __("Subject") . "</th>";
-            foreach ($found as $data) {
-                echo "<tr class='tab_bg_1'>";
-                if ($canedit) {
-                    echo "<td class='center'>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-                    echo "</td>";
-                }
-                echo "<td>";
-                echo Dropdown::getLanguageName($data['language']);
-                echo "</td><td>";
-                if ($canedit) {
-                    echo "<a href=\"" . KnowbaseItemTranslation::getFormURLWithID($data["id"]) . "\">{$data['name']}</a>";
-                } else {
-                    echo  $data["name"];
-                }
-                if (isset($data['answer']) && !empty($data['answer'])) {
-                    echo "&nbsp;";
-                    Html::showToolTip(Toolbox::unclean_html_cross_side_scripting_deep($data['answer']));
-                }
-                echo "</td></tr>";
-            }
-            echo "</table>";
-            if ($canedit) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-                Html::closeForm();
-            }
-        } else {
-            echo "<table class='tab_cadre_fixe' aria-label='No translation Found'><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __("No translation found") . "</th></tr></table>";
+            $values[$data['id']] = ['language' => Dropdown::getLanguageName($data['language']), 'name' => $name];
+            Session::addToNavigateListItems(self::class, $data['id']);
         }
-
+        if ($canedit && $values) {
+            Html::showMassiveActions(['container' => $id, 'display_arrow' => false,
+                'num_displayed' => count($values)]);
+        }
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => ['language' => __('Language'), 'name' => __('Subject')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ] + ($canedit ? ['massive_action' => $selection] : []));
         return true;
     }
 
@@ -290,39 +243,45 @@ class KnowbaseItemTranslation extends CommonDBChild
             $options['knowbaseitems_id'] = $item->getID();
             $this->check(-1, CREATE, $options);
         }
-        Html::initEditorSystem('answer');
-        $this->showFormHeader($options);
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Language') . "&nbsp;:</td>";
-        echo "<td>";
-        echo "<input type='hidden' name='users_id' value=\"" . Session::getLoginUserID() . "\">";
-        echo "<input type='hidden' name='knowbaseitems_id' value='" . $this->fields['knowbaseitems_id'] . "'>";
+        ob_start();
         if ($ID > 0) {
             echo Dropdown::getLanguageName($this->fields['language']);
         } else {
-            Dropdown::showLanguages(
-                "language",
-                ['display_none' => false,
-                                          'value'        => $_SESSION['glpilanguage'],
-                                          'used'         => self::getAlreadyTranslatedForItem($item)]
-            );
+            Dropdown::showLanguages('language', [
+                'display_none' => false, 'value' => $_SESSION['glpilanguage'],
+                'used' => self::getAlreadyTranslatedForItem($item),
+            ]);
         }
-        echo "</td><td colspan='2'>&nbsp;</td></tr>";
+        $language = ob_get_clean();
+        ob_start();
+        Html::textarea(['name' => 'answer', 'value' => $this->fields['answer'] ?? '',
+            'enable_richtext' => true, 'enable_fileupload' => false]);
+        $content = ob_get_clean();
+        $buttons = [];
+        if ($ID <= 0 || $this->can($ID, UPDATE)) {
+            $buttons[] = ['type' => 'submit', 'name' => $ID > 0 ? 'update' : 'add',
+                'value' => $ID > 0 ? _x('button', 'Update') : _x('button', 'Add'),
+                'class' => 'btn btn-primary', 'icon' => $ID > 0 ? 'fas fa-save' : 'fas fa-plus'];
+        }
+        if ($ID > 0 && $this->can($ID, PURGE)) {
+            $buttons[] = ['type' => 'submit', 'name' => 'purge',
+                'value' => _x('button', 'Delete permanently'), 'class' => 'btn btn-danger'];
+        }
+        renderTwigForm([
+            'action' => static::getFormURL(), 'buttons' => $buttons ?: [[]],
+            'content' => [($ID > 0 ? static::getTypeName(1) : __('Add a new translation')) => [
+                'visible' => true, 'inputs' => [
+                    ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                    ['type' => 'hidden', 'name' => 'users_id', 'value' => Session::getLoginUserID()],
+                    ['type' => 'hidden', 'name' => 'knowbaseitems_id', 'value' => $this->fields['knowbaseitems_id']],
+                    __('Language') => ['content' => $language],
+                    __('Subject') => ['type' => 'text', 'name' => 'name', 'value' => $this->fields['name'] ?? '',
+                        'col_lg' => 12, 'col_md' => 12],
+                    __('Content') => ['content' => $content, 'col_lg' => 12, 'col_md' => 12],
+                ],
+            ]],
+        ]);
 
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Subject') . "</td>";
-        echo "<td colspan='3'>";
-        echo "<textarea cols='100' rows='1' name='name'>" . $this->fields["name"] . "</textarea>";
-        echo "</td></tr>\n";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Content') . "</td>";
-        echo "<td colspan='3'>";
-        echo "<textarea cols='100' rows='30' id='answer' name='answer'>" . $this->fields["answer"];
-        echo "</textarea>";
-        echo "</td></tr>\n";
-
-        $this->showFormButtons($options);
         return true;
     }
 

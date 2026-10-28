@@ -222,36 +222,12 @@ class IPAddress extends CommonDBChild
         global $CFG_GLPI;
 
         if ($item->getType() == 'IPNetwork') {
-            if (isset($_GET["start"])) {
-                $start = $_GET["start"];
-            } else {
-                $start = 0;
-            }
-
-            if (!empty($_GET["order"])) {
-                $table_options['order'] = $_GET["order"];
-            } else {
-                $table_options['order'] = 'ip';
-            }
-
-            $order_by_itemtype             = ($table_options['order'] == 'itemtype');
-
-            $table_options['SQL_options']  = [
-               'LIMIT'  => $_SESSION['glpilist_limit'],
-               'START'  => $start
-            ];
+            $table_options = ['order' => 'ip'];
+            $order_by_itemtype = false;
 
             $table           = new HTMLTableMain();
-            $content         = "<a href='javascript:reloadTab(\"order=ip\");'>" .
-                                 self::getTypeName(Session::getPluralNumber()) . "</a>";
-            $internet_column = $table->addHeader('IP Address', $content);
-            $content         = sprintf(
-                __('%1$s - %2$s'),
-                _n('Item', 'Items', Session::getPluralNumber()),
-                "<a href='javascript:reloadTab(\"order=itemtype\");'>" .
-                                         __('Order by item type') . "</a>"
-            );
-            $item_column     = $table->addHeader('Item', $content);
+            $internet_column = $table->addHeader('IP Address', self::getTypeName(Session::getPluralNumber()));
+            $item_column = $table->addHeader('Item', _n('Item', 'Items', Session::getPluralNumber()));
 
             if ($order_by_itemtype) {
                 foreach ($CFG_GLPI["networkport_types"] as $itemtype) {
@@ -282,30 +258,7 @@ class IPAddress extends CommonDBChild
 
             self::getHTMLTableCellsForItem(null, $item, null, $table_options);
 
-            if ($table->getNumberOfRows() > 0) {
-                $count = self::countForItem($item);
-                Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, $count);
-
-                Session::initNavigateListItems(
-                    __CLASS__,
-                    //TRANS : %1$s is the itemtype name,
-                    //        %2$s is the name of the item (used for headings of a list)
-                    sprintf(
-                        __('%1$s = %2$s'),
-                        $item->getTypeName(1),
-                        $item->getName()
-                    )
-                );
-                $table->display(['display_title_for_each_group' => $order_by_itemtype,
-                                      'display_super_for_each_group' => false,
-                                      'display_tfoot'                => false]);
-
-                Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, $count);
-            } else {
-                echo "<table class='tab_cadre_fixe' aria-label='No IP address found'>";
-                echo "<tr><th>" . __('No IP address found') . "</th></tr>";
-                echo "</table>";
-            }
+            $table->displayV2(['id' => 'ipAddresses_' . $item->getID()]);
         }
     }
 

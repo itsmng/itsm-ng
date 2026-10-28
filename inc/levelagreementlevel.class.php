@@ -54,6 +54,99 @@ abstract class LevelAgreementLevel extends RuleTicket
         // Override in order not to use glpi_rules table.
     }
 
+    /** Display escalation levels with their criteria and actions. */
+    protected function showForAgreement(LevelAgreement $agreement)
+    {
+        global $DB;
+
+        $ID = $agreement->getID();
+        if (!$agreement->can($ID, READ)) {
+            return false;
+        }
+        $canedit = $agreement->can($ID, UPDATE);
+        $parentfield = $agreement->getForeignKeyField();
+        $id = 'escalationLevels_' . $agreement->getType() . '_' . $ID;
+        if ($canedit) {
+            $times = ['max_time' => $agreement->getTime(),
+                'used' => static::getAlreadyUsedExecutionTime($ID)];
+            if ($agreement instanceof SLA) {
+                $times['type'] = $agreement->fields['type'];
+            }
+            renderTwigForm([
+                'action' => static::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Add'),
+                    'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                ]],
+                'content' => [__('Add an escalation level') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => $parentfield, 'value' => $ID],
+                        ['type' => 'hidden', 'name' => 'entities_id', 'value' => $agreement->getEntityID()],
+                        ['type' => 'hidden', 'name' => 'is_recursive', 'value' => $agreement->isRecursive()],
+                        ['type' => 'hidden', 'name' => 'match', 'value' => 'AND'],
+                        __('Name') => ['type' => 'text', 'name' => 'name', 'value' => ''],
+                        __('Execution') => ['type' => 'select', 'name' => 'execution_time',
+                            'values' => static::getExecutionTimes($times)],
+                        __('Active') => ['type' => 'select', 'name' => 'is_active',
+                            'value' => 1, 'values' => [0 => __('No'), 1 => __('Yes')]],
+                    ],
+                ]],
+            ]);
+        }
+
+        $iterator = $DB->request([
+            'FROM' => static::getTable(), 'WHERE' => [$parentfield => $ID],
+            'ORDER' => 'execution_time',
+        ]);
+        Session::initNavigateListItems(static::class, sprintf(
+            __('%1$s = %2$s'), $agreement::getTypeName(1), $agreement->getName()
+        ));
+        $values = $selection = [];
+        foreach ($iterator as $data) {
+            Session::addToNavigateListItems(static::class, $data['id']);
+            $name = htmlspecialchars($data['name'] ?: '(' . $data['id'] . ')', ENT_QUOTES, 'UTF-8', false);
+            if ($canedit) {
+                $name = "<a href='" . static::getFormURLWithID($data['id']) . "'>$name</a>";
+                $selection[$data['id']] = 'item[' . static::class . '][' . $data['id'] . ']';
+            }
+            $this->getRuleWithCriteriasAndActions($data['id'], 1, 1);
+            $criteria = $actions = [];
+            foreach ($this->criterias as $criterion) {
+                $fields = $criterion->fields;
+                $criteria[] = $this->getCriteriaName($fields['criteria']) . ' '
+                    . RuleCriteria::getConditionByID($fields['condition'], get_class($this), $fields['criteria'])
+                    . ' ' . $this->getCriteriaDisplayPattern($fields['criteria'], $fields['condition'], $fields['pattern']);
+            }
+            foreach ($this->actions as $action) {
+                $fields = $action->fields;
+                $actions[] = $this->getActionName($fields['field']) . ' '
+                    . RuleAction::getActionByID($fields['action_type']) . ' '
+                    . (isset($fields['value']) ? $this->getActionValue($fields['field'], $fields['action_type'], $fields['value']) : '');
+            }
+            $values[$data['id']] = [
+                'name' => $name,
+                'execution' => $data['execution_time'] != 0
+                    ? Html::timestampToString($data['execution_time'], false)
+                    : ($agreement->fields['type'] == 1 ? __('Time to own') : __('Time to resolve')),
+                'active' => Dropdown::getYesNo($data['is_active']),
+                'criteria' => implode('<br>', $criteria), 'actions' => implode('<br>', $actions),
+            ];
+        }
+        if ($canedit && $values) {
+            Html::showMassiveActions(['container' => $id, 'display_arrow' => false,
+                'num_displayed' => count($values)]);
+        }
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => ['name' => __('Name'), 'execution' => __('Execution'), 'active' => __('Active'),
+                'criteria' => _n('Criterion', 'Criteria', Session::getPluralNumber()),
+                'actions' => _n('Action', 'Actions', Session::getPluralNumber())],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ] + ($canedit ? ['massive_action' => $selection] : []));
+        return true;
+    }
+
 
     /**
      * @since 0.85

@@ -21,7 +21,7 @@
 	<div>
 		{{additionnalHtml|raw}}
 	</div>
-	<div class="d-flex justify-content-around">
+	<div class="d-flex justify-content-around mb-3">
 		<input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}"/>
 		{% if not form.buttons %}
 			<button type="submit" aria-label="{{"Send"|trans}}" class='btn btn-primary'>{{"Send"|trans}}</button>

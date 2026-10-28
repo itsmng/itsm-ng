@@ -136,17 +136,7 @@ class Notification_NotificationTemplate extends CommonDBRelation
             $canedit
             && !(!empty($withtemplate) && ($withtemplate == 2))
         ) {
-            $button = [
-                'url'   => self::getFormURL(),
-                'title' => __('Add a template'),
-            ];
-            echo <<<HTML
-            <div class='center mb-3'>
-                <a class='btn btn-secondary' href='{$button['url']}?notifications_id=$ID&amp;withtemplate=$withtemplate'>
-                    {$button['title']}
-                </a>
-            </div>
-        HTML;
+            (new self())->showForm(-1, ['notifications_id' => $ID, 'inline' => true]);
         }
 
         $fields = [
@@ -184,6 +174,9 @@ class Notification_NotificationTemplate extends CommonDBRelation
             ];
         }
         renderTwigTemplate('table.twig', [
+           'id' => 'notificationTemplates_' . $ID,
+           'state_key' => 'notificationTemplates_' . $ID,
+           'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
            'fields' => $fields,
            'values' => $values,
         ]);
@@ -211,59 +204,29 @@ class Notification_NotificationTemplate extends CommonDBRelation
             return false;
         }
 
-        echo "<div class='center'>";
-
-        $iterator = $DB->request([
-           'FROM'   => self::getTable(),
-           'WHERE'  => ['notificationtemplates_id' => $ID]
-        ]);
-
-        echo "<table class='tab_cadre_fixehov' aria-label='Notification'>";
-        $colspan = 2;
-
-        if ($iterator->numrows()) {
-            $header = "<tr>";
-            $header .= "<th>" . __('ID') . "</th>";
-            $header .= "<th>" . _n('Notification', 'Notifications', 1) . "</th>";
-            $header .= "<th>" . __('Mode') . "</th>";
-            $header .= "</tr>";
-            echo $header;
-
-            Session::initNavigateListItems(
-                __CLASS__,
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    Notification::getTypeName(1),
-                    $template->getName()
-                )
-            );
-
-            while ($data = $iterator->next()) {
-                $notification = new Notification();
-                $notification->getFromDB($data['notifications_id']);
-
-                echo "<tr class='tab_bg_2'>";
-                echo "<td>" . $data['id'] . "</td>";
-                echo "<td>" . $notification->getLink() . "</td>";
-                $mode = self::getMode($data['mode']);
-                if ($mode === NOT_AVAILABLE) {
-                    $mode = "{$data['mode']} ($mode)";
-                } else {
-                    $mode = $mode['label'];
-                }
-                echo "<td>$mode</td>";
-                echo "</tr>";
-                Session::addToNavigateListItems(__CLASS__, $data['id']);
-            }
-            echo $header;
-        } else {
-            echo "<tr class='tab_bg_2'><th colspan='$colspan'>" . __('No item found') . "</th></tr>";
+        $values = [];
+        Session::initNavigateListItems(__CLASS__, sprintf(
+            __('%1$s = %2$s'), Notification::getTypeName(1), $template->getName()
+        ));
+        foreach ($DB->request([
+            'FROM' => self::getTable(), 'WHERE' => ['notificationtemplates_id' => $ID],
+        ]) as $data) {
+            $notification = new Notification();
+            $notification->getFromDB($data['notifications_id']);
+            $mode = self::getMode($data['mode']);
+            $values[$data['id']] = [
+                'id' => $data['id'], 'notification' => $notification->getLink(),
+                'mode' => $mode === NOT_AVAILABLE
+                    ? htmlspecialchars($data['mode'], ENT_QUOTES, 'UTF-8', false) . ' (' . NOT_AVAILABLE . ')'
+                    : $mode['label'],
+            ];
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
         }
-
-        echo "</table>";
-        echo "</div>";
+        renderTwigTemplate('table.twig', [
+            'id' => 'templateNotifications_' . $ID, 'state_key' => 'templateNotifications_' . $ID,
+            'fields' => ['id' => __('ID'), 'notification' => _n('Notification', 'Notifications', 1), 'mode' => __('Mode')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
     }
 
 
@@ -320,34 +283,36 @@ class Notification_NotificationTemplate extends CommonDBRelation
             $notif->getFromDB($options['notifications_id']);
         }
 
-        $this->showFormHeader($options);
-
-        if ($this->isNewID($ID)) {
-            echo "<input type='hidden' name='notifications_id' value='" . $options['notifications_id'] . "'>";
-        }
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . _n('Notification', 'Notifications', 1) . "</td>";
-        echo "<td>" . $notif->getLink() . "</td>";
-        echo "<td colspan='2'>&nbsp;</td>";
-        echo "</tr>\n";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Mode') . "</td>";
-        echo "<td>";
+        ob_start();
         self::dropdownMode(['name' => 'mode', 'value' => $this->getField('mode')]);
-        echo "</td>";
-
-        echo "<td>" . NotificationTemplate::getTypeName(1) . "</td>";
-        echo "<td><span id='show_templates'>";
+        $mode = ob_get_clean();
+        ob_start();
         NotificationTemplate::dropdownTemplates(
-            'notificationtemplates_id',
-            $notif->fields['itemtype'],
-            $this->fields['notificationtemplates_id']
+            'notificationtemplates_id', $notif->fields['itemtype'], $this->fields['notificationtemplates_id']
         );
-        echo "</span></td></tr>";
-
-        $this->showFormButtons($options);
+        $templates = ob_get_clean();
+        $buttons = [[
+            'type' => 'submit', 'name' => $ID > 0 ? 'update' : 'add',
+            'value' => $ID > 0 ? _x('button', 'Update') : _x('button', 'Add'),
+            'class' => 'btn btn-primary', 'icon' => $ID > 0 ? 'fas fa-save' : 'fas fa-plus',
+        ]];
+        if ($ID > 0 && $this->can($ID, PURGE)) {
+            $buttons[] = ['type' => 'submit', 'name' => 'purge',
+                'value' => _x('button', 'Delete permanently'), 'class' => 'btn btn-danger'];
+        }
+        renderTwigForm([
+            'action' => static::getFormURL(), 'buttons' => $buttons,
+            'content' => [($ID > 0 ? static::getTypeName(1) : __('Add a template')) => [
+                'visible' => true, 'inputs' => [
+                    ['type' => 'hidden', 'name' => '_inline', 'value' => !empty($options['inline']) ? 1 : 0],
+                    ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                    ['type' => 'hidden', 'name' => 'notifications_id', 'value' => $notif->getID()],
+                    _n('Notification', 'Notifications', 1) => ['content' => $notif->getLink()],
+                    __('Mode') => ['content' => $mode],
+                    NotificationTemplate::getTypeName(1) => ['content' => "<span id='show_templates'>$templates</span>"],
+                ],
+            ]],
+        ]);
 
         return true;
     }

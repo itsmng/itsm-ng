@@ -1,0 +1,68 @@
+<section class="mb-4" aria-label="{{ 'Locked items'|trans }}">
+    {% if plugin_fields|trim %}
+        <div class="table-responsive" data-lock-plugin-fields>
+            <table class="table table-hover align-middle" aria-label="{{ 'Locked fields'|trans }}">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 36px">
+                            <input type="checkbox" class="form-check-input" data-lock-plugin-select-all aria-label="{{ 'Check all'|trans }}">
+                        </th>
+                        <th>{{ 'Name'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>{{ plugin_fields|raw }}</tbody>
+            </table>
+        </div>
+    {% endif %}
+    {% if values %}
+        {% include 'table.twig' with {
+            id: table_id,
+            state_key: table_id,
+            fields: ['Type'|trans, 'Name'|trans],
+            values: values,
+            massive_action: selection,
+            minimal: true,
+            pageSize: page_size,
+            show_export: false,
+        } only %}
+    {% elseif not plugin_fields|trim %}
+        <div class="alert alert-info mb-0">{{ 'No locked item'|trans }}</div>
+    {% endif %}
+    {% if can_unlock %}
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="submit" name="unlock" value="1" class="btn btn-primary">{{ unlock_label }}</button>
+            <button type="submit" name="purge" value="1" class="btn btn-outline-danger">{{ purge_label }}</button>
+        </div>
+    {% endif %}
+</section>
+<script>
+(function () {
+    const tableId = {{ table_id|json_encode|raw }};
+    const form = document.getElementById('lock_form');
+    if (!form) {
+        return;
+    }
+    const pluginSelectAll = form.querySelector('[data-lock-plugin-select-all]');
+    if (pluginSelectAll) {
+        pluginSelectAll.addEventListener('change', function () {
+            form.querySelectorAll('[data-lock-plugin-fields] tbody input[type="checkbox"]:not(:disabled)').forEach(function (input) {
+                input.checked = pluginSelectAll.checked;
+            });
+        });
+    }
+    form.addEventListener('submit', function () {
+        form.querySelectorAll('[data-lock-selection]').forEach(function (input) {
+            input.remove();
+        });
+        const table = window.ITSMTable ? window.ITSMTable.get(tableId) : null;
+        (table ? table.getSelection() : []).forEach(function (row) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = row.value;
+            input.value = '1';
+            input.dataset.lockSelection = 'true';
+            form.appendChild(input);
+        });
+    });
+})();
+</script>

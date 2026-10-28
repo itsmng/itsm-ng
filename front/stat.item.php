@@ -66,18 +66,12 @@ if (!isset($_GET["start"])) {
 
 Stat::title();
 
-echo "<div class='center'><form aria-label='Item Statistics' method='post' name='form' action='stat.item.php'>";
-echo "<table class='tab_cadre'><tr class='tab_bg_2'> aria-label='Statistics'";
-echo "<td class='right'>" . __('Start date') . "</td><td>";
-Html::showDateField("date1", ['value' => $_POST["date1"]]);
-echo "</td><td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value='" . __s('Display report') . "'></td></tr>";
-echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
-Html::showDateField("date2", ['value' => $_POST["date2"]]);
-echo "</td></tr>";
-echo "</table>";
-Html::closeForm();
-echo "</div>";
+renderTwigForm(['action' => 'stat.item.php', 'method' => 'post',
+    'buttons' => [['type' => 'submit', 'name' => 'submit', 'value' => __('Display report'), 'class' => 'btn btn-primary']],
+    'content' => [['visible' => false, 'inputs' => [
+        __('Start date') => ['type' => 'date', 'name' => 'date1', 'value' => $_POST['date1'], 'col_lg' => 6],
+        __('End date') => ['type' => 'date', 'name' => 'date2', 'value' => $_POST['date2'], 'col_lg' => 6],
+    ]]]]);
 
 if (isset($_POST['submit'])) {
     Stat::showItems($_SERVER['PHP_SELF'], $_POST["date1"], $_POST["date2"], $_GET['start']);

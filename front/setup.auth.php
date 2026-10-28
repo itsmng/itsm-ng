@@ -37,29 +37,19 @@ Session::checkRight("config", READ);
 
 Html::header(__('External authentication sources'), $_SERVER['PHP_SELF'], "config", "auth", -1);
 
-echo "<table class='tab_cadre'>";
-echo "<tr><th>&nbsp;" . __('External authentications') . "</th></tr>";
-if (Session::haveRight("config", UPDATE)) {
-    echo "<tr class='tab_bg_1'><td class='center b'>" .
-         "<a href='auth.settings.php'>" . __('Setup') . "</a></td></tr>";
+echo "<nav class='list-group' aria-label='" . __s('External authentications') . "'>";
+if (Session::haveRight('config', UPDATE)) {
+    echo "<a class='list-group-item list-group-item-action' href='auth.settings.php'>" . __('Setup') . '</a>';
 }
-echo "<tr class='tab_bg_1'><td class='center b'>";
 if (Toolbox::canUseLdap()) {
-    echo "<a href='authldap.php'>" . AuthLDAP::getTypeName(Session::getPluralNumber()) . "</a>";
+    echo "<a class='list-group-item list-group-item-action' href='authldap.php'>" . AuthLDAP::getTypeName(Session::getPluralNumber()) . '</a>';
 } else {
-    echo "<p class='red'>" . __("The LDAP extension of your PHP parser isn't installed") . "</p>";
-    echo "<p>" . __('Impossible to use LDAP as external source of connection') . '</p>';
+    echo "<div class='list-group-item text-danger'>" . __("The LDAP extension of your PHP parser isn't installed")
+        . '<br>' . __('Impossible to use LDAP as external source of connection') . '</div>';
 }
-echo "</td></tr>";
-echo "<tr class='tab_bg_1'><td class='center b'>";
-echo "<a href='authmail.php'>" . AuthMail::getTypeName(Session::getPluralNumber()) . "</a>";
-echo "</td> </tr>";
-// oidc setup
-echo "<tr class='tab_bg_1'><td class='center'>" .
-     "<a href='auth.oidc.php'>" . __('Open ID connect authentication') . "</a></td></tr>";
-
-echo "<tr class='tab_bg_1'><td class='center'>" .
-     "<a href='auth.others.php'>" . __('Others authentication methods') . "</a></td></tr>";
-echo "</table>";
+echo "<a class='list-group-item list-group-item-action' href='authmail.php'>" . AuthMail::getTypeName(Session::getPluralNumber()) . '</a>';
+echo "<a class='list-group-item list-group-item-action' href='auth.oidc.php'>" . __('Open ID connect authentication') . '</a>';
+echo "<a class='list-group-item list-group-item-action' href='auth.others.php'>" . __('Others authentication methods') . '</a>';
+echo '</nav>';
 
 Html::footer();

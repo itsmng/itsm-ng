@@ -57,6 +57,10 @@ if (isset($_POST["add"])) {
             //TRANS: %s is the user login
             sprintf(__('%s adds an alert'), $_SESSION["glpiname"])
         );
+        if (!empty($_POST['_inline'])) {
+            Html::redirect(SavedSearch::getFormURLWithID($alert->fields['savedsearches_id'])
+                . '&forcetab=' . urlencode('SavedSearch_Alert$1'));
+        }
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($alert->getLinkURL());
         }

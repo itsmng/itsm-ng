@@ -94,80 +94,39 @@ if (isset($_GET['create_ticket'])) {
     $ticket = new Ticket();
     $ticket->showFormHelpdesk(Session::getLoginUserID());
 } else {
-    echo "<table class='tab_cadre_postonly' aria-label='Search form'>";
-
     $user = new User();
     $user->getFromDB(Session::getLoginUserID());
     if ($user->fields['authtype'] == Auth::DB_GLPI && $user->shouldChangePassword()) {
-        $expiration_msg = sprintf(
-            __('Your password will expire on %s.'),
-            Html::convDateTime(date('Y-m-d H:i:s', $user->getPasswordExpirationTime()))
-        );
-        echo '<tr>';
-        echo '<th colspan="2">';
-        echo '<div class="warning">';
-        echo '<i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>';
-        echo '<ul>';
-        echo '<li>';
-        echo $expiration_msg . ' ';
-        echo '<a href="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
-        echo __('Update my password');
-        echo '</a>';
-        echo '</li>';
-        echo '</ul>';
-        echo '<div class="sep"></div>';
-        echo '</div>';
-        echo '</th>';
-        echo '</tr>';
+        $expiration_msg = sprintf(__('Your password will expire on %s.'),
+            Html::convDateTime(date('Y-m-d H:i:s', $user->getPasswordExpirationTime())));
+        echo "<div class='alert alert-warning'>" . $expiration_msg . ' '
+            . "<a href='" . $CFG_GLPI['root_doc'] . "/front/updatepassword.php'>" . __('Update my password') . '</a></div>';
     }
-
-    echo "<tr class='noHover'>";
-    echo "<td class='top' width='50%'><br>";
-    echo "<table class='central' aria-label='Search results table for hardware items'>";
+    // Preserve the table-row contract of external dashboard hooks.
+    ob_start();
     Plugin::doHook('display_central');
+    $plugin_content = ob_get_clean();
+    if (trim($plugin_content) !== '') {
+        echo "<table class='central w-100'>" . $plugin_content . '</table>';
+    }
+    echo "<div class='row g-3'><div class='col-12 col-xl-6'>";
     if (Session::haveRight('ticket', CREATE)) {
-        echo "<tr class='noHover'><td class='top'>";
         Ticket::showCentralCount(true);
-        echo "</td></tr>";
-        echo "<tr class='noHover'><td class='top'>";
-        Ticket::showCentralList(0, "survey", false);
-        echo "</td></tr>";
+        Ticket::showCentralList(0, 'survey', false);
     }
-
-    if (Session::haveRight("reminder_public", READ)) {
-        echo "<tr class='noHover'><td class='top'>";
+    if (Session::haveRight('reminder_public', READ)) {
         Reminder::showListForCentral(false);
-        echo "</td></tr>";
     }
-
-    if (Session::haveRight("rssfeed_public", READ)) {
-        echo "<tr class='noHover'><td class='top'>";
+    if (Session::haveRight('rssfeed_public', READ)) {
         RSSFeed::showListForCentral(false);
-        echo "</td></tr>";
     }
-    echo "</table></td>";
-
-    echo "<td class='top' width='50%'><br>";
-    echo "<table class='central' aria-label='Search results table for software items'>";
-
-    // Show KB items
+    echo "</div><div class='col-12 col-xl-6'>";
     if (Session::haveRight('knowbase', KnowbaseItem::READFAQ)) {
-        echo "<tr class='noHover'><td class='top'>";
-        KnowbaseItem::showRecentPopular("popular");
-        echo "</td></tr>";
-        echo "<tr class='noHover'><td class='top'><br>";
-        KnowbaseItem::showRecentPopular("recent");
-        echo "</td></tr>";
-        echo "<tr class='noHover'><td class='top'><br>";
-        KnowbaseItem::showRecentPopular("lastupdate");
-        echo "</td></tr>";
-    } else {
-        echo "<tr><td>&nbsp;</td></tr>";
+        foreach (['popular', 'recent', 'lastupdate'] as $type) {
+            KnowbaseItem::showRecentPopular($type);
+        }
     }
-
-    echo "</table>";
-    echo "</td>";
-    echo "</tr></table>";
+    echo '</div></div>';
 }
 
 Html::footer();

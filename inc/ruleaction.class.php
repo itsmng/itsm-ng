@@ -795,15 +795,18 @@ class RuleAction extends CommonDBChild
            'action' => $this->getFormURL(),
            'buttons' => [
               [
-                 'name'  => 'add',
-                 'value' => __('Add'),
-                 'class' => 'btn btn-secondary',
+                 'type' => 'submit',
+                 'name' => $ID > 0 ? 'update' : 'add',
+                 'value' => $ID > 0 ? _x('button', 'Update') : _x('button', 'Add'),
+                 'class' => 'btn btn-primary',
+                 'icon' => $ID > 0 ? 'fas fa-save' : 'fas fa-plus',
               ]
            ],
            'content' => [
-              '' => [
+              ($ID > 0 ? _n('Action', 'Actions', 1) : __('Add a new action')) => [
                  'visible' => true,
                  'inputs' => [
+                    ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
                     [
                        'type' => 'hidden',
                        'name' => $rule->getRuleIdField(),

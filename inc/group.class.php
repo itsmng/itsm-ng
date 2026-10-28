@@ -609,47 +609,31 @@ class Group extends CommonTreeDropdown
     **/
     public function showLDAPForm($ID)
     {
-        $options = [];
-        $this->initForm($ID, $options);
-
-        echo "<form aria-label='LDAP Group' name='groupldap_form' id='groupldap_form' method='post' action='" .
-               $this->getFormURL() . "'>";
-        echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='LDAP Form'>";
-
-        if (
-            Group::canUpdate()
-            && Session::haveRight("user", User::UPDATEAUTHENT)
-            && AuthLDAP::useAuthLdap()
-        ) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<th colspan='2' class='center'>" . __('In users') . "</th></tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . __('Attribute of the user containing its groups') . "</td>";
-            echo "<td>";
-            Html::autocompletionTextField($this, "ldap_field");
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . __('Attribute value') . "</td>";
-            echo "<td>";
-            Html::autocompletionTextField($this, "ldap_value");
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<th colspan='2' class='center'>" . __('In groups') . "</th>";
-            echo "</tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . __('Group DN') . "</td>";
-            echo "<td>";
-            Html::autocompletionTextField($this, "ldap_group_dn");
-            echo "</td></tr>";
+        $this->initForm($ID, []);
+        if (!Group::canUpdate() || !Session::haveRight('user', User::UPDATEAUTHENT) || !AuthLDAP::useAuthLdap()) {
+            return false;
         }
-
-        $options = ['colspan' => 1,
-                         'candel'  => false];
-        $this->showFormButtons($options);
+        renderTwigForm([
+            'action' => $this->getFormURL(),
+            'attributes' => ['name' => 'groupldap_form', 'id' => 'groupldap_form'],
+            'buttons' => [[
+                'type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'), 'class' => 'btn btn-primary',
+            ]],
+            'content' => [
+                __('In users') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                        __('Attribute of the user containing its groups') => ['type' => 'text', 'name' => 'ldap_field', 'value' => $this->fields['ldap_field']],
+                        __('Attribute value') => ['type' => 'text', 'name' => 'ldap_value', 'value' => $this->fields['ldap_value']],
+                    ],
+                ],
+                __('In groups') => [
+                    'visible' => true,
+                    'inputs' => [__('Group DN') => ['type' => 'text', 'name' => 'ldap_group_dn', 'value' => $this->fields['ldap_group_dn'], 'col_lg' => 12]],
+                ],
+            ],
+        ]);
     }
 
 

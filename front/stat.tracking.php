@@ -118,32 +118,16 @@ foreach ($items as $label => $tab) {
     }
 }
 
-echo "<div class='center'><form aria-label='Tracking Statistics' method='get' name='form' action='stat.tracking.php'>";
-// Keep it first param
-echo "<input type='hidden' name='itemtype' value=\"" . $_GET["itemtype"] . "\">";
-
-echo "<table class='tab_cadre_fixe' aria-label='Statistics report filter'>";
-echo "<tr class='tab_bg_2'><td rowspan='2' class='center' width='30%'>";
-Dropdown::showFromArray('type', $values, ['value' => $_GET['type']]);
-echo "</td>";
-echo "<td class='right'>" . __('Start date') . "</td><td>";
-Html::showDateField("date1", ['value' => $_GET["date1"]]);
-echo "</td>";
-echo "<td class='right'>" . __('Show graphics') . "</td>";
-echo "<td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value=\"" . __s('Display report') . "\"></td>" .
-     "</tr>";
-
-echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
-Html::showDateField("date2", ['value' => $_GET["date2"]]);
-echo "</td><td class='center'>";
-echo "<input type='hidden' name='value2' value='" . Html::cleanInputText($_GET["value2"]) . "'>";
-Dropdown::showYesNo('showgraph', $_GET['showgraph']);
-echo "</td></tr>";
-echo "</table>";
-// form using GET method : CRSF not needed
-echo "</form>";
-echo "</div>";
+renderTwigForm(['action' => 'stat.tracking.php', 'method' => 'get',
+    'buttons' => [['type' => 'submit', 'name' => 'submit', 'value' => __('Display report'), 'class' => 'btn btn-primary']],
+    'content' => [['visible' => false, 'inputs' => [
+        ['type' => 'hidden', 'name' => 'itemtype', 'value' => $_GET['itemtype']],
+        ['type' => 'hidden', 'name' => 'value2', 'value' => $_GET['value2']],
+        _n('Type', 'Types', 1) => ['type' => 'select', 'name' => 'type', 'values' => $values, 'value' => $_GET['type'], 'col_lg' => 6],
+        __('Show graphics') => ['type' => 'select', 'name' => 'showgraph', 'values' => [0 => __('No'), 1 => __('Yes')], 'value' => $_GET['showgraph'], 'col_lg' => 6],
+        __('Start date') => ['type' => 'date', 'name' => 'date1', 'value' => $_GET['date1'], 'col_lg' => 6],
+        __('End date') => ['type' => 'date', 'name' => 'date2', 'value' => $_GET['date2'], 'col_lg' => 6],
+    ]]]]);
 
 if (isset($_GET['submit'])) {
     $val    = Stat::getItems(
@@ -159,16 +143,18 @@ if (isset($_GET['submit'])) {
                     'value2' => $_GET["value2"],
                     'start'  => $_GET["start"]];
 
-    Html::printPager(
-        $_GET['start'],
-        count($val),
-        $CFG_GLPI['root_doc'] . '/front/stat.tracking.php',
-        "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] . "&amp;type=" . $_GET["type"] .
-                        "&amp;showgraph=" . $_GET["showgraph"] . "&amp;itemtype=" . $_GET["itemtype"] .
-                        "&amp;value2=" . $_GET['value2'],
-        'Stat',
-        $params
-    );
+    if ($_GET['showgraph']) {
+        Html::printPager(
+            $_GET['start'],
+            count($val),
+            $CFG_GLPI['root_doc'] . '/front/stat.tracking.php',
+            "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] . "&amp;type=" . $_GET["type"] .
+                            "&amp;showgraph=" . $_GET["showgraph"] . "&amp;itemtype=" . $_GET["itemtype"] .
+                            "&amp;value2=" . $_GET['value2'],
+            'Stat',
+            $params
+        );
+    }
 
     if (!$_GET['showgraph']) {
         Stat::showTable(

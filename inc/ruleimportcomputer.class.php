@@ -465,11 +465,9 @@ class RuleImportComputer extends Rule
             }
         }
         if (!$entity_as_criteria) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td colspan ='2'>" . Entity::getTypeName(1) . "</td>";
-            echo "<td>";
+            echo "<div class='mb-3'><label class='form-label'>" . Entity::getTypeName(1) . '</label>';
             Dropdown::show('Entity');
-            echo "</td></tr>";
+            echo '</div>';
         }
     }
 }

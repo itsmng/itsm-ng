@@ -1065,6 +1065,7 @@ class Contract extends CommonDBTM
      **/
     public static function showCentral()
     {
+
         global $DB,$CFG_GLPI;
 
         if (!Contract::canView()) {
@@ -1135,71 +1136,26 @@ class Contract extends CommonDBTM
         ])->next();
         $contractpre30 = $result['cpt'];
 
-        echo "<table class='tab_cadrehov' aria-label='Contracts Table'>";
-        echo "<tr class='noHover'><th colspan='2'>";
-        echo "<p class='table-title mt-0'><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?reset=reset\">" .
-               self::getTypeName(1) . "</a></p></th></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options = [
-           'reset' => 'reset',
-           'sort'  => 12,
-           'order' => 'DESC',
-           'start' => 0,
-           'criteria' => [
-              [
-                 'field'      => 12,
-                 'value'      => '<0',
-                 'searchtype' => 'contains',
-              ],
-              [
-                 'field'      => 12,
-                 'link'       => 'AND',
-                 'value'      => '>-30',
-                 'searchtype' => 'contains',
-              ]
-           ]
-        ];
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts expired in the last 30 days') . "</a> </td>";
-        echo "<td class='numeric'>" . $contract0 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['value'] = '>0';
-        $options['criteria'][1]['value'] = '<7';
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts expiring in less than 7 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contract7 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['value'] = '>6';
-        $options['criteria'][1]['value'] = '<30';
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts expiring in less than 30 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contract30 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['field'] = 13;
-        $options['criteria'][0]['value'] = '>0';
-        $options['criteria'][1]['field'] = 13;
-        $options['criteria'][1]['value'] = '<7';
-
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts where notice begins in less than 7 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contractpre7 . "</td></tr>";
-
-        echo "<tr class='tab_bg_2'>";
-        $options['criteria'][0]['value'] = '>6';
-        $options['criteria'][1]['value'] = '<30';
-        echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/contract.php?" .
-                   Toolbox::append_params($options, '&amp;') . "\">" .
-                   __('Contracts where notice begins in less than 30 days') . "</a></td>";
-        echo "<td class='numeric'>" . $contractpre30 . "</td></tr>";
-        echo "</table>";
+        $rows = [];
+        $options = ['reset' => 'reset', 'sort' => 12, 'order' => 'DESC', 'start' => 0];
+        foreach ([
+            [12, '<0', '>-30', __('Contracts expired in the last 30 days'), $contract0],
+            [12, '>0', '<7', __('Contracts expiring in less than 7 days'), $contract7],
+            [12, '>6', '<30', __('Contracts expiring in less than 30 days'), $contract30],
+            [13, '>0', '<7', __('Contracts where notice begins in less than 7 days'), $contractpre7],
+            [13, '>6', '<30', __('Contracts where notice begins in less than 30 days'), $contractpre30],
+        ] as [$field, $from, $to, $label, $count]) {
+            $options['criteria'] = [
+                ['field' => $field, 'value' => $from, 'searchtype' => 'contains'],
+                ['field' => $field, 'link' => 'AND', 'value' => $to, 'searchtype' => 'contains'],
+            ];
+            $url = $CFG_GLPI['root_doc'] . '/front/contract.php?' . Toolbox::append_params($options, '&');
+            $rows[] = ['<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">'
+                . htmlspecialchars($label, ENT_QUOTES, 'UTF-8', false) . '</a>', $count];
+        }
+        renderTwigTemplate('table.twig', ['id' => 'contractDashboard', 'state_key' => 'Contract_dashboard',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [self::getTypeName(Session::getPluralNumber()), _x('quantity', 'Number')], 'values' => $rows]);
     }
 
 

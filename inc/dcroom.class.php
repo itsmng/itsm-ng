@@ -76,6 +76,11 @@ class DCRoom extends CommonDBTM
         global $CFG_GLPI;
         $form = [
            'action' => self::getFormURL(),
+          'buttons' => [[
+              'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+              'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+          ]],
            'itemtype' => $this::class,
            'content' => [
               $this->getTypeName() => [
@@ -365,74 +370,40 @@ class DCRoom extends CommonDBTM
            ]
         ]);
 
-        echo "<div class='firstbloc'>";
-        Html::showSimpleForm(
-            self::getFormURL(),
-            '_add_fromitem',
-            __('New room for this datacenter...'),
-            ['datacenters_id' => $datacenter->getID()]
-        );
-        echo "</div>";
-
+        if ($canedit && self::canCreate()) {
+            $newroom = new self();
+            $newroom->getEmpty();
+            $newroom->fields['datacenters_id'] = $ID;
+            $newroom->fields['entities_id'] = $datacenter->getEntityID();
+            $newroom->showForm(-1);
+        }
+        $values = [];
+        $selection = [];
+        $room = new self();
+        foreach ($rooms as $data) {
+            $room->getFromResultSet($data);
+            $values[] = [$room->getLink()];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['id']);
+            Session::addToNavigateListItems(self::class, $data['id']);
+        }
+        $table_id = 'datacenterRooms_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
         if ($canedit) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = [
-               'num_displayed'   => min($_SESSION['glpilist_limit'], count($rooms)),
-               'container'       => 'mass' . __CLASS__ . $rand,
-               'deprecated'      => true
-            ];
-            Html::showMassiveActions($massiveactionparams);
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
         }
-
-        Session::initNavigateListItems(
-            self::getType(),
-            //TRANS : %1$s is the itemtype name,
-            //        %2$s is the name of the item (used for headings of a list)
-            sprintf(
-                __('%1$s = %2$s'),
-                $datacenter->getTypeName(1),
-                $datacenter->getName()
-            )
-        );
-
-        if (!count($rooms)) {
-            echo "<table class='tab_cadre_fixe' aria-label='Server Rooms Table'><tr><th>" . __('No server room found') . "</th></tr>";
-            echo "</table>";
-        } else {
-            echo "<table class='tab_cadre_fixehov' aria-label='Server Rooms Table'>";
-            $header = "<tr>";
-            if ($canedit) {
-                $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header .= "</th>";
-            }
-            $header .= "<th>" . __('Name') . "</th>";
-            $header .= "</tr>";
-
-            $dcroom = new self();
-            echo $header;
-            while ($room = $rooms->next()) {
-                $dcroom->getFromResultSet($room);
-                echo "<tr lass='tab_bg_1'>";
-                if ($canedit) {
-                    echo "<td>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $room["id"]);
-                    echo "</td>";
-                }
-                echo "<td>" . $dcroom->getLink() . "</td>";
-                echo "</tr>";
-            }
-            echo $header;
-            echo "</table>";
-        }
-
-        if ($canedit && count($rooms)) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-        }
-        if ($canedit) {
-            Html::closeForm();
-        }
+        renderTwigTemplate('table.twig', $table);
     }
 
     /**

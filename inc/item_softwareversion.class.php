@@ -189,8 +189,8 @@ class Item_SoftwareVersion extends CommonDBRelation
                          'change' => <<<JS
                         const val = this.value;
                         const select = document.querySelector('select[name="peer_softwareversions_id"]');
-                        select.disabled = !val;
-                        select.innerHTML = '';
+                        select.disabled = !val || val === '0';
+                        $(select).empty().trigger('change');
                         if (val != 0) {
                            $.ajax({
                               url: "{$CFG_GLPI['root_doc']}/ajax/dropdownInstallVersion.php",
@@ -540,9 +540,7 @@ class Item_SoftwareVersion extends CommonDBRelation
 
         echo "<div class='center'>";
         if ($number < 1) {
-            echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
-            echo "<tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table></div>\n";
+            echo '<div class="alert alert-info" role="status">' . __('No item found') . '</div></div>';
             return;
         }
 
@@ -870,21 +868,12 @@ class Item_SoftwareVersion extends CommonDBRelation
     public static function showForVersionByEntity(SoftwareVersion $version)
     {
         global $DB;
-
-        $softwareversions_id = $version->getField('id');
-
+        $softwareversions_id = $version->getID();
         if (!Software::canView() || !$softwareversions_id) {
             return;
         }
-
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre' aria-label='software Version'><tr>";
-        echo "<th>" . Entity::getTypeName(1) . "</th>";
-        echo "<th>" . self::getTypeName(Session::getPluralNumber()) . "</th>";
-        echo "</tr>\n";
-
-        $tot = 0;
-
+        $values = [];
+        $total = 0;
         $iterator = $DB->request([
            'SELECT' => ['id', 'completename'],
            'FROM'   => 'glpi_entities',
@@ -892,22 +881,17 @@ class Item_SoftwareVersion extends CommonDBRelation
            'ORDER'  => ['completename']
         ]);
 
-        while ($data = $iterator->next()) {
-            $nb = self::countForVersion($softwareversions_id, $data['id']);
-            if ($nb > 0) {
-                echo "<tr class='tab_bg_2'><td>" . $data["completename"] . "</td>";
-                echo "<td class='numeric'>" . $nb . "</td></tr>\n";
-                $tot += $nb;
+        foreach ($iterator as $data) {
+            $count = self::countForVersion($softwareversions_id, $data['id']);
+            if ($count > 0) {
+                $values[] = [htmlspecialchars($data['completename'], ENT_QUOTES, 'UTF-8', false), $count];
+                $total += $count;
             }
         }
-
-        if ($tot > 0) {
-            echo "<tr class='tab_bg_1'><td class='center b'>" . __('Total') . "</td>";
-            echo "<td class='numeric b'>" . $tot . "</td></tr>\n";
-        } else {
-            echo "<tr class='tab_bg_1'><td colspan='2 b'>" . __('No item found') . "</td></tr>\n";
-        }
-        echo "</table></div>";
+        renderTwigTemplate('table.twig', ['id' => 'versionEntities_' . $softwareversions_id,
+            'state_key' => 'Item_SoftwareVersion_by_Entity', 'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [Entity::getTypeName(1), self::getTypeName(Session::getPluralNumber())], 'values' => $values]);
+        echo '<p class="text-end fw-bold mt-3">' . __('Total') . ': ' . $total . '</p>';
     }
 
 
@@ -1038,7 +1022,8 @@ class Item_SoftwareVersion extends CommonDBRelation
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _x('button', 'Install'),
-                     'class' => 'btn btn-primary mb-3'
+                     'class' => 'btn btn-primary mb-3',
+                     'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                   ]
                ],
                'content' => [
@@ -1191,7 +1176,8 @@ class Item_SoftwareVersion extends CommonDBRelation
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _x('button', 'Install'),
-                     'class' => 'btn btn-primary mb-3'
+                     'class' => 'btn btn-primary mb-3',
+                     'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                   ]
                ],
                'content' => [

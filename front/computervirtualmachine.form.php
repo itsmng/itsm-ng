@@ -58,6 +58,13 @@ if (isset($_POST["add"])) {
             //TRANS: %s is the user login
             sprintf(__('%s adds a virtual machine'), $_SESSION["glpiname"])
         );
+        if (!empty($_POST['_inline'])) {
+            $computer = new Computer();
+            if ($computer->getFromDB($disk->fields['computers_id'])) {
+                Html::redirect(Computer::getFormURLWithID($computer->getID()) . '&forcetab=' . urlencode('ComputerVirtualMachine$1')
+                    . (!empty($computer->fields['is_template']) ? '&withtemplate=1' : ''));
+            }
+        }
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($disk->getLinkURL());
         }

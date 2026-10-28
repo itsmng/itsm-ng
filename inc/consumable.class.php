@@ -685,68 +685,53 @@ class Consumable extends CommonDBChild
         }
 
         asort($types);
-        $total = [];
-        if (count($types) > 0) {
-            // Produce headline
-            echo "<div class='center'><table class='tab_cadrehov' aria-label='summary'><tr>";
-
-            // Type
-            echo "<th>" . __('Give to') . "</th>";
-
-            foreach ($types as $key => $type) {
-                echo "<th>$type</th>";
-                $total[$key] = 0;
-            }
-            echo "<th>" . __('Total') . "</th>";
-            echo "</tr>";
-
-            // new
-            echo "<tr class='tab_bg_2'><td class='b'>" . __('In stock') . "</td>";
-            $tot = 0;
-            foreach ($types as $id_type => $type) {
-                if (!isset($new[$id_type])) {
-                    $new[$id_type] = 0;
-                }
-                echo "<td class='center'>" . $new[$id_type] . "</td>";
-                $total[$id_type] += $new[$id_type];
-                $tot             += $new[$id_type];
-            }
-            echo "<td class='numeric'>" . $tot . "</td>";
-            echo "</tr>";
-
-            foreach ($used as $itemtype_items_id => $val) {
-                echo "<tr class='tab_bg_2'><td>";
-                list($itemtype, $items_id) = explode('####', $itemtype_items_id);
-                $item = new $itemtype();
-                if ($item->getFromDB($items_id)) {
-                    //TRANS: %1$s is a type name - %2$s is a name
-                    printf(__('%1$s - %2$s'), $item->getTypeName(1), $item->getNameID());
-                }
-                echo "</td>";
-                $tot = 0;
-                foreach ($types as $id_type => $type) {
-                    if (!isset($val[$id_type])) {
-                        $val[$id_type] = 0;
-                    }
-                    echo "<td class='center'>" . $val[$id_type] . "</td>";
-                    $total[$id_type] += $val[$id_type];
-                    $tot             += $val[$id_type];
-                }
-                echo "<td class='numeric'>" . $tot . "</td>";
-                echo "</tr>";
-            }
-            echo "<tr class='tab_bg_1'><td class='b'>" . __('Total') . "</td>";
-            $tot = 0;
-            foreach ($types as $id_type => $type) {
-                $tot += $total[$id_type];
-                echo "<td class='numeric'>" . $total[$id_type] . "</td>";
-            }
-            echo "<td class='numeric'>" . $tot . "</td>";
-            echo "</tr>";
-            echo "</table></div>";
-        } else {
-            echo "<div class='center b'>" . __('No consumable found') . "</div>";
+        if (!$types) {
+            echo '<p class="text-muted">' . __('No consumable found') . '</p>';
+            return;
         }
+        $fields = [__('Give to')];
+        foreach ($types as $type) {
+            $fields[] = htmlspecialchars($type, ENT_QUOTES, 'UTF-8', false);
+        }
+        $fields[] = __('Total');
+        $total = array_fill_keys(array_keys($types), 0);
+        $values = [];
+        $stock = [__('In stock')];
+        $stockTotal = 0;
+        foreach ($types as $id => $type) {
+            $count = (int) ($new[$id] ?? 0);
+            $stock[] = $count;
+            $total[$id] += $count;
+            $stockTotal += $count;
+        }
+        $stock[] = $stockTotal;
+        $values[] = $stock;
+        foreach ($used as $key => $counts) {
+            [$itemtype, $items_id] = explode('####', $key);
+            $label = '';
+            if (($item = getItemForItemtype($itemtype)) && $item->getFromDB($items_id)) {
+                $label = htmlspecialchars(sprintf(__('%1$s - %2$s'), $item->getTypeName(1), $item->getNameID()), ENT_QUOTES, 'UTF-8', false);
+            }
+            $row = [$label];
+            $rowTotal = 0;
+            foreach ($types as $id => $type) {
+                $count = (int) ($counts[$id] ?? 0);
+                $row[] = $count;
+                $total[$id] += $count;
+                $rowTotal += $count;
+            }
+            $row[] = $rowTotal;
+            $values[] = $row;
+        }
+        renderTwigTemplate('table.twig', ['id' => 'consumableSummary', 'state_key' => 'Consumable_summary',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $values]);
+        echo '<dl class="row mt-3">';
+        foreach ($types as $id => $type) {
+            echo '<dt class="col-8 col-md-4">' . htmlspecialchars($type, ENT_QUOTES, 'UTF-8', false)
+                . '</dt><dd class="col-4 col-md-2 text-end">' . $total[$id] . '</dd>';
+        }
+        echo '</dl><p class="text-end fw-bold">' . __('Total') . ': ' . array_sum($total) . '</p>';
+
     }
 
 

@@ -67,6 +67,16 @@ class HTMLTableGroup extends HTMLTableBase
     }
 
 
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
+    public function getOrderedHeaders()
+    {
+        return $this->ordered_headers ?? [];
+    }
+
     public function getTable()
     {
         return $this->table;

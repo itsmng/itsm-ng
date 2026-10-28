@@ -311,11 +311,12 @@ class Appliance_Item extends CommonDBRelation
                     [
                         'name' => 'add',
                         'value' => _x('button', 'Associate'),
-                        'class' => 'btn btn-secondary',
+                        'class' => $item->getType() === 'Computer' ? 'btn btn-primary' : 'btn btn-secondary',
+                        'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                     ]
                 ],
                 'content' => [
-                    '' => [
+                    ($item->getType() === 'Computer' ? __('Add to an appliance') : '') => [
                         'visible' => true,
                         'inputs' => [
                             [

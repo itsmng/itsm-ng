@@ -318,17 +318,14 @@ class Notepad extends CommonDBChild
         }
         $notes   = static::getAllForItem($item);
         $rand    = mt_rand();
-        $canedit = Session::haveRight($item::$rightname, UPDATENOTE);
+        $canedit = ($withtemplate != 2) && Session::haveRight($item::$rightname, UPDATENOTE);
 
         $showuserlink = 0;
         if (User::canView()) {
             $showuserlink = 1;
         }
 
-        if (
-            $canedit
-            && !(!empty($withtemplate) && ($withtemplate == 2))
-        ) {
+        if ($canedit) {
             $form = [
                'action' => Toolbox::getItemTypeFormURL('Notepad'),
                'buttons' => [
@@ -336,11 +333,12 @@ class Notepad extends CommonDBChild
                        'type' => 'submit',
                        'name' => 'add',
                        'value' => _x('button', 'Add'),
-                       'class' => 'btn btn-secondary',
+                       'class' => 'btn btn-primary',
+                       'icon' => 'fas fa-plus',
                    ],
                ],
                'content' => [
-                   __('Comment') => [
+                   __('New note') => [
                        'visible' => true,
                        'inputs' => [
                            'itemtype' => [
@@ -371,20 +369,11 @@ class Notepad extends CommonDBChild
         if (count($notes)) {
             foreach ($notes as $note) {
                 $id = 'note' . $note['id'] . $rand;
-                $classtoadd = '';
-                if ($canedit) {
-                    $classtoadd = " pointer";
-                }
-                echo "<div class='boxnote' id='view$id'>";
-
-                echo "<div class='boxnoteleft'>";
-                echo "<img class='user_picture_verysmall' alt=\"" . __s('Picture') . "\" src='" .
-                    User::getThumbnailURLForPicture($note['picture']) . "'>";
-                echo "</div>"; // boxnoteleft
-
-                echo "<div class='boxnotecontent'>";
-
-                echo "<div class='boxnotefloatright'>";
+                echo "<div class='card mb-3' id='view$id'><div class='card-body d-flex align-items-start gap-3'>";
+                echo "<img class='rounded-circle flex-shrink-0' width='32' height='32' alt=\"" . __s('Picture') . "\" src='" .
+                    htmlspecialchars(User::getThumbnailURLForPicture($note['picture']), ENT_QUOTES, 'UTF-8', false) . "'>";
+                echo "<div class='flex-grow-1'>";
+                echo "<div class='small text-muted mb-2'>";
                 $username = NOT_AVAILABLE;
                 if ($note['users_id_lastupdater']) {
                     $username = getUserName($note['users_id_lastupdater'], $showuserlink);
@@ -406,20 +395,21 @@ class Notepad extends CommonDBChild
                 printf(__('%1$s / %2$s'), $update, $create);
                 echo "</div>"; // floatright
 
-                echo "<div class='boxnotetext $classtoadd' ";
                 if ($canedit) {
-                    echo "onclick=\"" . Html::jsHide("view$id") . " " .
-                                   Html::jsShow("edit$id") . "\"";
+                    echo "<button type='button' class='btn btn-link text-body text-decoration-none text-start p-0 w-100' " .
+                        "aria-label='" . __s('Update') . "' onclick=\"" . Html::jsHide("view$id") . " " .
+                        Html::jsShow("edit$id") . "\">";
+                } else {
+                    echo "<div>";
                 }
-                echo ">";
-                $content = nl2br((string) $note['content']);
+                $content = nl2br(htmlspecialchars((string) $note['content'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false));
                 if (empty($content)) {
                     $content = NOT_AVAILABLE;
                 }
-                echo $content . '</div>'; // boxnotetext
+                echo $content . ($canedit ? '</button>' : '</div>');
 
-                echo "</div>"; // boxnotecontent
-                echo "<div class='boxnoteright'>";
+                echo "</div>";
+                echo "<div class='flex-shrink-0'>";
                 if ($canedit) {
                     Html::showSimpleForm(
                         Toolbox::getItemTypeFormURL('Notepad'),
@@ -431,11 +421,10 @@ class Notepad extends CommonDBChild
                         __('Confirm the final deletion?')
                     );
                 }
-                echo "</div>"; // boxnoteright
-                echo "</div>"; // boxnote
+                echo "</div></div></div>";
 
                 if ($canedit) {
-                    echo "<div class='boxnote starthidden' id='edit$id'>";
+                    echo "<div class='mb-3 starthidden' id='edit$id'>";
                     $form = [
                         'action' => Toolbox::getItemTypeFormURL('Notepad'),
                         'buttons' => [
@@ -443,7 +432,7 @@ class Notepad extends CommonDBChild
                                 'type' => 'submit',
                                 'name' => 'update',
                                 'value' => _x('button', 'Update'),
-                                'class' => 'btn btn-secondary',
+                                'class' => 'btn btn-primary',
                             ],
                         ],
                         'content' => [
@@ -461,7 +450,7 @@ class Notepad extends CommonDBChild
                                         'col_lg' => 12,
                                         'col_md' => 12,
                                         'rows' => 3,
-                                        'value' => $note['content'] ?? '',
+                                        'value' => htmlspecialchars((string) ($note['content'] ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
                                     ],
                                 ]
                             ]

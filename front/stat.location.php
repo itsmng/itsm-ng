@@ -84,11 +84,6 @@ if (!isset($_GET['itemtype'])) {
 $stat = new Stat();
 Stat::title();
 
-echo "<form aria-label='Location Statistics' method='get' name='form' action='stat.location.php'>";
-// keep it first param
-echo "<input type='hidden' name='itemtype' value='" . $_GET['itemtype'] . "'>";
-
-echo "<table class='tab_cadre_fixe' aria-label='Statistics report filter'><tr class='tab_bg_2'><td rowspan='2' width='30%'>";
 $values = [_n('Dropdown', 'Dropdowns', Session::getPluralNumber()) => ['ComputerType'    => _n('Type', 'Types', 1),
                                                        'ComputerModel'   => _n('Model', 'Models', 1),
                                                        'OperatingSystem' => OperatingSystem::getTypeName(1),
@@ -101,26 +96,15 @@ foreach ($devices as $label => $dp) {
     }
 }
 
-Dropdown::showFromArray('dropdown', $values, ['value' => $_GET["dropdown"]]);
-
-echo "</td>";
-
-echo "<td class='right'>" . __('Start date') . "</td><td>";
-Html::showDateField("date1", ['value' => $_GET["date1"]]);
-echo "</td>";
-echo "<td class='right'>" . __('Show graphics') . "</td>";
-echo "<td rowspan='2' class='center'>";
-echo "<input type='submit' class='submit' name='submit' value='" . __s('Display report') . "'></td></tr>";
-
-echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
-Html::showDateField("date2", ['value' => $_GET["date2"]]);
-echo "</td><td class='center'>";
-Dropdown::showYesNo('showgraph', $_GET['showgraph']);
-echo "</td>";
-echo "</tr>";
-echo "</table>";
-// form using GET method : CRSF not needed
-echo "</form>";
+renderTwigForm(['action' => 'stat.location.php', 'method' => 'get',
+    'buttons' => [['type' => 'submit', 'name' => 'submit', 'value' => __('Display report'), 'class' => 'btn btn-primary']],
+    'content' => [['visible' => false, 'inputs' => [
+        ['type' => 'hidden', 'name' => 'itemtype', 'value' => $_GET['itemtype']],
+        _n('Dropdown', 'Dropdowns', 1) => ['type' => 'select', 'name' => 'dropdown', 'values' => $values, 'value' => $_GET['dropdown'], 'col_lg' => 6],
+        __('Show graphics') => ['type' => 'select', 'name' => 'showgraph', 'values' => [0 => __('No'), 1 => __('Yes')], 'value' => $_GET['showgraph'], 'col_lg' => 6],
+        __('Start date') => ['type' => 'date', 'name' => 'date1', 'value' => $_GET['date1'], 'col_lg' => 6],
+        __('End date') => ['type' => 'date', 'name' => 'date2', 'value' => $_GET['date2'], 'col_lg' => 6],
+    ]]]]);
 
 if (
     empty($_GET["dropdown"])
@@ -154,15 +138,17 @@ if (isset($_GET['submit'])) {
                         'start'    => $_GET["start"]];
     }
 
-    Html::printPager(
-        $_GET['start'],
-        count($val),
-        $CFG_GLPI['root_doc'] . '/front/stat.location.php',
-        "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] .
-                         "&amp;itemtype=" . $_GET['itemtype'] . "&amp;dropdown=" . $_GET["dropdown"],
-        'Stat',
-        $params
-    );
+    if ($_GET['showgraph']) {
+        Html::printPager(
+            $_GET['start'],
+            count($val),
+            $CFG_GLPI['root_doc'] . '/front/stat.location.php',
+            "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] .
+                             "&amp;itemtype=" . $_GET['itemtype'] . "&amp;dropdown=" . $_GET["dropdown"],
+            'Stat',
+            $params
+        );
+    }
 
     if (!$_GET['showgraph']) {
         Stat::showTable(

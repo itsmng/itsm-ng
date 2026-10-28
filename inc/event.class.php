@@ -245,80 +245,20 @@ class Event extends CommonDBTM
     {
         global $DB, $CFG_GLPI;
 
-        // Show events from $result in table form
-        list($logItemtype, $logService) = self::logArray();
-
-        // define default sorting
-        $usersearch = "";
-        if (!empty($user)) {
-            $usersearch = $user . " ";
-        }
-
-        // Query Database
         $iterator = $DB->request([
-           'FROM'   => 'glpi_events',
-           'WHERE'  => ['message' => ['LIKE', $usersearch . '%']],
-           'ORDER'  => 'date DESC',
-           'LIMIT'  => (int)$_SESSION['glpilist_limit']
+            'FROM' => self::getTable(), 'WHERE' => ['message' => ['LIKE', ($user !== '' ? $user . ' ' : '') . '%']],
+            'ORDER' => ['date DESC', 'id DESC'], 'LIMIT' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
         ]);
-
-        // Number of results
-        $number = count($iterator);
-        ;
-
-        // No Events in database
-        if ($number < 1) {
-            echo "<br><div class='spaced'><table class='tab_cadrehov' aria_label='No Event'>";
-            echo "<tr><th>" . __('No Event') . "</th></tr>";
-            echo "</table></div>";
-            return;
-        }
-
-        // Output events
-        $i = 0;
-
-        echo "<br><div class='spaced'><table class='tab_cadre' aria-label='Last Event'>";
-        echo "<tr><th colspan='5'>";
-        //TRANS: %d is the number of item to display
-        echo "<p class='table-title'><a href=\"" . $CFG_GLPI["root_doc"] . "/front/event.php\">" .
-               sprintf(__('Last %d events'), $_SESSION['glpilist_limit']) . "</a></p>";
-        echo "</th></tr>";
-
-        echo "<tr><th>" . __('Source') . "</th>";
-        echo "<th>" . __('Id') . "</th>";
-        echo "<th>" . _n('Date', 'Dates', 1) . "</th>";
-        echo "<th width='10%'>" . __('Service') . "</th>";
-        echo "<th width='50%'>" . __('Message') . "</th></tr>";
-
-        while ($data = $iterator->next()) {
-            $ID       = $data['id'];
-            $items_id = $data['items_id'];
-            $type     = $data['type'];
-            $date     = $data['date'];
-            $service  = $data['service'];
-            $message  = $data['message'];
-
-            $itemtype = "&nbsp;";
-            if (isset($logItemtype[$type])) {
-                $itemtype = $logItemtype[$type];
-            } else {
-                $type = getSingular($type);
-                if ($item = getItemForItemtype($type)) {
-                    $itemtype = $item->getTypeName(1);
-                }
-            }
-
-            echo "<tr class='tab_bg_2'><td>" . $itemtype . "</td>";
-            echo "<td>";
-            self::displayItemLogID($type, $items_id);
-            echo "</td><td>" . Html::convDateTime($date) . "</td>";
-            echo "<td>" . (isset($logService[$service]) ? $logService[$service] : '');
-            echo "</td><td>" . $message . "</td></tr>";
-
-            $i++;
-        }
-
-        echo "</table></div>";
+        echo "<a class='btn btn-link p-0 mb-3' href='" . $CFG_GLPI['root_doc'] . "/front/event.php'>"
+            . sprintf(__('Last %d events'), $_SESSION['glpilist_limit']) . '</a>';
+        $id = 'userEvents_' . md5($user);
+        $fields = self::getListFields();
+        unset($fields['level']);
+        renderTwigTemplate('events.twig', [
+            'id' => $id, 'state_key' => $id, 'fields' => $fields,
+            'infocom_label' => Infocom::getTypeName(1),
+            'values' => self::getListRows($iterator), 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
     }
 
 
@@ -334,96 +274,68 @@ class Event extends CommonDBTM
     **/
     public static function showList($target, $order = 'DESC', $sort = 'date', $start = 0)
     {
-        $DBread = DBConnection::getReadConnection();
+        global $CFG_GLPI;
 
-        // Show events from $result in table form
-        list($logItemtype, $logService) = self::logArray();
-
-        // Columns of the Table
-        $items = ["type"     => [__('Source'), ""],
-                       "items_id" => [__('ID'), ""],
-                       "date"     => [_n('Date', 'Dates', 1), ""],
-                       "service"  => [__('Service'), "width='8%'"],
-                       "level"    => [__('Level'), "width='8%'"],
-                       "message"  => [__('Message'), "width='50%'"]];
-
-        // define default sorting
-        if (!isset($items[$sort])) {
-            $sort = "date";
-        }
-        if ($order != "ASC") {
-            $order = "DESC";
-        }
-
-        // Query Database
-        $iterator = $DBread->request([
-           'FROM'   => 'glpi_events',
-           'ORDER'  => "$sort $order",
-           'START'  => (int)$start,
-           'LIMIT'  => (int)$_SESSION['glpilist_limit']
+        Session::checkRight(static::$rightname, READ);
+        renderTwigTemplate('events.twig', [
+            'id' => 'eventList', 'state_key' => 'eventList', 'fields' => self::getListFields(),
+            'infocom_label' => Infocom::getTypeName(1),
+            'url' => $CFG_GLPI['root_doc'] . '/ajax/v2/event.php?' . http_build_query(['sort' => $sort, 'order' => $order]),
+            'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
         ]);
+    }
 
-        // Number of results
-        $numrows = countElementsInTable("glpi_events");
-        // Get results
-        $number = count($iterator);
+    private static function getListFields()
+    {
+        return ['type' => __('Source'), 'items_id' => __('ID'), 'date' => _n('Date', 'Dates', 1),
+            'service' => __('Service'), 'level' => __('Level'), 'message' => __('Message')];
+    }
 
-        // No Events in database
-        if ($number < 1) {
-            echo "<div class='center b'>" . __('No Event') . "</div>";
-            return;
+    /** Preserve bounded database loading for the complete event history. */
+    public static function getPaginatedEvents(array $options = [])
+    {
+        Session::checkRight(static::$rightname, READ);
+        $DBread = DBConnection::getReadConnection();
+        $sort = $options['sort'] ?? 'date';
+        if (!is_string($sort) || !isset(self::getListFields()[$sort])) {
+            $sort = 'date';
         }
+        $order = is_string($options['order'] ?? null) && strtoupper($options['order']) === 'ASC' ? 'ASC' : 'DESC';
+        $limit = max(1, min(10000, (int) ($options['limit'] ?? $_SESSION['glpilist_limit'] ?? 15)));
+        $offset = max(0, (int) ($options['offset'] ?? 0));
+        $total = $DBread->request(['COUNT' => 'total', 'FROM' => self::getTable()])->next()['total'];
+        $iterator = $DBread->request([
+            'FROM' => self::getTable(), 'ORDER' => [$sort . ' ' . $order, 'id ' . $order],
+            'START' => $offset, 'LIMIT' => $limit,
+        ]);
+        return ['total' => (int) $total, 'rows' => array_values(self::getListRows($iterator))];
+    }
 
-        // Output events
-        $i = 0;
-
-        echo "<div class='center'>";
-        $parameters = "sort=$sort&amp;order=$order";
-        Html::printPager($start, $numrows, $target, $parameters);
-
-        echo "<table class='tab_cadre_fixehov' aria-label='sortable Table'>";
-        echo "<tr>";
-
-        foreach ($items as $field => $args) {
-            echo "<th " . $args[1] . "";
-            if ($sort == $field) {
-                echo " class='order_$order' ";
+    private static function getListRows($iterator)
+    {
+        [$types, $services] = self::logArray();
+        $values = [];
+        foreach ($iterator as $data) {
+            $type = $types[$data['type']] ?? '';
+            if ($type === '' && ($item = getItemForItemtype(getSingular($data['type'])))) {
+                $type = $item->getTypeName(1);
             }
-            echo "><a href='$target?sort=$field&amp;order=" . (($order == "ASC") ? "DESC" : "ASC") . "'>" . $args[0] .
-                 "</a></th>";
-        }
-        echo "</tr>";
-
-        while ($row = $iterator->next()) {
-            $ID       = $row["id"];
-            $items_id = $row["items_id"];
-            $type     = $row["type"];
-            $date     = $row["date"];
-            $service  = $row["service"];
-            $level    = $row["level"];
-            $message  = $row["message"];
-
-            $itemtype = "&nbsp;";
-            if (isset($logItemtype[$type])) {
-                $itemtype = $logItemtype[$type];
+            if ($data['type'] === 'infocom' && $data['items_id'] > 0) {
+                $url = htmlspecialchars(Infocom::getFormURLWithID($data['items_id']) . '&_in_modal=1', ENT_QUOTES, 'UTF-8', false);
+                $itemlink = "<a data-event-infocom href='$url'>" . (int) $data['items_id'] . '</a>';
             } else {
-                $type = getSingular($type);
-                if ($item = getItemForItemtype($type)) {
-                    $itemtype = $item->getTypeName(1);
-                }
+                ob_start();
+                self::displayItemLogID($data['type'], $data['items_id']);
+                $itemlink = ob_get_clean();
             }
-
-            echo "<tr class='tab_bg_2'>";
-            echo "<td>$itemtype</td>";
-            echo "<td class='center b'>";
-            self::displayItemLogID($type, $items_id);
-            echo "</td><td>" . Html::convDateTime($date) . "</td>";
-            echo "<td class='center'>" . (isset($logService[$service]) ? $logService[$service] : $service);
-            echo "</td><td class='center'>" . $level . "</td><td>" . $message . "</td></tr>";
-
-            $i++;
+            $values[$data['id']] = [
+                'type' => $type, 'items_id' => $itemlink, 'date' => Html::convDateTime($data['date']),
+                'service' => $services[$data['service']] ?? htmlspecialchars($data['service'], ENT_QUOTES, 'UTF-8', false),
+                'level' => (int) $data['level'],
+                'message' => htmlspecialchars($data['message'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
+            ];
         }
-        echo "</table></div><br>";
+        return $values;
     }
 
 

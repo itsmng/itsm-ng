@@ -328,12 +328,9 @@ class ReservationItem extends CommonDBChild
 
         $ri = new self();
 
-        echo "<div>";
-        echo "<table class='tab_cadre_fixe' aria-label='Reserve an item'>";
-        echo "<tr><th colspan='2'>" . __('Reserve an item') . "</th></tr>";
-        echo "<tr class='tab_bg_1'>";
+        echo '<section class="mb-4"><h2 class="h4">' . __('Reserve an item') . '</h2><div class="d-flex flex-wrap gap-2">';
         if ($ri->getFromDBbyItem($item->getType(), $item->getID())) {
-            echo "<td class='center'>";
+
             //Switch reservation state
 
             if ($ri->fields["is_active"]) {
@@ -354,7 +351,6 @@ class ReservationItem extends CommonDBChild
                 );
             }
 
-            echo '</td><td>';
             Html::showSimpleForm(
                 static::getFormURL(),
                 'purge',
@@ -365,25 +361,30 @@ class ReservationItem extends CommonDBChild
                 [__('Are you sure you want to return this non-reservable item?'),
                                        __('That will remove all the reservations in progress.')]
             );
-
-            echo "</td>";
         } else {
-            echo "<td class='center'>";
-            Html::showSimpleForm(
-                static::getFormURL(),
-                'add',
-                __('Authorize reservations'),
-                ['items_id'     => $item->getID(),
-                                       'itemtype'     => $item->getType(),
-                                       'entities_id'  => $item->getEntityID(),
-                                       'is_recursive' => $item->isRecursive(),]
-            );
-            echo "</td>";
+            renderTwigForm([
+                'action' => static::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit',
+                    'name' => 'add',
+                    'value' => __('Authorize reservations'),
+                    'class' => 'btn btn-primary',
+                    'icon' => 'fas fa-plus',
+                ]],
+                'content' => [[
+                    'visible' => false,
+                    'attributes' => ['hidden' => 'hidden'],
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'itemtype', 'value' => $item->getType()],
+                        ['type' => 'hidden', 'name' => 'items_id', 'value' => $item->getID()],
+                        ['type' => 'hidden', 'name' => 'entities_id', 'value' => $item->getEntityID()],
+                        ['type' => 'hidden', 'name' => 'is_recursive', 'value' => $item->isRecursive()],
+                    ],
+                ]],
+            ]);
         }
-        echo "</tr></table>";
-        echo "</div>";
+        echo '</div></section>';
     }
-
 
     public function showForm($ID, $options = [])
     {
@@ -404,26 +405,27 @@ class ReservationItem extends CommonDBChild
                 }
             }
 
-            echo "<div class='center'><form aria-label='Modify Comment' method='post' name=form action='" . $this->getFormURL() . "'>";
-            echo "<input type='hidden' name='id' value='$ID'>";
-            echo "<table class='tab_cadre' aria-label='Modify the comment'>";
-            echo "<tr><th colspan='2'>" . __s('Modify the comment') . "</th></tr>";
-
-            // Ajouter le nom du materiel
-            echo "<tr class='tab_bg_1'><td>" . _n('Item', 'Items', 1) . "</td>";
-            echo "<td class='b'>" . sprintf(__('%1$s - %2$s'), $type, $name) . "</td></tr>\n";
-
-            echo "<tr class='tab_bg_1'><td>" . __('Comments') . "</td>";
-            echo "<td><textarea name='comment' cols='30' rows='10' >" . $r->fields["comment"];
-            echo "</textarea></td></tr>\n";
-
-            echo "<tr class='tab_bg_2'><td colspan='2' class='top center'>";
-            echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='btn btn-secondary'>";
-            echo "</td></tr>\n";
-
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
+            renderTwigForm([
+                'action' => $this->getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'),
+                    'class' => 'btn btn-primary',
+                ]],
+                'content' => [__('Modify the comment') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                        _n('Item', 'Items', 1) => ['content' => htmlspecialchars(
+                            sprintf(__('%1$s - %2$s'), $type, $name), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false
+                        )],
+                        __('Comments') => [
+                            'type' => 'textarea', 'name' => 'comment', 'rows' => 10,
+                            'value' => htmlspecialchars($r->fields['comment'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
+                            'col_lg' => 12, 'col_md' => 12,
+                        ],
+                    ],
+                ]],
+            ]);
             return true;
         }
         return false;

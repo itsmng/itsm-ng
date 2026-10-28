@@ -1457,58 +1457,43 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     public function showChildren()
     {
         global $DB;
-
-        $ID   = $this->getID();
+        $ID = $this->getID();
         $this->check($ID, READ);
-        $rand = mt_rand();
-
-        $iterator = $DB->request([
-           'FROM'   => $this->getTable(),
-           'WHERE'  => [
-              $this->getForeignKeyField()   => $ID,
-              'is_deleted'                  => 0
-           ]
-        ]);
-        $numrows = count($iterator);
-
-        if ($this->can($ID, UPDATE)) {
-            echo "<div class='firstbloc'>";
-            echo "<form aria-label='Project' name='project_form$rand' id='project_form$rand' method='post'
-         action='" . Toolbox::getItemTypeFormURL(__CLASS__) . "'>";
-
-            echo "<a href='" . Toolbox::getItemTypeFormURL('Project') . "?projects_id=$ID'>";
-            echo __('Create a sub project from this project');
-            echo "</a>";
-            Html::closeForm();
-            echo "</div>";
-        }
-
-        echo "<div class='spaced'>";
-        echo "<table class='tab_cadre_fixehov' aria-label='Project List'>";
-        echo "<tr class='noHover'><th colspan='12'>" . Project::getTypeName($numrows) . "</th></tr>";
-        if ($numrows) {
-            Project::commonListHeader();
-            Session::initNavigateListItems(
-                'Project',
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    Project::getTypeName(1),
-                    $this->fields["name"]
-                )
-            );
-
-            $i = 0;
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Project', $data["id"]);
-                Project::showShort($data['id'], ['row_num' => $i]);
-                $i++;
+        if ($this->can($ID, UPDATE) && (($_GET['withtemplate'] ?? 0) != 2)) {
+            $input = ['projects_id' => $ID, 'entities_id' => $this->fields['entities_id'],
+                'inline' => true, 'inline_parent_id' => $ID];
+            $child = new self();
+            if ($child->can(-1, CREATE, $input)) {
+                $child->showForm(-1, $input);
             }
-            Project::commonListHeader();
         }
-        echo "</table>";
-        echo "</div>\n";
+        $fields = [__('ID'), __('Status'), _n('Date', 'Dates', 1), __('Last update')];
+        if (count($_SESSION['glpiactiveentities']) > 1) {
+            $fields[] = Entity::getTypeName(Session::getPluralNumber());
+        }
+        $fields = array_merge($fields, [__('Priority'), __('Manager'), __('Manager group'), __('Name')]);
+        $values = [];
+        Session::initNavigateListItems(__CLASS__, sprintf(__('%1$s = %2$s'), self::getTypeName(1), $this->getName()));
+        foreach ($DB->request(['FROM' => self::getTable(), 'WHERE' => [
+            $this->getForeignKeyField() => $ID, 'is_deleted' => 0], 'ORDER' => ['name', 'id']]) as $data) {
+            $child = new self();
+            if (!$child->getFromDB($data['id']) || !$child->can($data['id'], READ)) {
+                continue;
+            }
+            $row = [$data['id'], htmlspecialchars(Dropdown::getDropdownName('glpi_projectstates', $data['projectstates_id']), ENT_QUOTES, 'UTF-8', false),
+                sprintf(__('Opened on %s'), Html::convDateTime($data['date'])), Html::convDateTime($data['date_mod'])];
+            if (count($_SESSION['glpiactiveentities']) > 1) {
+                $row[] = htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $data['entities_id']), ENT_QUOTES, 'UTF-8', false);
+            }
+            $row[] = CommonITILObject::getPriorityName($data['priority']);
+            $row[] = $data['users_id'] ? htmlspecialchars(getUserName($data['users_id']), ENT_QUOTES, 'UTF-8', false) : '';
+            $row[] = htmlspecialchars(Dropdown::getDropdownName('glpi_groups', $data['groups_id']), ENT_QUOTES, 'UTF-8', false);
+            $row[] = $child->getLink() . Html::showToolTip(Html::clean(Html::entity_decode_deep($data['content'])), ['display' => false]);
+            $values[] = $row;
+            Session::addToNavigateListItems(__CLASS__, $data['id']);
+        }
+        renderTwigTemplate('table.twig', ['id' => 'projectChildren_' . $ID, 'state_key' => 'Project_children',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $values]);
     }
 
 
@@ -1524,6 +1509,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     **/
     public function showForm($ID, $options = [])
     {
+        $inline_options = $options;
         $options = [
            6 => CommonITILObject::getPriorityName(6),
            5 => CommonITILObject::getPriorityName(5),
@@ -1686,6 +1672,17 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
               ]
             ]
         ];
+        if (!empty($inline_options['inline'])) {
+            $key = array_key_first($form['content']);
+            $section = $form['content'][$key];
+            foreach (['_inline' => 1, '_inline_parent_type' => 'Project', '_inline_parent_id' => $inline_options['inline_parent_id']] as $name => $value) {
+                $section['inputs'][] = ['type' => 'hidden', 'name' => $name, 'value' => $value];
+            }
+            unset($form['content'][$key]);
+            $form['content'] = [__('Create a sub project from this project') => $section] + $form['content'];
+            $form['buttons'] = [['type' => 'submit', 'name' => 'add', 'value' => __('Add'),
+                'class' => 'btn btn-primary', 'icon' => 'fas fa-plus']];
+        }
         renderTwigForm($form, '', $this->fields);
 
         return true;
@@ -1741,10 +1738,15 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
         global $CFG_GLPI;
 
         $ID      = $project->fields['id'];
-        $canedit = $project->can($ID, UPDATE);
+        if (!$project->can($ID, READ)) {
+            return false;
+        }
+        $canedit = $project->can($ID, UPDATE) && (($_GET['withtemplate'] ?? 0) != 2);
 
         $nb   = 0;
         $nb   = $project->getTeamCount();
+        $entity_restrict = json_encode($project->fields['is_recursive']
+            ? getSonsOf('glpi_entities', $project->fields['entities_id']) : $project->fields['entities_id']);
 
         if ($canedit) {
             $itemtypes = ProjectTeam::$available_types;
@@ -1760,7 +1762,8 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _sx('button', 'Add an item'),
-                     'class' => 'btn btn-secondary'
+                     'class' => 'btn btn-primary',
+                     'icon' => 'fas fa-plus'
                   ]
                ],
                'content' => [
@@ -1780,29 +1783,16 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                            'col_lg' => 6,
                            'hooks' => [
                               'change' => <<<JS
+                              $('#dropdown_items_id').empty();
+                              if (!this.value || this.value === '0') { return; }
                               $.ajax({
-                                    method: "POST",
-                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
-                                    data: {
-                                       itemtype: this.value,
-                                       display_emptychoice: 1,
-                                    },
-                                    success: function(response) {
-                                       const data = response.results;
-                                       $('#dropdown_items_id').empty();
-                                       for (let i = 0; i < data.length; i++) {
-                                          if (data[i].children) {
-                                             const group = $('#dropdown_items_id')
-                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
-                                             for (let j = 0; j < data[i].children.length; j++) {
-                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
-                                             }
-                                          } else {
-                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
-                                          }
-                                       }
-                                    }
-                                 });
+                                  method: 'POST', dataType: 'json',
+                                  url: '$CFG_GLPI[root_doc]/ajax/dropdownAllItems.php',
+                                  data: {idtable: this.value, entity_restrict: $entity_restrict},
+                                  success: function (definition) {
+                                      setAjaxDropdownOptions('#dropdown_items_id', definition);
+                                  }
+                              });
                            JS,
                            ]
                         ],
@@ -1821,7 +1811,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
         }
         if ($canedit && $nb) {
             $massiveactionparams = [
-               'container'     => 'tableForProjectTeams',
+               'container'     => 'tableForProjectTeams_' . $ID,
                'display_arrow' => false,
                'specific_actions' => [
                   'MassiveAction:purge' => _x('button', 'Delete permanently the relation with selected elements'),
@@ -1849,10 +1839,12 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             }
         }
         renderTwigTemplate('table.twig', [
-           'id' => 'tableForProjectTeams',
+           'id' => 'tableForProjectTeams_' . $ID,
            'fields' => $fields,
+           'state_key' => 'Project_team',
+           'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
            'values' => $values,
-           'massive_action' => $massive_action,
+           ...($canedit ? ['massive_action' => $massive_action] : []),
         ]);
 
         return true;

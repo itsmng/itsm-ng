@@ -399,6 +399,7 @@ class Stat extends CommonGLPI
     **/
     public static function showTable($itemtype, $type, $date1, $date2, $start, array $value, $value2 = "")
     {
+
         global $CFG_GLPI;
 
         // Set display type for export if define
@@ -407,13 +408,46 @@ class Stat extends CommonGLPI
             $output_type = $_GET["display_type"];
         }
 
-        if ($output_type == Search::HTML_OUTPUT) { // HTML display
-            echo "<div class ='center'>";
-        }
+        $htmlRows = [];
+        $htmlRow = [];
+        $renderHeader = static fn (...$args) => $args[0] == Search::HTML_OUTPUT ? '' : Search::showHeader(...$args);
+        $renderHeaderItem = static function ($output, $label, &$number, ...$args) {
+            return $output == Search::HTML_OUTPUT ? '' : Search::showHeaderItem($output, $label, $number, ...$args);
+        };
+        $renderNewLine = static function ($output, ...$args) use (&$htmlRow) {
+            if ($output == Search::HTML_OUTPUT) {
+                $htmlRow = [];
+                return '';
+            }
+            return Search::showNewLine($output, ...$args);
+        };
+        $renderItem = static function ($output, $content, &$number, ...$args) use (&$htmlRow) {
+            if ($output == Search::HTML_OUTPUT) {
+                $htmlRow[] = $content;
+                return '';
+            }
+            return Search::showItem($output, $content, $number, ...$args);
+        };
+        $renderEndLine = static function ($output, ...$args) use (&$htmlRows, &$htmlRow) {
+            if ($output == Search::HTML_OUTPUT) {
+                if ($htmlRow) {
+                    $htmlRows[] = $htmlRow;
+                    $htmlRow = [];
+                }
+                return '';
+            }
+            return Search::showEndLine($output, ...$args);
+        };
+        $renderFooter = static fn (...$args) => $args[0] == Search::HTML_OUTPUT ? '' : Search::showFooter(...$args);
+
 
         if (is_array($value)) {
             $end_display = $start + $_SESSION['glpilist_limit'];
             $numrows     = count($value);
+            if ($output_type == Search::HTML_OUTPUT) {
+                $start = 0;
+                $end_display = $numrows;
+            }
 
             if (isset($_GET['export_all'])) {
                 $start       = 0;
@@ -425,7 +459,7 @@ class Stat extends CommonGLPI
                 $nbcols--;
             }
 
-            echo Search::showHeader($output_type, $end_display - $start + 1, $nbcols);
+            echo $renderHeader($output_type, $end_display - $start + 1, $nbcols);
             $subname = '';
             switch ($type) {
                 case 'group_tree':
@@ -443,7 +477,7 @@ class Stat extends CommonGLPI
             }
 
             if ($output_type == Search::HTML_OUTPUT) { // HTML display
-                echo Search::showNewLine($output_type);
+                echo $renderNewLine($output_type);
                 $header_num = 1;
 
                 if (
@@ -456,13 +490,13 @@ class Stat extends CommonGLPI
                             "?date1=$date1&amp;date2=$date2&amp;itemtype=$itemtype&amp;type=$type" .
                             "&amp;value2=0";
                     $link = "<a href='$link'>" . __('Back') . "</a>";
-                    echo Search::showHeaderItem($output_type, $link, $header_num);
+                    echo $renderHeaderItem($output_type, $link, $header_num);
                 } else {
-                    echo Search::showHeaderItem($output_type, "&nbsp;", $header_num);
+                    echo $renderHeaderItem($output_type, "&nbsp;", $header_num);
                 }
-                echo Search::showHeaderItem($output_type, '', $header_num);
+                echo $renderHeaderItem($output_type, '', $header_num);
 
-                echo Search::showHeaderItem(
+                echo $renderHeaderItem(
                     $output_type,
                     _x('quantity', 'Number'),
                     $header_num,
@@ -472,7 +506,7 @@ class Stat extends CommonGLPI
                     "colspan='4'"
                 );
                 if ($itemtype == 'Ticket') {
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         __('Satisfaction'),
                         $header_num,
@@ -482,7 +516,7 @@ class Stat extends CommonGLPI
                         "colspan='3'"
                     );
                 }
-                echo Search::showHeaderItem(
+                echo $renderHeaderItem(
                     $output_type,
                     __('Average time'),
                     $header_num,
@@ -491,7 +525,7 @@ class Stat extends CommonGLPI
                     '',
                     $itemtype == 'Ticket' ? "colspan='3'" : "colspan='2'"
                 );
-                echo Search::showHeaderItem(
+                echo $renderHeaderItem(
                     $output_type,
                     __('Real duration of treatment of the ticket'),
                     $header_num,
@@ -502,102 +536,102 @@ class Stat extends CommonGLPI
                 );
             }
 
-            echo Search::showNewLine($output_type);
+            echo $renderNewLine($output_type);
             $header_num    = 1;
-            echo Search::showHeaderItem($output_type, $subname, $header_num);
+            echo $renderHeaderItem($output_type, $subname, $header_num);
 
             if ($output_type == Search::HTML_OUTPUT) { // HTML display
-                echo Search::showHeaderItem($output_type, "", $header_num);
+                echo $renderHeaderItem($output_type, "", $header_num);
             }
             if ($output_type != Search::HTML_OUTPUT) {
-                echo Search::showHeaderItem($output_type, __('Number of opened tickets'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Number of solved tickets'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Number of late tickets'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Number of closed tickets'), $header_num);
+                echo $renderHeaderItem($output_type, __('Number of opened tickets'), $header_num);
+                echo $renderHeaderItem($output_type, __('Number of solved tickets'), $header_num);
+                echo $renderHeaderItem($output_type, __('Number of late tickets'), $header_num);
+                echo $renderHeaderItem($output_type, __('Number of closed tickets'), $header_num);
             } else {
-                echo Search::showHeaderItem($output_type, _nx('ticket', 'Opened', 'Opened', Session::getPluralNumber()), $header_num);
-                echo Search::showHeaderItem(
+                echo $renderHeaderItem($output_type, _nx('ticket', 'Opened', 'Opened', Session::getPluralNumber()), $header_num);
+                echo $renderHeaderItem(
                     $output_type,
                     _nx('ticket', 'Solved', 'Solved', Session::getPluralNumber()),
                     $header_num
                 );
-                echo Search::showHeaderItem($output_type, __('Late'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Closed'), $header_num);
+                echo $renderHeaderItem($output_type, __('Late'), $header_num);
+                echo $renderHeaderItem($output_type, __('Closed'), $header_num);
             }
 
             if ($itemtype == 'Ticket') {
                 if ($output_type != Search::HTML_OUTPUT) {
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         __('Number of opened satisfaction survey'),
                         $header_num
                     );
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         __('Number of answered satisfaction survey'),
                         $header_num
                     );
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         __('Average satisfaction'),
                         $header_num
                     );
                 } else {
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         _nx('survey', 'Opened', 'Opened', Session::getPluralNumber()),
                         $header_num
                     );
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         _nx('survey', 'Answered', 'Answered', Session::getPluralNumber()),
                         $header_num
                     );
-                    echo Search::showHeaderItem($output_type, __('Average'), $header_num);
+                    echo $renderHeaderItem($output_type, __('Average'), $header_num);
                 }
             }
 
             if ($output_type != Search::HTML_OUTPUT) {
                 if ($itemtype == 'Ticket') {
-                    echo Search::showHeaderItem(
+                    echo $renderHeaderItem(
                         $output_type,
                         __('Average time to take into account'),
                         $header_num
                     );
                 }
-                echo Search::showHeaderItem($output_type, __('Average time to resolution'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Average time to closure'), $header_num);
+                echo $renderHeaderItem($output_type, __('Average time to resolution'), $header_num);
+                echo $renderHeaderItem($output_type, __('Average time to closure'), $header_num);
             } else {
                 if ($itemtype == 'Ticket') {
-                    echo Search::showHeaderItem($output_type, __('Take into account'), $header_num);
+                    echo $renderHeaderItem($output_type, __('Take into account'), $header_num);
                 }
-                echo Search::showHeaderItem($output_type, __('Resolution'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Closure'), $header_num);
+                echo $renderHeaderItem($output_type, __('Resolution'), $header_num);
+                echo $renderHeaderItem($output_type, __('Closure'), $header_num);
             }
 
             if ($output_type != Search::HTML_OUTPUT) {
-                echo Search::showHeaderItem(
+                echo $renderHeaderItem(
                     $output_type,
                     __('Average real duration of treatment of the ticket'),
                     $header_num
                 );
-                echo Search::showHeaderItem(
+                echo $renderHeaderItem(
                     $output_type,
                     __('Total real duration of treatment of the ticket'),
                     $header_num
                 );
             } else {
-                echo Search::showHeaderItem($output_type, __('Average'), $header_num);
-                echo Search::showHeaderItem($output_type, __('Total duration'), $header_num);
+                echo $renderHeaderItem($output_type, __('Average'), $header_num);
+                echo $renderHeaderItem($output_type, __('Total duration'), $header_num);
             }
             // End Line for column headers
-            echo Search::showEndLine($output_type);
+            echo $renderEndLine($output_type);
             $row_num = 1;
 
             for ($i = $start; ($i < $numrows) && ($i < $end_display); $i++) {
                 $row_num++;
                 $item_num = 1;
-                echo Search::showNewLine($output_type, $i % 2);
+                echo $renderNewLine($output_type, $i % 2);
                 if (
                     ($output_type == Search::HTML_OUTPUT)
                     && strstr((string) $type, '_tree')
@@ -608,9 +642,9 @@ class Stat extends CommonGLPI
                             "?date1=$date1&amp;date2=$date2&amp;itemtype=$itemtype&amp;type=$type" .
                             "&amp;value2=" . $value[$i]['id'];
                     $link = "<a href='$link'>" . $value[$i]['link'] . "</a>";
-                    echo Search::showItem($output_type, $link, $item_num, $row_num);
+                    echo $renderItem($output_type, $link, $item_num, $row_num);
                 } else {
-                    echo Search::showItem($output_type, $value[$i]['link'], $item_num, $row_num);
+                    echo $renderItem($output_type, $value[$i]['link'], $item_num, $row_num);
                 }
 
                 if ($output_type == Search::HTML_OUTPUT) { // HTML display
@@ -622,7 +656,7 @@ class Stat extends CommonGLPI
                                 "<img src='" . $CFG_GLPI["root_doc"] . "/pics/stats_item.png' alt=''>" .
                                 "</a>";
                     }
-                    echo Search::showItem($output_type, $link, $item_num, $row_num);
+                    echo $renderItem($output_type, $link, $item_num, $row_num);
                 }
 
                 //le nombre d'intervention - the number of intervention
@@ -636,7 +670,7 @@ class Stat extends CommonGLPI
                     $value2
                 );
                 $nb_opened = array_sum($opened);
-                echo Search::showItem($output_type, $nb_opened, $item_num, $row_num);
+                echo $renderItem($output_type, $nb_opened, $item_num, $row_num);
 
                 //le nombre d'intervention resolues - the number of solved intervention
                 $solved    = self::constructEntryValues(
@@ -649,7 +683,7 @@ class Stat extends CommonGLPI
                     $value2
                 );
                 $nb_solved = array_sum($solved);
-                echo Search::showItem($output_type, $nb_solved, $item_num, $row_num);
+                echo $renderItem($output_type, $nb_solved, $item_num, $row_num);
 
                 //le nombre d'intervention resolues - the number of solved intervention
                 $solved_late    = self::constructEntryValues(
@@ -662,7 +696,7 @@ class Stat extends CommonGLPI
                     $value2
                 );
                 $nb_solved_late = array_sum($solved_late);
-                echo Search::showItem($output_type, $nb_solved_late, $item_num, $row_num);
+                echo $renderItem($output_type, $nb_solved_late, $item_num, $row_num);
 
                 //le nombre d'intervention closes - the number of closed intervention
                 $closed    = self::constructEntryValues(
@@ -676,7 +710,7 @@ class Stat extends CommonGLPI
                 );
                 $nb_closed = array_sum($closed);
 
-                echo Search::showItem($output_type, $nb_closed, $item_num, $row_num);
+                echo $renderItem($output_type, $nb_closed, $item_num, $row_num);
 
                 if ($itemtype == 'Ticket') {
                     //Satisfaction open
@@ -690,7 +724,7 @@ class Stat extends CommonGLPI
                         $value2
                     );
                     $nb_opensatisfaction = array_sum($opensatisfaction);
-                    echo Search::showItem($output_type, $nb_opensatisfaction, $item_num, $row_num);
+                    echo $renderItem($output_type, $nb_opensatisfaction, $item_num, $row_num);
 
                     //Satisfaction answer
                     $answersatisfaction    = self::constructEntryValues(
@@ -703,7 +737,7 @@ class Stat extends CommonGLPI
                         $value2
                     );
                     $nb_answersatisfaction = array_sum($answersatisfaction);
-                    echo Search::showItem($output_type, $nb_answersatisfaction, $item_num, $row_num);
+                    echo $renderItem($output_type, $nb_answersatisfaction, $item_num, $row_num);
 
                     //Satisfaction rate
                     $satisfaction = self::constructEntryValues(
@@ -726,7 +760,7 @@ class Stat extends CommonGLPI
                     } else {
                         $avgsatisfaction = '&nbsp;';
                     }
-                    echo Search::showItem($output_type, $avgsatisfaction, $item_num, $row_num);
+                    echo $renderItem($output_type, $avgsatisfaction, $item_num, $row_num);
 
                     //Le temps moyen de prise en compte du ticket - The average time to take a ticket into account
                     $data = self::constructEntryValues(
@@ -757,7 +791,7 @@ class Stat extends CommonGLPI
                     } elseif ($output_type == Search::CSV_OUTPUT) {
                         $timedisplay = Html::timestampToCsvString($timedisplay);
                     }
-                    echo Search::showItem($output_type, $timedisplay, $item_num, $row_num);
+                    echo $renderItem($output_type, $timedisplay, $item_num, $row_num);
                 }
 
                 //Le temps moyen de resolution - The average time to resolv
@@ -788,7 +822,7 @@ class Stat extends CommonGLPI
                 } elseif ($output_type == Search::CSV_OUTPUT) {
                     $timedisplay = Html::timestampToCsvString($timedisplay);
                 }
-                echo Search::showItem($output_type, $timedisplay, $item_num, $row_num);
+                echo $renderItem($output_type, $timedisplay, $item_num, $row_num);
 
                 //Le temps moyen de cloture - The average time to close
                 $data = self::constructEntryValues(
@@ -818,7 +852,7 @@ class Stat extends CommonGLPI
                 } elseif ($output_type == Search::CSV_OUTPUT) {
                     $timedisplay = Html::timestampToCsvString($timedisplay);
                 }
-                echo Search::showItem($output_type, $timedisplay, $item_num, $row_num);
+                echo $renderItem($output_type, $timedisplay, $item_num, $row_num);
 
                 //the number of solved interventions with a duration time
                 $solved_with_actiontime = self::constructEntryValues(
@@ -866,7 +900,7 @@ class Stat extends CommonGLPI
                 } elseif ($output_type == Search::CSV_OUTPUT) {
                     $timedisplay = Html::timestampToCsvString($timedisplay);
                 }
-                echo Search::showItem($output_type, $timedisplay, $item_num, $row_num);
+                echo $renderItem($output_type, $timedisplay, $item_num, $row_num);
                 //Le temps total de l'intervention reelle - The total actiontime to resolv
                 $timedisplay = $total_actiontime;
 
@@ -879,18 +913,38 @@ class Stat extends CommonGLPI
                 } elseif ($output_type == Search::CSV_OUTPUT) {
                     $timedisplay = Html::timestampToCsvString($timedisplay);
                 }
-                echo Search::showItem($output_type, $timedisplay, $item_num, $row_num);
+                echo $renderItem($output_type, $timedisplay, $item_num, $row_num);
 
-                echo Search::showEndLine($output_type);
+                echo $renderEndLine($output_type);
             }
             // Display footer
-            echo Search::showFooter($output_type, '', $numrows);
+            echo $renderFooter($output_type, '', $numrows);
         } else {
             echo __('No statistics are available');
         }
 
-        if ($output_type == Search::HTML_OUTPUT) { // HTML display
-            echo "</div>";
+        if ($output_type == Search::HTML_OUTPUT) {
+            $fields = [$subname ?: __('Name'), __('Graph'), __('Number of opened tickets'), __('Number of solved tickets'),
+                __('Number of late tickets'), __('Number of closed tickets')];
+            if ($itemtype === 'Ticket') {
+                $fields = array_merge($fields, [__('Number of opened satisfaction survey'), __('Number of answered satisfaction survey'),
+                    __('Average satisfaction'), __('Average time to take into account')]);
+            }
+            $fields = array_merge($fields, [__('Average time to resolution'), __('Average time to closure'),
+                __('Average real duration of treatment of the ticket'), __('Total real duration of treatment of the ticket')]);
+            if (strstr((string) $type, '_tree') && $value2) {
+                $url = $_SERVER['PHP_SELF'] . '?' . http_build_query(['date1' => $date1, 'date2' => $date2,
+                    'itemtype' => $itemtype, 'type' => $type, 'value2' => 0, 'submit' => 1]);
+                echo '<a class="btn btn-secondary mb-3" href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">' . __('Back') . '</a>';
+            }
+            $tableId = 'statTable_' . md5(serialize([$itemtype, $type, $value2]));
+            $params = ['type' => $type, 'date1' => $date1, 'date2' => $date2, 'start' => 0, 'value2' => $value2];
+            if (in_array($type, ['comp_champ', 'device'], true)) {
+                $params['dropdown'] = $value2;
+            }
+            self::showExportForm($tableId, ['itemtype' => $itemtype], $params);
+            renderTwigTemplate('table.twig', ['id' => $tableId, 'state_key' => $tableId,
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $htmlRows]);
         }
     }
 
@@ -1535,6 +1589,7 @@ class Stat extends CommonGLPI
     **/
     public static function showItems($target, $date1, $date2, $start)
     {
+
         global $DB;
 
         $view_entities = Session::isMultiEntitiesMode();
@@ -1586,6 +1641,35 @@ class Stat extends CommonGLPI
            'ORDER'  => 'NB DESC'
         ]);
         $numrows = count($iterator);
+        if ($output_type == Search::HTML_OUTPUT) {
+            $fields = [_n('Associated element', 'Associated elements', Session::getPluralNumber())];
+            if ($view_entities) {
+                $fields[] = Entity::getTypeName(1);
+            }
+            $fields[] = __('Number of tickets');
+            $rows = [];
+            foreach ($iterator as $data) {
+                $item = getItemForItemtype($data['itemtype']);
+                if (!$item || !$item->getFromDB($data['items_id'])) {
+                    continue;
+                }
+                $label = sprintf(__('%1$s - %2$s'), $item->getTypeName(), $item->getLink());
+                if ($item->isDeleted()) {
+                    $label .= ' <span class="badge text-bg-warning">' . __('Deleted') . '</span>';
+                }
+                $row = [$label];
+                if ($view_entities) {
+                    $row[] = htmlspecialchars($entities[$item->getEntityID()]['completename'] ?? '', ENT_QUOTES, 'UTF-8', false);
+                }
+                $row[] = $data['NB'];
+                $rows[] = $row;
+            }
+            self::showExportForm('statHardware', ['type' => 'hardwares', 'date1' => $date1, 'date2' => $date2]);
+            renderTwigTemplate('table.twig', ['id' => 'statHardware', 'state_key' => 'Stat_hardware',
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $rows]);
+            return;
+        }
+
 
         if ($numrows > 0) {
             if ($output_type == Search::HTML_OUTPUT) {
@@ -1707,10 +1791,7 @@ class Stat extends CommonGLPI
             $stat_list["Change"]["Change_Change"]["file"]   = "stat.tracking.php?itemtype=Change";
         }
 
-        //Affichage du tableau de presentation des stats
-        echo "<table class='tab_cadre_fixe' aria-label='Statistics'>";
-        echo "<tr><th colspan='2'>" . __('Select statistics to be displayed') . "</th></tr>";
-        echo "<tr class='tab_bg_1'><td class='center'>";
+        echo '<div class="mb-4"><label class="form-label d-block">' . __('Select statistics to be displayed') . '</label>';
 
         $values   = [$CFG_GLPI["root_doc"] . '/front/stat.php' => Dropdown::EMPTY_VALUE];
 
@@ -1771,15 +1852,50 @@ class Stat extends CommonGLPI
             ['on_change' => "window.location.href=this.options[this.selectedIndex].value",
                                       'value'     => $selected]
         );
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
+        echo '</div>';
     }
 
 
     /**
      * @since 0.85
     **/
+    public static function showExportForm($tableId, array $query, ?array $parameters = null)
+    {
+        global $CFG_GLPI;
+        if (Session::getCurrentInterface() !== 'central') {
+            return;
+        }
+        $inputs = [];
+        $query = ['item_type' => 'Stat', 'start' => 0, 'glpilist_limit' => (int) ($_SESSION['glpilist_limit'] ?? 15)] + $query;
+        if ($parameters !== null) {
+            $query['item_type_param'] = Toolbox::prepareArrayForInput($parameters);
+        }
+        foreach ($query as $name => $value) {
+            $inputs[] = ['type' => 'hidden', 'name' => $name, 'value' => $value];
+        }
+        $formats = [];
+        foreach ([Search::PDF_OUTPUT_LANDSCAPE => ['Current page in landscape PDF', 'All pages in landscape PDF'],
+            Search::PDF_OUTPUT_PORTRAIT => ['Current page in portrait PDF', 'All pages in portrait PDF'],
+            Search::SYLK_OUTPUT => ['Current page in SLK', 'All pages in SLK'],
+            Search::CSV_OUTPUT => ['Current page in CSV', 'All pages in CSV']] as $format => $labels) {
+            $formats[$format] = __($labels[0]);
+            $formats[-$format] = __($labels[1]);
+        }
+        $inputs[_x('button', 'Export')] = ['type' => 'select', 'name' => 'display_type', 'values' => $formats, 'col_lg' => 6];
+        $formId = $tableId . '_export';
+        renderTwigForm(['action' => $CFG_GLPI['root_doc'] . '/front/report.dynamic.php', 'method' => 'get',
+            'attributes' => ['id' => $formId, 'target' => '_blank'],
+            'buttons' => [['type' => 'submit', 'name' => 'export', 'value' => _x('button', 'Export'), 'class' => 'btn btn-secondary', 'icon' => 'fas fa-download']],
+            'content' => [['visible' => false, 'inputs' => $inputs]]]);
+        echo '<script>(function () { const form = document.getElementById(' . json_encode($formId) . ');'
+            . ' form.addEventListener("submit", function () { const table = window.ITSMTable && window.ITSMTable.get(' . json_encode($tableId) . ');'
+            . ' if (!table) { return; } const page = table.getTable().getState().pagination;'
+            . ' const start = page.pageIndex * page.pageSize; form.elements.start.value = start; form.elements.glpilist_limit.value = page.pageSize;'
+            . ' const parameters = ' . json_encode($parameters) . '; if (parameters) { parameters.start = start;'
+            . ' form.elements.item_type_param.value = btoa(unescape(encodeURIComponent(JSON.stringify(parameters)))); } }); })();</script>';
+    }
+
+
     public function getRights($interface = 'central')
     {
 
@@ -2037,35 +2153,15 @@ class Stat extends CommonGLPI
      */
     public function displaySearchForm($itemtype, $date1, $date2, $display = true)
     {
-        $out = "<form aria-label='Search' method='get' name='form' action='stat.global.php'><div class='center'>";
-        // Keep it at first parameter
-        $out .= "<input type='hidden' name='itemtype' value='$itemtype'>";
-
-        $out .= "<table class='tab_cadre' aria-label='Start Date'>";
-        $out .= "<tr class='tab_bg_2'><td class='right'>" . __('Start date') . "</td><td>";
-        $out .= Html::showDateField(
-            'date1',
-            [
-              'value'   => $date1,
-              'display' => false
-            ]
-        );
-        $out .= "</td><td rowspan='2' class='center'>";
-        $out .= "<input type='submit' class='submit' value='" . __s('Display report') . "'></td></tr>";
-
-        $out .= "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
-        $out .= Html::showDateField(
-            'date2',
-            [
-              'value'   => $date2,
-              'display' => false
-            ]
-        );
-        $out .= "</td></tr>";
-        $out .= "</table></div>";
-        // form using GET method : CRSF not needed
-        $out .= Html::closeForm(false);
-
+        ob_start();
+        renderTwigForm(['action' => 'stat.global.php', 'method' => 'get',
+            'buttons' => [['type' => 'submit', 'value' => __('Display report'), 'class' => 'btn btn-primary']],
+            'content' => [['visible' => false, 'inputs' => [
+                ['type' => 'hidden', 'name' => 'itemtype', 'value' => $itemtype],
+                __('Start date') => ['type' => 'date', 'name' => 'date1', 'value' => $date1, 'col_lg' => 6],
+                __('End date') => ['type' => 'date', 'name' => 'date2', 'value' => $date2, 'col_lg' => 6],
+            ]]]]);
+        $out = ob_get_clean();
         if ($display) {
             echo $out;
             return;

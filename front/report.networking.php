@@ -43,24 +43,18 @@ Html::header(Report::getTypeName(Session::getPluralNumber()), $_SERVER['PHP_SELF
 
 Report::title();
 
-// Titre
-
-echo "<table class='tab_cadre' aria-label='Network Report Form' >";
-echo "<tr><th colspan='3'>&nbsp;" . __('Network report') . "</th></tr>";
-echo "</table><br>";
-
 // 3. Selection d'affichage pour generer la liste
 $form = [
-   'action' => $_SERVER['PHP_SELF'],
+   'action' => 'report.location.list.php',
    'buttons' => [
       [
          'value' => __s('Display report'),
-         'class' => 'btn btn-secondary',
+         'class' => 'btn btn-primary',
       ]
    ],
    'content' => [
       '' => [
-         'visible' => true,
+         'visible' => false,
          'inputs' => [
             __('By location') => [
                'type' => 'select',
@@ -76,16 +70,16 @@ $form = [
 renderTwigForm($form);
 
 $form = [
-   'action' => $_SERVER['PHP_SELF'],
+   'action' => 'report.switch.list.php',
    'buttons' => [
       [
          'value' => __s('Display report'),
-         'class' => 'btn btn-secondary',
+         'class' => 'btn btn-primary',
       ]
    ],
    'content' => [
       '' => [
-         'visible' => true,
+         'visible' => false,
          'inputs' => [
             __('By hardware') => [
                'type' => 'select',
@@ -101,16 +95,12 @@ $form = [
 renderTwigForm($form);
 
 if (countElementsInTableForMyEntities("glpi_netpoints") > 0) {
-    echo "<form name='form3' aria-label='Report Choices by location' method='post' action='report.netpoint.list.php'>";
-    echo "<table class='tab_cadre' width='500' aria-label='Report Choices by Location'>";
-    echo "<tr class='tab_bg_1'><td width='120'>" . __('By network outlet') . "</td>";
-    echo "<td>";
-    Netpoint::dropdownNetpoint("prise", 0, -1, 1, $_SESSION["glpiactive_entity"]);
-    echo "</td><td class='center' width='120'>";
-    echo "<input type='submit' value=\"" . __s('Display report') . "\" class='submit'>";
-    echo "</td></tr>";
-    echo "</table>";
-    Html::closeForm();
+    ob_start();
+    Netpoint::dropdownNetpoint('prise', 0, -1, 1, $_SESSION['glpiactive_entity']);
+    $outlet = ob_get_clean();
+    renderTwigForm(['action' => 'report.netpoint.list.php',
+        'buttons' => [['type' => 'submit', 'value' => __('Display report'), 'class' => 'btn btn-primary']],
+        'content' => [[ 'visible' => false, 'inputs' => [__('By network outlet') => ['content' => $outlet, 'col_lg' => 12]]]]]);
 }
 
 Html::footer();

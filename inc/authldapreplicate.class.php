@@ -81,23 +81,23 @@ class AuthLdapReplicate extends CommonDBTM
      */
     public static function addNewReplicateForm($target, $master_id)
     {
-
-        echo "<form aria-label='Nex Replicate Form' action='$target' method='post' name='add_replicate_form' id='add_replicate_form'>";
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre_fixe' aria-label='LDAP replica'>";
-
-        echo "<tr><th colspan='4'>" . __('Add a LDAP directory replica') . "</th></tr>";
-        echo "<tr class='tab_bg_1'><td class='center'>" . __('Name') . "</td>";
-        echo "<td class='center'>" . __('Server') . "</td>";
-        echo "<td class='center'>" . _n('Port', 'Ports', 1) . "</td><td></td></tr>";
-        echo "<tr class='tab_bg_1'>";
-        echo "<td class='center'><input class='form-control' type='text' name='name'></td>";
-        echo "<td class='center'><input class='form-control' type='text' name='host'></td>";
-        echo "<td class='center'><input class='form-control' type='text' name='port'></td>";
-        echo "<td class='center'><input type='hidden' name='next' value='extauth_ldap'>";
-        echo "<input type='hidden' name='authldaps_id' value='$master_id'>";
-        echo "<input type='submit' name='add_replicate' value='" . _sx('button', 'Add') . "' class='btn btn-sm btn-secondary'></td>";
-        echo "</tr></table></div>";
-        Html::closeForm();
+        renderTwigForm([
+            'action' => $target,
+            'attributes' => ['name' => 'add_replicate_form', 'id' => 'add_replicate_form'],
+            'buttons' => [[
+                'type' => 'submit', 'name' => 'add_replicate', 'value' => _x('button', 'Add'),
+                'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+            ]],
+            'content' => [__('Add a LDAP directory replica') => [
+                'visible' => true,
+                'inputs' => [
+                    ['type' => 'hidden', 'name' => 'next', 'value' => 'extauth_ldap'],
+                    ['type' => 'hidden', 'name' => 'authldaps_id', 'value' => $master_id],
+                    __('Name') => ['type' => 'text', 'name' => 'name', 'value' => ''],
+                    __('Server') => ['type' => 'text', 'name' => 'host', 'value' => ''],
+                    _n('Port', 'Ports', 1) => ['type' => 'number', 'name' => 'port', 'value' => 389, 'min' => 1, 'max' => 65535],
+                ],
+            ]],
+        ]);
     }
 }

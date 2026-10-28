@@ -123,7 +123,7 @@ class NetworkPortAggregate extends NetworkPortInstantiation
         }
         $checklistOptions = [];
         foreach ($possible_ports as $key => $value) {
-            $checklistOptions = array_merge($checklistOptions, $value);
+            $checklistOptions += $value;
         }
 
         return [

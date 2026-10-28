@@ -177,47 +177,20 @@ class Central extends CommonGLPI
         $showticket  = Session::haveRight("ticket", Ticket::READALL);
         $showproblem = Session::haveRight("problem", Problem::READALL);
 
-        echo "<table class='tab_cadre_central'><tr class='noHover' aria-label='Global View Outer Table'>";
-
-        echo "<td class='top' width='33%'>";
-        echo "<table class='central' aria-label='Table Description'>";
-        echo "<tr class='noHover'><td>";
-        if ($showticket) {
-            Ticket::showCentralCount();
-        } else {
-            Ticket::showCentralCount(true);
-        }
-        echo "</td></tr>";
-        echo "</table></td>";
-
-        echo "<td class='top' width='33%'>";
-        echo "<table class='central' aria-label='Problem followup'>";
-        echo "<tr class='noHover'><td>";
+        echo '<div class="row g-4 mb-4"><div class="col-12 col-xl-4">';
+        Ticket::showCentralCount(!$showticket);
+        echo '</div><div class="col-12 col-xl-4">';
         if ($showproblem) {
             Problem::showCentralCount();
         }
-        echo "</td></tr>";
-        echo "</table></td>";
-
-        echo "<td class='top' width='33%'>";
-        echo "<table class='central' aria-label='Contracts Table'>";
-        echo "<tr class='noHover'><td>";
+        echo '</div><div class="col-12 col-xl-4">';
         if (Contract::canView()) {
             Contract::showCentral();
         }
-        echo "</td></tr>";
-        echo "</table></td>";
-
-        echo "</tr></table>";
-
+        echo '</div></div>';
         if (Session::haveRight("logs", READ)) {
-            echo "<td class='top'  width='50%'>";
-
-            //Show last add events
             Event::showForUser($_SESSION["glpiname"]);
-            echo "</td>";
         }
-        echo "</tr></table>";
 
         if ($_SESSION["glpishow_jobs_at_login"] && $showticket) {
             echo "<br>";
@@ -255,8 +228,7 @@ class Central extends CommonGLPI
         echo "<div id='main-container' style='width: 100%;'>";
 
         echo "<div id='table1' style='width: 100%; margin-bottom: 20px;'>";
-        echo "<table class='central' style='width: 100%;' aria-label='My View Inner Table'>";
-        echo "<tr class='noHover'><td>";
+
         if (Session::haveRightsOr('ticketvalidation', TicketValidation::getValidateRights())) {
             Ticket::showCentralList(0, "tovalidate", false);
         }
@@ -281,25 +253,22 @@ class Central extends CommonGLPI
             Problem::showCentralList(0, "process", false);
             ProblemTask::showCentralList(0, "todo", false);
         }
-        echo "</td></tr>";
-        echo "</table>";
+
         echo "</div>";
 
         echo "<div id='table2' style='width: 100%;'>";
-        echo "<table class='central' style='width: 100%;' aria-label='Central Table'>";
-        echo "<tr class='noHover'><td>";
+
         Planning::showCentral(Session::getLoginUserID());
         Reminder::showListForCentral();
         if (Session::haveRight("reminder_public", READ)) {
             Reminder::showListForCentral(false);
         }
-        echo "</td></tr>";
-        echo "</table>";
+
         echo "</div>";
 
         echo "<div style='text-align: center; margin-top: 20px;'>";
-        echo "<button onclick='swapTables()' style='padding: 10px 20px; font-size: 16px;'>
-        <i class='fas fa-exchange-alt' title='Inverser les tableaux' style='transform: rotate(90deg);'></i>
+        echo "<button type='button' class='btn btn-outline-secondary' onclick='swapTables()' aria-label='" . __s('Switch') . "'>
+        <i class='fas fa-exchange-alt' aria-hidden='true'></i>
       </button>";
 
         echo "</div>";
@@ -332,18 +301,15 @@ class Central extends CommonGLPI
     public static function showRSSView()
     {
 
-        echo "<table class='tab_cadre_central' aria-label='RSS View Table'>";
+        echo '<div class="row g-4"><div class="col-12 col-xl-6">';
 
-        echo "<tr class='noHover'><td class='top' width='50%'>";
+
         RSSFeed::showListForCentral();
-        echo "</td><td class='top' width='50%'>";
+        echo '</div><div class="col-12 col-xl-6">';
         if (RSSFeed::canView()) {
             RSSFeed::showListForCentral(false);
-        } else {
-            echo "&nbsp;";
         }
-        echo "</td></tr>";
-        echo "</table>";
+        echo '</div></div>';
     }
 
 
@@ -357,10 +323,9 @@ class Central extends CommonGLPI
 
         $showproblem = Session::haveRightsOr('problem', [Problem::READALL, Problem::READMY]);
 
-        echo "<div class='group-view-container'>";
-        echo "<div class='group-view-table'>";
-        echo "<table class='central' aria-label='Group View'>";
-        echo "<tr class='noHover'><td>";
+        echo "<div class='row g-4'>";
+        echo "<div class='col-12 col-xl-6'>";
+
         if ($showticket) {
             Ticket::showCentralList(0, "process", true);
             TicketTask::showCentralList(0, "todo", true);
@@ -373,13 +338,11 @@ class Central extends CommonGLPI
             ProblemTask::showCentralList(0, "todo", true);
         }
 
-        echo "</td></tr>";
-        echo "</table>";
+
         echo "</div>";
 
-        echo "<div class='group-view-table'>";
-        echo "<table class='central' aria-label='Group View'>";
-        echo "<tr class='noHover'><td>";
+        echo "<div class='col-12 col-xl-6'>";
+
         if (Session::haveRight('ticket', Ticket::READGROUP)) {
             Ticket::showCentralList(0, "observed", true);
             Ticket::showCentralList(0, "toapprove", true);
@@ -387,8 +350,7 @@ class Central extends CommonGLPI
         } else {
             Ticket::showCentralList(0, "waiting", true);
         }
-        echo "</td></tr>";
-        echo "</table>";
+
         echo "</div>";
 
         echo "</div>";

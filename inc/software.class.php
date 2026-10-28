@@ -1012,13 +1012,13 @@ class Software extends CommonDBTM
     **/
     public function showMergeCandidates()
     {
+
         global $DB;
 
         $ID   = $this->getField('id');
         $this->check($ID, UPDATE);
         $rand = mt_rand();
 
-        echo "<div class='center'>";
         $iterator = $DB->request([
            'SELECT'    => [
               'glpi_softwares.id',
@@ -1049,45 +1049,24 @@ class Software extends CommonDBTM
         ]);
         $nb = count($iterator);
 
-        if ($nb) {
-            $link = Toolbox::getItemTypeFormURL('Software');
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams
-               = ['num_displayed' => min($_SESSION['glpilist_limit'], $nb),
-                       'container'     => 'mass' . __CLASS__ . $rand,
-                       'deprecated'      => true,
-                       'specific_actions'
-                                       => [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge'
-                                                   => __('Merge')],
-                                       'item'          => $this];
-            Html::showMassiveActions($massiveactionparams);
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Installations'>";
-            echo "<tr><th width='10'>";
-            echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            echo "</th>";
-            echo "<th>" . __('Name') . "</th>";
-            echo "<th>" . Entity::getTypeName(1) . "</th>";
-            echo "<th>" . _n('Installation', 'Installations', Session::getPluralNumber()) . "</th>";
-            echo "<th>" . SoftwareLicense::getTypeName(Session::getPluralNumber()) . "</th></tr>";
-
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td>" . Html::getMassiveActionCheckBox(__CLASS__, $data["id"]) . "</td>";
-                echo "<td><a href='" . $link . "?id=" . $data["id"] . "'>" . $data["name"] . "</a></td>";
-                echo "<td>" . $data["entity"] . "</td>";
-                echo "<td class='right'>" . Item_SoftwareVersion::countForSoftware($data["id"]) . "</td>";
-                echo "<td class='right'>" . SoftwareLicense::countForSoftware($data["id"]) . "</td></tr>\n";
-            }
-            echo "</table>\n";
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        } else {
-            echo __('No item found');
+        $tableId = 'softwareMerge_' . $ID;
+        $values = [];
+        $selection = [];
+        foreach ($iterator as $data) {
+            $values[] = [
+                '<a href="' . htmlspecialchars(self::getFormURLWithID($data['id']), ENT_QUOTES, 'UTF-8') . '">'
+                    . htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8', false) . '</a>',
+                htmlspecialchars($data['entity'], ENT_QUOTES, 'UTF-8', false),
+                Item_SoftwareVersion::countForSoftware($data['id']), SoftwareLicense::countForSoftware($data['id']),
+            ];
+            $selection[] = 'item[Software][' . $data['id'] . ']';
         }
-
-        echo "</div>";
+        Html::showMassiveActions(['container' => $tableId, 'display_arrow' => false, 'is_deleted' => false,
+            'specific_actions' => [__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'merge' => __('Merge')], 'item' => $this]);
+        renderTwigTemplate('table.twig', ['id' => $tableId, 'state_key' => 'Software_merge_candidates',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [__('Name'), Entity::getTypeName(1), _n('Installation', 'Installations', Session::getPluralNumber()),
+                SoftwareLicense::getTypeName(Session::getPluralNumber())], 'values' => $values, 'massive_action' => $selection]);
     }
 
 
@@ -1106,11 +1085,9 @@ class Software extends CommonDBTM
         $ID = $this->getField('id');
 
         if ($html) {
-            echo "<div class='center'>";
-            echo "<table class='tab_cadrehov' aria-label='Merging'><tr><th>" . __('Merging') . "</th></tr>";
-            echo "<tr class='tab_bg_2'><td>";
+            echo '<section class="mb-3" aria-label="' . __s('Merging') . '">';
             Html::createProgressBar(__('Work in progress...'));
-            echo "</td></tr></table></div>\n";
+            echo '</section>';
         }
 
         $item = array_keys($item);

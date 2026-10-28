@@ -61,6 +61,13 @@ if (isset($_POST["add"])) {
         //TRANS: %1$s is the user login, %2$s is the name of the item
         sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"])
     );
+    if ($newID && !empty($_POST['_inline']) && ($_POST['_inline_parent_type'] ?? '') === 'Project') {
+        $parentId = (int) ($_POST['_inline_parent_id'] ?? 0);
+        $parent = new Project();
+        if ($parentId > 0 && (int) $project->fields['projects_id'] === $parentId && $parent->can($parentId, READ)) {
+            Html::redirect(Project::getFormURLWithID($parentId) . '&forcetab=Project$1');
+        }
+    }
     if ($_SESSION['glpibackcreated']) {
         Html::redirect($project->getLinkURL());
     } else {

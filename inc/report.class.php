@@ -108,10 +108,7 @@ class Report extends CommonGLPI
             $report_list["state"]["name"] = __('Status');
             $report_list["state"]["file"] = "report.state.php";
         }
-        //Affichage du tableau de presentation des stats
-        echo "<table class='tab_cadre_fixe' aria-label='Statistics'>";
-        echo "<tr><th colspan='2'>" . __('Select the report you want to generate') . "</th></tr>";
-        echo "<tr class='tab_bg_1'><td class='center'>";
+        echo '<div class="mb-4"><label class="form-label d-block">' . __('Select the report you want to generate') . '</label>';
 
         $selected = -1;
         $values   = [$CFG_GLPI["root_doc"] . '/front/report.php' => Dropdown::EMPTY_VALUE];
@@ -163,9 +160,7 @@ class Report extends CommonGLPI
             ['on_change' => "window.location.href=this.options[this.selectedIndex].value",
                                       'value'     => $selected]
         );
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
+        echo '</div>';
     }
 
 
@@ -176,17 +171,18 @@ class Report extends CommonGLPI
     **/
     public static function showDefaultReport()
     {
+
         global $DB, $CFG_GLPI;
 
         // Title
-        echo "<span class='big b'>GLPI " . Report::getTypeName(Session::getPluralNumber()) . "</span><br><br>";
+        $rows = [];
 
         // 1. Get counts of itemtype
         $items     = $CFG_GLPI["asset_types"];
 
         $linkitems = $CFG_GLPI['directconnect_types'];
 
-        echo "<table class='tab_cadrehov' aria-label='Show default report'>";
+
 
         foreach ($items as $itemtype) {
             $table_item = getTableForItemType($itemtype);
@@ -217,11 +213,10 @@ class Report extends CommonGLPI
             $result = $DB->request($criteria)->next();
             $number = (int)$result['cpt'];
 
-            echo "<tr class='tab_bg_2'><td>" . $itemtype::getTypeName(Session::getPluralNumber()) . "</td>";
-            echo "<td class='numeric'>$number</td></tr>";
+            $rows[] = [$itemtype::getTypeName(Session::getPluralNumber()), __('Total'), $number];
         }
 
-        echo "<tr class='tab_bg_1'><td colspan='2' class='b'>" . OperatingSystem::getTypeName(1) . "</td></tr>";
+
 
         // 2. Get some more number data (operating systems per computer)
         $iterator = $DB->request([
@@ -246,8 +241,7 @@ class Report extends CommonGLPI
             if (empty($data['name'])) {
                 $data['name'] = Dropdown::EMPTY_VALUE;
             }
-            echo "<tr class='tab_bg_2'><td>" . $data['name'] . "</td>";
-            echo "<td class='numeric'>" . $data['count'] . "</td></tr>";
+            $rows[] = [OperatingSystem::getTypeName(1), htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8', false), $data['count']];
         }
 
         // Get counts of types
@@ -256,8 +250,7 @@ class Report extends CommonGLPI
         $items = array_flip($val);
 
         foreach ($items as $itemtype) {
-            echo "<tr class='tab_bg_1'><td colspan='2' class='b'>" . $itemtype::getTypeName(Session::getPluralNumber()) .
-                 "</td></tr>";
+
 
             $table_item = getTableForItemType($itemtype);
             $typeclass  = $itemtype . "Type";
@@ -303,11 +296,12 @@ class Report extends CommonGLPI
                 if (empty($data['name'])) {
                     $data['name'] = Dropdown::EMPTY_VALUE;
                 }
-                echo "<tr class='tab_bg_2'><td>" . $data['name'] . "</td>";
-                echo "<td class='numeric'>" . $data['count'] . "</td></tr>";
+                $rows[] = [$itemtype::getTypeName(Session::getPluralNumber()), htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8', false), $data['count']];
             }
         }
-        echo "</table>";
+        renderTwigTemplate('table.twig', ['id' => 'defaultReport', 'state_key' => 'Report_default',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [_n('Type', 'Types', 1), __('Name'), _x('quantity', 'Number')], 'values' => $rows]);
     }
 
 
@@ -337,6 +331,7 @@ class Report extends CommonGLPI
         array $order = [],
         $extra = ''
     ) {
+
         global $DB;
 
         // This SQL request matches the NetworkPort, then its NetworkName and IPAddreses. It also
@@ -449,94 +444,54 @@ class Report extends CommonGLPI
 
         $iterator = $DB->request($criteria);
 
-        if (count($iterator)) {
-            echo "<table class='tab_cadre_fixehov'aria-label='Devices'>";
-            echo "<tr>";
-            if (!empty($extra)) {
-                echo "<td>&nbsp;</td>";
-            }
-            echo "<th colspan='5'>" . __('Device 1') . "</th>";
-            echo "<th colspan='5'>" . __('Device 2') . "</th>";
-            echo "</tr>\n";
-
-            echo "<tr>";
-            if (!empty($extra)) {
-                echo "<th>$extra</th>";
-            }
-            echo "<th>" . _n('Device type', 'Device types', 1) . "</th>";
-            echo "<th>" . __('Device name') . "</th>";
-            echo "<th>" . __('Port Number') . "</th>";
-            echo "<th>" . NetworkPort::getTypeName(1) . "</th>";
-            echo "<th>" . __('MAC address') . "</th>";
-            echo "<th>" . IPAddress::getTypeName(0) . "</th>";
-            echo "<th>" . NetworkPort::getTypeName(1) . "</th>";
-            echo "<th>" . __('MAC address') . "</th>";
-            echo "<th>" . IPAddress::getTypeName(0) . "</th>";
-            echo "<th>" . _n('Device type', 'Device types', 1) . "</th>";
-            echo "<th>" . __('Device name') . "</th>";
-            echo "</tr>\n";
-
-            while ($line = $iterator->next()) {
-                echo "<tr class='tab_bg_1'>";
-
-                // To ensure that the NetworkEquipment remain the first item, we test its type
-                if ($line['itemtype_2'] == 'NetworkEquipment') {
-                    $idx = 2;
-                } else {
-                    $idx = 1;
-                }
-
-                if (!empty($extra)) {
-                    echo "<td>" . (empty($line['extra']) ? NOT_AVAILABLE : $line['extra']) . "</td>";
-                }
-
-                $itemtype = $line["itemtype_$idx"];
-                if (!empty($itemtype)) {
-                    echo "<td>" . $itemtype::getTypeName(1) . "</td>";
-                    $item_name = '';
-                    if ($item = getItemForItemtype($itemtype)) {
-                        if ($item->getFromDB($line["items_id_$idx"])) {
-                            $item_name = $item->getName();
-                        }
-                    }
-                    echo "<td>" . (empty($item_name) ? NOT_AVAILABLE : $item_name) . "</td>";
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                }
-                echo "<td>" . (empty($line["logical_$idx"]) ? NOT_AVAILABLE : $line["logical_$idx"]) . "</td>";
-                echo "<td>" . (empty($line["port_$idx"]) ? NOT_AVAILABLE : $line["port_$idx"]) . "</td>";
-                echo "<td>" . (empty($line["mac_$idx"]) ? NOT_AVAILABLE : $line["mac_$idx"]) . "</td>";
-                echo "<td>" . (empty($line["ip_$idx"]) ? NOT_AVAILABLE : $line["ip_$idx"]) . "</td>";
-
-                if ($idx == 1) {
-                    $idx = 2;
-                } else {
-                    $idx = 1;
-                }
-
-                echo "<td>" . (empty($line["port_$idx"]) ? NOT_AVAILABLE : $line["port_$idx"]) . "</td>";
-                echo "<td>" . (empty($line["mac_$idx"]) ? NOT_AVAILABLE : $line["mac_$idx"]) . "</td>";
-                echo "<td>" . (empty($line["ip_$idx"]) ? NOT_AVAILABLE : $line["ip_$idx"]) . "</td>";
-                $itemtype = $line["itemtype_$idx"];
-                if (!empty($itemtype)) {
-                    echo "<td>" . $itemtype::getTypeName(1) . "</td>";
-                    $item_name = '';
-                    if ($item = getItemForItemtype($itemtype)) {
-                        if ($item->getFromDB($line["items_id_$idx"])) {
-                            $item_name = $item->getName();
-                        }
-                    }
-                    echo "<td>" . (empty($item_name) ? NOT_AVAILABLE : $item_name) . "</td>";
-                } else {
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                    echo "<td> " . NOT_AVAILABLE . " </td>";
-                }
-
-                echo "</tr>\n";
-            }
-            echo "</table><br><hr><br>";
+        $fields = [];
+        if (!empty($extra)) {
+            $fields[] = $extra;
         }
+        foreach ([_n('Device type', 'Device types', 1), __('Device name'), __('Port Number'), NetworkPort::getTypeName(1), __('MAC address'), IPAddress::getTypeName(0)] as $label) {
+            $fields[] = __('Device 1') . ' - ' . $label;
+        }
+        foreach ([NetworkPort::getTypeName(1), __('MAC address'), IPAddress::getTypeName(0), _n('Device type', 'Device types', 1), __('Device name')] as $label) {
+            $fields[] = __('Device 2') . ' - ' . $label;
+        }
+        $rows = [];
+        $escape = static fn ($value) => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false);
+        foreach ($iterator as $line) {
+            $first = $line['itemtype_2'] === 'NetworkEquipment' ? 2 : 1;
+            $second = $first === 1 ? 2 : 1;
+            $row = [];
+            if (!empty($extra)) {
+                $row[] = $escape(($line['extra'] ?? '') ?: NOT_AVAILABLE);
+            }
+            foreach ([$first, $second] as $side) {
+                $type = $line['itemtype_' . $side];
+                $name = NOT_AVAILABLE;
+                $typeName = NOT_AVAILABLE;
+                if ($type && ($item = getItemForItemtype($type))) {
+                    $typeName = $item->getTypeName(1);
+                    if ($item->getFromDB($line['items_id_' . $side])) {
+                        $name = $item->getName() ?: NOT_AVAILABLE;
+                    }
+                }
+                if ($side === $first) {
+                    $row[] = $escape($typeName);
+                    $row[] = $escape($name);
+                    $row[] = $escape($line['logical_' . $side] ?: NOT_AVAILABLE);
+                }
+                foreach (['port_', 'mac_', 'ip_'] as $field) {
+                    $row[] = $escape($line[$field . $side] ?: NOT_AVAILABLE);
+                }
+                if ($side === $second) {
+                    $row[] = $escape($typeName);
+                    $row[] = $escape($name);
+                }
+            }
+            $rows[] = $row;
+        }
+        $tableId = 'networkReport_' . md5(serialize([$from, $joincrit, $where, $extra]));
+        renderTwigTemplate('table.twig', ['id' => $tableId, 'state_key' => $tableId,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $rows]);
+
     }
 
 
@@ -545,6 +500,37 @@ class Report extends CommonGLPI
      *
      * @see commonDBTM::getRights()
     **/
+    public static function showInventoryRows($iterator, $itemtype, $context)
+    {
+        $multi = Session::isMultiEntitiesMode();
+        $fields = [_n('Type', 'Types', 1), __('Name'), __('Deleted')];
+        if ($multi) {
+            $fields[] = Entity::getTypeName(1);
+        }
+        $fields = array_merge($fields, [Location::getTypeName(1), __('Date of purchase'), __('Warranty expiration date'),
+            ContractType::getTypeName(1), __('Start date'), __('End date')]);
+        $rows = [];
+        foreach ($iterator as $data) {
+            $row = [$itemtype::getTypeName(1), htmlspecialchars($data['itemname'] ?: NOT_AVAILABLE, ENT_QUOTES, 'UTF-8', false),
+                Dropdown::getYesNo($data['itemdeleted'] ?? 0)];
+            if ($multi) {
+                $row[] = htmlspecialchars($data['entname'] ?? '', ENT_QUOTES, 'UTF-8', false);
+            }
+            $row[] = htmlspecialchars(($data['location'] ?? '') ?: NOT_AVAILABLE, ENT_QUOTES, 'UTF-8', false);
+            $row[] = !empty($data['buy_date']) ? Html::convDate($data['buy_date']) : NOT_AVAILABLE;
+            $row[] = !empty($data['buy_date']) && !empty($data['warranty_duration'])
+                ? Infocom::getWarrantyExpir($data['buy_date'], $data['warranty_duration']) : NOT_AVAILABLE;
+            $row[] = htmlspecialchars(($data['type'] ?? '') ?: NOT_AVAILABLE, ENT_QUOTES, 'UTF-8', false);
+            $row[] = !empty($data['begin_date']) ? Html::convDate($data['begin_date']) : NOT_AVAILABLE;
+            $row[] = !empty($data['begin_date']) && !empty($data['duration'])
+                ? Infocom::getWarrantyExpir($data['begin_date'], $data['duration']) : NOT_AVAILABLE;
+            $rows[] = $row;
+        }
+        renderTwigTemplate('table.twig', ['id' => $context . '_' . $itemtype, 'state_key' => $context . '_' . $itemtype,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $rows]);
+    }
+
+
     public function getRights($interface = 'central')
     {
 

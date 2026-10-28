@@ -67,12 +67,12 @@ $form = [
    'buttons' => [
       [
          'value' => __s('Display report'),
-         'class' => 'btn btn-secondary',
+         'class' => 'btn btn-primary',
       ]
    ],
    'content' => [
       '' => [
-         'visible' => true,
+         'visible' => false,
          'inputs' => [
             __('Start date') => [
                'type' => 'date',
@@ -172,17 +172,12 @@ function display_infocoms_report($itemtype, $begin, $end)
         count($iterator)
         && ($item = getItemForItemtype($itemtype))
     ) {
-        echo "<h2>" . $item->getTypeName(1) . "</h2>";
-
-        echo "<table class='tab_cadre' aria-label='Report Form'><tr><th>" . __('Name') . "</th>";
+        $fields = [_n('Type', 'Types', 1), __('Name')];
         if ($display_entity) {
-            echo "<th>" . Entity::getTypeName(1) . "</th>";
+            $fields[] = Entity::getTypeName(1);
         }
-
-        echo "<th>" . _x('price', 'Value') . "</th><th>" . __('ANV') . "</th>";
-        echo "<th>" . __('TCO') . "</th><th>" . __('Date of purchase') . "</th>";
-        echo "<th>" . __('Startup date') . "</th><th>" . __('Warranty expiration date') . "</th></tr>";
-
+        $fields = array_merge($fields, [_x('price', 'Value'), __('ANV'), __('TCO'), __('Date of purchase'), __('Startup date'), __('Warranty expiration date')]);
+        $rows = [];
         $valeursoustot      = 0;
         $valeurnettesoustot = 0;
         $valeurnettegraph   = [];
@@ -247,18 +242,14 @@ function display_infocoms_report($itemtype, $begin, $end)
                 $valeurnettesoustot += $valeurnette;
             }
 
-            echo "<tr class='tab_bg_1'><td>" . $line["name"] . "</td>";
+            $row = [$item->getTypeName(1), htmlspecialchars($line['name'], ENT_QUOTES, 'UTF-8', false)];
             if ($display_entity) {
-                echo "<td>" . $line['entname'] . "</td>";
+                $row[] = htmlspecialchars($line['entname'], ENT_QUOTES, 'UTF-8', false);
             }
-
-            echo "<td class='right'>" . Html::formatNumber($line["value"]) . "</td>" .
-                 "<td class='right'>" . Html::formatNumber($valeurnette) . "</td>" .
-                 "<td class='right'>" . Infocom::showTco($line["ticket_tco"], $line["value"]) . "</td>" .
-                 "<td>" . Html::convDate($line["buy_date"]) . "</td>" .
-                 "<td>" . Html::convDate($line["use_date"]) . "</td>" .
-                 "<td>" . Infocom::getWarrantyExpir($line["buy_date"], $line["warranty_duration"]) .
-                 "</td></tr>";
+            $row = array_merge($row, [Html::formatNumber($line['value']), Html::formatNumber($valeurnette),
+                Infocom::showTco($line['ticket_tco'], $line['value']), Html::convDate($line['buy_date']),
+                Html::convDate($line['use_date']), Infocom::getWarrantyExpir($line['buy_date'], $line['warranty_duration'])]);
+            $rows[] = $row;
         }
 
         $valeurtot      += $valeursoustot;
@@ -269,10 +260,12 @@ function display_infocoms_report($itemtype, $begin, $end)
             Html::formatNumber($valeursoustot),
             Html::formatNumber($valeurnettesoustot)
         );
-        echo "<tr><td colspan='6' class='center'><h3>$tmpmsg</h3></td></tr>";
+        renderTwigTemplate('table.twig', ['id' => 'infocomReport_' . $itemtype, 'state_key' => 'Report_infocom_' . $itemtype,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15), 'fields' => $fields, 'values' => $rows]);
+        echo '<p class="text-end fw-bold mt-3">' . $tmpmsg . '</p>';
 
         if (count($valeurnettegraph) > 0) {
-            echo "<tr><td colspan='8' class='center'>";
+            echo '<div class="my-3">';
             ksort($valeurnettegraph);
             $valeurnettegraphdisplay = array_map(round(...), $valeurnettegraph);
 
@@ -296,11 +289,11 @@ function display_infocoms_report($itemtype, $begin, $end)
                 ],
                 $chart_opts
             );
-            echo "</td></tr>";
+            echo '</div>';
         }
 
         if (count($valeurgraph) > 0) {
-            echo "<tr><td colspan='8' class='center'>";
+            echo '<div class="my-3">';
 
             ksort($valeurgraph);
             $valeurgraphdisplay = array_map(round(...), $valeurgraph);
@@ -325,9 +318,9 @@ function display_infocoms_report($itemtype, $begin, $end)
                 ],
                 $chart_opts
             );
-            echo "</td></tr>";
+            echo '</div>';
         }
-        echo "</table>";
+
         return true;
     }
     return false;
@@ -335,29 +328,9 @@ function display_infocoms_report($itemtype, $begin, $end)
 
 $types = $CFG_GLPI["infocom_types"];
 
-$i = 0;
-echo "<table aria-label='Report Data for Each Item Type'><tr><td class='top'>";
-
-while (count($types) > 0) {
-    $type = array_shift($types);
-
-    if (display_infocoms_report($type, $_POST["date1"], $_POST["date2"])) {
-        echo "</td>";
-        $i++;
-
-        if (($i % 2) == 0) {
-            echo "</tr><tr>";
-        }
-        echo "<td class='top'>";
-    }
+foreach ($types as $type) {
+    display_infocoms_report($type, $_POST['date1'], $_POST['date2']);
 }
-
-if (($i % 2) == 0) {
-    echo "&nbsp;</td><td>&nbsp;";
-}
-
-echo "</td></tr></table>";
-
 
 $tmpmsg = sprintf(
     __('Total: Value=%1$s - Account net value=%2$s'),

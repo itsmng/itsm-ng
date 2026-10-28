@@ -131,83 +131,51 @@ class NetworkPort_Vlan extends CommonDBRelation
         }
 
         if ($canedit) {
-            echo "<div class='firstbloc'>\n";
-            echo "<form aria-label='VLAN' method='post' action='" . static::getFormURL() . "'>\n";
-            echo "<table class='tab_cadre_fixe' aria-label='VLAN'>\n";
-            echo "<tr><th colspan='4'>" . __('Associate a VLAN') . "</th></tr>";
-
-            echo "<tr class='tab_bg_1'><td class='right'>";
-            echo "<input type='hidden' name='networkports_id' value='$ID'>";
-            Vlan::dropdown(['used' => $used]);
-            echo "</td>";
-            echo "<td class='right'>" . __('Tagged') . "</td>";
-            echo "<td class='left'><input type='checkbox' name='tagged' value='1'></td>";
-            echo "<td><input type='submit' name='add' value='" . _sx('button', 'Associate') .
-                       "' class='submit'>";
-            echo "</td></tr>\n";
-
-            echo "</table>\n";
-            Html::closeForm();
-            echo "</div>\n";
+            renderTwigForm([
+                'action' => self::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Associate'),
+                    'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                ]],
+                'content' => [__('Associate a VLAN') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'networkports_id', 'value' => $ID],
+                        Vlan::getTypeName(1) => [
+                            'type' => 'select', 'name' => 'vlans_id',
+                            ...getAjaxDropdownOptions(Vlan::class, [], true, false, $used),
+                        ],
+                        __('Tagged') => ['type' => 'checkbox', 'name' => 'tagged', 'value' => 0],
+                    ],
+                ]],
+            ]);
         }
-
-        echo "<div class='spaced'>";
-        if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass' . __CLASS__ . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixehov' aria-label='VLAN Detail'>";
-
-        $header_begin  = "<tr>";
-        $header_top    = '';
-        $header_bottom = '';
-        $header_end    = '';
-        if ($canedit && $number) {
-            $header_top    .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-            $header_bottom .= "<th width='10'>";
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-        }
-        $header_end .= "<th>" . __('Name') . "</th>";
-        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
-        $header_end .= "<th>" . __('Tagged') . "</th>";
-        $header_end .= "<th>" . __('ID TAG') . "</th>";
-        $header_end .= "</tr>";
-        echo $header_begin . $header_top . $header_end;
-
-        $used = [];
+        $values = [];
+        $selection = [];
+        $object = new Vlan();
         foreach ($vlans as $data) {
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-                echo "<td>";
-                Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-                echo "</td>";
-            }
-            $name = $data["name"];
-            if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-            }
-            echo "<td class='b'>
-               <a href='" . Vlan::getFormURLWithID($data['id']) . "'>" . $name .
-                 "</a>";
-            echo "</td>";
-            echo "<td>" . Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
-            echo "</td><td>" . Dropdown::getYesNo($data["tagged"]) . "</td>";
-            echo "<td>" . $data["tag"] . "</td>";
-            echo "</tr>";
+            $object->getFromResultSet($data);
+            $values[] = [$object->getLink(), htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $data['entities_id']), ENT_QUOTES, 'UTF-8', false), Dropdown::getYesNo($data['tagged']), (int) $data['tag']];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['assocID']);
         }
-        if ($number) {
-            echo $header_begin . $header_top . $header_end;
+        $table_id = self::class . '_networkports_id_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name'), Entity::getTypeName(1), __('Tagged'), __('ID TAG')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
         }
-        echo "</table>";
-        if ($canedit && $number) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
     }
 
 
@@ -249,59 +217,32 @@ class NetworkPort_Vlan extends CommonDBRelation
             $vlans[$line["assocID"]] = $line;
         }
 
-        echo "<div class='spaced'>";
-        if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass' . __CLASS__ . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixehov' aria-label='VLAN Detail'>";
-
-        $header_begin  = "<tr>";
-        $header_top    = '';
-        $header_bottom = '';
-        $header_end    = '';
-        if ($canedit && $number) {
-            $header_top    .= "<th width='10'>";
-            $header_top    .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-            $header_bottom .= "<th width='10'>";
-            $header_bottom .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand) . "</th>";
-        }
-        $header_end .= "<th>" . __('Name') . "</th>";
-        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
-        $header_end .= "</tr>";
-        echo $header_begin . $header_top . $header_end;
-
-        $used = [];
+        $values = [];
+        $selection = [];
+        $object = new NetworkPort();
         foreach ($vlans as $data) {
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-                echo "<td>";
-                Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-                echo "</td>";
-            }
-            $name = $data["name"];
-            if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-            }
-            echo "<td class='b'>
-               <a href='" . NetworkPort::getFormURLWithID($data['id']) . "'>" . $name .
-                 "</a>";
-            echo "</td>";
-            echo "<td>" . Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
-            echo "</tr>";
+            $object->getFromResultSet($data);
+            $values[] = [$object->getLink(), htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $data['entities_id']), ENT_QUOTES, 'UTF-8', false)];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['assocID']);
         }
-        if ($number) {
-            echo $header_begin . $header_top . $header_end;
+        $table_id = self::class . '_vlans_id_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name'), Entity::getTypeName(1)],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
         }
-        echo "</table>";
-        if ($canedit && $number) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
     }
     /**
      * @param $portID

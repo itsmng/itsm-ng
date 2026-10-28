@@ -79,7 +79,7 @@ class Item_Cluster extends CommonDBRelation
      *
      * @return void
     **/
-    public static function showItems(Cluster $cluster)
+    public static function showItems(Cluster $cluster, $withtemplate = 0)
     {
         global $DB;
 
@@ -92,7 +92,7 @@ class Item_Cluster extends CommonDBRelation
         ) {
             return false;
         }
-        $canedit = $cluster->canEdit($ID);
+        $canedit = $cluster->canEdit($ID) && $withtemplate != 2;
 
         $items = $DB->request([
            'FROM'   => self::getTable(),
@@ -112,69 +112,40 @@ class Item_Cluster extends CommonDBRelation
             )
         );
 
-        if ($cluster->canAddItem('itemtype')) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                self::getFormURL(),
-                '_add_fromitem',
-                __('Add new item to this cluster...'),
-                [
-                  'cluster'   => $ID,
-                  'position'  => 1
-                ]
-            );
-            echo "</div>";
+        if ($canedit && $cluster->canAddItem('itemtype')) {
+            $relation = new self();
+            $relation->getEmpty();
+            $relation->fields['clusters_id'] = $ID;
+            $relation->showForm(-1, ['clusters_id' => $ID, 'position' => 1]);
         }
-
-        $items = iterator_to_array($items);
-
-        if (!count($items)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No item Found'><tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table>";
-        } else {
-            if ($canedit) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = [
-                   'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-                   'container'       => 'mass' . __CLASS__ . $rand
-                ];
-                Html::showMassiveActions($massiveactionparams);
+        $values = [];
+        $selection = [];
+        foreach ($items as $row) {
+            $item = getItemForItemtype($row['itemtype']);
+            if (!$item || !$item->getFromDB($row['items_id'])) {
+                continue;
             }
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Selectable Item'>";
-            $header = "<tr>";
-            if ($canedit) {
-                $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header .= "</th>";
-            }
-            $header .= "<th>" . _n('Item', 'Items', 1) . "</th>";
-            $header .= "</tr>";
-
-            echo $header;
-            foreach ($items as $row) {
-                $item = new $row['itemtype']();
-                $item->getFromDB($row['items_id']);
-                echo "<tr lass='tab_bg_1'>";
-                if ($canedit) {
-                    echo "<td>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-                    echo "</td>";
-                }
-                echo "<td>" . $item->getLink() . "</td>";
-                echo "</tr>";
-            }
-            echo $header;
-            echo "</table>";
-
-            if ($canedit && count($items)) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-            }
-            if ($canedit) {
-                Html::closeForm();
-            }
+            $values[] = [$item->getLink()];
+            $selection[] = sprintf('item[%s][%s]', self::class, $row['id']);
         }
+        $table_id = 'item_cluster_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [_n('Item', 'Items', 1)],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
     public function showForm($ID, $options = [])
@@ -216,6 +187,11 @@ class Item_Cluster extends CommonDBRelation
 
         $form = [
           'action' => $this->getFormURL(),
+          'buttons' => [[
+              'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+              'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+          ]],
           'itemtype' => $this::class,
           'content' => [
             $this->getTypeName() => [

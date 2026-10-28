@@ -491,6 +491,7 @@ class Supplier extends CommonDBTM
      **/
     public function showInfocoms()
     {
+
         global $DB;
 
         $instID = $this->fields['id'];
@@ -501,24 +502,8 @@ class Supplier extends CommonDBTM
         $types_iterator = Infocom::getTypes(['suppliers_id' => $instID]);
         $number = count($types_iterator);
 
-        echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='No associated Item'>";
-        echo "<tr><th colspan='2'>";
-        Html::printPagerForm();
-        echo "</th><th colspan='3'>";
-        if ($number == 0) {
-            echo __('No associated item');
-        } else {
-            echo _n('Associated item', 'Associated items', $number);
-        }
-        echo "</th></tr>";
-        echo "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
-        echo "<th>" . Entity::getTypeName(1) . "</th>";
-        echo "<th>" . __('Name') . "</th>";
-        echo "<th>" . __('Serial number') . "</th>";
-        echo "<th>" . __('Inventory number') . "</th>";
-        echo "</tr>";
-
         $num = 0;
+        $values = [];
         while ($row = $types_iterator->next()) {
             $itemtype = $row['itemtype'];
 
@@ -561,7 +546,7 @@ class Supplier extends CommonDBTM
                     $criteria['INNER JOIN']['glpi_consumableitems'] = [
                        'ON' => [
                           'glpi_consumableitems'  => 'id',
-                          'glpi_consumables'      => 'cartridgeitems_id'
+                          'glpi_consumables'      => 'consumableitems_id'
                        ]
                     ];
 
@@ -602,78 +587,32 @@ class Supplier extends CommonDBTM
                 $iterator = $DB->request($criteria);
                 $nb = count($iterator);
 
-                if ($nb > $_SESSION['glpilist_limit']) {
-                    echo "<tr class='tab_bg_1'>";
-                    $title = $item->getTypeName($nb);
-                    if ($nb > 0) {
-                        $title = sprintf(__('%1$s: %2$s'), $title, $nb);
+                foreach ($iterator as $data) {
+                    $name = $data[$linktype::getNameField()];
+                    if ($_SESSION['glpiis_ids_visible'] || $name === '') {
+                        $name = sprintf(__('%1$s (%2$s)'), $name, $data['id']);
                     }
-                    echo "<td class='center'>" . $title . "</td>";
-                    echo "<td class='center' colspan='2'>";
-                    $opt = [
-                       'order'      => 'ASC',
-                       'is_deleted' => 0,
-                       'reset'      => 'reset',
-                       'start'      => 0,
-                       'sort'       => 80,
-                       'criteria'   => [0 => [
-                          'value'      => '$$$$' . $instID,
-                          'searchtype' => 'contains',
-                          'field'      => 53
-                       ]]
-                    ];
-                    $link = $linktype::getSearchURL();
-                    $link .= (strpos((string) $link, '?') ? '&amp;' : '?');
-
-                    echo "<a href='$link" .
-                       Toolbox::append_params($opt) . "'>" . __('Device list') . "</a></td>";
-
-                    echo "<td class='center'>-</td><td class='center'>-</td></tr>";
-                } elseif ($nb) {
-                    $prem = true;
-                    while ($data = $iterator->next()) {
-                        $name = $data[$linktype::getNameField()];
-                        if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                            $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-                        }
-                        $link = $linktype::getFormURLWithID($data[$linkfield]);
-                        $name = "<a href='$link'>" . $name . "</a>";
-
-                        echo "<tr class='tab_bg_1";
-                        if (isset($data['is_template']) && $data['is_template'] == 1) {
-                            echo " linked-template";
-                        }
-                        echo "'>";
-                        if ($prem) {
-                            $prem = false;
-                            $title = $item->getTypeName($nb);
-                            if ($nb > 0) {
-                                $title = sprintf(__('%1$s: %2$s'), $title, $nb);
-                            }
-                            echo "<td class='center top' rowspan='$nb'>" . $title . "</td>";
-                        }
-                        echo "<td class='center'>" . Dropdown::getDropdownName(
-                            "glpi_entities",
-                            $data["entities_id"]
-                        ) . "</td>";
-                        echo "<td class='center";
-                        echo ((isset($data['is_deleted']) && $data['is_deleted']) ? " tab_bg_2_2'" : "'") . ">";
-                        echo $name . "</td>";
-                        echo "<td class='center'>" .
-                           (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") . "</td>";
-                        echo "<td class='center'>" .
-                           (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
-                        echo "</tr>";
+                    $name = '<a href="' . htmlspecialchars($linktype::getFormURLWithID($data[$linkfield]), ENT_QUOTES, 'UTF-8') . '">'
+                        . htmlspecialchars($name, ENT_QUOTES, 'UTF-8', false) . '</a>';
+                    if (!empty($data['is_deleted'])) {
+                        $name .= ' <span class="badge text-bg-warning">' . __('Deleted') . '</span>';
                     }
+                    if (!empty($data['is_template'])) {
+                        $name .= ' <span class="badge text-bg-secondary">' . __('Template') . '</span>';
+                    }
+                    $values[] = [$item->getTypeName(1),
+                        htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $data['entities_id']), ENT_QUOTES, 'UTF-8', false),
+                        $name, htmlspecialchars($data['serial'] ?? '-', ENT_QUOTES, 'UTF-8', false),
+                        htmlspecialchars($data['otherserial'] ?? '-', ENT_QUOTES, 'UTF-8', false)];
                 }
                 $num += $nb;
             }
         }
-        echo "<tr class='tab_bg_2'>";
-        echo "<td class='center'>" . (($num > 0) ? sprintf(__('%1$s = %2$s'), __('Total'), $num)
-           : "&nbsp;") . "</td>";
-        echo "<td colspan='4'>&nbsp;</td></tr> ";
-        echo "</table></div>";
+        renderTwigTemplate('table.twig', ['id' => 'supplierFinancialItems_' . $instID, 'state_key' => 'Supplier_financial_items',
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [_n('Type', 'Types', 1), Entity::getTypeName(1), __('Name'), __('Serial number'), __('Inventory number')],
+            'values' => $values]);
+        echo '<p class="text-end fw-bold mt-3">' . __('Total') . ': ' . $num . '</p>';
     }
 
     /**

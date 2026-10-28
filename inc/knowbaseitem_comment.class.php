@@ -189,14 +189,8 @@ class KnowbaseItem_Comment extends CommonDBTM
             echo "</div>";
         }
 
-        // No comments in database
         if ($number < 1) {
-            $no_txt = __('No comments');
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Base item'>";
-            echo "<tr><th>$no_txt</th></tr>";
-            echo "</table>";
-            echo "</div>";
+            echo "<p class='text-muted'>" . __('No comments') . '</p>';
             return;
         }
 
@@ -424,12 +418,13 @@ class KnowbaseItem_Comment extends CommonDBTM
         $form = [
            'action' => Toolbox::getItemTypeFormURL(__CLASS__),
            'buttons' => [
-              [
+              ($edit === false) ? [
                  'type'  => 'submit',
                  'name'  => 'add',
                  'value' => _sx('button', 'Add'),
-                 'class' => 'btn btn-secondary',
-              ],
+                 'class' => 'btn btn-primary',
+                 'icon' => 'fas fa-plus',
+              ] : [],
               ($edit !== false || $answer !== false) ? [
                  'type'  => 'reset',
                  'name'  => 'cancel',
@@ -440,7 +435,7 @@ class KnowbaseItem_Comment extends CommonDBTM
                  'type'  => 'submit',
                  'name'  => 'edit',
                  'value' => _sx('button', 'Edit'),
-                 'class' => 'btn btn-secondary',
+                 'class' => 'btn btn-primary',
               ] : [],
            ],
            'content' => [
@@ -470,7 +465,7 @@ class KnowbaseItem_Comment extends CommonDBTM
                     _n('Comment', 'Comments', 1) => [
                        'type'  => 'textarea',
                        'name'  => 'comment',
-                       'value' => $content,
+                       'value' => htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
                        'required' => true,
                        'col_lg' => 12,
                        'col_md' => 12,

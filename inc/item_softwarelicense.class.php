@@ -155,8 +155,8 @@ class Item_SoftwareLicense extends CommonDBRelation
                          'change' => <<<JS
                      const val = this.value;
                      const select = document.querySelector('select[name="peer_softwarelicenses_id"]');
-                     select.disabled = !val;
-                     select.innerHTML = '';
+                     select.disabled = !val || val === '0';
+                     $(select).empty().trigger('change');
                      if (val != 0) {
                         $.ajax({
                            url: "{$CFG_GLPI['root_doc']}/ajax/dropdownSoftwareLicense.php",
@@ -525,6 +525,7 @@ JAVASCRIPT;
     **/
     public static function showForLicenseByEntity(SoftwareLicense $license)
     {
+
         global $DB;
 
         $softwarelicense_id = $license->getField('id');
@@ -535,14 +536,8 @@ JAVASCRIPT;
             return false;
         }
 
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre' aria-label='Number of affected items'><tr>";
-        echo "<th>" . Entity::getTypeName(1) . "</th>";
-        echo "<th>" . __('Number of affected items') . "</th>";
-        echo "</tr>\n";
-
-        $tot = 0;
-
+        $values = [];
+        $total = 0;
         $iterator = $DB->request([
            'SELECT' => ['id', 'completename'],
            'FROM'   => 'glpi_entities',
@@ -550,8 +545,7 @@ JAVASCRIPT;
            'ORDER'  => ['completename']
         ]);
 
-        $tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
-        while ($data = $iterator->next()) {
+        foreach ($iterator as $data) {
             $itemtype_iterator = $DB->request([
                'SELECT'    => ['itemtype'],
                'DISTINCT'  => true,
@@ -574,24 +568,20 @@ JAVASCRIPT;
                 $target_types[] = $type['itemtype'];
             }
 
-            if (count($target_types)) {
-                echo "<tr class='tab_bg_2'><td colspan='2'>{$data["completename"]}</td></tr>";
-                foreach ($target_types as $itemtype) {
-                    $nb = self::countForLicense($softwarelicense_id, $data['id'], $itemtype);
-                    echo "<tr class='tab_bg_2'><td>$tab$tab{$itemtype::getTypeName()}</td>";
-                    echo "<td class='numeric'>{$nb}</td></tr>\n";
-                    $tot += $nb;
+            foreach ($target_types as $itemtype) {
+                if (!getItemForItemtype($itemtype)) {
+                    continue;
                 }
+                $count = self::countForLicense($softwarelicense_id, $data['id'], $itemtype);
+                $values[] = [htmlspecialchars($data['completename'], ENT_QUOTES, 'UTF-8', false),
+                    htmlspecialchars($itemtype::getTypeName(), ENT_QUOTES, 'UTF-8', false), $count];
+                $total += $count;
             }
         }
-
-        if ($tot > 0) {
-            echo "<tr class='tab_bg_1'><td class='center b'>" . __('Total') . "</td>";
-            echo "<td class='numeric b '>" . $tot . "</td></tr>\n";
-        } else {
-            echo "<tr class='tab_bg_1'><td colspan='2 b'>" . __('No item found') . "</td></tr>\n";
-        }
-        echo "</table></div>";
+        renderTwigTemplate('table.twig', ['id' => 'licenseEntities_' . $softwarelicense_id,
+            'state_key' => 'Item_SoftwareLicense_by_Entity', 'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            'fields' => [Entity::getTypeName(1), _n('Type', 'Types', 1), __('Number of affected items')], 'values' => $values]);
+        echo '<p class="text-end fw-bold mt-3">' . __('Total') . ': ' . $total . '</p>';
     }
 
 

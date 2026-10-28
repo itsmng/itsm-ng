@@ -164,7 +164,8 @@ class KnowbaseItem_Item extends CommonDBRelation
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _sx('button', 'Add'),
-                     'class' => 'btn btn-secondary'
+                     'class' => $item->getType() === 'Computer' ? 'btn btn-primary' : 'btn btn-secondary',
+                     'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                   ]
                ],
                'content' => [
@@ -247,11 +248,7 @@ class KnowbaseItem_Item extends CommonDBRelation
             $no_txt = ($item_type == KnowbaseItem::getType()) ?
                __('No linked items') :
                __('No knowledge base entries linked');
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Base Item'>";
-            echo "<tr><th>$no_txt</th></tr>";
-            echo "</table>";
-            echo "</div>";
+            echo '<div class="alert alert-info" role="status">' . $no_txt . '</div>';
             return;
         }
 

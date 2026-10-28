@@ -1476,60 +1476,46 @@ class Auth extends CommonGLPI
     {
         global $DB, $CFG_GLPI;
 
-        if (Session::haveRight("user", User::UPDATEAUTHENT) && $user->can($user->getID(), READ)) {
-            echo "<form aria-label='Synchronization form' method='post' action='" . Toolbox::getItemTypeFormURL('User') . "'>";
-            echo "<div class='firstbloc'>";
-
-            switch ($user->getField('authtype')) {
-                case self::CAS:
-                case self::EXTERNAL:
-                case self::X509:
-                case self::LDAP:
-                    //Look it the auth server still exists !
-                    // <- Bad idea : id not exists unable to change anything
-                    // SQL query
-                    $result = $DB->request([
-                       'SELECT' => 'name',
-                       'FROM' => 'glpi_authldaps',
-                       'WHERE' => ['id' => $user->getField('auths_id'), 'is_active' => 1],
-                    ]);
-
-                    if ($result->numrows() > 0) {
-                        echo "<table class='tab_cadre' aria-label='Synchronisation'><tr class='tab_bg_2'><td>";
-                        echo "<input type='hidden' name='id' value='" . $user->getID() . "'>";
-                        echo "<input class=submit type='submit' name='force_ldap_resynch' value='" .
-                           __s('Force synchronization') . "'>";
-                        echo "</td></tr></table>";
-                    }
-                    break;
-
-                case self::DB_GLPI:
-                case self::MAIL:
-                    break;
-            }
-            echo "</div>";
-
-            echo "<div class='spaced'>";
-            echo "<table class='tab_cadre' aria-label='Authentication method'>";
-            echo "<tr><th>" . __('Change of the authentication method') . "</th></tr>";
-            echo "<tr class='tab_bg_2'><td class='center'>";
-            $rand             = self::dropdown(['name' => 'authtype']);
-            $paramsmassaction = [
-               'authtype' => '__VALUE__',
-               'name'     => 'change_auth_method'
-            ];
-            Ajax::updateItemOnSelectEvent(
-                "dropdown_authtype$rand",
-                "show_massiveaction_field",
-                $CFG_GLPI["root_doc"] . "/ajax/dropdownMassiveActionAuthMethods.php",
-                $paramsmassaction
-            );
-            echo "<input type='hidden' name='id' value='" . $user->getID() . "'>";
-            echo "<span id='show_massiveaction_field'></span>";
-            echo "</td></tr></table>";
-            echo "</div>";
-            Html::closeForm();
+        if (!Session::haveRight('user', User::UPDATEAUTHENT) || !$user->can($user->getID(), READ)) {
+            return;
         }
+        if (in_array($user->getField('authtype'), [self::CAS, self::EXTERNAL, self::X509, self::LDAP])) {
+            $server = $DB->request([
+                'SELECT' => 'name', 'FROM' => 'glpi_authldaps',
+                'WHERE' => ['id' => $user->getField('auths_id'), 'is_active' => 1],
+            ]);
+            if (count($server)) {
+                renderTwigForm([
+                    'action' => Toolbox::getItemTypeFormURL('User'),
+                    'buttons' => [[
+                        'type' => 'submit', 'name' => 'force_ldap_resynch', 'value' => __('Force synchronization'),
+                        'class' => 'btn btn-primary', 'icon' => 'fas fa-sync',
+                    ]],
+                    'content' => [[
+                        'visible' => false, 'attributes' => ['hidden' => 'hidden'],
+                        'inputs' => [['type' => 'hidden', 'name' => 'id', 'value' => $user->getID()]],
+                    ]],
+                ]);
+            }
+        }
+        $rand = mt_rand();
+        $dropdown = self::dropdown(['name' => 'authtype', 'rand' => $rand, 'display' => false]);
+        $field_id = 'show_massiveaction_field_' . $rand;
+        renderTwigForm([
+            'action' => Toolbox::getItemTypeFormURL('User'),
+            'buttons' => [[]],
+            'content' => [__('Change of the authentication method') => [
+                'visible' => true,
+                'inputs' => [
+                    ['type' => 'hidden', 'name' => 'id', 'value' => $user->getID()],
+                    __('Authentication method') => ['content' => $dropdown . '<span id="' . $field_id . '"></span>', 'col_lg' => 12],
+                ],
+            ]],
+        ]);
+        Ajax::updateItemOnSelectEvent('dropdown_authtype' . $rand, $field_id,
+            $CFG_GLPI['root_doc'] . '/ajax/dropdownMassiveActionAuthMethods.php',
+            ['authtype' => '__VALUE__', 'name' => 'change_auth_method']
+        );
     }
 
     /**

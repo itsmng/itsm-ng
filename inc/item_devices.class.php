@@ -661,8 +661,9 @@ class Item_Devices extends CommonDBRelation
 
         $ID = $item->getField('id');
 
+        $link_types = $is_device ? [$item::getItem_DeviceType()] : self::getItemAffinities($item->getType());
         $devtypes = [];
-        foreach (self::getItemAffinities($item->getType()) as $link_type) {
+        foreach ($link_types as $link_type) {
             $devtypes[] = $link_type::getDeviceType();
         }
 
@@ -688,7 +689,8 @@ class Item_Devices extends CommonDBRelation
                      'type'  => 'submit',
                      'value' => _sx('button', 'Add'),
                      'name'  => 'add',
-                     'class' => 'btn btn-secondary'
+                     'class' => 'btn btn-primary',
+                     'icon' => 'fas fa-plus'
                   ]
                ],
                'content' => [
@@ -721,8 +723,9 @@ class Item_Devices extends CommonDBRelation
                            'hooks' => [
                               'change' => <<<JS
                               const val = this.value;
-                              $('select[name="devices_id"]').empty();
-                              if (val != 0) {
+                              const component = $('#DropdownForDeviceIdItemDevices');
+                              component.empty().prop('disabled', true).trigger('change');
+                              if (val && val != 0) {
                                  $.ajax({
                                     url: '{$CFG_GLPI['root_doc']}/ajax/dropdownAllItems.php',
                                     data: {
@@ -732,18 +735,15 @@ class Item_Devices extends CommonDBRelation
                                        entity_restrict: $entity,
                                     },
                                     type: 'POST',
+                                    dataType: 'json',
                                     success: function(data) {
-                                       setAjaxDropdownOptions("select[name=\"devices_id\"]", typeof data === 'string' ? JSON.parse(data) : data);
+                                       if ($('#selectForDeviceIdItemDevices').val() !== val) {
+                                          return;
+                                       }
+                                       component.prop('disabled', false);
+                                       setAjaxDropdownOptions(component, data);
                                     }
                                  });
-                              }
-                              if (val == 0) {
-                                 $('input[name="new_devices"]').prop('disabled', true);
-                                 $('select[name="devices_id"]').prop('disabled', true);
-                                 $('select[name="devices_id"]').empty();
-                                 $('#checklistForDeviceIdItemDevices').empty();
-                              } else {
-                                 $('select[name="devices_id"]').prop('disabled', false);
                               }
                            JS,
                            ]
@@ -758,42 +758,42 @@ class Item_Devices extends CommonDBRelation
                            'hooks' => [
                               'change' => <<<JS
                               const val = this.value;
-                              $('#checklistForDeviceIdItemDevices').empty();
-                              if (val != 0) {
-                                 $('input[name="new_devices"]').prop('disabled', false);
+                              const devicetype = $('#selectForDeviceIdItemDevices').val();
+                              const existing = $('#existingForDeviceIdItemDevices');
+                              existing.empty().removeAttr('name').prop('disabled', true).trigger('change');
+                              $('input[name="new_devices"]').val(0).prop('disabled', !(val > 0));
+                              if (val > 0) {
                                  $.ajax({
                                     url: '{$CFG_GLPI['root_doc']}/ajax/selectUnaffectedOrNewItem_Device.php',
                                     data: {
-                                       itemtype: $('#selectForDeviceIdItemDevices').val(),
+                                       itemtype: devicetype,
                                        items_id: val,
                                     },
                                     type: 'POST',
+                                    dataType: 'json',
                                     success: function(data) {
-                                       const jsonDatas = JSON.parse(data);
-                                       for (const key in jsonDatas.options) {
-                                          $('#checklistForDeviceIdItemDevices').append(`
-                                             <div class="row">
-                                                <input class="form-check-input
-                                                   col col-2" type="checkbox" value="` + key + `"
-                                                      id="` + jsonDatas.name + `_` + key + `" name="items_` + jsonDatas.name + `[]">
-                                                <label class="form-check
-                                                   col col-10" for="` + jsonDatas.name + `_` + key + `">
-                                                   ` + jsonDatas.options[key] + `
-                                                </label>
-                                             </div>
-                                          `);
+                                       if ($('#selectForDeviceIdItemDevices').val() !== devicetype
+                                          || $('#DropdownForDeviceIdItemDevices').val() !== val) {
+                                          return;
                                        }
+                                       existing.attr('name', 'items_' + data.name + '[]');
+                                       for (const [id, label] of Object.entries(data.options)) {
+                                          existing.append(new Option(label, id));
+                                       }
+                                       existing.prop('disabled', false).trigger('change');
                                     }
                                  });
-                              } else {
-                                 $('input[name="new_devices"]').prop('disabled', true);
                               }
                            JS,
                            ]
                         ] : [],
                         __('Choose an existing device') => (!$is_device) ? [
-                           'type' => 'checklist',
-                           'id' => 'checklistForDeviceIdItemDevices',
+                           'type' => 'select',
+                           'id' => 'existingForDeviceIdItemDevices',
+                           'multiple' => true,
+                           'values' => [],
+                           'value' => [],
+                           'disabled' => '',
                            'col_lg' => 6,
                         ] : [],
                         __('Add new devices') => (!$is_device) ? [
@@ -812,7 +812,7 @@ class Item_Devices extends CommonDBRelation
             renderTwigForm($form);
         }
 
-        foreach (self::getItemAffinities($item->getType()) as $link_type) {
+        foreach ($link_types as $link_type) {
             $link = getItemForItemtype($link_type);
             $table = $link->getTable();
             $criteria = [
@@ -820,33 +820,11 @@ class Item_Devices extends CommonDBRelation
                'FROM'   => $table
             ];
             if ($is_device) {
-                $fk = 'items_id';
-
-                // Entity restrict
                 $criteria['WHERE'] = [
-                   $link->getDeviceForeignKey()  => $item->getID(),
-                   "$table.itemtype"            => $peer_type,
-                   "$table.is_deleted"          => 0
+                    $link->getDeviceForeignKey() => $item->getID(),
+                    "$table.is_deleted" => 0,
                 ];
-                $criteria['ORDERBY'] = [
-                   "$table.itemtype",
-                   "$table.$fk"
-                ];
-                if (!empty($peer_type)) {
-                    $criteria['LEFT JOIN'] = [
-                       getTableForItemType($peer_type) => [
-                          'ON' => [
-                             $table                          => 'items_id',
-                             getTableForItemType($peer_type)  => 'id', [
-                                'AND' => [
-                                   "$table.itemtype"   => $peer_type
-                                ]
-                             ]
-                          ]
-                       ]
-                    ];
-                    $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(getTableForItemType($peer_type));
-                }
+                $criteria['ORDERBY'] = ["$table.itemtype", "$table.items_id", "$table.id"];
             } else {
                 $fk = $link->getDeviceForeignKey();
 
@@ -859,7 +837,7 @@ class Item_Devices extends CommonDBRelation
             }
             $datas = iterator_to_array($DB->request($criteria));
             if (count($datas)) {
-                $massiveActionContainerId = 'mass' . __CLASS__ . rand();
+                $massiveActionContainerId = 'itemDevicesTable_' . $item->getType() . '_' . $ID . '_' . $link_type;
                 if ($canedit) {
                     $params = [
                        'container' => $massiveActionContainerId,
@@ -868,37 +846,71 @@ class Item_Devices extends CommonDBRelation
                     ];
                     Html::showMassiveActions($params);
                 }
-                $columns = $link->getSpecificities();
-                $fields = [];
+                $escape = static function ($value) {
+                    return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+                };
+                $columns = array_filter($link->getSpecificities(), static function ($column) {
+                    return empty($column['nodisplay'])
+                        && (!isset($column['right']) || Session::haveRightsOr($column['right'], [READ, UPDATE]));
+                });
+                $fields = ['name' => $is_device ? _n('Item', 'Items', 1) : __('Component')];
                 foreach ($columns as $name => $column) {
-                    if ((!isset($column['nodisplay']) || $column['nodisplay'] == false) && !isset($column['datatype'])) {
-                        $fields[$name] = $column['long name'];
-                    }
+                    $fields[$name] = $column['long name'];
+                }
+                if ($item->isDynamic()) {
+                    $fields['is_dynamic'] = __('Automatic inventory');
                 }
                 if ($canedit) {
-                    $fields[] = __('Update');
+                    $fields['action'] = __('Update');
                 }
                 $values = [];
                 $massive_action = [];
                 foreach ($datas as $data) {
-                    $newValue = [];
-                    foreach (array_keys($columns) as $column) {
-                        $newValue[$column] = $data[$column];
+                    $peer_type = $is_device ? $data['itemtype'] : $link->getDeviceType();
+                    $peer_id = $is_device ? $data['items_id'] : $data[$link->getDeviceForeignKey()];
+                    $peer = getItemForItemtype($peer_type);
+                    $name = $escape(__('None'));
+                    if ($peer && $peer->getFromDB($peer_id)) {
+                        $canread = $peer->can($peer_id, READ);
+                        if ($is_device && !$canread) {
+                            continue;
+                        }
+                        $name = $escape($peer->getNameID());
+                        if ($canread) {
+                            $name = '<a href="' . $escape($peer->getLinkURL()) . '">' . $name . '</a>';
+                        }
+                    }
+                    $newValue = ['name' => $name];
+                    foreach ($columns as $column => $attributes) {
+                        $value = $data[$column] ?? '';
+                        if (($attributes['datatype'] ?? '') === 'dropdown' && $value) {
+                            $dropdown_type = getItemtypeForForeignKeyField($column);
+                            $value = Dropdown::getDropdownName($dropdown_type::getTable(), $value);
+                        }
+                        $newValue[$column] = $escape($value);
+                    }
+                    if ($item->isDynamic()) {
+                        $newValue['is_dynamic'] = $escape(Dropdown::getYesNo($data['is_dynamic']));
                     }
                     if ($canedit) {
-                        $newValue[] = '<a href=' . $link->getFormURL() . '?id=' . $data['id'] . '>' . __('Update') . "</a>";
+                        $newValue['action'] = '<a href="' . $escape($link->getFormURL() . '?id=' . $data['id'])
+                            . '">' . $escape(__('Update')) . '</a>';
                     }
                     $values[] = $newValue;
                     $massive_action[] = sprintf('item[%s][%s]', $link::class, $data['id']);
                 }
-                echo "<hr>";
-                echo "<h2>" . $link::getTypeName() . "</h2>";
-                renderTwigTemplate('table.twig', [
-                   'id' => $massiveActionContainerId,
-                   'fields' => $fields,
-                   'values' => $values,
-                   'massive_action' => $massive_action
-                ]);
+                echo "<h2 class='h5 mt-4'>" . $escape($link::getTypeName()) . "</h2>";
+                $table_vars = [
+                    'id' => $massiveActionContainerId,
+                    'state_key' => $massiveActionContainerId,
+                    'fields' => $fields,
+                    'values' => $values,
+                    'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+                ];
+                if ($canedit) {
+                    $table_vars['massive_action'] = $massive_action;
+                }
+                renderTwigTemplate('table.twig', $table_vars);
             }
         }
         // Force disable selected items

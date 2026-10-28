@@ -1054,27 +1054,27 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
 
         $tmp = "<a href='" . $this->getSearchURL() .
                "?knowbaseitemcategories_id=$knowbaseitemcategories_id&forcetab=Knowbase$2'>" .
-               $fullcategoryname . "</a>";
-        $out .= "<table class='tab_cadre_fixe' aria-label='Category'>";
-        $out .= "<tr><th colspan='4'>" . sprintf(__('%1$s: %2$s'), __('Category'), $tmp);
-        $out .= "</th></tr>";
+               htmlspecialchars((string) $fullcategoryname, ENT_QUOTES, "UTF-8", false) . "</a>";
+        $out .= "<article class='kb-article'>";
+        $out .= "<nav class='mb-3 text-muted'>" . sprintf(__('%1$s: %2$s'), __('Category'), $tmp);
+        $out .= "</nav>";
 
-        $out .= "<tr><td class='left' colspan='4'><h2>" . __('Subject') . "</h2>";
+        $out .= "<header class='mb-4'><p class='text-muted mb-1'>" . __('Subject') . "</p><h1 class='h3'>";
         if (KnowbaseItemTranslation::canBeTranslated($this)) {
-            $out .= KnowbaseItemTranslation::getTranslatedValue($this, 'name');
+            $out .= htmlspecialchars(KnowbaseItemTranslation::getTranslatedValue($this, 'name'), ENT_QUOTES, 'UTF-8', false);
         } else {
-            $out .= $this->fields["name"];
+            $out .= htmlspecialchars((string) $this->fields['name'], ENT_QUOTES, 'UTF-8', false);
         }
 
-        $out .= "</td></tr>";
-        $out .= "<tr><td class='left' colspan='4'><h2>" . __('Content') . "</h2>\n";
+        $out .= "</h1></header>";
+        $out .= "<section><h2 class='h5'>" . __('Content') . "</h2>\n";
 
         $out .= "<div id='kbanswer' class='rich_text_container'>";
         $out .= $this->getAnswer();
         $out .= "</div>";
-        $out .= "</td></tr>";
+        $out .= "</section>";
 
-        $out .= "<tr><th class='tdkb'  colspan='2'>";
+        $out .= "<footer class='border-top pt-3 mt-4 d-flex flex-wrap justify-content-between gap-3'><div>";
         if ($this->fields["users_id"]) {
             // Integer because true may be 2 and getUserName return array
             if ($linkusers_id) {
@@ -1100,8 +1100,8 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             $out .= sprintf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
         }
 
-        $out .= "</th>";
-        $out .= "<th class='tdkb' colspan='2'>";
+        $out .= "</div>";
+        $out .= "<div>";
         if ($this->countVisibilities() == 0) {
             $out .= "<span class='red'>" . __('Unpublished') . "</span><br>";
         }
@@ -1113,8 +1113,8 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
         } else {
             $out .= __('This item is not part of the FAQ');
         }
-        $out .= "</th></tr>";
-        $out .= "</table>";
+        $out .= "</div></footer>";
+        $out .= "</article>";
 
         if ($options['display']) {
             echo $out;
@@ -1154,25 +1154,18 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             }
         }
 
-        echo "<div>";
-        echo "<form aria-label='Search Form' method='get' action='" . $this->getSearchURL() . "'>";
-        echo "<table class='tab_cadre_fixe' aria-label='Search Form'>";
-        echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
-        echo "<input type='text' size='50' name='contains' value=\"" .
-               Html::cleanInputText(stripslashes((string) $params["contains"])) . "\"></td>";
-        echo "<td class='left'>";
-        echo "<input type='submit' value=\"" . _sx('button', 'Search') . "\" class='submit'></td></tr>";
-        echo "</table>";
-        if (
-            isset($options['item_itemtype'])
-            && isset($options['item_items_id'])
-        ) {
-            echo "<input type='hidden' name='item_itemtype' value='" . $options['item_itemtype'] . "'>";
-            echo "<input type='hidden' name='item_items_id' value='" . $options['item_items_id'] . "'>";
+        $inputs = [
+            __('Search') => ['type' => 'search', 'name' => 'contains', 'value' => stripslashes((string) $params['contains'])],
+        ];
+        if (isset($options['item_itemtype'], $options['item_items_id'])) {
+            $inputs[] = ['type' => 'hidden', 'name' => 'item_itemtype', 'value' => $options['item_itemtype']];
+            $inputs[] = ['type' => 'hidden', 'name' => 'item_items_id', 'value' => $options['item_items_id']];
         }
-        Html::closeForm();
-
-        echo "</div>";
+        renderTwigForm([
+            'method' => 'get', 'action' => $this->getSearchURL(),
+            'buttons' => [['type' => 'submit', 'value' => _x('button', 'Search'), 'class' => 'btn btn-primary']],
+            'content' => [__('Search') => ['visible' => true, 'inputs' => $inputs]],
+        ]);
     }
 
 
@@ -1211,23 +1204,19 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             Session::getLoginUserID()
             && !$faq
         ) {
-            echo "<div>";
-            echo "<form aria-label='Browse Form' method='get' action='" . $this->getSearchURL() . "'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Browse Form'>";
-            echo "<tr class='tab_bg_2'><td class='right' width='50%'>" . __('Category') . "&nbsp;";
-            KnowbaseItemCategory::dropdown(['value' => $params["knowbaseitemcategories_id"]]);
-            echo "</td><td class='left'>";
-            echo "<input type='submit' value=\"" . _sx('button', 'Post') . "\" class='submit'></td>";
-            echo "</tr></table>";
-            if (
-                isset($options['item_itemtype'])
-                && isset($options['item_items_id'])
-            ) {
-                echo "<input type='hidden' name='item_itemtype' value='" . $options['item_itemtype'] . "'>";
-                echo "<input type='hidden' name='item_items_id' value='" . $options['item_items_id'] . "'>";
+            $inputs = [__('Category') => [
+                'type' => 'select', 'name' => 'knowbaseitemcategories_id',
+                'value' => $params['knowbaseitemcategories_id'], ...getAjaxDropdownOptions(KnowbaseItemCategory::class),
+            ]];
+            if (isset($options['item_itemtype'], $options['item_items_id'])) {
+                $inputs[] = ['type' => 'hidden', 'name' => 'item_itemtype', 'value' => $options['item_itemtype']];
+                $inputs[] = ['type' => 'hidden', 'name' => 'item_items_id', 'value' => $options['item_items_id']];
             }
-            Html::closeForm();
-            echo "</div>";
+            renderTwigForm([
+                'method' => 'get', 'action' => $this->getSearchURL(),
+                'buttons' => [['type' => 'submit', 'value' => _x('button', 'Post'), 'class' => 'btn btn-primary']],
+                'content' => [__('Category') => ['visible' => true, 'inputs' => $inputs]],
+            ]);
         }
     }
 
@@ -1258,22 +1247,19 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
             }
         }
 
-        echo "<div>";
-        echo "<form aria-label='Manage Form' method='get' action='" . $this->getSearchURL() . "'>";
-        echo "<table class='tab_cadre_fixe' aria-label='Manage Form'>";
-        echo "<tr class='tab_bg_2'><td class='right' width='50%'>";
         $values = ['myunpublished' => __('My unpublished articles'),
                         'allmy'         => __('All my articles')];
         if (Session::haveRight(self::$rightname, self::KNOWBASEADMIN)) {
             $values['allunpublished'] = __('All unpublished articles');
             $values['allpublished'] = __('All published articles');
         }
-        Dropdown::showFromArray('unpublished', $values, ['value' => $params['unpublished']]);
-        echo "</td><td class='left'>";
-        echo "<input type='submit' value=\"" . _sx('button', 'Post') . "\" class='submit'></td>";
-        echo "</tr></table>";
-        Html::closeForm();
-        echo "</div>";
+        renderTwigForm([
+            'method' => 'get', 'action' => $this->getSearchURL(),
+            'buttons' => [['type' => 'submit', 'value' => _x('button', 'Post'), 'class' => 'btn btn-primary']],
+            'content' => [__('Articles') => ['visible' => true, 'inputs' => [
+                __('Articles') => ['type' => 'select', 'name' => 'unpublished', 'values' => $values, 'value' => $params['unpublished']],
+            ]]],
+        ]);
     }
 
 
@@ -1608,6 +1594,12 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
 
         $showwriter = in_array($type, ['myunpublished', 'allunpublished', 'allmy']);
 
+        $output_type = $_GET['display_type'] ?? Search::HTML_OUTPUT;
+        if ($output_type == Search::HTML_OUTPUT) {
+            self::showV2List($main_iterator, $params, $options, $type, $showwriter);
+            return true;
+        }
+
         // Limit the result, if no limit applies, use prior result
         if (
             ($rows > $list_limit)
@@ -1859,6 +1851,78 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
     }
 
 
+    /** Render HTML search results without altering the existing export paths. */
+    private static function showV2List($iterator, array $params, array $options, $type, $showwriter)
+    {
+        $DBread = DBConnection::getReadConnection();
+        $fields = ['subject' => __('Subject')];
+        if ($showwriter) {
+            $fields['writer'] = __('Writer');
+        }
+        $fields['category'] = __('Category');
+        $fields['documents'] = _n('Associated element', 'Associated elements', Session::getPluralNumber());
+        $use_as_solution = isset($options['item_itemtype'], $options['item_items_id']);
+        if ($use_as_solution) {
+            $fields['solution'] = __('Use as a solution');
+        }
+        $values = [];
+        foreach ($iterator as $data) {
+            $name = !empty($data['transname']) ? $data['transname'] : $data['name'];
+            $answer = !empty($data['transanswer']) ? $data['transanswer'] : $data['answer'];
+            $href = 'href="' . htmlspecialchars(self::getFormURLWithID($data['id']), ENT_QUOTES, 'UTF-8', false) . '"';
+            if ($use_as_solution) {
+                echo Ajax::createIframeModalWindow('kbshow' . $data['id'], self::getFormURLWithID($data['id']), ['display' => false]);
+                $href = "href='#' onclick=\"" . Html::jsGetElementbyID('kbshow' . $data['id']) . ".dialog('open'); return false;\"";
+            }
+            $icon = '';
+            if ($data['is_faq'] && (!Session::isMultiEntitiesMode() || ($data['visibility_count'] ?? 0) > 0)) {
+                $icon = '<i class="fa fa-fw fa-question-circle faq" title="' . __s('This item is part of the FAQ') . '"></i>';
+            } elseif (isset($data['visibility_count']) && $data['visibility_count'] <= 0) {
+                $icon = '<i class="fa fa-fw fa-eye-slash not-published" title="' . __s('This item is not published yet') . '"></i>';
+            }
+            $row = ['subject' => '<div class="kb">' . $icon . '<a ' . $href . '>'
+                . htmlspecialchars(Html::resume_text($name, 80), ENT_QUOTES, 'UTF-8', false) . '</a></div>'
+                . '<div class="kb_resume">' . Html::resume_text(Html::clean(Toolbox::unclean_cross_side_scripting_deep($answer)), 600) . '</div>'];
+            if ($showwriter) {
+                $row['writer'] = getUserName($data['users_id'], Session::haveRight('user', READ) ? 1 : 0);
+            }
+            $category_name = $data['category'];
+            $category = new KnowbaseItemCategory();
+            if (DropdownTranslation::canBeTranslated($category)) {
+                $category_name = DropdownTranslation::getTranslatedValue($data['knowbaseitemcategories_id'], $category->getType()) ?: $category_name;
+            }
+            $category_url = self::getSearchURL() . '?knowbaseitemcategories_id=' . (int) $data['knowbaseitemcategories_id'] . '&amp;forcetab=Knowbase$2';
+            $row['category'] = '<a class="kb-category" href="' . $category_url . '" data-category-id="' . (int) $data['knowbaseitemcategories_id'] . '">'
+                . htmlspecialchars((string) $category_name, ENT_QUOTES, 'UTF-8', false) . '</a>';
+            $documents = [];
+            foreach ($DBread->request([
+                'FIELDS' => 'documents_id', 'FROM' => 'glpi_documents_items',
+                'WHERE' => ['items_id' => $data['id'], 'itemtype' => self::class] + getEntitiesRestrictCriteria('', '', '', true),
+            ]) as $linked) {
+                $document = new Document();
+                if ($document->getFromDB($linked['documents_id'])) {
+                    $documents[] = $document->getDownloadLink();
+                }
+            }
+            $row['documents'] = implode('<br>', $documents);
+            if ($use_as_solution) {
+                $itemtype = $options['item_itemtype'];
+                $url = $itemtype::getFormURLWithID($options['item_items_id']) . '&amp;load_kb_sol=' . (int) $data['id'] . '&amp;forcetab=' . $itemtype . '$1';
+                $row['solution'] = '<a href="' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8', false) . '">' . __('Use as a solution') . '</a>';
+            }
+            $values[] = $row;
+            Session::addToNavigateListItems(self::class, $data['id']);
+        }
+        $state = 'knowbaseItems_' . $type . '_' . substr(sha1(json_encode([
+            $params['knowbaseitemcategories_id'], $params['contains'], $params['faq'],
+            $options['item_itemtype'] ?? '', $options['item_items_id'] ?? 0,
+        ])), 0, 12);
+        renderTwigTemplate('table.twig', [
+            'id' => $state, 'state_key' => $state, 'fields' => $fields, 'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
+    }
+
     /**
      * Print out list recent or popular kb/faq
      *
@@ -1956,27 +2020,21 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria
 
         $iterator = $DB->request($criteria);
 
-        if (count($iterator)) {
-            echo "<table class='tab_cadrehov' aria-label='Recent Popular'>";
-            echo "<tr class='noHover'><th>" . $title . "</th></tr>";
-            while ($data = $iterator->next()) {
-                $name = $data['name'];
-
-                if (isset($data['transname']) && !empty($data['transname'])) {
-                    $name = $data['transname'];
-                }
-                echo "<tr class='tab_bg_2'><td class='left'><div class='kb'>";
-                if ($data['is_faq']) {
-                    echo "<i class='fa fa-fw fa-question-circle faq' title='" . __("This item is part of the FAQ") . "'></i>";
-                }
-                echo Html::link(Html::resume_text($name, 80), KnowbaseItem::getFormURLWithID($data["id"]), [
-                   'class' => $data['is_faq'] ? 'faq' : 'knowbase',
-                   'title' => $data['is_faq'] ? __s("This item is part of the FAQ") : ''
-                ]);
-                echo "</div></td></tr>";
-            }
-            echo "</table>";
+        $values = [];
+        foreach ($iterator as $data) {
+            $name = !empty($data['transname']) ? $data['transname'] : $data['name'];
+            $icon = $data['is_faq'] ? '<i class="fa fa-fw fa-question-circle faq" title="' . __s('This item is part of the FAQ') . '"></i>' : '';
+            $values[] = [$icon . Html::link(Html::resume_text($name, 80), self::getFormURLWithID($data['id']), [
+                'class' => $data['is_faq'] ? 'faq' : 'knowbase',
+                'title' => $data['is_faq'] ? __s('This item is part of the FAQ') : '',
+            ])];
         }
+        renderTwigTemplate('table.twig', [
+            'id' => 'kbRecentPopular_' . $type, 'state_key' => 'kbRecentPopular_' . $type,
+            'fields' => [$title], 'values' => $values,
+            'minimal' => true, 'show_export' => false,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 
 

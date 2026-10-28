@@ -323,7 +323,7 @@ class Computer_Item extends CommonDBRelation
         global $CFG_GLPI;
 
         $ID      = $comp->fields['id'];
-        $canedit = $comp->canEdit($ID);
+        $canedit = $comp->canEdit($ID) && ($withtemplate != 2);
 
         $datas = [];
         $used  = [];
@@ -362,7 +362,8 @@ class Computer_Item extends CommonDBRelation
                      'type'  => 'submit',
                      'name'  => 'add',
                      'value' => _sx('button', 'Connect'),
-                     'class' => 'btn btn-secondary',
+                     'class' => 'btn btn-primary',
+                     'icon' => 'fas fa-plus',
                   ]
                   ],
                   'content' => [
@@ -468,26 +469,31 @@ class Computer_Item extends CommonDBRelation
                     $linkname = sprintf(__('%1$s (%2$s)'), $linkname, $data["id"]);
                 }
                 $link = $data['assoc_itemtype']::getFormURLWithID($data["id"]);
-                $massiveActionValues[$data['id']] = 'item[Computer_Item][' . $data['linkid'] . ']';
-                $values[$data['id']] = [
+                $massiveActionValues[] = 'item[Computer_Item][' . $data['linkid'] . ']';
+                $row = [
                    $data['assoc_itemtype']::getTypeName(1),
-                   "<a href=\"" . $link . "\">" . $linkname . "</a>",
-                   Dropdown::getDropdownName("glpi_entities", $data['entities_id']),
-                   (isset($data["serial"]) ? "" . $data["serial"] . "" : "-"),
-                   (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-"),
+                   '<a href="' . htmlspecialchars($link, ENT_QUOTES, 'UTF-8', false) . '">' . htmlspecialchars($linkname, ENT_QUOTES, 'UTF-8', false) . '</a>',
+                   htmlspecialchars(Dropdown::getDropdownName("glpi_entities", $data['entities_id']), ENT_QUOTES, 'UTF-8', false),
+                   htmlspecialchars($data['serial'] ?? '-', ENT_QUOTES, 'UTF-8', false),
+                   htmlspecialchars($data['otherserial'] ?? '-', ENT_QUOTES, 'UTF-8', false),
                 ];
                 if (Plugin::haveImport()) {
-                    $values[$data['id']][6] = Dropdown::getYesNo($data[static::getTable() . '_is_dynamic']);
+                    $row[] = Dropdown::getYesNo($data[static::getTable() . '_is_dynamic']);
                 }
+                $values[] = $row;
             }
             $twig_vars = [
                'id' => 'ComputerConnectionTable',
                'fields' => $fields,
                'values' => $values,
-               'massive_action' => $massiveActionValues,
+               'state_key' => 'Computer_Item_for_Computer',
+               'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
             ];
             if (Plugin::haveImport()) {
                 $twig_vars['fields'][] = __('Automatic inventory');
+            }
+            if ($canedit) {
+                $twig_vars['massive_action'] = $massiveActionValues;
             }
             renderTwigTemplate('table.twig', $twig_vars);
         }

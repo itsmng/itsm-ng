@@ -1389,23 +1389,25 @@ class Change extends CommonITILObject
                 break;
 
             case 'Group':
-                // Mini search engine
+                $tree = 0;
                 if ($item->haveChildren()) {
                     $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-                    echo "<table class='tab_cadre_fixe' aria-label='Last changes'>";
-                    echo "<tr class='tab_bg_1'><th>" . __('Last changes') . "</th></tr>";
-                    echo "<tr class='tab_bg_1'><td class='center'>";
-                    echo __('Child groups');
-                    Dropdown::showYesNo(
-                        'tree',
-                        $tree,
-                        -1,
-                        ['on_change' => 'reloadTab("start=0&tree="+this.value)']
-                    );
-                } else {
-                    $tree = 0;
+                    renderTwigForm([
+                        'action' => $item->getFormURL(),
+                        'buttons' => [[]],
+                        'content' => [[
+                            'visible' => false,
+                            'inputs' => [
+                                __('Child groups') => [
+                                    'type' => 'checkbox',
+                                    'name' => 'tree',
+                                    'value' => $tree,
+                                    'hooks' => ['change' => 'reloadTab("start=0&tree=" + (this.checked ? 1 : 0));'],
+                                ],
+                            ],
+                        ]],
+                    ]);
                 }
-                echo "</td></tr></table>";
 
                 $restrict['glpi_changes_groups.groups_id'] = ($tree ? getSonsOf('glpi_groups', $item->getID()) : $item->getID());
 
@@ -1429,66 +1431,23 @@ class Change extends CommonITILObject
             && !(!empty($withtemplate) && $withtemplate == 2)
             && (!isset($item->fields['is_template']) || $item->fields['is_template'] == 0)
         ) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                Change::getFormURL(),
-                '_add_fromitem',
+            self::showItemCreateForm(
                 __('New change for this item...'),
                 [
-                  '_from_itemtype' => $item->getType(),
-                  '_from_items_id' => $item->getID(),
-                  'entities_id'    => $item->fields['entities_id']
+                    '_from_itemtype' => $item->getType(),
+                    '_from_items_id' => $item->getID(),
+                    'entities_id' => $item->fields['entities_id'],
                 ]
             );
-            echo "</div>";
         }
 
         $criteria = self::getCommonCriteria();
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
-        $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
         $iterator = $DB->request($criteria);
         $number = count($iterator);
 
-        // Ticket for the item
-        echo "<div><table class='tab_cadre_fixe' aria-label='Changes'>";
+        self::showItemListTable($iterator, $item);
 
-        $colspan = 11;
-        if (count($_SESSION["glpiactiveentities"]) > 1) {
-            $colspan++;
-        }
-        if ($number > 0) {
-            Session::initNavigateListItems(
-                'Change',
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item->getTypeName(1),
-                    $item->getName()
-                )
-            );
-
-            echo "<tr><th colspan='$colspan'>";
-
-            //TRANS : %d is the number of problems
-            echo sprintf(_n('Last %d change', 'Last %d changes', $number), $number);
-
-            echo "</th></tr>";
-        } else {
-            echo "<tr><th>" . __('No change found.') . "</th></tr>";
-        }
-        // Ticket list
-        if ($number > 0) {
-            self::commonListHeader(Search::HTML_OUTPUT);
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Problem', $data["id"]);
-                self::showShort($data["id"]);
-            }
-            self::commonListHeader(Search::HTML_OUTPUT);
-        }
-
-        echo "</table></div>";
 
         // Tickets for linked items
         $linkeditems = $item->getLinkedItems();
@@ -1508,23 +1467,8 @@ class Change extends CommonITILObject
             $iterator = $DB->request($criteria);
             $number = count($iterator);
 
-            echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Changes on linked items'>";
-            echo "<tr><th colspan='$colspan'>";
-            echo __('Changes on linked items');
-
-            echo "</th></tr>";
-            if ($number > 0) {
-                self::commonListHeader(Search::HTML_OUTPUT);
-
-                while ($data = $iterator->next()) {
-                    // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
-                    self::showShort($data["id"]);
-                }
-                self::commonListHeader(Search::HTML_OUTPUT);
-            } else {
-                echo "<tr><th>" . __('No change found.') . "</th></tr>";
-            }
-            echo "</table></div>";
+            echo '<h2 class="mt-4">' . __('Changes on linked items') . '</h2>';
+            self::showItemListTable($iterator, $item, true);
         } // Subquery for linked item
     }
 

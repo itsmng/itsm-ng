@@ -59,6 +59,10 @@ if (isset($_POST["add"])) {
             //TRANS: %s is the user login, %2$s is the license id
             sprintf(__('%1$s adds the license %2$s'), $_SESSION["glpiname"], $newID)
         );
+        if (!empty($_POST['_inline'])) {
+            Html::redirect(Software::getFormURLWithID($license->fields['softwares_id'])
+                . '&forcetab=' . urlencode('SoftwareLicense$1'));
+        }
         if ($_SESSION['glpibackcreated']) {
             Html::redirect($license->getLinkURL());
         }

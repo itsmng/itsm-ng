@@ -289,144 +289,64 @@ class Netpoint extends CommonDropdown
     public static function showForLocation($item)
     {
         global $DB;
-
-        $ID       = $item->getField('id');
-        $netpoint = new self();
+        $ID = $item->getID();
         $item->check($ID, READ);
-        $canedit  = $item->canEdit($ID);
-
-        if (isset($_GET["start"])) {
-            $start = intval($_GET["start"]);
-        } else {
-            $start = 0;
-        }
-        $number = countElementsInTable('glpi_netpoints', ['locations_id' => $ID ]);
-
+        $canedit = $item->canEdit($ID);
         if ($canedit) {
-            echo "<div class='first-bloc'>";
-            // Minimal form for quick input.
-            echo "<form aria-label='Location' action='" . $netpoint->getFormURL() . "' method='post'>";
-            echo "<br><table class='tab_cadre_fixe' aria-label='Location'>";
-            echo "<tr class='tab_bg_2 center'>";
-            echo "<td class='b'>" . _n('Network outlet', 'Network outlets', 1) . "</td>";
-            echo "<td>" . __('Name') . "</td><td>";
-            Html::autocompletionTextField($item, "name", ['value' => '']);
-            echo "<input type='hidden' name='entities_id' value='" . $_SESSION['glpiactive_entity'] . "'>";
-            echo "<input type='hidden' name='locations_id' value='$ID'></td>";
-            echo "<td><input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
-            echo "</td></tr>\n";
-            echo "</table>\n";
-            Html::closeForm();
-
-            // Minimal form for massive input.
-            echo "<form aria-label='Location' action='" . $netpoint->getFormURL() . "' method='post'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Location'>";
-            echo "<tr class='tab_bg_2 center'>";
-            echo "<td class='b'>" . _n('Network outlet', 'Network outlets', Session::getPluralNumber()) . "</td>";
-            echo "<td>" . __('Name') . "</td><td>";
-            echo "<input type='text' maxlength='100' size='10' name='_before'>&nbsp;";
-            Dropdown::showNumber('_from', ['value' => 0,
-                                                'min'   => 0,
-                                                'max'   => 400]);
-            echo "&nbsp;-->&nbsp;";
-            Dropdown::showNumber('_to', ['value' => 0,
-                                              'min'   => 0,
-                                              'max'   => 400]);
-            echo "&nbsp;<input type='text' maxlength='100' size='10' name='_after'><br>";
-            echo "<input type='hidden' name='entities_id' value='" . $_SESSION['glpiactive_entity'] . "'>";
-            echo "<input type='hidden' name='locations_id' value='$ID'>";
-            echo "<input type='hidden' name='_method' value='AddMulti'></td>";
-            echo "<td><input type='submit' name='execute' value=\"" . _sx('button', 'Add') . "\"
-                    class='submit'>";
-            echo "</td></tr>\n";
-            echo "</table>\n";
-            Html::closeForm();
-            echo "</div>";
-        }
-
-        echo "<div class='spaced'>";
-
-        if ($number < 1) {
-            echo "<table class='tab_cadre_fixe' aria-label='No item Found'>";
-            echo "<tr><th>" . self::getTypeName(1) . "</th>";
-            echo "<th>" . __('No item found') . "</th></tr>";
-            echo "</table>\n";
-        } else {
-            Html::printAjaxPager(
-                sprintf(__('Network outlets for %s'), $item->getTreeLink()),
-                $start,
-                $number
-            );
-
-            if ($canedit) {
-                $rand = mt_rand();
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams
-                   = ['num_displayed'
-                               => min($_SESSION['glpilist_limit'], $number),
-                           'container'
-                               => 'mass' . __CLASS__ . $rand,
-                           'specific_actions'
-                               => ['purge' => _x('button', 'Delete permanently')]];
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            echo "<table class='tab_cadre_fixe' aria-label='Location Detail'><tr>";
-
-            if ($canedit) {
-                echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                echo "</th>";
-            }
-
-            echo "<th>" . __('Name') . "</th>"; // Name
-            echo "<th>" . __('Comments') . "</th>"; // Comment
-            echo "</tr>\n";
-
-            $crit = ['locations_id' => $ID,
-                          'ORDER'        => 'name',
-                          'START'        => $start,
-                          'LIMIT'        => $_SESSION['glpilist_limit']];
-
-            Session::initNavigateListItems(
-                'Netpoint',
-                //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item->getTypeName(1),
-                    $item->getName()
-                )
-            );
-
-            foreach ($DB->request('glpi_netpoints', $crit) as $data) {
-                Session::addToNavigateListItems('Netpoint', $data["id"]);
-                echo "<tr class='tab_bg_1'>";
-
-                if ($canedit) {
-                    echo "<td>" . Html::getMassiveActionCheckBox(__CLASS__, $data["id"]) . "</td>";
+            foreach ([false, true] as $bulk) {
+                $inputs = [
+                    ['type' => 'hidden', 'name' => 'entities_id', 'value' => $item->getEntityID()],
+                    ['type' => 'hidden', 'name' => 'locations_id', 'value' => $ID],
+                ];
+                if ($bulk) {
+                    $inputs[] = ['type' => 'hidden', 'name' => '_method', 'value' => 'AddMulti'];
+                    $inputs[__('Prefix')] = ['type' => 'text', 'name' => '_before', 'maxlength' => 100];
+                    $inputs[__('From')] = ['type' => 'number', 'name' => '_from', 'value' => 0, 'min' => 0, 'max' => 400];
+                    $inputs[__('To')] = ['type' => 'number', 'name' => '_to', 'value' => 0, 'min' => 0, 'max' => 400];
+                    $inputs[__('Suffix')] = ['type' => 'text', 'name' => '_after', 'maxlength' => 100];
+                } else {
+                    $inputs[__('Name')] = ['type' => 'text', 'name' => 'name', 'value' => '', 'maxlength' => 255];
                 }
-
-                echo "<td><a href='" . $netpoint->getFormURL();
-                echo '?id=' . $data['id'] . "'>" . $data['name'] . "</a></td>";
-                echo "<td>" . $data['comment'] . "</td>";
-                echo "</tr>\n";
+                renderTwigForm([
+                    'action' => self::getFormURL(),
+                    'buttons' => [[
+                        'type' => 'submit', 'name' => $bulk ? 'execute' : 'add', 'value' => _x('button', 'Add'),
+                        'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                    ]],
+                    'content' => [self::getTypeName($bulk ? Session::getPluralNumber() : 1) => [
+                        'visible' => true, 'inputs' => $inputs,
+                    ]],
+                ]);
             }
-
-            echo "</table>\n";
-
-            if ($canedit) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-                Html::closeForm();
-            }
-            Html::printAjaxPager(
-                sprintf(__('Network outlets for %s'), $item->getTreeLink()),
-                $start,
-                $number
-            );
         }
-
-        echo "</div>\n";
+        $values = [];
+        $selection = [];
+        $outlet = new self();
+        foreach ($DB->request(['FROM' => self::getTable(), 'WHERE' => ['locations_id' => $ID], 'ORDER' => 'name']) as $data) {
+            $outlet->getFromResultSet($data);
+            $values[] = [$outlet->getLink(), htmlspecialchars((string) $data['comment'], ENT_QUOTES, 'UTF-8', false)];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['id']);
+            Session::addToNavigateListItems(self::class, $data['id']);
+        }
+        $table_id = 'netpoints_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name'), __('Comments')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+                'specific_actions' => ['purge' => _x('button', 'Delete permanently')],
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
     }
 
 

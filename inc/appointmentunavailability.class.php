@@ -129,43 +129,35 @@ class AppointmentUnavailability extends CommonDBChild
     public static function showForTarget($appointmenttargets_id)
     {
         global $DB;
-
         $appointmenttargets_id = (int) $appointmenttargets_id;
-        echo "<div class='center'>";
-        echo "<table class='tab_cadre_fixe' aria-label='Unavailabilities'>";
-        echo "<tr><th colspan='6'>" . self::getTypeName(Session::getPluralNumber()) . "</th></tr>";
-        echo "<tr><th>" . __('Start date') . "</th><th>" . __('End date') . "</th><th>" . __('Available') . "</th><th>" . __('Comments') . "</th><th></th></tr>";
-
-        $iterator = $DB->request([
-            'FROM' => self::getTable(),
-            'WHERE' => ['appointmenttargets_id' => $appointmenttargets_id],
-            'ORDER' => 'begin',
-        ]);
-        foreach ($iterator as $row) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . Html::convDateTime($row['begin']) . "</td>";
-            echo "<td>" . Html::convDateTime($row['end']) . "</td>";
-            echo "<td>" . Dropdown::getYesNo($row['is_available']) . "</td>";
-            echo "<td>" . Html::clean($row['comment']) . "</td>";
-            echo "<td class='center'>";
-            Html::showSimpleForm(self::getFormURL(), 'purge', __('Delete permanently'), ['id' => $row['id']]);
-            echo "</td></tr>";
+        $unavailability = new self();
+        if (!self::canView() || !$unavailability->canAccessTarget(false, $appointmenttargets_id)) {
+            return false;
         }
-
-        $begin = date('Y-m-d H:00:00', strtotime('+1 day'));
-        $end = date('Y-m-d H:00:00', strtotime('+1 day +1 hour'));
-        echo "<tr class='tab_bg_2'><td colspan='6'>";
-        echo "<form method='post' action='" . self::getFormURL() . "'>";
-        echo Html::hidden('appointmenttargets_id', ['value' => $appointmenttargets_id]);
-        echo "<input type='datetime-local' name='plan[begin]' value='" . Html::clean($begin) . "' required>";
-        echo "&nbsp;<input type='datetime-local' name='plan[end]' value='" . Html::clean($end) . "' required>";
-        echo "&nbsp;";
-        Dropdown::showYesNo('is_available', 0);
-        echo "&nbsp;<input type='text' name='comment' placeholder=\"" . __s('Comments') . "\">";
-        echo "&nbsp;<input type='submit' name='add' value=\"" . _sx('button', 'Add') . "\" class='btn btn-secondary'>";
-        Html::closeForm();
-        echo "</td></tr>";
-        echo "</table></div>";
+        if (self::canCreate()) {
+            $unavailability->showForm(-1, ['appointmenttargets_id' => $appointmenttargets_id]);
+        }
+        $fields = [__('Start date'), __('End date'), __('Available'), __('Comments')];
+        if (self::canPurge()) {
+            $fields[] = _n('Action', 'Actions', Session::getPluralNumber());
+        }
+        $values = [];
+        foreach ($DB->request([
+            'FROM' => self::getTable(), 'WHERE' => ['appointmenttargets_id' => $appointmenttargets_id], 'ORDER' => 'begin',
+        ]) as $row) {
+            $value = [Html::convDateTime($row['begin']), Html::convDateTime($row['end']),
+                Dropdown::getYesNo($row['is_available']), Html::clean($row['comment'])];
+            if (self::canPurge()) {
+                $value[] = Html::getSimpleForm(self::getFormURL(), 'purge', __('Delete permanently'),
+                    ['id' => $row['id']], 'fa-trash-alt btn btn-outline-danger');
+            }
+            $values[] = $value;
+        }
+        $id = 'appointmentUnavailable_' . $appointmenttargets_id;
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id, 'fields' => $fields, 'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 
     public function showForm($ID, $options = [])
@@ -197,7 +189,8 @@ class AppointmentUnavailability extends CommonDBChild
                     'name' => $is_new ? 'add' : 'update',
                     'value' => $is_new ? __('Add') : __('Save'),
                     'type' => 'submit',
-                    'class' => 'btn btn-secondary'
+                    'class' => $is_new ? 'btn btn-primary' : 'btn btn-secondary',
+                    'icon' => $is_new ? 'fas fa-plus' : null
                 ],
                 !$is_new && $this->canPurgeItem() ? [
                     'name' => 'purge',

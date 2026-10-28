@@ -78,14 +78,10 @@ if (isset($_POST["action"])) {
         exit();
     }
 
-    echo "<table class='tab_cadrehov' aria-label='Replay the rules dictionary'>";
-
-    echo "<tr><th><div class='relative b'>" . $rulecollection->getTitle() . "<br>" .
-          __('Replay the rules dictionary') . "</div></th></tr>\n";
-    echo "<tr><td class='center'>";
+    echo "<section aria-label='" . __s('Replay the rules dictionary') . "'><h2 class='h5'>"
+        . $rulecollection->getTitle() . ' — ' . __('Replay the rules dictionary') . '</h2>';
     Html::createProgressBar(__('Work in progress...'));
-    echo "</td></tr>\n";
-    echo "</table>";
+    echo '</section>';
 
     if (!isset($_GET['offset'])) {
         // First run

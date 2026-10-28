@@ -80,16 +80,8 @@ if (array_key_exists('update', $_POST)) {
 }
 
 if ($success) {
-    echo '<table class="tab_cadre" aria-label="Password update form">';
-    echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
-    echo '<tr>';
-    echo '<td>';
-    echo __('Your password has been successfully updated.');
-    echo '<br />';
-    echo '<a href="' . $CFG_GLPI['root_doc'] . '/front/logout.php?noAUTO=1">' . __('Log in') . '</a>';
-    echo '</td>';
-    echo '</tr>';
-    echo '</table>';
+    echo "<div class='alert alert-success' role='status'>" . __('Your password has been successfully updated.') . '</div>';
+    echo "<a class='btn btn-primary' href='" . $CFG_GLPI['root_doc'] . "/front/logout.php?noAUTO=1'>" . __('Log in') . '</a>';
 } else {
     $user->showPasswordUpdateForm($error_messages);
 }
