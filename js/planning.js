@@ -83,11 +83,13 @@ class PlanningCalendar {
           titleFormat: function () {
             return "";
           },
-          visibleRange: function (currentDate) {
-            const current_year = currentDate.getFullYear();
+          visibleRange: function () {
+            const today = options.now ? options.now.substring(0, 10) : new Date().toISOString().substring(0, 10);
+            const end = new Date(today + "T00:00:00Z");
+            end.setUTCFullYear(end.getUTCFullYear() + 5);
             return {
-              start: new Date(currentDate.getTime()).setFullYear(current_year - 5),
-              end: new Date(currentDate.getTime()).setFullYear(current_year + 5),
+              start: today,
+              end: end.toISOString().substring(0, 10),
             };
           },
         },
