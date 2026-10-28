@@ -598,7 +598,7 @@ class Auth extends CommonGLPI {
             if ($CFG_GLPI['enable_api_login_external_token']) {
                $user = new User();
                if ($user->getFromDBbyToken($_REQUEST['user_token'], 'api_token')) {
-                  $this->user->fields['name'] = $user->fields['name'];
+                  $this->user = $user;
                   return true;
                }
             } else {
@@ -737,7 +737,8 @@ class Auth extends CommonGLPI {
             // Used for log when login process failed
             $login_name                        = $this->user->fields['name'];
             $this->auth_succeded               = true;
-            $this->user_present                = $this->user->getFromDBbyName(addslashes($login_name));
+            $this->user_present                = $authtype == self::API
+               || $this->user->getFromDBbyName(addslashes($login_name));
             $this->extauth                     = 1;
             $user_dn                           = false;
 
