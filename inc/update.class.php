@@ -661,6 +661,7 @@ class Update extends CommonGLPI
             case "2.1.5":
             case "2.1.6":
             case "2.1.7":
+            case "2.1.8":
                 include_once "{$updir}itsm_update_212_213.php";
                 update212to213();
 
