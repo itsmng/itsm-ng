@@ -37,6 +37,112 @@ namespace tests\units;
 
 class Planning extends \DbTestCase
 {
+    public function testListStartsToday()
+    {
+        $this->login();
+        \Planning::initSessionForCurrentUser();
+        foreach ($_SESSION['glpi_plannings']['filters'] as $type => &$filter) {
+            if ($type !== 'view_filter') {
+                $filter['display'] = $type === 'PlanningExternalEvent';
+            }
+        }
+        unset($filter);
+        $today = date('Y-m-d');
+        $ids = [];
+        foreach (['yesterday' => '-1 day', 'today' => 'today', 'tomorrow' => '+1 day',
+                  'recurring' => '-2 days', 'expired' => '-2 days', 'midnight' => '-1 day'] as $name => $offset) {
+            $day = date('Y-m-d', strtotime($offset));
+            $input = [
+                'name' => 'Planning range ' . $name,
+                'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
+                'state' => \Planning::TODO,
+                'plan' => ['begin' => "$day 00:00:00", 'end' => "$day 01:00:00"],
+            ];
+            if ($name === 'recurring' || $name === 'expired') {
+                $input['rrule'] = json_encode(['freq' => 'daily', 'count' => $name === 'expired' ? 1 : 5]);
+            }
+            if ($name === 'midnight') {
+                $input['plan']['end'] = "$today 00:00:00";
+            }
+            $event = new \PlanningExternalEvent();
+            $this->integer($ids[$name] = $event->add($input))->isGreaterThan(0);
+        }
+        // Overlapping fixtures intentionally trigger availability warnings.
+        unset($_SESSION['MESSAGE_AFTER_REDIRECT'][WARNING]);
+        $options = [
+            'start' => date('Y-m-d', strtotime('-5 years')),
+            'end' => date('Y-m-d', strtotime('+5 years')),
+            'view_name' => 'listFull',
+            'display_done_events' => false,
+        ];
+        $events = \Planning::constructEventsArray($options);
+        $events = array_column($events, null, 'items_id');
+        $this->array($events)->hasKeys([$ids['today'], $ids['tomorrow'], $ids['recurring']])
+            ->notHasKeys([$ids['yesterday'], $ids['expired'], $ids['midnight']]);
+        $this->string(substr($events[$ids['recurring']]['start'], 0, 10))->isIdenticalTo($today);
+
+        // Calendar views must still allow browsing historical events.
+        $options['view_name'] = 'timeGridWeek';
+        $options['start'] = date('Y-m-d', strtotime('-3 days'));
+        $options['end'] = date('Y-m-d', strtotime('+3 days'));
+        $events = \Planning::constructEventsArray($options);
+        $this->array(array_column($events, 'items_id'))->contains($ids['yesterday']);
+    }
+
+    public function testViewFiltersPersistAndDecorateTitles()
+    {
+        $this->login();
+        \Planning::initSessionForCurrentUser();
+        $this->array($_SESSION['glpi_plannings']['filters']['view_filter'])->isIdenticalTo([
+            'start' => 'false', 'end' => 'false', 'user' => 'false', 'group' => 'false',
+        ]);
+        $task = new \TicketTask();
+        $group = new \Group();
+        $this->integer($group_id = $group->add([
+            'name' => 'Planning view group',
+            'entities_id' => getItemByTypeName('Entity', '_test_root_entity', true),
+        ]))->isGreaterThan(0);
+        $today = date('Y-m-d');
+        $this->integer($task_id = $task->add([
+            'tickets_id' => getItemByTypeName('Ticket', '_ticket01', true),
+            'content' => 'Planning view task',
+            'state' => \Planning::TODO,
+            'users_id_tech' => \Session::getLoginUserID(),
+            'groups_id_tech' => $group_id,
+            'plan' => ['begin' => "$today 10:00:00", 'end' => "$today 11:00:00"],
+        ]))->isGreaterThan(0);
+        $options = ['start' => $today, 'end' => date('Y-m-d', strtotime('+1 day')), 'view_name' => 'listFull'];
+        $find_task = static function () use ($options, $task_id) {
+            foreach (\Planning::constructEventsArray($options) as $event) {
+                if ($event['itemtype'] === 'TicketTask' && $event['items_id'] === $task_id) {
+                    return $event;
+                }
+            }
+            return [];
+        };
+        $plain = $find_task();
+        $this->array($plain)->isNotEmpty();
+        $user = new \User();
+        $user->getFromDB(\Session::getLoginUserID());
+        foreach (['start', 'end', 'user', 'group'] as $name) {
+            \Planning::toggleFilter(['type' => 'view_filter', 'name' => $name, 'display' => 'true']);
+        }
+        $saved_user = new \User();
+        $saved_user->getFromDB(\Session::getLoginUserID());
+        $saved = importArrayFromDB($saved_user->fields['plannings']);
+        $this->array($saved['filters']['view_filter'])->isIdenticalTo(array_fill_keys(['start', 'end', 'user', 'group'], 'true'));
+        $_SESSION['glpi_plannings'] = $saved;
+        \Planning::initSessionForCurrentUser();
+        $decorated = $find_task();
+        $this->string($decorated['title'])->contains(\Html::convDate($today))
+            ->contains($user->getName())->contains('Planning view group');
+        $this->string(substr($decorated['title'], -strlen($plain['title'])))->isIdenticalTo($plain['title']);
+        foreach (['start', 'end', 'user', 'group'] as $name) {
+            \Planning::toggleFilter(['type' => 'view_filter', 'name' => $name, 'display' => 'false']);
+        }
+        $this->string($find_task()['title'])->isIdenticalTo($plain['title']);
+    }
+
     public function testCalendarRequestsCannotChangePermissions()
     {
         $this->login();

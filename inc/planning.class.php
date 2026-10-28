@@ -839,6 +839,14 @@ class Planning extends CommonGLPI
             }
         }
 
+        // Keep the v1 preference format so existing saved choices are reused.
+        foreach (['start', 'end', 'user', 'group'] as $name) {
+            $filters['view_filter'][$name] = filter_var(
+                $filters['view_filter'][$name] ?? false,
+                FILTER_VALIDATE_BOOLEAN
+            ) ? 'true' : 'false';
+        }
+
         // compute color index for plannings
         $_SESSION['glpi_plannings_color_index'] = 0;
         foreach ($_SESSION['glpi_plannings']['plannings'] as $planning) {
@@ -898,6 +906,21 @@ class Planning extends CommonGLPI
             echo "</ul>";
             echo "</div>";
         }
+        echo "<div><h3>" . __('View') . "</h3><ul class='filters'>";
+        foreach (['start' => __('Start date'), 'end' => __('End date'),
+                  'user' => User::getTypeName(1), 'group' => Group::getTypeName(1)] as $name => $label) {
+            $checkbox_id = 'planning_view_' . $name;
+            echo "<li class='view_filter' event_type='view_filter' event_name='$name'>";
+            Html::showCheckbox([
+                'id' => $checkbox_id,
+                'name' => $name,
+                'value' => 1,
+                'title' => $label,
+                'checked' => $_SESSION['glpi_plannings']['filters']['view_filter'][$name] === 'true',
+            ]);
+            echo "<label for='$checkbox_id'>$label</label></li>";
+        }
+        echo "</ul></div>";
         echo "</div>";
         echo "</div>";
     }
@@ -1783,6 +1806,15 @@ class Planning extends CommonGLPI
      */
     public static function toggleFilter($options = [])
     {
+        if (($options['type'] ?? '') === 'view_filter') {
+            if (!in_array($options['name'] ?? '', ['start', 'end', 'user', 'group'], true)) {
+                return;
+            }
+            $_SESSION['glpi_plannings']['filters']['view_filter'][$options['name']]
+                = ($options['display'] === 'true') ? 'true' : 'false';
+            self::savePlanningsInDB();
+            return;
+        }
 
         $key = 'filters';
         if (in_array($options['type'], ['user', 'group', 'group_users', 'external'])) {
@@ -1920,6 +1952,9 @@ class Planning extends CommonGLPI
 
         $param['begin'] = date("Y-m-d H:i:s", $time_begin);
         $param['end']   = date("Y-m-d H:i:s", $time_end);
+        if ($param['view_name'] === 'listFull') {
+            $param['begin'] = max($param['begin'], date('Y-m-d 00:00:00'));
+        }
 
         $raw_events = [];
         $not_planned = [];
@@ -1976,19 +2011,17 @@ class Planning extends CommonGLPI
         $raw_events = array_merge($raw_events, $not_planned);
 
         // get external calendars events (ical)
-        // and on list view, only get future events
-        $begin_ical = $param['begin'];
-        if ($param['view_name'] == "listFull") {
-            $begin_ical = date('Y-m-d 00:00:00');
-        }
         $raw_events = array_merge(
             $raw_events,
-            self::getExternalCalendarRawEvents($begin_ical, $param['end'])
+            self::getExternalCalendarRawEvents($param['begin'], $param['end'])
         );
 
         // construct events (in fullcalendar format)
         $events = [];
         foreach ($raw_events as $event) {
+            if ($param['view_name'] === 'listFull' && empty($event['rrule']) && $event['end'] <= $param['begin']) {
+                continue;
+            }
             if (
                 $_SESSION['glpi_plannings']['filters']['OnlyBgEvents']['display']
                 && (!isset($event['background']) || !$event['background'])
@@ -2115,16 +2148,19 @@ class Planning extends CommonGLPI
                 unset($new_event['start'], $new_event['end']);
 
                 // For list view, only display only the next occurence
-                // to avoid issues performances (range in list view can be 10 years long)
+                // to avoid performance issues over the full list range.
                 if ($param['view_name'] == "listFull") {
-                    $next_date = $rset->getNthOccurrenceAfter(new DateTime(), 1);
-                    if ($next_date) {
-                        $new_event = array_merge($new_event, [
-                           'start'    => $next_date->format('c'),
-                           'end'      => $next_date->add(new DateInterval("PT" . ($ms_duration / 1000) . "S"))
-                                                   ->format('c'),
-                        ]);
+                    $after = new DateTime($param['begin']);
+                    $after->modify('-' . max(0, ($ms_duration / 1000) - 1) . ' seconds');
+                    $next_date = $rset->getNthOccurrenceAfter($after, 1);
+                    if (!$next_date || $next_date >= new DateTime($param['end'])) {
+                        continue;
                     }
+                    $new_event = array_merge($new_event, [
+                       'start'    => $next_date->format('c'),
+                       'end'      => (clone $next_date)->add(new DateInterval("PT" . ($ms_duration / 1000) . "S"))
+                                               ->format('c'),
+                    ]);
                 } else {
                     $rrule_string = "";
                     foreach ($rset->getRRules() as $occurence) {
@@ -2148,6 +2184,34 @@ class Planning extends CommonGLPI
                        'duration'     => $ms_duration
                     ]);
                 }
+            }
+
+            $view_filters = $_SESSION['glpi_plannings']['filters']['view_filter'] ?? [];
+            $details = [];
+            foreach (['start', 'end'] as $date_field) {
+                if (($view_filters[$date_field] ?? 'false') === 'true') {
+                    $date_value = $new_event[$date_field] ?? $event[$date_field === 'start' ? 'begin' : 'end'];
+                    $details[] = Html::convDate(substr($date_value, 0, 10));
+                }
+            }
+            if (count($details)) {
+                $details = ['[' . implode(' > ', $details) . ']'];
+            }
+            if (($view_filters['user'] ?? 'false') === 'true' && $users_id > 0) {
+                $user = new User();
+                if ($user->getFromDB($users_id)) {
+                    $details[] = $user->getName();
+                }
+            }
+            $groups_id = $event['groups_id_tech'] ?? $event['groups_id'] ?? 0;
+            if (($view_filters['group'] ?? 'false') === 'true' && $groups_id > 0) {
+                $group = new Group();
+                if ($group->getFromDB($groups_id)) {
+                    $details[] = $group->getName();
+                }
+            }
+            if (count($details)) {
+                $new_event['title'] = implode(' - ', $details) . ' : ' . $new_event['title'];
             }
 
             $events[] = $new_event;

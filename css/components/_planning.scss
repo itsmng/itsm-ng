@@ -24,6 +24,10 @@
         grid-template-columns: 18px minmax(0, 1fr) auto;
       }
 
+      &.view_filter {
+        grid-template-columns: 18px minmax(0, 1fr);
+      }
+
       &:nth-child(even) {
         background-color: #E8E8E8;
       }
