@@ -72,7 +72,7 @@ function update151to200(): bool
         }
     }
 
-    if (!$DB->fieldExists('glpi_oidc_config', $field)) {
+    if ($DB->tableExists('glpi_oidc_config') && !$DB->fieldExists('glpi_oidc_config', $field)) {
         $migration->addField('glpi_oidc_config', 'logout', 'VARCHAR(255) NULL');
     }
 

@@ -65,29 +65,7 @@ $twig_vars = [];
 $twig_vars["text_login"] = nl2br(Toolbox::unclean_html_cross_side_scripting_deep(htmlspecialchars($CFG_GLPI['text_login'])));
 
 
-// Display oidc login
-global $DB;
-$criteria = "SELECT * FROM glpi_oidc_config";
-$iterators = $DB->request($criteria);
-foreach ($iterators as $iterator) {
-    $is_activate = $iterator['is_activate'];
-    $is_forced = $iterator['is_forced'];
-}
-
-if (isset($is_activate) && $is_activate) {
-    if ($is_forced && !isset($_GET["noAUTO"])) {
-        $redirect = "";
-        if (isset($_GET["redirect"]) && strlen((string) $_GET["redirect"]) > 0) {
-            $redirect = "?redirect=" . rawurlencode((string) $_GET["redirect"]);
-        }
-        Html::redirect("front/oidc.php" . $redirect);
-    }
-    $twig_vars["is_activate"] = $is_activate;
-    if (isset($_POST["login_oidc"])) {
-        Html::redirect("front/oidc.php"
-            . ((isset($_POST['redirect']) && !empty($_POST['redirect'])) ? "?redirect=" . Html::entities_deep($_POST['redirect']) : ""));
-    }
-}
+$twig_vars['oidc_sources'] = Oidc::loginSources();
 
 $_SESSION['namfield'] = $twig_vars["namfield"] = uniqid('fielda');
 $_SESSION['pwdfield'] = $twig_vars["pwdfield"] = uniqid('fieldb');

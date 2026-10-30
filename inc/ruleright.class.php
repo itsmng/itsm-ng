@@ -283,6 +283,17 @@ class RuleRight extends Rule
             $criterias['TYPE']['name']             = __('Authentication type');
             $criterias['TYPE']['allow_condition']  = [Rule::PATTERN_IS, Rule::PATTERN_IS_NOT];
 
+            $criterias['OIDC_SOURCE'] = [
+                'table' => 'glpi_oidcproviders',
+                'field' => 'name',
+                'name' => __('OpenID Connect source'),
+                'linkfield' => '',
+                'type' => 'dropdown',
+                'virtual' => true,
+                'id' => 'oidc_provider',
+                'allow_condition' => [Rule::PATTERN_IS, Rule::PATTERN_IS_NOT],
+            ];
+
             $criterias['LDAP_SERVER']['table']     = 'glpi_authldaps';
             $criterias['LDAP_SERVER']['field']     = 'name';
             $criterias['LDAP_SERVER']['name']      = AuthLDAP::getTypeName(1);

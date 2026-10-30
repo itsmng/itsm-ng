@@ -626,6 +626,13 @@ class Update extends CommonGLPI
             case "1.6.9":
             case "1.6.10":
             case "1.6.11":
+            case "1.6.12":
+            case "1.6.13":
+            case "1.6.14":
+            case "1.6.15":
+            case "1.6.16":
+            case "1.6.17":
+            case "1.6.18":
                 include_once "{$updir}itsm_update_1610_1611.php";
                 update1610to1611();
                 // no break
@@ -687,6 +694,9 @@ class Update extends CommonGLPI
                     die(1);
                 }
         }
+
+        require_once GLPI_ROOT . '/install/oidc-migration.php';
+        migrateOidcProviders(true);
 
         // Update version number and default langage and new version_founded ---- LEAVE AT THE END
         Config::setConfigurationValues('core', ['version'             => ITSM_VERSION,
