@@ -50,15 +50,11 @@
             <a id="forget" href="front/lostpassword.php?lostpassword=1">{{"Forgotten password?"|trans}}</a>
             {% endif %}
         </form>
-        {% if is_activate %}
-            <form aria-label="SSO Login" method='post' action='./index.php'>
-                <p class="login_input">
-                    <button type='submit' name='login_oidc' aria-label="SSO Login" class='btn btn-info w-100 h-auto'>{{"SSO Login"|trans}}</button>
-                    <input type='hidden' name='redirect' value='{{redirect}}' />
-                    <input type="hidden" name="_glpi_csrf_token" value="{{csrf_token}}">
-                </p>
-            </form>
-        {% endif %}
+        {% for source in oidc_sources %}
+            <p class="login_input">
+                <a class="btn btn-info w-100 h-auto" href="{{ source.login_url }}">{{ source.name }}</a>
+            </p>
+        {% endfor %}
     </div>
     {{pluginHook|raw}}
     <div class='error'>
