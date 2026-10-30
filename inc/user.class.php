@@ -311,6 +311,10 @@ class User extends CommonDBTM {
    function cleanDBonPurge() {
 
       global $DB;
+        if ($DB->tableExists('glpi_oidcidentities')) {
+            $DB->delete('glpi_oidcidentities', ['users_id' => $this->getID()]);
+        }
+
 
       // ObjectLock does not extends CommonDBConnexity
       $ol = new ObjectLock();
@@ -4578,7 +4582,8 @@ JAVASCRIPT;
             while ($data = $item_iterator->next()) {
                $cansee = $item->can($data["id"], READ);
                if (!isset($data["name"])) {
-                   $linked_component = new ($itemtype::getDeviceType())();
+                   $device_type = $itemtype::getDeviceType();
+                   $linked_component = new $device_type();
                    $linked_component->getFromDB($data[getForeignKeyFieldForItemType($itemtype::getDeviceType())]);
                    $link = $linked_component->fields['designation'] . " (" . $data['id'] . ")";
                } else {

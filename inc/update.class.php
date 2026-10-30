@@ -572,6 +572,9 @@ class Update extends CommonGLPI {
             }
       }
 
+        require_once GLPI_ROOT . '/install/oidc-migration.php';
+        migrateOidcProviders(false);
+
       // Update version number and default langage and new version_founded ---- LEAVE AT THE END
       Config::setConfigurationValues('core', ['version'             => ITSM_VERSION,
                                               'dbversion'           => ITSM_SCHEMA_VERSION,
