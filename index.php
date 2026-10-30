@@ -44,9 +44,6 @@ include (GLPI_ROOT . "/inc/based_config.php");
 define('DO_NOT_CHECK_HTTP_REFERER', 1);
 
 // If config_db doesn't exist -> start installation
-if (isset($_GET["redirect"])) {
-  setcookie('OIDC_REDIRECT', $_GET["redirect"], time() + 3600, '/');
-}
 if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    Html::redirect("install/install.php");
    die();
@@ -65,6 +62,8 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
       Auth::redirectIfAuthenticated();
    }
    Auth::checkAlternateAuthSystems(true, isset($_GET["redirect"])?$_GET["redirect"]:"");
+
+   $oidc_sources = Oidc::loginSources();
 
    // Send UTF8 Headers
    header("Content-Type: text/html; charset=UTF-8");
@@ -113,29 +112,8 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    echo "</div>";
 
    echo "<div id='boxlogin'>";
-   // Display oidc login 
-   global $DB;
-   $criteria = "SELECT * FROM glpi_oidc_config";
-   $iterators = $DB->request($criteria);
-   foreach($iterators as $iterator) {
-       $is_activate = $iterator['is_activate'];
-       $is_forced = $iterator['is_forced'];
-   }
-
-   if (isset($is_activate) && $is_activate) {
-      if ($is_forced && !isset($_GET["noAUTO"])) {
-         Html::redirect("front/oidc.php" . (isset($_GET['redirect']) ? "?redirect=".Html::entities_deep($_GET['redirect']) : ""));
-      }
-      echo "<form method='post' action='./index.php'>";
-      if (isset($_GET['redirect'])) {
-         echo "<input type='hidden' name='redirect' value='".Html::entities_deep($_GET['redirect'])."'/>";
-      }
-      echo "<p class='login_input'><input type='submit' name='login_oidc' value='".__('SSO Login')."' class='submit'></p>";
-      echo "<p class='login_input'><hr style='width:30%'></p>";
-      if (isset($_POST["login_oidc"])) {
-         Html::redirect("front/oidc.php" . (isset($_POST['redirect']) ? "?redirect=".Html::entities_deep($_POST['redirect']) : ""));
-      }
-      Html::closeForm();
+   foreach ($oidc_sources as $source) {
+      echo '<p class="login_input"><a class="submit" href="' . OidcProvider::escape($source['login_url']) . '">' . OidcProvider::escape($source['name']) . '</a></p>';
    }
    echo "<form action='".$CFG_GLPI["root_doc"]."/front/login.php' method='post'>";
 

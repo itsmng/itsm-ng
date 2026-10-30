@@ -32,10 +32,13 @@
 
 include ('../inc/includes.php');
 
-//Session::checkRight("config", UPDATE);
+Session::checkRight("config", UPDATE);
 
 Html::header(__('External authentication sources'), $_SERVER['PHP_SELF'], "config", "auth", "oidc");
 
-Oidc::showFormUserConfig();
+if (!isset($_GET['id'])) {
+    Html::redirect('auth.oidc.php');
+}
+OidcMapping::showConfiguration((int) $_GET['id']);
 
 Html::footer();

@@ -1,7 +1,8 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
- * ITSM-NG 
+ * ITSM-NG
  * Copyright (C) 2022 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org/
@@ -29,417 +30,397 @@
  * along with ITSM-NG. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
  */
-require __DIR__ . '/../vendor/autoload.php';
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
+    die("Sorry. You can't access this file directly");
 }
 
-
-/**
- * OpenID connect Class
- **/
 class Oidc extends CommonDBTM
 {
+    /** Quote strings explicitly so values such as "NULL" remain strings. */
+    public static function literal($value)
+    {
+        global $DB;
+        return new QueryExpression("'" . $DB->escape((string) $value) . "'");
+    }
 
-   static $_user_data;
+    public static function client(array $provider, $attempt)
+    {
+        global $CFG_GLPI;
+        $context = Plugin::doHookFunction('oidc_create_client', ['provider' => $provider, 'attempt' => $attempt,
+            'client' => new OidcClient($provider, $attempt)]);
+        $client = $context['client'] ?? null;
+        if (!$client instanceof OidcClient) {
+            throw new RuntimeException('Invalid OIDC client adapter.');
+        }
+        $client->setRedirectURL(rtrim($CFG_GLPI['url_base'], '/') . '/front/oidc.php');
+        $client->addScope(preg_split('/[\s,]+/', trim($provider['scope'] ?? ''), -1, PREG_SPLIT_NO_EMPTY));
+        $client->setHttpUpgradeInsecureRequests(false);
+        if (!empty($provider['use_pkce'])) {
+            $client->setCodeChallengeMethod('S256');
+        }
+        if (!empty($provider['proxy'])) {
+            $client->setHttpProxy($provider['proxy']);
+        }
+        if (!empty($provider['cert'])) {
+            $client->setCertPath($provider['cert']);
+        }
+        return $client;
+    }
 
-   static function auth()
-   {
-
-      global $DB, $CFG_GLPI;
-
-      //Get config from DB and use it to setup oidc
-      $criteria = "SELECT * FROM glpi_oidc_config";
-      $iterators = $DB->request($criteria);
-      foreach ($iterators as $iterator) {
-         $oidc_db['Provider'] = $iterator['Provider'];
-         $oidc_db['ClientID'] = $iterator['ClientID'];
-         $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-         $oidc_db['scope'] = explode(',', addslashes(str_replace(' ', '', $iterator['scope'])));
-         $oidc_db['proxy'] = $iterator['proxy'];
-         $oidc_db['cert'] = $iterator['cert'];
-         $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
-      }
-
-      $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
-      if (is_array($oidc_db['scope'])) {
-         $oidc->addScope($oidc_db['scope']);
-      }
-      if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
-         $oidc->setHttpProxy($oidc_db['proxy']);
-      }
-      if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
-         $oidc->setCertPath($oidc_db['cert']);
-      }
-      $isCallback = isset($_GET['code']) || isset($_GET['id_token']) || isset($_GET['state']);
-      if (!$isCallback && isset($_REQUEST['redirect'])) {
-         $requestedRedirect = self::sanitizeRedirect($_REQUEST['redirect']);
-         if ($requestedRedirect) {
-            $cookieOptions = [
-               'expires' => time() + 300,
-               'path' => $CFG_GLPI['root_doc'] ?: '/',
-               'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
-               'httponly' => true,
-               'samesite' => 'Lax'
-            ];
-            if (PHP_VERSION_ID >= 70300) {
-               setcookie('itsm_oidc_redirect', $requestedRedirect, $cookieOptions);
-            } else { // Fallback for older PHP versions
-               setcookie('itsm_oidc_redirect', $requestedRedirect, $cookieOptions['expires'], $cookieOptions['path'], '', $cookieOptions['secure'], true);
+    public static function attempt($state)
+    {
+        if (!is_string($state) || $state === '') {
+            throw new RuntimeException('Missing OIDC state.');
+        }
+        self::pruneAttempts();
+        foreach ($_SESSION['_oidc_attempts'] ?? [] as $key => $attempt) {
+            if (isset($attempt['state']) && hash_equals($attempt['state'], $state)) {
+                return [$key, $attempt];
             }
-         }
-      }
-      $oidc->setHttpUpgradeInsecureRequests(false);
-      try {
-         $oidc->authenticate();
-      } catch (Exception $e) {
-         //If something go wrong 
-         Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-         echo '<div class="center b">';
-         echo __('Missing or wrong fields in open ID connect config');
-         echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
-         echo '</div>';
-         Html::nullFooter();
-         die;
-      }
+        }
+        throw new RuntimeException('Invalid or expired OIDC state.');
+    }
 
-      $result = $oidc->requestUserInfo();
-      $user_array = (array) $result;
-      //Create and/or authenticated a user
-      $criteria_users = "SELECT * FROM glpi_users";
-      $iterators_users = $DB->request($criteria_users);
-      $criteria_config = "SELECT * FROM glpi_oidc_mapping";
-      $iterators_config = $DB->request($criteria_config);
-      $newUser = true;
-
-      foreach ($iterators_config as $config) {
-         if (isset($user_array[$config['name']])) {
-            foreach ($iterators_users as $iterator) {
-               $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
-               if ($user_array[$config['name']] == $iterator['name'] && $canLink) {
-                  $ID = $iterator['id'];
-                  $newUser = false;
-                  break;
-               }
+    private static function pruneAttempts()
+    {
+        foreach ($_SESSION['_oidc_attempts'] ?? [] as $key => $attempt) {
+            if (($attempt['expires'] ?? 0) < time()) {
+                unset($_SESSION['_oidc_attempts'][$key], $_SESSION['_oidc_protocol'][$key]);
             }
+        }
+    }
+
+    public static function loginSources()
+    {
+        global $CFG_GLPI;
+        $sources = OidcProvider::all(true);
+        $redirect = self::sanitizeRedirect($_GET['redirect'] ?? null);
+        foreach ($sources as &$source) {
+            $source['login_url'] = $CFG_GLPI['root_doc'] . '/front/oidc.php?provider=' . (int) $source['id']
+                . ($redirect ? '&redirect=' . rawurlencode($redirect) : '');
+        }
+        unset($source);
+        $automatic = (int) ($CFG_GLPI['oidc_auto_login_provider'] ?? 0);
+        if ($automatic && !isset($_GET['noAUTO'])) {
+            foreach ($sources as $source) {
+                if ((int) $source['id'] === $automatic && ($source['required_plugin'] === '' || Plugin::isPluginActive($source['required_plugin']))) {
+                    Html::redirect($source['login_url']);
+                }
+            }
+        }
+        return $sources;
+    }
+
+    public static function refreshIfRequired()
+    {
+        global $DB, $CFG_GLPI;
+        if (isCommandLine() || isset($_GET['noAUTO'])) {
+            return;
+        }
+        if (empty($_SESSION['itsm_is_oidc']) || empty($_SESSION['glpiID'])) {
+            return;
+        }
+        if (in_array(basename($_SERVER['PHP_SELF'] ?? ''), ['oidc.php', 'logout.php'], true)) {
+            return;
+        }
+        $providerId = (int) ($_SESSION['itsm_oidc_provider'] ?? 0);
+        if (!$providerId) {
+            $providerId = OidcProvider::legacyId();
+            $_SESSION['itsm_oidc_provider'] = $providerId;
+        }
+        $where = ['oidcproviders_id' => $providerId, 'users_id' => (int) $_SESSION['glpiID'], 'needs_sync' => 1];
+        if (!empty($_SESSION['itsm_oidc_identity_key'])) {
+            $where['identity_key'] = $_SESSION['itsm_oidc_identity_key'];
+        }
+        if (count($DB->request(['FROM' => 'glpi_oidcidentities', 'WHERE' => $where]))) {
+            $redirect = self::sanitizeRedirect($_SERVER['REQUEST_URI'] ?? null);
+            Html::redirect($CFG_GLPI['root_doc'] . '/front/oidc.php?provider=' . $providerId
+                . ($redirect ? '&redirect=' . rawurlencode($redirect) : ''));
+        }
+    }
+
+    public static function auth()
+    {
+        global $CFG_GLPI;
+        $key = null;
+        $sessionInitialized = false;
+        try {
+            if (isset($_GET['logout'])) {
+                self::finishLogout($_GET['state'] ?? null);
+                return;
+            }
+            $callback = isset($_GET['code']) || isset($_GET['state']) || isset($_GET['error']) || isset($_GET['id_token']);
+            if ($callback) {
+                list($key, $attempt) = self::attempt($_GET['state'] ?? null);
+                $provider = OidcProvider::load($attempt['provider']);
+            } else {
+                $providerId = (int) ($_GET['provider'] ?? 0);
+                if (!$providerId) {
+                    $active = OidcProvider::all(true);
+                    if (count($active) !== 1) {
+                        throw new RuntimeException('Select an OIDC source on the login page.');
+                    }
+                    $providerId = (int) reset($active)['id'];
+                }
+                $provider = OidcProvider::load($providerId);
+                self::pruneAttempts();
+                if (count($_SESSION['_oidc_attempts'] ?? []) >= 10) {
+                    throw new RuntimeException('Too many pending OIDC logins.');
+                }
+                $key = bin2hex(random_bytes(16));
+                $attempt = ['provider' => $providerId, 'expires' => time() + 600,
+                    'redirect' => self::sanitizeRedirect($_GET['redirect'] ?? null) ?: '/'];
+                $_SESSION['_oidc_attempts'][$key] = $attempt;
+            }
+            $client = self::client($provider, $key);
+            if (!$client->authenticate()) {
+                throw new RuntimeException('OIDC authentication was not completed.');
+            }
+            if (!$callback) {
+                throw new RuntimeException('An OIDC callback is required.');
+            }
+            $claims = ['id_token' => (array) $client->getVerifiedClaims(), 'userinfo' => (array) $client->requestUserInfo()];
+            $user = self::authenticateClaims($provider, $claims);
+            $idToken = $client->getIdToken();
+            unset($_SESSION['_oidc_attempts'][$key], $_SESSION['_oidc_protocol'][$key]);
+            $auth = new Auth();
+            $auth->auth_succeded = true;
+            $auth->user = $user;
+            $auth->extauth = true;
+            $sessionInitialized = true;
+            Session::init($auth);
+            if (!$auth->auth_succeded) {
+                throw new RuntimeException('The account is not authorized to log in.');
+            }
+            $_SESSION['itsm_is_oidc'] = 1;
+            $_SESSION['itsm_oidc_provider'] = (int) $provider['id'];
+            $_SESSION['itsm_oidc_identity_key'] = OidcIdentity::key($claims['id_token']['iss'], $claims['id_token']['sub']);
+            $_SESSION['itsm_oidc_idtoken'] = $idToken;
+            self::recordLogin($provider, $claims['id_token'], $user->getID());
+            Plugin::doHook('oidc_login', ['provider' => $provider, 'users_id' => $user->getID()]);
+            Auth::redirectIfAuthenticated($attempt['redirect']);
+        } catch (Throwable $e) {
+            if ($sessionInitialized) {
+                Session::destroy();
+                Auth::setRememberMeCookie('');
+            }
+            if ($key !== null) {
+                unset($_SESSION['_oidc_attempts'][$key], $_SESSION['_oidc_protocol'][$key]);
+            }
+            Toolbox::logInFile('oidc', get_class($e) . ': ' . $e->getMessage() . "\n");
+            Html::nullHeader(__('Login'), $CFG_GLPI['root_doc'] . '/index.php');
+            echo '<div class="center"><p>' . __('OIDC login failed. Check the source configuration or contact your administrator.') . '</p><a href="'
+                . OidcProvider::escape($CFG_GLPI['root_doc'] . '/index.php?noAUTO=1') . '">' . __('Log in again') . '</a></div>';
+            Html::nullFooter();
+        }
+    }
+
+    /** Accept claims only after the OIDC client has verified the authentication response. */
+    public static function authenticateClaims(array $provider, array $claims)
+    {
+        return self::transaction(function () use ($provider, $claims) {
+            return self::synchronizeAuthenticatedUser($provider, $claims);
+        });
+    }
+
+    private static function transaction(callable $operation)
+    {
+        global $DB;
+        $nested = $DB->inTransaction();
+        $savepoint = 'oidc_' . bin2hex(random_bytes(8));
+        $nested ? $DB->queryOrDie('SAVEPOINT ' . $savepoint) : $DB->beginTransaction();
+        try {
+            $result = $operation();
+            $nested ? $DB->queryOrDie('RELEASE SAVEPOINT ' . $savepoint) : $DB->commit();
+            return $result;
+        } catch (Throwable $e) {
+            if ($nested) {
+                $DB->queryOrDie('ROLLBACK TO SAVEPOINT ' . $savepoint);
+                $DB->queryOrDie('RELEASE SAVEPOINT ' . $savepoint);
+            } else {
+                $DB->rollback();
+            }
+            throw $e;
+        }
+    }
+
+    private static function synchronizeAuthenticatedUser(array $provider, array $claims)
+    {
+        global $DB, $CFG_GLPI;
+        if (!is_array($claims['id_token'] ?? null) || !is_array($claims['userinfo'] ?? null)) {
+            throw new RuntimeException('Invalid OIDC claims.');
+        }
+        $provider = OidcProvider::load($provider['id']);
+        $identity = $claims['id_token'];
+        if (($identity['iss'] ?? null) !== $provider['issuer']) {
+            throw new RuntimeException('Invalid OIDC issuer.');
+        }
+        OidcClient::validateSubject($identity['sub'] ?? null);
+        if (($claims['userinfo']['sub'] ?? null) !== $identity['sub']) {
+            throw new RuntimeException('OIDC UserInfo subject does not match the ID token.');
+        }
+        $normalized = Plugin::doHookFunction('oidc_normalize_claims', ['provider' => $provider, 'claims' => $claims]);
+        if (!is_array($normalized) || !is_array($normalized['claims']['userinfo'] ?? null) || !is_array($normalized['claims']['id_token'] ?? null)) {
+            throw new RuntimeException('Invalid normalized OIDC claims.');
+        }
+        $claims = $normalized['claims'];
+        $claims['id_token']['iss'] = $identity['iss'];
+        $claims['id_token']['sub'] = $identity['sub'];
+        $claims['userinfo']['sub'] = $identity['sub'];
+        $id = OidcIdentity::resolve($provider, $identity, $claims);
+        $user = new User();
+        if ($id === null) {
+            if (empty($provider['allow_provisioning']) || empty($CFG_GLPI['is_users_auto_add'])) {
+                throw new RuntimeException('OIDC user creation is disabled.');
+            }
+            $username = self::username($provider, $claims);
+            if (count($DB->request(['FROM' => 'glpi_users', 'WHERE' => ['name' => self::literal($username)]]))) {
+                throw new RuntimeException('The OIDC username already belongs to an unlinked account.');
+            }
+            $values = OidcMapping::values($provider['id'], $claims, ['entities_id' => 0], true);
+            $id = $user->add(Toolbox::addslashes_deep(['name' => $username, 'authtype' => Auth::EXTERNAL, '_extauth' => 1, 'add' => 1]));
+        }
+        if (!$id || !$user->getFromDB($id)) {
+            throw new RuntimeException('Unable to load the OIDC user.');
+        }
+        self::checkUser($user);
+        $values = $values ?? OidcMapping::values($provider['id'], $claims, $user->fields, false);
+        OidcMapping::apply($provider['id'], $user, $values);
+        self::applyRules($user, $provider['id']);
+        self::checkUser($user);
+        OidcIdentity::bind($provider, $identity, $user->getID());
+        return $user;
+    }
+
+    public static function username(array $provider, array $claims)
+    {
+        $value = OidcMapping::claim($claims[$provider['login_claim_source'] ?? 'userinfo'], $provider['login_claim']);
+        if (($value === null || $value === '') && !empty($provider['is_legacy'])) {
+            $value = ($provider['legacy_login_fallback'] ?? 'sub') === 'name' ? ($claims['userinfo']['name'] ?? null) : null;
+            if (!is_string($value) || $value === '') {
+                $value = $claims['id_token']['sub'] ?? null;
+            }
+        }
+        if (!is_string($value) || $value === '' || !Auth::isValidLogin($value)) {
+            throw new RuntimeException('Missing or invalid OIDC username.');
+        }
+        return $value;
+    }
+
+    private static function checkUser(User $user)
+    {
+        $now = $_SESSION['glpi_currenttime'];
+        if (!$user->fields['is_active'] || $user->fields['is_deleted']) {
+            throw new RuntimeException('The OIDC account is inactive or deleted.');
+        }
+        if (!empty($user->fields['begin_date']) && $user->fields['begin_date'] > $now) {
+            throw new RuntimeException('The OIDC account is not yet valid.');
+        }
+        if (!empty($user->fields['end_date']) && $user->fields['end_date'] < $now) {
+            throw new RuntimeException('The OIDC account has expired.');
+        }
+    }
+
+    public static function applyRules(User $user, $providerId = null)
+    {
+        $rules = new RuleRightCollection();
+        $input = $rules->processAllRules(
+            array_column(Group_User::getUserGroups($user->getID()), 'id'),
+            $user->fields,
+            ['type' => Auth::EXTERNAL, 'oidc_provider' => $providerId ?? 0, 'login' => $user->fields['name'], 'email' => UserEmail::getDefaultForUser($user->getID())]
+        );
+        $input['_ruleright_process'] = true;
+        if (!$user->update($input)) {
+            throw new RuntimeException('Unable to apply OIDC authorization rules.');
+        }
+        $user->getFromDB($user->getID());
+    }
+
+    public static function recordLogin(array $provider, array $identity, $userId)
+    {
+        global $DB;
+        if (!$DB->update('glpi_users', ['last_login' => $_SESSION['glpi_currenttime']], ['id' => $userId])) {
+            throw new RuntimeException('Unable to record the OIDC login.');
+        }
+        if (!$DB->update(
+            'glpi_oidcidentities',
+            ['last_login' => $_SESSION['glpi_currenttime'], 'needs_sync' => 0],
+            ['oidcproviders_id' => $provider['id'], 'identity_key' => OidcIdentity::key($identity['iss'], $identity['sub'])]
+        )) {
+            throw new RuntimeException('Unable to record the OIDC identity login.');
+        }
+    }
+
+    /** Synchronize imported profile data without recording an authentication event. */
+    public static function addUserData($userArray, $id, $providerId = null)
+    {
+        self::transaction(function () use ($userArray, $id, $providerId) {
+            $providerId = $providerId ?? OidcProvider::legacyId();
+            OidcProvider::load($providerId, false);
             $user = new User();
-            if ($newUser) {
-               if (!$CFG_GLPI['is_users_auto_add']) {
-                  Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-                  echo '<div class="center b">';
-                  echo __('User not authorized to connect in GLPI');
-                  echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
-                  echo '</div>';
-                  Html::nullFooter();
-                  die;
-               }
-               $rule = new RuleRightCollection();
-               $input = [
-                  'authtype' => Auth::EXTERNAL,
-                  'name' => $user_array['sub'],
-                  '_extauth' => 1,
-                  'add' => 1
-               ];
-               $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
-                  'type'   => Auth::EXTERNAL,
-                  'email'  => $input["_emails"],
-                  'login'  => $input["name"]
-               ]);
-               $input['_ruleright_process'] = true;
-
-               $ID = $user->add($input);
+            if (!$user->getFromDB($id)) {
+                throw new RuntimeException('Unable to load the OIDC user.');
             }
-         } else {
-            foreach ($iterators_users as $iterator) {
-               $canLink = $oidc_db['sso_link_users'] || $iterator['authtype'] == Auth::EXTERNAL;
-               if ($user_array['sub'] == $iterator['name'] && $canLink) {
-                  $ID = $iterator['id'];
-                  $newUser = false;
-               }
-            }
-            $user = new User();
-            if ($newUser) {
-               if (!$CFG_GLPI['is_users_auto_add']) {
-                  Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-                  echo '<div class="center b">';
-                  echo __('User not authorized to connect in GLPI');
-                  echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
-                  echo '</div>';
-                  Html::nullFooter();
-                  die;
-               }
-               $rule = new RuleRightCollection();
-               $input = [
-                  'authtype' => Auth::EXTERNAL,
-                  'name' => $user_array['sub'],
-                  '_extauth' => 1,
-                  'add' => 1
-               ];
-                $input = $rule->processAllRules([], Toolbox::stripslashes_deep($input), [
-                   'type'   => Auth::EXTERNAL,
-                   'email'  => $input["_emails"],
-                   'login'  => $input["name"]
-                ]);
-                $input['_ruleright_process'] = true;
-                $ID = $user->add($input);
-            }
-         }
-      }
+            $values = OidcMapping::values($providerId, ['userinfo' => $userArray, 'id_token' => []], $user->fields, false);
+            OidcMapping::apply($providerId, $user, $values);
+            self::applyRules($user, $providerId);
+        });
+    }
 
-      if (!$user->getFromDB($ID)) {
-         Html::nullHeader("Login", $CFG_GLPI["root_doc"] . '/index.php');
-         echo '<div class="center b">';
-         echo __('Could not access user from mappings');
-         echo '<p><a href="' . $CFG_GLPI['root_doc'] . "/index.php" . '">' . __('Log in again') . '</a></p>';
-         echo '</div>';
-         Html::nullFooter();
-         die;
-      }
+    public static function logout()
+    {
+        global $CFG_GLPI;
+        try {
+            $provider = OidcProvider::load($_SESSION['itsm_oidc_provider'] ?? OidcProvider::legacyId(), false);
+            $client = self::client($provider, 'logout');
+            $idToken = $_SESSION['itsm_oidc_idtoken'] ?? '';
+            $state = bin2hex(random_bytes(32));
+            $context = Plugin::doHookFunction('oidc_logout', ['provider' => $provider, 'client' => $client,
+                'redirect' => $provider['logout_redirect'] ?: rtrim($CFG_GLPI['url_base'], '/') . '/front/oidc.php?logout=1',
+                'parameters' => []]);
+            $url = $client->logoutUrl($idToken, $context['redirect'], $state, $context['parameters']);
+            Session::destroy();
+            Auth::setRememberMeCookie('');
+            Session::start();
+            $_SESSION['_oidc_logout'] = ['state' => $state, 'expires' => time() + 600,
+                'redirect' => $CFG_GLPI['root_doc'] . '/index.php?noAUTO=1'];
+            Html::redirect($url);
+        } catch (Throwable $e) {
+            Toolbox::logInFile('oidc', 'OIDC logout failed: ' . get_class($e) . "\n");
+        }
+    }
 
-      $request = $DB->request('glpi_oidc_mapping');
-      while ($data = $request->next()) {
-         $mapping_date_mod = $data["date_mod"];
-      }
-      $request = $DB->request('glpi_users', ["id" => $ID]);
-      while ($data = $request->next()) {
-         $user_date_mod = $data["date_mod"];
-      }
+    public static function finishLogout($state)
+    {
+        Html::redirect(self::consumeLogoutState($state));
+    }
 
-      //if ($mapping_date_mod > $user_date_mod)
-      self::addUserData($user_array, $ID);
+    public static function consumeLogoutState($state)
+    {
+        $pending = $_SESSION['_oidc_logout'] ?? null;
+        unset($_SESSION['_oidc_logout']);
+        if (!is_array($pending) || !is_string($state)) {
+            throw new RuntimeException('Invalid or expired OIDC logout state.');
+        }
+        if ($pending['expires'] < time() || !hash_equals($pending['state'], $state)) {
+            throw new RuntimeException('Invalid or expired OIDC logout state.');
+        }
+        return $pending['redirect'];
+    }
 
-      $auth = new Auth();
-      $auth->auth_succeded = true;
-      $auth->user = $user;
-      Session::init($auth);
-      $_SESSION['itsm_is_oidc'] = 1;
-      $_SESSION['itsm_oidc_idtoken'] = $oidc->getIdToken();
-      $redirectTarget = null;
-      if (isset($_REQUEST['redirect'])) {
-         $redirectTarget = self::sanitizeRedirect($_REQUEST['redirect']);
-      }
-      if (!$redirectTarget && isset($_COOKIE['itsm_oidc_redirect'])) {
-         $redirectTarget = self::sanitizeRedirect($_COOKIE['itsm_oidc_redirect']);
-      }
-      // Clear the cookie
-      if (isset($_COOKIE['itsm_oidc_redirect'])) {
-         $cookiePath = $CFG_GLPI['root_doc'] ?: '/';
-         setcookie('itsm_oidc_redirect', '', time() - 3600, $cookiePath, '', isset($_SERVER['HTTPS']), true);
-      }
-      if ($redirectTarget) {
-         Html::redirect($CFG_GLPI['root_doc'] . $redirectTarget);
-      } else {
-         Auth::redirectIfAuthenticated(); // fallback to standard central/helpdesk
-      }
-   }
-
-   /**
-    * Add oidc data to user's db via a mapping
-    *
-    * @return void
-    */
-   static function addUserData($user_array, $id)
-   {
-      global $DB;
-
-      $criteria = "SELECT * FROM glpi_oidc_mapping";
-      $iterators = $DB->request($criteria);
-
-      while ($data = $iterators->next())
-         $result[] = $data;
-
-      if (isset($result)) {
-         if (isset($user_array[$result[0]["name"]]))
-            $DB->updateOrInsert("glpi_users", ['name' => $DB->escape($user_array[$result[0]["name"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["given_name"]]))
-            $DB->updateOrInsert("glpi_users", ['firstname' => $DB->escape($user_array[$result[0]["given_name"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["family_name"]]))
-            $DB->updateOrInsert("glpi_users", ['realname' => $DB->escape($user_array[$result[0]["family_name"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["picture"]]))
-            $DB->updateOrInsert("glpi_users", ['picture' => $DB->escape($user_array[$result[0]["picture"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["email"]])) {
-            $querry = "INSERT IGNORE INTO `glpi_useremails` (`id`, `users_id`, `is_default`, `is_dynamic`, `email`) VALUES ('0', '$id', '0', '0', '" . $user_array[$result[0]["email"]] . "');";
-            $DB->queryOrDie($querry);
-         }
-
-         if (isset($user_array[$result[0]["locale"]]))
-            $DB->updateOrInsert("glpi_users", ['language' => $DB->escape($user_array[$result[0]["locale"]])], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["phone_number"]]))
-            $DB->updateOrInsert("glpi_users", ['phone' => $DB->escape($user_array[$result[0]["phone_number"]])], ['id' => $id]);
-
-         $DB->updateOrInsert("glpi_users", ['date_mod' => $_SESSION["glpi_currenttime"]], ['id' => $id]);
-
-         if (isset($user_array[$result[0]["group"]])) {
-            foreach ($data = $user_array[$result[0]["group"]] as $value) {
-               $id_group_create = 0;
-               $request = $DB->request('glpi_groups');
-
-               while ($data = $request->next()) {
-                  if ($data['name'] == $value || $data['name'] == stripslashes($value)) {
-                     $id_group_create = $data['id'];
-                     break;
-                  }
-               }
-
-               $querry = "INSERT IGNORE INTO `glpi_groups` (`id`, `name`, `completename`) VALUES ($id_group_create, '$value', '$value');";
-               $DB->queryOrDie($querry);
-               $request = $DB->request('glpi_groups');
-
-               while ($data = $request->next()) {
-                  $id_group = $data['id'];
-                  if ($data['name'] == $value) {
-                     break;
-                  }
-               }
-
-               $querry = "INSERT IGNORE INTO `glpi_groups_users` (`id`, `users_id`, `groups_id`) VALUES ('0', '$id', '$id_group');";
-               $DB->queryOrDie($querry);
-            }
-         }
-      }
-
-      $request = $DB->request('glpi_oidc_users');
-
-      while ($data = $request->next()) {
-         $user_id = $data['id'];
-
-         if ($data['user_id'] == $id)
-            $find = true;
-      }
-
-      if (!isset($find)) {
-         $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => 0]);
-      } else {
-         $DB->updateOrInsert("glpi_oidc_users", ['user_id' => $id, 'update' => 1], ['id' => $user_id]);
-      }
-   }
-
-   /**
-    * Show user config form
-    *
-    * @return void
-    */
-   static function showFormUserConfig()
-   {
-      global $DB;
-
-      if (isset($_POST["config"])) {
-         Html::redirect("auth.oidc.php");
-      }
-
-      if (isset($_POST["update"])) {
-         $oidc_result = [
-            'name' => $_POST["name"],
-            'given_name' => $_POST["given_name"],
-            'family_name' => $_POST["family_name"],
-            'picture' => $_POST["picture"],
-            'email' => $_POST["email"],
-            'locale' => $_POST["locale"],
-            'phone_number' => $_POST["phone_number"],
-            'group' => $_POST["group"],
-            'date_mod' => $_SESSION["glpi_currenttime"],
-         ];
-         $DB->updateOrInsert("glpi_oidc_mapping", $oidc_result, ['id' => 0]);
-      }
-
-      $criteria = "SELECT * FROM glpi_oidc_mapping";
-      $iterators = $DB->request($criteria);
-      $oidc_db = [
-         'name' => null,
-         'given_name' => null,
-         'family_name' => null,
-         'picture' => null,
-         'email' => null,
-         'locale' => null,
-         'phone_number' => null,
-         'group' => null,
-         'date_mod' => null,
-      ];
-
-      foreach ($iterators as $iterator) {
-         $oidc_db['name'] = $iterator["name"];
-         $oidc_db['given_name'] = $iterator["given_name"];
-         $oidc_db['family_name'] = $iterator["family_name"];
-         $oidc_db['picture'] = $iterator["picture"];
-         $oidc_db['email'] = $iterator["email"];
-         $oidc_db['locale'] = $iterator["locale"];
-         $oidc_db['phone_number'] = $iterator["phone_number"];
-         $oidc_db['group'] = $iterator["group"];
-         $oidc_db['date_mod'] = $iterator["date_mod"];
-      }
-
-      echo "<div class='center'>";
-      echo "<form method='post' action='./auth.oidc_profile.php'>";
-      echo "<input type='hidden' name='id' value='JAAJ'>";
-      echo "<table class='tab_cadre_fixe'>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<th class='center' colspan='4'>" . __('Mapping of fields according to provider') . "</th></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Username') . "</td>";
-      echo "<td><input type='text' name='name' value='" . $oidc_db['name'] . "'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Surname') . "</td>";
-      echo "<td><input type='text' name='family_name' value='" . $oidc_db['family_name'] . "'></td>";
-      echo "<td>" . __('First name') . "</td>";
-      echo "<td><input type='text' name='given_name' value='" . $oidc_db['given_name'] . "'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Email') . "</td>";
-      echo "<td><input type='text' name='email' value='" . $oidc_db['email'] . "'></td>";
-      echo "<td>" . __('Phone') . "</td>";
-      echo "<td><input type='text' name='phone_number' value='" . $oidc_db['phone_number'] . "'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Locale') . "</td>";
-      echo "<td><input type='text' name='locale' value='" . $oidc_db['locale'] . "'></td>";
-      echo "<td>" . __('Picture') . "</td>";
-      echo "<td><input type='text' name='picture' value='" . $oidc_db['picture'] . "'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td>" . __('Group') . "</td>";
-      echo "<td><input type='text' name='group' value='" . $oidc_db['group'] . "'></td>";
-      echo "<td>" . __('Last update') . "</td>";
-      echo "<td><input type='text' name='date_mod' value='" . $oidc_db['date_mod'] . "'></td></tr>";
-
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"" . __s('Save') . "\">" . '&nbsp;';
-      echo "<input type='submit' name='config' class='submit' value=\"" . __s('Configuration') . "\" >";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-
-      echo "</div>";
-   }
-
-   /**
-    * Sanitize a post-auth redirect path to avoid open redirects.
-    * Accept only internal absolute paths (starting with '/') and disallow protocol-relative or external URLs.
-    *
-    * @param mixed $value
-    * @return string|null
-    */
-   private static function sanitizeRedirect($value)
-   {
-       if (!is_string($value)) {
-           return null;
-       }
-       $value = trim($value);
-       if ($value === '') {
-           return null;
-       }
-       if (preg_match('#^(?:[a-z][a-z0-9+.-]*:)?//#i', $value)) {
-           return null;
-       }
-       if ($value[0] !== '/') {
-           return null;
-       }
-       if (strpos($value, "\n") !== false || strpos($value, "\r") !== false) {
-           return null;
-       }
-       return $value;
-   }
+    public static function sanitizeRedirect($value)
+    {
+        if (!is_string($value) || trim($value) === '') {
+            return null;
+        }
+        $decoded = rawurldecode(trim($value));
+        if (preg_match('/[\x00-\x20\x7f\\\\]/', $decoded) || preg_match('#^(?:[a-z][a-z0-9+.-]*:)?//#i', $decoded)) {
+            return null;
+        }
+        if ($decoded[0] === '/' && \Glpi\Toolbox\URL::isITSMNGRelativeURL($decoded)) {
+            return trim($value);
+        }
+        return preg_match('/^[A-Za-z0-9][A-Za-z0-9_$.-]*(?:_[A-Za-z0-9$.-]+)*$/', $decoded) ? trim($value) : null;
+    }
 }
