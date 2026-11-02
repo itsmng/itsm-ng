@@ -41,6 +41,11 @@ function migrateOidcProviders($encryptedLegacySecrets)
             $DB->queryOrDie($statement, 'Unable to create the OIDC schema');
         }
     }
+    foreach (['button_label' => 255, 'button_color' => 7, 'button_icon' => 32] as $field => $length) {
+        if (!$DB->fieldExists('glpi_oidcproviders', $field, false)) {
+            $DB->queryOrDie("ALTER TABLE glpi_oidcproviders ADD `$field` varchar($length) NOT NULL DEFAULT ''", 'Unable to add OIDC button settings');
+        }
+    }
     $state = Config::getConfigurationValues('core', ['oidc_migration_completed', 'itsmversion']);
     if (empty($state['oidc_migration_completed']) && $DB->tableExists('glpi_oidc_config')) {
         $configs = iterator_to_array($DB->request('glpi_oidc_config'));

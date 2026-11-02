@@ -115,6 +115,11 @@ class Auth extends CommonGLPI
             $menu['options']['imap']['links']['search'] = AuthMail::getSearchURL(false);
             $menu['options']['imap']['links']['add']    = AuthMail::getFormURL(false);
 
+            $menu['options']['oidc']['title']           = OidcProvider::getTypeName();
+            $menu['options']['oidc']['page']            = '/front/auth.oidc.php';
+            $menu['options']['oidc']['links']['search'] = '/front/auth.oidc.php';
+            $menu['options']['oidc']['links']['add']    = '/front/auth.oidc.form.php';
+
             $menu['options']['others']['title']         = __('Others');
             $menu['options']['others']['page']          = '/front/auth.others.php';
 
@@ -1783,13 +1788,91 @@ class Auth extends CommonGLPI
     }
 
     /**
-     * Show form for open ID connect authentication configuration.
-     *
-     * Form is directly printed.
+     * Show the configured OpenID Connect sources.
      */
     public static function showAuthOIDCConfig()
     {
-        OidcProvider::showConfiguration();
+        global $CFG_GLPI;
+        $rows = [];
+        $choices = [0 => __('No automatic login')];
+        foreach (OidcProvider::all() as $source) {
+            $rows[$source['id']] = [
+                '<a href="auth.oidc.form.php?id=' . (int) $source['id'] . '">' . OidcProvider::escape($source['name']) . '</a>',
+                $source['is_active'] ? __('Yes') : __('No'),
+                OidcProvider::escape($source['issuer']),
+            ];
+            if ($source['is_active']) {
+                $choices[$source['id']] = OidcProvider::escape($source['name']);
+            }
+        }
+        renderTwigTemplate('table.twig', [
+            'id' => 'oidcSources', 'state_key' => 'OidcProvider', 'search' => true,
+            'fields' => [__('Name'), __('Active'), __('Issuer')], 'values' => $rows,
+        ]);
+        renderTwigForm([
+            'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.php',
+            'buttons' => [['name' => 'automatic', 'value' => __('Save'), 'class' => 'btn btn-primary']],
+            'content' => [__('Automatic login') => ['visible' => true, 'inputs' => [
+                __('Automatic login source') => ['type' => 'select', 'name' => 'automatic_provider',
+                    'values' => $choices, 'value' => $CFG_GLPI['oidc_auto_login_provider'] ?? 0],
+            ]]],
+        ]);
+    }
+
+    public static function showAuthOIDCForm($id)
+    {
+        global $CFG_GLPI;
+        $source = $id ? OidcProvider::load($id, false) : [];
+        $source += ['scope' => 'openid profile email', 'login_claim' => '/preferred_username',
+            'email_claim' => '/email', 'use_pkce' => 1, 'link_method' => 'none'];
+        $field = static function ($name, $type = 'text') use ($source) {
+            return ['type' => $type, 'name' => $name, 'value' => $source[$name] ?? '', 'col_lg' => 6];
+        };
+        $select = static function ($name, array $values) use ($field) {
+            return $field($name, 'select') + ['values' => $values];
+        };
+        $methods = ['none' => __('Disabled'), 'username' => __('Username'), 'email' => __('Verified email'), 'plugin' => __('Plugin')];
+        if (!empty($source['is_legacy'])) {
+            $methods['legacy'] = __('Migrated legacy policy');
+        }
+        $back = '<a class="btn btn-secondary" href="auth.oidc.php">' . __('Back to list') . '</a> ';
+        $mapping = $id ? '<a class="btn btn-secondary" href="auth.oidc_profile.php?id=' . (int) $id . '">' . __('Mapping') . '</a>' : '';
+        renderTwigForm([
+            'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.form.php',
+            'buttons' => [['name' => 'save', 'value' => __('Save'), 'class' => 'btn btn-primary']],
+            'content' => [
+                __('Connection') => ['visible' => true, 'inputs' => [
+                    __('Name') => $field('name') + ['required' => true],
+                    __('Issuer') => $field('issuer', 'url') + ['required' => true],
+                    __('Client ID') => $field('client_id') + ['required' => true],
+                    __('Client secret (leave blank to retain)') => ['type' => 'password', 'name' => 'client_secret', 'value' => '', 'autocomplete' => 'new-password', 'col_lg' => 6],
+                    __('Scopes') => $field('scope'),
+                    __('Active') => $field('is_active', 'checkbox'),
+                ]],
+                __('Login button') => ['visible' => true, 'inputs' => [
+                    __('Login button text') => $field('button_label') + ['maxlength' => 255, 'placeholder' => $source['name'] ?? __('OpenID Connect')],
+                    __('Login button icon') => $select('button_icon', OidcProvider::buttonIcons()),
+                    __('Use a custom color') => ['type' => 'checkbox', 'name' => 'use_button_color', 'value' => empty($source['button_color']) ? 0 : 1, 'col_lg' => 6],
+                    __('Login button color') => ['type' => 'color', 'name' => 'button_color', 'value' => ($source['button_color'] ?? '') ?: '#007bff',
+                        'col_lg' => 6, 'after' => __('Text color is chosen automatically for readability.')],
+                ]],
+                __('Initial account linking') => ['visible' => true, 'inputs' => [
+                    __('Initial account linking') => $select('link_method', $methods),
+                    __('Allow user creation') => $field('allow_provisioning', 'checkbox'),
+                    __('Username claim path') => $field('login_claim'),
+                    __('Username claim payload') => $select('login_claim_source', ['userinfo' => 'UserInfo', 'id_token' => 'ID token']),
+                    __('Email claim path') => $field('email_claim'),
+                    __('Email claim payload') => $select('email_claim_source', ['userinfo' => 'UserInfo', 'id_token' => 'ID token']),
+                ]],
+                __('Advanced settings') => ['visible' => true, 'inputs' => [
+                    __('Required plugin') => $field('required_plugin'),
+                    __('Proxy') => $field('proxy'),
+                    __('Certificate path') => $field('cert'),
+                    __('Logout return URL') => $field('logout_redirect', 'url'),
+                    __('Use PKCE (S256)') => $field('use_pkce', 'checkbox'),
+                ]],
+            ],
+        ], $back . $mapping, $source);
     }
 
 

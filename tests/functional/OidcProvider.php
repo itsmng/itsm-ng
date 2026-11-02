@@ -36,6 +36,40 @@ namespace tests\units;
 /** Schema changes commit implicitly, so these tests cannot use DbTestCase's transaction. */
 class OidcProvider extends \GLPITestCase
 {
+    public function testExistingProviderUpgradeKeepsConfiguration()
+    {
+        global $DB;
+        require_once GLPI_ROOT . '/install/oidc-migration.php';
+        $DB->insertOrDie('glpi_oidcproviders', ['name' => '_oidc_existing_source', 'issuer' => 'https://existing.example.org',
+            'client_id' => 'existing-client', 'client_secret' => \Toolbox::sodiumEncrypt('existing-secret'),
+            'button_label' => 'Existing label', 'button_color' => '#001A72', 'button_icon' => 'fa-building']);
+        $fixtureId = $DB->insertId();
+        $before = array_column(iterator_to_array($DB->request('glpi_oidcproviders')), null, 'id');
+        $buttons = [];
+        foreach ($before as $id => $row) {
+            $buttons[$id] = array_intersect_key($row, array_flip(['button_label', 'button_color', 'button_icon']));
+        }
+        try {
+            $DB->queryOrDie('ALTER TABLE glpi_oidcproviders DROP button_label, DROP button_color, DROP button_icon');
+            migrateOidcProviders(true);
+            $after = array_column(iterator_to_array($DB->request('glpi_oidcproviders')), null, 'id');
+            foreach ($after as $id => $row) {
+                $this->string($row['button_label'])->isEmpty();
+                $this->string($row['button_color'])->isEmpty();
+                $this->string($row['button_icon'])->isEmpty();
+                $this->array($row)->isEqualTo(array_replace($before[$id], ['button_label' => '', 'button_color' => '', 'button_icon' => '']));
+            }
+            migrateOidcProviders(true);
+            $this->array(array_column(iterator_to_array($DB->request('glpi_oidcproviders')), null, 'id'))->isIdenticalTo($after);
+        } finally {
+            migrateOidcProviders(true);
+            foreach ($buttons as $id => $values) {
+                $DB->update('glpi_oidcproviders', $values, ['id' => $id]);
+            }
+            $DB->delete('glpi_oidcproviders', ['id' => $fixtureId]);
+        }
+    }
+
     public function testStableAndEncryptedLegacyMigrationAreResumable()
     {
         global $DB;

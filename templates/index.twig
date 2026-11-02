@@ -52,7 +52,9 @@
         </form>
         {% for source in oidc_sources %}
             <p class="login_input">
-                <a class="btn btn-info w-100 h-auto" href="{{ source.login_url }}">{{ source.name }}</a>
+                <a class="btn btn-info w-100 h-auto" href="{{ source.login_url }}"{% if source.button.style %} style="{{ source.button.style }}"{% endif %}>
+                    {% if source.button.icon %}<i class="fa {{ source.button.icon }}" aria-hidden="true" style="margin-right: .5em; color: inherit !important;"></i>{% endif %}{{ source.button.label }}
+                </a>
             </p>
         {% endfor %}
     </div>

@@ -84,6 +84,105 @@ class Oidc extends \DbTestCase
         })->isInstanceOf(\InvalidArgumentException::class);
     }
 
+    public function testLoginButtonCustomizationAndReset()
+    {
+        $this->login();
+        $provider = $this->provider(['name' => 'Organization', 'button_label' => 'Sign in with Organization',
+            'button_color' => '#001A72', 'button_icon' => 'fa-building']);
+        $button = \OidcProvider::loginButton($provider);
+        $this->string($button['label'])->isIdenticalTo('Sign in with Organization');
+        $this->string($button['style'])->contains('background:#001A72;')->contains('color:#ffffff;');
+        $this->string($button['icon'])->isIdenticalTo('fa-building');
+        $this->string(\OidcProvider::loginButton(array_replace($provider, ['button_color' => '#ffffff']))['style'])
+            ->contains('color:#000000;');
+        $item = new \OidcProvider();
+        $this->boolean($item->update(['id' => $provider['id'], 'button_label' => '   ', 'button_color' => '', 'button_icon' => '']))->isTrue();
+        $button = \OidcProvider::loginButton(\OidcProvider::load($provider['id']));
+        $this->array($button)->isIdenticalTo(['label' => 'Organization', 'style' => '', 'icon' => '']);
+    }
+
+    public function testLoginButtonRejectsInvalidStyling()
+    {
+        $this->login();
+        foreach ([['button_color' => '#fff'], ['button_color' => 'red;background:url(https://example.org)'],
+            ['button_icon' => 'fa-key" onclick="alert(1)'], ['button_label' => str_repeat('x', 256)],
+            ['button_label' => ['invalid']]] as $invalid) {
+            $this->exception(function () use ($invalid) {
+                $this->provider($invalid);
+            })->isInstanceOf(\InvalidArgumentException::class);
+        }
+    }
+
+    public function testLoginPageEscapesButtonTextAndPreservesSourceLinks()
+    {
+        $this->login();
+        $provider = $this->provider(['button_label' => '<script>alert(1)</script>']);
+        $previous = $_GET;
+        try {
+            $_GET = ['noAUTO' => 1, 'redirect' => 'ticket_123'];
+            $sources = array_column(\Oidc::loginSources(), null, 'id');
+            $source = $sources[$provider['id']];
+            $this->string($source['login_url'])->contains('provider=' . $provider['id'])->contains('redirect=ticket_123');
+            ob_start();
+            renderTwigTemplate('index.twig', ['oidc_sources' => [$source], 'header_data' => [], 'root_doc' => '']);
+            $html = ob_get_clean();
+            $this->string($html)->contains('&lt;script&gt;alert(1)&lt;/script&gt;')->notContains('<script>alert(1)</script>');
+        } finally {
+            $_GET = $previous;
+        }
+    }
+
+    public function testConfigurationKeepsTheSelectedSource()
+    {
+        $this->login();
+        $selected = $this->provider(['name' => 'AAA selected source']);
+        $this->provider(['name' => 'ZZZ other source']);
+        $previousGet = $_GET;
+        $previousPost = $_POST;
+        try {
+            $_GET = ['id' => $selected['id']];
+            $_POST = [];
+            ob_start();
+            \Auth::showAuthOIDCForm($selected['id']);
+            $html = ob_get_clean();
+            $previousErrors = libxml_use_internal_errors(true);
+            $document = new \DOMDocument();
+            $document->loadHTML($html);
+            libxml_clear_errors();
+            libxml_use_internal_errors($previousErrors);
+            $xpath = new \DOMXPath($document);
+            $this->string($xpath->evaluate('string(//input[@name="id"]/@value)'))->isIdenticalTo((string) $selected['id']);
+            $this->string($xpath->evaluate('string(//input[@name="name"]/@value)'))->isIdenticalTo('AAA selected source');
+            $this->string($xpath->evaluate('string(//form[.//input[@name="name"]]/@action)'))->isIdenticalTo($GLOBALS['CFG_GLPI']['root_doc'] . '/front/auth.oidc.form.php');
+            $this->string($xpath->evaluate('string(//input[@name="client_secret"]/@value)'))->isEmpty();
+        } finally {
+            $_GET = $previousGet;
+            $_POST = $previousPost;
+        }
+    }
+
+    public function testConfigurationListIsSeparateFromSourceForm()
+    {
+        $this->login();
+        $provider = $this->provider(['name' => '<script>source</script>']);
+        ob_start();
+        \Auth::showAuthOIDCConfig();
+        $html = ob_get_clean();
+        $document = new \DOMDocument();
+        $previousErrors = libxml_use_internal_errors(true);
+        $document->loadHTML($html);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previousErrors);
+        $xpath = new \DOMXPath($document);
+        $config = json_decode($xpath->evaluate('string(//script[@id="oidcSources_config"])'), true);
+        $row = $config['dataSource']['rows'][$provider['id']];
+        $this->string($row[0])->contains('auth.oidc.form.php?id=' . $provider['id'])->contains('&lt;script&gt;');
+        $this->integer($xpath->query('//input[@name="client_id"]')->length)->isIdenticalTo(0);
+        $this->integer($xpath->query('//a[contains(@href,"auth.oidc.form.php") and normalize-space(.)="Add"]')->length)->isIdenticalTo(0);
+        $this->string($xpath->evaluate('string(//select[@name="automatic_provider"]/option[@value="' . $provider['id'] . '"])'))
+            ->isIdenticalTo('<script>source</script>');
+    }
+
     public function testClaimPaths()
     {
         $claims = ['address' => (object) ['locality' => 'Paris'], 'chorusdt:matricule' => '123', 'a/b~c' => 0];
