@@ -1,6 +1,9 @@
 CREATE TABLE IF NOT EXISTS `glpi_oidcproviders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `button_label` varchar(255) NOT NULL DEFAULT '',
+  `button_color` varchar(7) NOT NULL DEFAULT '',
+  `button_icon` varchar(32) NOT NULL DEFAULT '',
   `issuer` varchar(1024) COLLATE utf8_bin NOT NULL,
   `client_id` varchar(255) NOT NULL,
   `client_secret` text,

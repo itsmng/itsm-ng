@@ -93,7 +93,8 @@ class OidcProvider extends CommonDBTM
     {
         foreach ($input as $field => $value) {
             if (in_array($field, ['name', 'issuer', 'client_id', 'client_secret', 'scope', 'proxy', 'cert', 'logout_redirect',
-                'link_method', 'login_claim', 'email_claim', 'login_claim_source', 'email_claim_source', 'required_plugin'], true)
+                'link_method', 'login_claim', 'email_claim', 'login_claim_source', 'email_claim_source', 'required_plugin',
+                'button_label', 'button_color', 'button_icon'], true)
                 && !is_string($value)) {
                 throw new InvalidArgumentException('OIDC configuration values must be strings.');
             }
@@ -127,6 +128,20 @@ class OidcProvider extends CommonDBTM
             if (!in_array($config[$field] ?? 'userinfo', ['userinfo', 'id_token'], true)) {
                 throw new InvalidArgumentException('Invalid OIDC account-matching payload.');
             }
+        }
+        if (isset($input['button_label'])) {
+            $input['button_label'] = trim($input['button_label']);
+        }
+        $label = trim(stripslashes($config['button_label'] ?? ''));
+        if (mb_strlen($label) > 255) {
+            throw new InvalidArgumentException('The OIDC button text cannot exceed 255 characters.');
+        }
+        $color = $config['button_color'] ?? '';
+        if ($color !== '' && !preg_match('/^#[0-9a-f]{6}$/iD', $color)) {
+            throw new InvalidArgumentException('Use a six-digit hexadecimal button color.');
+        }
+        if (!array_key_exists($config['button_icon'] ?? '', self::buttonIcons())) {
+            throw new InvalidArgumentException('Invalid OIDC button icon.');
         }
         if (isset($input['client_secret']) && $input['client_secret'] !== '') {
             $input['client_secret'] = Toolbox::sodiumEncrypt(stripslashes($input['client_secret']));
@@ -165,6 +180,35 @@ class OidcProvider extends CommonDBTM
         return (int) $rows->next()['id'];
     }
 
+    public static function buttonIcons()
+    {
+        return ['' => __('No icon'), 'fa-key' => __('Key'), 'fa-building' => __('Organization'),
+            'fa-users' => __('Users'), 'fa-shield' => __('Shield'), 'fa-globe' => __('Globe')];
+    }
+
+    public static function loginButton(array $source)
+    {
+        $label = trim($source['button_label'] ?? '');
+        $button = ['label' => $label !== '' ? $label : $source['name'], 'style' => '', 'icon' => ''];
+        $icon = $source['button_icon'] ?? '';
+        if (array_key_exists($icon, self::buttonIcons())) {
+            $button['icon'] = $icon;
+        }
+        $color = $source['button_color'] ?? '';
+        if (!preg_match('/^#[0-9a-f]{6}$/iD', $color)) {
+            return $button;
+        }
+        $channels = [];
+        foreach (str_split(substr($color, 1), 2) as $channel) {
+            $value = hexdec($channel) / 255;
+            $channels[] = $value <= 0.04045 ? $value / 12.92 : pow(($value + 0.055) / 1.055, 2.4);
+        }
+        $luminance = 0.2126 * $channels[0] + 0.7152 * $channels[1] + 0.0722 * $channels[2];
+        $foreground = $luminance > 0.179 ? '#000000' : '#ffffff';
+        $button['style'] = 'background:' . $color . ';border-color:' . $color . ';color:' . $foreground . ';';
+        return $button;
+    }
+
     public static function escape($value)
     {
         return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -180,93 +224,50 @@ class OidcProvider extends CommonDBTM
         echo '</select>';
     }
 
-    public static function showConfiguration()
+    public static function saveConfiguration()
     {
-        global $CFG_GLPI;
         Session::checkRight('config', UPDATE);
-        if ($_POST) {
-            try {
-                if (isset($_POST['automatic'])) {
-                    $id = (int) ($_POST['automatic_provider'] ?? 0);
-                    if ($id) {
-                        self::load($id);
-                    }
-                    Config::setConfigurationValues('core', ['oidc_auto_login_provider' => $id]);
-                    Html::redirect('auth.oidc.php');
-                } elseif (isset($_POST['save'])) {
-                    $provider = new self();
-                    $id = (int) ($_POST['id'] ?? 0);
-                    $fields = array_intersect_key($_POST, array_flip([
-                        'name', 'issuer', 'client_id', 'client_secret', 'scope', 'proxy', 'cert',
-                        'logout_redirect', 'link_method', 'login_claim', 'email_claim', 'required_plugin',
-                        'login_claim_source', 'email_claim_source',
-                    ]));
-                    $fields['is_active'] = empty($_POST['is_active']) ? 0 : 1;
-                    $fields['allow_provisioning'] = empty($_POST['allow_provisioning']) ? 0 : 1;
-                    $fields['use_pkce'] = empty($_POST['use_pkce']) ? 0 : 1;
-                    if ($id) {
-                        $saved = $provider->update(['id' => $id] + $fields);
-                    } else {
-                        $id = $provider->add($fields);
-                        $saved = (bool) $id;
-                    }
-                    if (!$saved) {
-                        throw new RuntimeException('Unable to save OIDC source.');
-                    }
-                    Html::redirect('auth.oidc.php?id=' . $id);
-                }
-            } catch (InvalidArgumentException | RuntimeException $e) {
-                Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
-                Html::redirect('auth.oidc.php' . (!empty($_GET['id']) ? '?id=' . (int) $_GET['id'] : '?new=1'));
-            }
-        }
-        $base = $CFG_GLPI['root_doc'] . '/front/';
-        echo '<p><a class="btn btn-primary" href="' . self::escape($base . 'auth.oidc.php?new=1') . '">' . __('Add') . '</a></p>';
-        echo '<table class="tab_cadre_fixe table"><tr><th>' . __('Name') . '</th><th>' . __('Active') . '</th><th>' . __('Issuer') . '</th></tr>';
-        $choices = [0 => __('No automatic login')];
-        foreach (self::all() as $source) {
-            echo '<tr><td><a href="' . self::escape($base . 'auth.oidc.php?id=' . $source['id']) . '">' . self::escape($source['name'])
-                . '</a></td><td>' . ($source['is_active'] ? __('Yes') : __('No')) . '</td><td>' . self::escape($source['issuer']) . '</td></tr>';
-            if ($source['is_active']) {
-                $choices[$source['id']] = $source['name'];
-            }
-        }
-        echo '</table><form method="post"><label for="automatic_provider">' . __('Automatic login source') . '</label>';
-        self::select('automatic_provider', $choices, $CFG_GLPI['oidc_auto_login_provider'] ?? 0);
-        echo '<button class="btn btn-secondary" name="automatic" value="1">' . __('Save') . '</button>';
-        Html::closeForm();
-        if (!isset($_GET['id']) && !isset($_GET['new'])) {
+        if (!$_POST) {
             return;
         }
-        $source = isset($_GET['id']) ? self::load((int) $_GET['id'], false) : [];
-        echo '<form method="post"><input type="hidden" name="id" value="' . (int) ($source['id'] ?? 0) . '"><table class="tab_cadre_fixe table">';
-        $labels = ['name' => __('Name'), 'issuer' => __('Issuer'), 'client_id' => __('Client ID'),
-            'client_secret' => __('Client secret (leave blank to retain)'), 'scope' => __('Scopes'),
-            'proxy' => __('Proxy'), 'cert' => __('Certificate path'), 'logout_redirect' => __('Logout return URL'),
-            'login_claim' => __('Username claim path'), 'email_claim' => __('Email claim path'), 'required_plugin' => __('Required plugin')];
-        foreach ($labels as $key => $label) {
-            $value = $key === 'client_secret' ? '' : ($source[$key] ?? ['scope' => 'openid profile email', 'login_claim' => '/preferred_username', 'email_claim' => '/email'][$key] ?? '');
-            echo '<tr><td><label for="oidc_' . $key . '">' . self::escape($label) . '</label></td><td><input class="form-control" id="oidc_' . $key . '" name="' . $key
-                . '" type="' . ($key === 'client_secret' ? 'password' : 'text') . '" value="' . self::escape($value) . '" autocomplete="off"></td></tr>';
+        try {
+            if (isset($_POST['automatic'])) {
+                $id = (int) ($_POST['automatic_provider'] ?? 0);
+                if ($id) {
+                    self::load($id);
+                }
+                Config::setConfigurationValues('core', ['oidc_auto_login_provider' => $id]);
+                Html::redirect('auth.oidc.php');
+            }
+            if (!isset($_POST['save'])) {
+                return;
+            }
+            $provider = new self();
+            $id = (int) ($_POST['id'] ?? 0);
+            $fields = array_intersect_key($_POST, array_flip([
+                'name', 'issuer', 'client_id', 'client_secret', 'scope', 'proxy', 'cert',
+                'logout_redirect', 'link_method', 'login_claim', 'email_claim', 'required_plugin',
+                'login_claim_source', 'email_claim_source', 'button_label', 'button_color', 'button_icon',
+            ]));
+            if (empty($_POST['use_button_color'])) {
+                $fields['button_color'] = '';
+            }
+            foreach (['is_active', 'allow_provisioning', 'use_pkce'] as $field) {
+                $fields[$field] = empty($_POST[$field]) ? 0 : 1;
+            }
+            if ($id) {
+                $saved = $provider->update(['id' => $id] + $fields);
+            } else {
+                $id = $provider->add($fields);
+                $saved = (bool) $id;
+            }
+            if (!$saved) {
+                throw new RuntimeException('Unable to save OIDC source.');
+            }
+            Html::redirect('auth.oidc.form.php?id=' . $id);
+        } catch (InvalidArgumentException | RuntimeException $e) {
+            Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+            Html::redirect('auth.oidc.form.php' . (!empty($_POST['id']) ? '?id=' . (int) $_POST['id'] : ''));
         }
-        foreach (['login_claim_source' => __('Username claim payload'), 'email_claim_source' => __('Email claim payload')] as $key => $label) {
-            echo '<tr><td><label for="' . $key . '">' . self::escape($label) . '</label></td><td>';
-            self::select($key, ['userinfo' => 'UserInfo', 'id_token' => 'ID token'], $source[$key] ?? 'userinfo');
-            echo '</td></tr>';
-        }
-        foreach (['is_active' => __('Active'), 'allow_provisioning' => __('Allow user creation'), 'use_pkce' => __('Use PKCE (S256)')] as $key => $label) {
-            echo '<tr><td><label for="oidc_' . $key . '">' . self::escape($label) . '</label></td><td><input type="checkbox" id="oidc_' . $key . '" name="' . $key . '" value="1"' . (!empty($source[$key] ?? ($key === 'use_pkce' ? 1 : 0)) ? ' checked' : '') . '></td></tr>';
-        }
-        echo '<tr><td><label for="link_method">' . __('Initial account linking') . '</label></td><td>';
-        $methods = ['none' => __('Disabled'), 'username' => __('Username'), 'email' => __('Verified email'), 'plugin' => __('Plugin')];
-        if (!empty($source['is_legacy'])) {
-            $methods['legacy'] = __('Migrated legacy policy');
-        }
-        self::select('link_method', $methods, $source['link_method'] ?? 'none');
-        echo '</td></tr></table><button class="btn btn-primary" name="save" value="1">' . __('Save') . '</button>';
-        if (!empty($source['id'])) {
-            echo ' <a class="btn btn-secondary" href="' . self::escape($base . 'auth.oidc_profile.php?id=' . $source['id']) . '">' . __('Mapping') . '</a>';
-        }
-        Html::closeForm();
     }
 }

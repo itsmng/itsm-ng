@@ -97,6 +97,7 @@ class Oidc extends CommonDBTM
         $sources = OidcProvider::all(true);
         $redirect = self::sanitizeRedirect($_GET['redirect'] ?? null);
         foreach ($sources as &$source) {
+            $source['button'] = OidcProvider::loginButton($source);
             $source['login_url'] = $CFG_GLPI['root_doc'] . '/front/oidc.php?provider=' . (int) $source['id']
                 . ($redirect ? '&redirect=' . rawurlencode($redirect) : '');
         }

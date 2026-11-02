@@ -461,7 +461,7 @@ class OidcMapping extends CommonDBTM
                 Html::redirect('auth.oidc_profile.php?id=' . (int) $providerId);
             }
         }
-        echo '<h2>' . OidcProvider::escape($source['name']) . '</h2><p><a href="' . OidcProvider::escape($CFG_GLPI['root_doc'] . '/front/auth.oidc.php?id=' . $providerId) . '">' . __('Configuration') . '</a></p>';
+        echo '<h2>' . OidcProvider::escape($source['name']) . '</h2><p><a href="' . OidcProvider::escape($CFG_GLPI['root_doc'] . '/front/auth.oidc.form.php?id=' . $providerId) . '">' . __('Configuration') . '</a></p>';
         echo '<p>' . __('Claim paths accept JSON Pointer notation, for example /address/locality. Missing claims preserve existing values by default.') . '</p>';
         $targets = array_map(function ($target) {
             return $target['label'];

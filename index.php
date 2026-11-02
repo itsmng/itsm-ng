@@ -112,9 +112,6 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
    echo "</div>";
 
    echo "<div id='boxlogin'>";
-   foreach ($oidc_sources as $source) {
-      echo '<p class="login_input"><a class="submit" href="' . OidcProvider::escape($source['login_url']) . '">' . OidcProvider::escape($source['name']) . '</a></p>';
-   }
    echo "<form action='".$CFG_GLPI["root_doc"]."/front/login.php' method='post'>";
 
    $_SESSION['namfield'] = $namfield = uniqid('fielda');
@@ -183,6 +180,15 @@ if (!file_exists(GLPI_CONFIG_DIR . "/config_db.php")) {
              __('Forgotten password?').'</a>';
    }
    Html::closeForm();
+   foreach ($oidc_sources as $source) {
+      $button = $source['button'];
+      echo '<p class="login_input"><a class="vsubmit oidc-login" href="' . OidcProvider::escape($source['login_url']) . '" style="' . OidcProvider::escape($button['style']) . '">';
+      if ($button['icon'] !== '') {
+         echo '<i class="fa ' . OidcProvider::escape($button['icon']) . '" aria-hidden="true" style="margin-right: .5em; color: inherit !important;"></i>';
+      }
+      echo OidcProvider::escape($button['label']) . '</a></p>';
+   }
+
 
    $js = "$(function() {
       $('#login_name').focus();

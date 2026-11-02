@@ -555,6 +555,7 @@ class Update extends CommonGLPI {
             break;
 
          case ITSM_VERSION:
+         case '1.6.18@oidc1':
          case ITSM_SCHEMA_VERSION:
             break;
 
