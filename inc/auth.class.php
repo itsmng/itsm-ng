@@ -1844,12 +1844,12 @@ class Auth extends CommonGLPI
             ],
             'content' => [
                 __('Connection') => ['visible' => true, 'inputs' => [
+                    __('Active') => [...$field('is_active', 'checkbox'), 'col_md' => 12, 'col_lg' => 12],
                     __('Name') => $field('name') + ['required' => true],
                     __('Issuer') => $field('issuer', 'url') + ['required' => true],
                     __('Client ID') => $field('client_id') + ['required' => true],
                     __('Client secret (leave blank to retain)') => ['type' => 'password', 'name' => 'client_secret', 'value' => '', 'autocomplete' => 'new-password', 'col_lg' => 6],
                     __('Scopes') => $field('scope'),
-                    __('Active') => $field('is_active', 'checkbox'),
                 ]],
                 __('Login button') => ['visible' => true, 'inputs' => [
                     __('Login button text') => $field('button_label') + ['maxlength' => 255, 'placeholder' => $source['name'] ?? __('OpenID Connect')],
