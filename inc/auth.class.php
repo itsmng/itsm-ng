@@ -1854,7 +1854,7 @@ class Auth extends CommonGLPI
                     __('Login button icon') => $select('button_icon', OidcProvider::buttonIcons()),
                     __('Use a custom color') => ['type' => 'checkbox', 'name' => 'use_button_color', 'value' => empty($source['button_color']) ? 0 : 1, 'col_lg' => 6],
                     __('Login button color') => ['type' => 'color', 'name' => 'button_color', 'value' => ($source['button_color'] ?? '') ?: '#007bff',
-                        'col_lg' => 6, 'after' => __('Text color is chosen automatically for readability.')],
+                        'col_lg' => 6],
                 ]],
                 __('Initial account linking') => ['visible' => true, 'inputs' => [
                     __('Initial account linking') => $select('link_method', $methods),
