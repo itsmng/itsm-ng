@@ -41,14 +41,17 @@ function update200to204(): bool
     /** @global Migration $migration */
     global $DB, $migration;
 
-    $criteria = "SELECT * FROM glpi_oidc_config";
-    $iterators = $DB->request($criteria);
-    if (count($iterators) > 0) {
-        $oidc_db = $iterators->next();
-        if (isset($oidc_db['ClientSecret']) && $oidc_db['ClientSecret'] != '') {
-            $oidc_db['ClientSecret'] = Toolbox::sodiumEncrypt($oidc_db['ClientSecret']);
-            $DB->updateOrInsert("glpi_oidc_config", $oidc_db, ['id'   => 0]);
+    if ($DB->tableExists('glpi_oidc_config')) {
+        $criteria = "SELECT * FROM glpi_oidc_config";
+        $iterators = $DB->request($criteria);
+        if (count($iterators) > 0) {
+            $oidc_db = $iterators->next();
+            if (isset($oidc_db['ClientSecret']) && $oidc_db['ClientSecret'] != '') {
+                $oidc_db['ClientSecret'] = Toolbox::sodiumEncrypt($oidc_db['ClientSecret']);
+                $DB->updateOrInsert("glpi_oidc_config", $oidc_db, ['id'   => 0]);
+            }
         }
+
     }
 
     // ************ Keep it at the end **************

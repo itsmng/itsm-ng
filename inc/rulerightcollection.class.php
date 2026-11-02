@@ -225,6 +225,7 @@ class RuleRightCollection extends RuleCollection
         //common parameters
         $rule_parameters = [
            'TYPE'       => $params["type"] ?? "",
+           'OIDC_SOURCE' => $params['oidc_provider'] ?? 0,
            'LOGIN'      => $params["login"] ?? "",
            'MAIL_EMAIL' => $params["email"] ?? $params["mail_email"] ?? "",
            '_groups_id' => $groups

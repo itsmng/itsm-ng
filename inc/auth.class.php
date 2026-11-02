@@ -115,6 +115,11 @@ class Auth extends CommonGLPI
             $menu['options']['imap']['links']['search'] = AuthMail::getSearchURL(false);
             $menu['options']['imap']['links']['add']    = AuthMail::getFormURL(false);
 
+            $menu['options']['oidc']['title']           = OidcProvider::getTypeName();
+            $menu['options']['oidc']['page']            = '/front/auth.oidc.php';
+            $menu['options']['oidc']['links']['search'] = '/front/auth.oidc.php';
+            $menu['options']['oidc']['links']['add']    = '/front/auth.oidc.form.php';
+
             $menu['options']['others']['title']         = __('Others');
             $menu['options']['others']['page']          = '/front/auth.others.php';
 
@@ -1783,126 +1788,96 @@ class Auth extends CommonGLPI
     }
 
     /**
-     * Show form for open ID connect authentication configuration.
-     *
-     * Form is directly printed.
+     * Show the configured OpenID Connect sources.
      */
     public static function showAuthOIDCConfig()
     {
-        global $DB, $CFG_GLPI;
-
-        //Set or update config with the db
-        if (isset($_POST["mapping"])) {
-            Html::redirect("auth.oidc_profile.php");
-        }
-        if (isset($_POST["update"])) {
-            $oidc_result = [
-               'Provider'     => URL::sanitizeURL(trim((string) $_POST["provider"])),
-               'ClientID'     => trim((string) $_POST["clientID"]),
-               'ClientSecret' => Toolbox::sodiumEncrypt(trim((string) $_POST["clientSecret"])),
-               'is_activate'  => $_POST["useoidc"],
-               'is_forced'    => $_POST["forceoidc"],
-               'scope'        => $_POST["scope"],
-               'proxy'        => $_POST["proxy"],
-               'cert'         => $_POST["cert"],
-               'logout'       => URL::sanitizeURL(trim((string) $_POST["logout"])),
-               'sso_link_users' => $_POST['sso_link_users'],
+        global $CFG_GLPI;
+        $rows = [];
+        $choices = [0 => __('No automatic login')];
+        foreach (OidcProvider::all() as $source) {
+            $rows[$source['id']] = [
+                '<a href="auth.oidc.form.php?id=' . (int) $source['id'] . '">' . OidcProvider::escape($source['name']) . '</a>',
+                $source['is_active'] ? __('Yes') : __('No'),
+                OidcProvider::escape($source['issuer']),
             ];
-            $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
+            if ($source['is_active']) {
+                $choices[$source['id']] = OidcProvider::escape($source['name']);
+            }
         }
-        $criteria = "SELECT * FROM glpi_oidc_config";
-        $iterators = $DB->request($criteria);
-        $oidc_db = [];
-        foreach ($iterators as $iterator) {
-            $oidc_db['Provider'] = $iterator['Provider'];
-            $oidc_db['ClientID'] = $iterator['ClientID'];
-            $oidc_db['ClientSecret'] = Toolbox::sodiumDecrypt($iterator['ClientSecret']);
-            $oidc_db['is_activate'] = $iterator['is_activate'];
-            $oidc_db['is_forced'] = $iterator['is_forced'];
-            $oidc_db['scope'] = $iterator['scope'];
-            $oidc_db['proxy'] = $iterator['proxy'];
-            $oidc_db['cert'] = $iterator['cert'];
-            $oidc_db['logout'] = $iterator['logout'];
-            $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
-        }
-
-        $form = [
-           'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.php',
-           'buttons' => [
-              [
-                 'type' => 'submit',
-                 'name' => 'update',
-                 'value' => __s('Save'),
-                 'class' => 'btn btn-secondary',
-              ],
-              [
-                 'type' => 'submit',
-                 'name' => 'mapping',
-                 'value' => __s('Mapping'),
-                 'class' => 'btn btn-secondary'
-              ]
-           ],
-           'content' => [
-              __('Mapping of fields according to provider') => [
-                 'visible' => true,
-                 'inputs' => [
-                    __('Activate open ID connect') => [
-                       'name' => 'useoidc',
-                       'type' => 'checkbox',
-                       'value' => $oidc_db['is_activate'] ?? 0,
-                    ],
-                    __('Forced connection with open ID connect') => [
-                       'name' => 'forceoidc',
-                       'type' => 'checkbox',
-                       'value' => $oidc_db['is_forced'] ?? 0,
-                    ],
-                    __('Provider') => [
-                       'name' => 'provider',
-                       'type' => 'text',
-                       'value' => $oidc_db['Provider'] ?? '',
-                    ],
-                    __('Client ID') => [
-                       'name' => 'clientID',
-                       'type' => 'text',
-                       'value' => $oidc_db['ClientID'] ?? '',
-                    ],
-                    __('Client Secret') => [
-                       'name' => 'clientSecret',
-                       'type' => 'text',
-                       'value' => $oidc_db['ClientSecret'] ?? '',
-                    ],
-                    __('Scope') => [
-                       'name' => 'scope',
-                       'type' => 'text',
-                       'value' => $oidc_db['scope'] ?? '',
-                    ],
-                    __('Proxy') => [
-                       'name' => 'proxy',
-                       'type' => 'text',
-                       'value' => $oidc_db['proxy'] ?? '',
-                    ],
-                    __('Certificate Path') => [
-                       'name' => 'cert',
-                       'type' => 'text',
-                       'value' => $oidc_db['cert'] ?? '',
-                    ],
-                    __('Logout URL') => [
-                       'name' => 'logout',
-                       'type' => 'text',
-                       'value' => $oidc_db['logout'] ?? '',
-                    ],
-                    __('Link accounts with other auth sources') => [
-                       'name' => 'sso_link_users',
-                       'type' => 'checkbox',
-                       'value' => $oidc_db['sso_link_users'] ?? 0,
-                    ],
-                 ]
-              ]
-           ]
-        ];
-
-        renderTwigForm($form);
+        renderTwigTemplate('table.twig', [
+            'id' => 'oidcSources', 'state_key' => 'OidcProvider', 'search' => true,
+            'fields' => [__('Name'), __('Active'), __('Issuer')], 'values' => $rows,
+        ]);
+        renderTwigForm([
+            'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.php',
+            'buttons' => [['name' => 'automatic', 'value' => __('Save'), 'class' => 'btn btn-primary']],
+            'content' => [__('Automatic login') => ['visible' => true, 'inputs' => [
+                __('Automatic login source') => ['type' => 'select', 'name' => 'automatic_provider',
+                    'values' => $choices, 'value' => $CFG_GLPI['oidc_auto_login_provider'] ?? 0],
+            ]]],
+        ]);
     }
+
+    public static function showAuthOIDCForm($id)
+    {
+        global $CFG_GLPI;
+        $source = $id ? OidcProvider::load($id, false) : [];
+        $source += ['scope' => 'openid profile email', 'login_claim' => '/preferred_username',
+            'email_claim' => '/email', 'use_pkce' => 1, 'link_method' => 'none'];
+        $plugins = array_map([OidcProvider::class, 'escape'], OidcProvider::pluginChoices($source['required_plugin'] ?? ''));
+        $field = static function ($name, $type = 'text') use ($source) {
+            return ['type' => $type, 'name' => $name, 'value' => $source[$name] ?? '', 'col_lg' => 6];
+        };
+        $select = static function ($name, array $values) use ($field) {
+            return $field($name, 'select') + ['values' => $values];
+        };
+        $methods = ['none' => __('Disabled'), 'username' => __('Username'), 'email' => __('Verified email'), 'plugin' => __('Plugin')];
+        if (!empty($source['is_legacy'])) {
+            $methods['legacy'] = __('Migrated legacy policy');
+        }
+        renderTwigForm([
+            'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.form.php',
+            'buttons' => [
+                ['name' => 'save', 'value' => __('Save'), 'class' => 'btn btn-primary'],
+                $id ? ['type' => 'button', 'value' => __('Mapping'), 'class' => 'btn btn-secondary',
+                    'onclick' => "window.location.href='auth.oidc_profile.php?id=" . (int) $id . "'"] : [],
+            ],
+            'content' => [
+                __('Connection') => ['visible' => true, 'inputs' => [
+                    __('Active') => $field('is_active', 'checkbox'),
+                    __('Name') => $field('name') + ['required' => true],
+                    __('Issuer') => $field('issuer', 'url') + ['required' => true],
+                    __('Client ID') => $field('client_id') + ['required' => true],
+                    __('Client secret (leave blank to retain)') => ['type' => 'password', 'name' => 'client_secret', 'value' => '', 'autocomplete' => 'new-password', 'col_lg' => 6],
+                    __('Scopes') => $field('scope'),
+                ]],
+                __('Login button') => ['visible' => true, 'inputs' => [
+                    __('Login button text') => $field('button_label') + ['maxlength' => 255, 'placeholder' => $source['name'] ?? __('OpenID Connect')],
+                    __('Login button icon') => $select('button_icon', OidcProvider::buttonIcons()),
+                    __('Use a custom color') => ['type' => 'checkbox', 'name' => 'use_button_color', 'value' => empty($source['button_color']) ? 0 : 1, 'col_lg' => 6],
+                    __('Login button color') => ['type' => 'color', 'name' => 'button_color', 'value' => ($source['button_color'] ?? '') ?: '#007bff',
+                        'col_lg' => 6],
+                ]],
+                __('Initial account linking') => ['visible' => true, 'inputs' => [
+                    __('Initial account linking') => $select('link_method', $methods),
+                    __('Allow user creation') => $field('allow_provisioning', 'checkbox'),
+                    __('Username claim path') => $field('login_claim'),
+                    __('Username claim payload') => $select('login_claim_source', ['userinfo' => 'UserInfo', 'id_token' => 'ID token']),
+                    __('Email claim path') => $field('email_claim'),
+                    __('Email claim payload') => $select('email_claim_source', ['userinfo' => 'UserInfo', 'id_token' => 'ID token']),
+                ]],
+                __('Advanced settings') => ['visible' => true, 'inputs' => [
+                    __('Required plugin') => $select('required_plugin', $plugins),
+                    __('Proxy') => $field('proxy'),
+                    __('Certificate path') => $field('cert'),
+                    __('Logout return URL') => $field('logout_redirect', 'url'),
+                    __('Use PKCE (S256)') => $field('use_pkce', 'checkbox'),
+                ]],
+            ],
+        ], '', $source);
+    }
+
 
     /**
      * Get authentication methods available

@@ -345,6 +345,10 @@ class User extends CommonDBTM
     {
 
         global $DB;
+        if ($DB->tableExists('glpi_oidcidentities')) {
+            $DB->delete('glpi_oidcidentities', ['users_id' => $this->getID()]);
+        }
+
 
         // ObjectLock does not extends CommonDBConnexity
         $ol = new ObjectLock();
