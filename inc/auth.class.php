@@ -1835,11 +1835,13 @@ class Auth extends CommonGLPI
         if (!empty($source['is_legacy'])) {
             $methods['legacy'] = __('Migrated legacy policy');
         }
-        $back = '<a class="btn btn-secondary" href="auth.oidc.php">' . __('Back to list') . '</a> ';
-        $mapping = $id ? '<a class="btn btn-secondary" href="auth.oidc_profile.php?id=' . (int) $id . '">' . __('Mapping') . '</a>' : '';
         renderTwigForm([
             'action' => $CFG_GLPI['root_doc'] . '/front/auth.oidc.form.php',
-            'buttons' => [['name' => 'save', 'value' => __('Save'), 'class' => 'btn btn-primary']],
+            'buttons' => [
+                ['name' => 'save', 'value' => __('Save'), 'class' => 'btn btn-primary'],
+                $id ? ['type' => 'button', 'value' => __('Mapping'), 'class' => 'btn btn-secondary',
+                    'onclick' => "window.location.href='auth.oidc_profile.php?id=" . (int) $id . "'"] : [],
+            ],
             'content' => [
                 __('Connection') => ['visible' => true, 'inputs' => [
                     __('Name') => $field('name') + ['required' => true],
@@ -1872,7 +1874,7 @@ class Auth extends CommonGLPI
                     __('Use PKCE (S256)') => $field('use_pkce', 'checkbox'),
                 ]],
             ],
-        ], $back . $mapping, $source);
+        ], '', $source);
     }
 
 
