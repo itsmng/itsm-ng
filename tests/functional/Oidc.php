@@ -161,6 +161,38 @@ class Oidc extends \DbTestCase
         }
     }
 
+    public function testRequiredPluginSelectorPreservesUnavailableDependencies()
+    {
+        global $DB;
+        $this->login();
+        $DB->insert('glpi_plugins', ['directory' => '_oidc_inactive', 'name' => '<script>plugin</script>',
+            'version' => '1.0', 'state' => \Plugin::NOTACTIVATED]);
+        $DB->insert('glpi_plugins', ['directory' => '_oidc_uninstalled', 'name' => 'Uninstalled plugin',
+            'version' => '1.0', 'state' => \Plugin::NOTINSTALLED]);
+        $provider = $this->provider();
+        $item = new \OidcProvider();
+        $choices = \OidcProvider::pluginChoices();
+        $this->array($choices)->hasKey('')->hasKey('tester')->hasKey('_oidc_inactive')->notHasKey('_oidc_uninstalled');
+        foreach (['_oidc_inactive', '_oidc_missing'] as $required) {
+            $this->boolean($item->update(['id' => $provider['id'], 'required_plugin' => $required]))->isTrue();
+            ob_start();
+            \Auth::showAuthOIDCForm($provider['id']);
+            $html = ob_get_clean();
+            $document = new \DOMDocument();
+            $previousErrors = libxml_use_internal_errors(true);
+            $document->loadHTML($html);
+            libxml_clear_errors();
+            libxml_use_internal_errors($previousErrors);
+            $xpath = new \DOMXPath($document);
+            $this->integer($xpath->query('//input[@name="required_plugin"]')->length)->isIdenticalTo(0);
+            $this->string($xpath->evaluate('string(//select[@name="required_plugin"]/option[@selected]/@value)'))->isIdenticalTo($required);
+            $this->string($html)->notContains('<script>plugin</script>');
+            $this->exception(function () use ($provider) {
+                \OidcProvider::load($provider['id']);
+            })->isInstanceOf(\RuntimeException::class);
+        }
+    }
+
     public function testConfigurationListIsSeparateFromSourceForm()
     {
         $this->login();

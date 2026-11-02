@@ -1825,6 +1825,7 @@ class Auth extends CommonGLPI
         $source = $id ? OidcProvider::load($id, false) : [];
         $source += ['scope' => 'openid profile email', 'login_claim' => '/preferred_username',
             'email_claim' => '/email', 'use_pkce' => 1, 'link_method' => 'none'];
+        $plugins = array_map([OidcProvider::class, 'escape'], OidcProvider::pluginChoices($source['required_plugin'] ?? ''));
         $field = static function ($name, $type = 'text') use ($source) {
             return ['type' => $type, 'name' => $name, 'value' => $source[$name] ?? '', 'col_lg' => 6];
         };
@@ -1867,7 +1868,7 @@ class Auth extends CommonGLPI
                     __('Email claim payload') => $select('email_claim_source', ['userinfo' => 'UserInfo', 'id_token' => 'ID token']),
                 ]],
                 __('Advanced settings') => ['visible' => true, 'inputs' => [
-                    __('Required plugin') => $field('required_plugin'),
+                    __('Required plugin') => $select('required_plugin', $plugins),
                     __('Proxy') => $field('proxy'),
                     __('Certificate path') => $field('cert'),
                     __('Logout return URL') => $field('logout_redirect', 'url'),

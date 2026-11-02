@@ -180,6 +180,24 @@ class OidcProvider extends CommonDBTM
         return (int) $rows->next()['id'];
     }
 
+    public static function pluginChoices($selected = '')
+    {
+        global $DB;
+        $choices = ['' => __('None')];
+        foreach ($DB->request([
+            'SELECT' => ['directory', 'name', 'state'], 'FROM' => 'glpi_plugins',
+            'WHERE' => ['state' => [Plugin::ACTIVATED, Plugin::NOTACTIVATED, Plugin::TOBECONFIGURED, Plugin::NOTUPDATED]],
+            'ORDER' => ['name', 'directory'],
+        ]) as $plugin) {
+            $choices[$plugin['directory']] = (int) $plugin['state'] === Plugin::ACTIVATED
+                ? $plugin['name'] : sprintf(__('%s (inactive)'), $plugin['name']);
+        }
+        if ($selected !== '' && !isset($choices[$selected])) {
+            $choices[$selected] = sprintf(__('%s (unavailable)'), $selected);
+        }
+        return $choices;
+    }
+
     public static function buttonIcons()
     {
         return ['' => __('No icon'), 'fa-key' => __('Key'), 'fa-building' => __('Organization'),
