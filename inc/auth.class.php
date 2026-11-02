@@ -1844,7 +1844,7 @@ class Auth extends CommonGLPI
             ],
             'content' => [
                 __('Connection') => ['visible' => true, 'inputs' => [
-                    __('Active') => [...$field('is_active', 'checkbox'), 'col_md' => 12, 'col_lg' => 12],
+                    __('Active') => $field('is_active', 'checkbox'),
                     __('Name') => $field('name') + ['required' => true],
                     __('Issuer') => $field('issuer', 'url') + ['required' => true],
                     __('Client ID') => $field('client_id') + ['required' => true],
