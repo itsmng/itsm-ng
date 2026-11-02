@@ -1719,8 +1719,7 @@ class Auth extends CommonGLPI {
         OidcProvider::select('button_icon', OidcProvider::buttonIcons(), $source['button_icon'] ?? '', 'oidc_button_icon');
         echo '</td></tr><tr><td><label for="oidc_button_color">' . __('Login button color') . '</label></td><td><label><input type="checkbox" name="use_button_color" value="1"'
             . (!empty($source['button_color']) ? ' checked' : '') . '> ' . __('Use a custom color') . '</label> '
-            . '<input type="color" id="oidc_button_color" name="button_color" value="' . OidcProvider::escape(($source['button_color'] ?? '') ?: '#007bff') . '">'
-            . '<p class="form-text">' . __('Text color is chosen automatically for readability.') . '</p></td></tr>';
+            . '<input type="color" id="oidc_button_color" name="button_color" value="' . OidcProvider::escape(($source['button_color'] ?? '') ?: '#007bff') . '"></td></tr>';
         foreach (['login_claim_source' => __('Username claim payload'), 'email_claim_source' => __('Email claim payload')] as $key => $label) {
             echo '<tr><td><label for="' . $key . '">' . OidcProvider::escape($label) . '</label></td><td>';
             OidcProvider::select($key, ['userinfo' => 'UserInfo', 'id_token' => 'ID token'], $source[$key] ?? 'userinfo');
