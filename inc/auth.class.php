@@ -1735,7 +1735,6 @@ class Auth extends CommonGLPI {
         }
         OidcProvider::select('link_method', $methods, $source['link_method'] ?? 'none');
         echo '</td></tr></table><button class="vsubmit" name="save" value="1">' . __('Save') . '</button>';
-        echo ' <a class="secondary" href="' . OidcProvider::escape($base . 'auth.oidc.php') . '">' . __('Back to list') . '</a>';
         if (!empty($source['id'])) {
             echo ' <a class="secondary" href="' . OidcProvider::escape($base . 'auth.oidc_profile.php?id=' . $source['id']) . '">' . __('Mapping') . '</a>';
         }
