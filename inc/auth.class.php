@@ -1707,12 +1707,16 @@ class Auth extends CommonGLPI {
         $labels = ['name' => __('Name'), 'issuer' => __('Issuer'), 'client_id' => __('Client ID'),
             'client_secret' => __('Client secret (leave blank to retain)'), 'scope' => __('Scopes'),
             'proxy' => __('Proxy'), 'cert' => __('Certificate path'), 'logout_redirect' => __('Logout return URL'),
-            'login_claim' => __('Username claim path'), 'email_claim' => __('Email claim path'), 'required_plugin' => __('Required plugin')];
+            'login_claim' => __('Username claim path'), 'email_claim' => __('Email claim path')];
         foreach ($labels as $key => $label) {
             $value = $key === 'client_secret' ? '' : ($source[$key] ?? ['scope' => 'openid profile email', 'login_claim' => '/preferred_username', 'email_claim' => '/email'][$key] ?? '');
             echo '<tr><td><label for="oidc_' . $key . '">' . OidcProvider::escape($label) . '</label></td><td><input class="form-control" id="oidc_' . $key . '" name="' . $key
                 . '" type="' . ($key === 'client_secret' ? 'password' : 'text') . '" value="' . OidcProvider::escape($value) . '" autocomplete="off"></td></tr>';
         }
+        echo '<tr><td><label for="dropdown_required_pluginoidc">' . __('Required plugin') . '</label></td><td>';
+        Dropdown::showFromArray('required_plugin', OidcProvider::pluginChoices($source['required_plugin'] ?? ''),
+            ['value' => $source['required_plugin'] ?? '', 'rand' => 'oidc', 'width' => '100%']);
+        echo '</td></tr>';
         echo '<tr><td><label for="oidc_button_label">' . __('Login button text') . '</label></td><td><input class="form-control" id="oidc_button_label" name="button_label" maxlength="255" value="'
             . OidcProvider::escape($source['button_label'] ?? '') . '" placeholder="' . OidcProvider::escape($source['name'] ?? __('OpenID Connect')) . '"></td></tr>';
         echo '<tr><td><label for="oidc_button_icon">' . __('Login button icon') . '</label></td><td>';
