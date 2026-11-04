@@ -754,13 +754,27 @@ class Item_OperatingSystem extends CommonDBRelation
                         if ($item->can($id, UPDATE, $input)) {
                             $exists = $ios->getFromDBByCrit([
                                'itemtype'  => $item->getType(),
-                               'items_id'  => $item->getID()
+                               'items_id'  => $item->getID(),
                             ]);
+
+                            $item_input = $exists
+                                ? ['id'  => $ios->getID()] + $input
+                                : ['itemtype' => $item->getType(), 'items_id' => $item->getID()] + $input;
+
+                            if (
+                                ($exists && !$ios->can($ios->getID(), UPDATE, $item_input))
+                                || (!$exists && !$ios->can(-1, CREATE, $item_input))
+                            ) {
+                                $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                                $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                                continue;
+                            }
+
                             $ok = false;
                             if ($exists) {
-                                $ok = $ios->update(['id'  => $ios->getID()] + $input);
+                                $ok = $ios->update($item_input);
                             } else {
-                                $ok = $ios->add(['itemtype' => $item->getType(), 'items_id' => $item->getID()] + $input);
+                                $ok = $ios->add($item_input);
                             }
 
                             if ($ok != false) {

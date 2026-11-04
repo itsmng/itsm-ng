@@ -361,9 +361,9 @@ JAVASCRIPT;
                     $input = [
                        'softwarelicenses_id'   => $id,
                        'items_id'        => $input['items_id'],
-                       'itemtype'        => $input['itemtype']
+                       'itemtype'        => $input['itemtype'],
                     ];
-                    if ($item_licence->can(-1, UPDATE, $input)) {
+                    if ($item_licence->can(-1, CREATE, $input)) {
                         if ($item_licence->add($input)) {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                         } else {

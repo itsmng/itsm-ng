@@ -510,9 +510,9 @@ class Domain extends CommonDropdown
                     $input = [
                        'domains_id' => $input['domains_id'],
                        'items_id'                  => $id,
-                       'itemtype'                  => $item->getType()
+                       'itemtype'                  => $item->getType(),
                     ];
-                    if ($domain_item->can(-1, UPDATE, $input)) {
+                    if ($domain_item->can(-1, CREATE, $input)) {
                         if ($domain_item->add($input)) {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                         } else {
@@ -531,8 +531,15 @@ class Domain extends CommonDropdown
                         $values = [
                            'domains_id' => $key,
                            'items_id'                  => $input["item_item"],
-                           'itemtype'                  => $input['typeitem']
+                           'itemtype'                  => $input['typeitem'],
                         ];
+
+                        if (!$domain_item->can(-1, CREATE, $values)) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            continue;
+                        }
+
                         if ($domain_item->add($values)) {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                         } else {
@@ -548,7 +555,19 @@ class Domain extends CommonDropdown
             case 'uninstall':
                 $input = $ma->getInput();
                 foreach ($ids as $key) {
-                    if ($domain_item->deleteItemByDomainsAndItem($key, $input['item_item'], $input['typeitem'])) {
+                    if (!$domain_item->getFromDBbyDomainsAndItem($key, $input['item_item'], $input['typeitem'])) {
+                        $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
+                        $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));
+                        continue;
+                    }
+
+                    if (!$domain_item->can($domain_item->getID(), PURGE)) {
+                        $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                        $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                        continue;
+                    }
+
+                    if ($domain_item->delete(['id' => $domain_item->getID()])) {
                         $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                     } else {
                         $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
@@ -560,12 +579,26 @@ class Domain extends CommonDropdown
                 if ($item->getType() == 'Domain') {
                     $input     = $ma->getInput();
                     foreach (array_keys($ids) as $key) {
-                        $item->getFromDB($key);
-                        unset($item->fields["id"]);
-                        $item->fields["name"]    = addslashes((string) $item->fields["name"]);
-                        $item->fields["comment"] = addslashes((string) $item->fields["comment"]);
-                        $item->fields["entities_id"] = $input['entities_id'];
-                        if ($item->add($item->fields)) {
+                        if (!$item->getFromDB($key)) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
+                            $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));
+                            continue;
+                        }
+
+                        $values = $item->fields;
+                        unset($values["id"]);
+                        $values["name"]        = addslashes((string) $item->fields["name"]);
+                        $values["comment"]     = addslashes((string) $item->fields["comment"]);
+                        $values["entities_id"] = $input['entities_id'];
+
+                        $duplicate = new Domain();
+                        if (!$item->can($key, READ) || !$duplicate->can(-1, CREATE, $values)) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            continue;
+                        }
+
+                        if ($duplicate->add($values)) {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                         } else {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);

@@ -210,6 +210,8 @@ class MassiveAction extends DbTestCase
         bool $itemtype_is_compatible,
         bool $has_right
     ) {
+        $this->login();
+
         $base_comment = "test comment";
         $amendment = "test amendment";
         $old_session = $_SESSION['glpiactiveentities'] ?? [];
@@ -219,12 +221,14 @@ class MassiveAction extends DbTestCase
             $_SESSION['glpiactiveentities'] = [
                $item->getEntityID()
             ];
+        } else {
+            $_SESSION['glpiactiveentities'] = [$item->getEntityID() + 1];
         }
 
         // Check supplied params match the data
         $comment_exist = array_key_exists('comment', $item->fields);
         $this->boolean($comment_exist)->isIdenticalTo($itemtype_is_compatible);
-        $this->boolean($item->canUpdateItem())->isIdenticalTo($has_right);
+        $this->boolean($item->can($item->getID(), UPDATE))->isIdenticalTo($has_right);
 
         if ($itemtype_is_compatible && $has_right) {
             $expected_ok = 1;
@@ -302,7 +306,9 @@ class MassiveAction extends DbTestCase
         ];
 
         if ($has_right) {
-            $_SESSION['glpiactiveprofile'][$item::$rightname] = UPDATENOTE;
+            $_SESSION['glpiactiveprofile'][$item::$rightname] = READ | UPDATENOTE;
+        } else {
+            $_SESSION['glpiactiveprofile'][$item::$rightname] = READ;
         }
 
         // Check expected rights

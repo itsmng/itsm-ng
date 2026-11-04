@@ -546,7 +546,7 @@ class User extends \DbTestCase
         global $DB;
 
         $this->login();
-        $this->setEntity('_test_root_entity', true);
+        $this->setEntity(0, true);
 
         $user = getItemByTypeName('User', TU_USER);
         $users_id = $user->getID();

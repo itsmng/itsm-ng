@@ -55,15 +55,10 @@ if (isset($_POST['unlock']) && isset($_POST["id"])) {
     ) {
         $itemtype = $ol->fields['itemtype'];
         $locked_item = getItemForItemtype($itemtype);
-        $profile_rights = $_SESSION['glpilocksavedprofile'][strtolower((string) $itemtype)] ?? 0;
-        $has_unlock_right = ($locked_item instanceof CommonDBTM)
-            && (
-                ((int) $profile_rights & UNLOCK)
-                || Session::haveRight($itemtype::$rightname, UNLOCK)
-            );
         $is_owner = (int) $ol->fields['users_id'] === Session::getLoginUserID();
 
-        if (!$is_owner && !$has_unlock_right) {
+        if (!$is_owner && (!($locked_item instanceof CommonDBTM)
+            || !ObjectLock::canUnlockItem($locked_item, $ol->fields['items_id']))) {
             Toolbox::throwError(400, 'Not allowed', 'string');
         }
 

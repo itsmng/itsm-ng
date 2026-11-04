@@ -579,10 +579,10 @@ class Appliance extends CommonDBTM
                 foreach ($ids as $id) {
                     $input = [
                         'appliances_id' => $input['appliances_id'],
-                        'items_id' => $id,
-                        'itemtype' => $item->getType()
+                        'items_id'        => $id,
+                        'itemtype'        => $item->getType(),
                     ];
-                    if ($appli_item->can(-1, UPDATE, $input)) {
+                    if ($appli_item->can(-1, CREATE, $input)) {
                         if ($appli_item->add($input)) {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                         } else {

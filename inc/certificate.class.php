@@ -715,9 +715,9 @@ class Certificate extends CommonDBTM
                     $input = [
                        'certificates_id' => $input['certificates_id'],
                        'items_id'        => $id,
-                       'itemtype'        => $item->getType()
+                       'itemtype'        => $item->getType(),
                     ];
-                    if ($certif_item->can(-1, UPDATE, $input)) {
+                    if ($certif_item->can(-1, CREATE, $input)) {
                         if ($certif_item->add($input)) {
                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                         } else {
@@ -737,8 +737,15 @@ class Certificate extends CommonDBTM
                         $values = [
                            'certificates_id' => $key,
                            'items_id' => $input["item_item"],
-                           'itemtype' => $input['typeitem']
+                           'itemtype' => $input['typeitem'],
                         ];
+
+                        if (!$certif_item->can(-1, CREATE, $values)) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            continue;
+                        }
+
                         if ($certif_item->add($values)) {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                         } else {
@@ -754,7 +761,19 @@ class Certificate extends CommonDBTM
             case __CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall':
                 $input = $ma->getInput();
                 foreach ($ids as $key) {
-                    if ($certif_item->deleteItemByCertificatesAndItem($key, $input['item_item'], $input['typeitem'])) {
+                    if (!$certif_item->getFromDBbyCertificatesAndItem($key, $input['item_item'], $input['typeitem'])) {
+                        $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
+                        $ma->addMessage($item->getErrorMessage(ERROR_NOT_FOUND));
+                        continue;
+                    }
+
+                    if (!$certif_item->can($certif_item->getID(), DELETE)) {
+                        $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                        $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                        continue;
+                    }
+
+                    if ($certif_item->delete(['id' => $certif_item->getID()])) {
                         $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                     } else {
                         $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);

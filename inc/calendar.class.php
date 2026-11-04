@@ -203,7 +203,15 @@ class Calendar extends CommonDropdown
                         $entities_id = CommonDBTM::getItemEntity('Calendar', $id);
                         if (isset($entities[$entities_id])) {
                             $input = ['calendars_id' => $id,
-                                           'holidays_id'  => $input['holidays_id']];
+                                'holidays_id'  => $input['holidays_id'],
+                            ];
+
+                            if (!$calendar_holiday->can(-1, CREATE, $input)) {
+                                $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                                $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                                continue;
+                            }
+
                             if ($calendar_holiday->add($input)) {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {

@@ -151,6 +151,11 @@ class User extends CommonDBTM
 
     public function canDeleteItem()
     {
+        // Prevent deleting a user whose profiles exceed the active profile.
+        if (!$this->currentUserHaveMoreRightThan($this->fields['id'])) {
+            return false;
+        }
+
         if (
             Session::canViewAllEntities()
             || Session::haveAccessToAllOfEntities($this->getEntities())
@@ -820,7 +825,14 @@ class User extends CommonDBTM
             );
 
             foreach ($relation_class::getItemsAssociatedTo($source->getType(), $source->getID()) as $source_relation) {
-                $source_relation->clone([$user_field => $this->getID()], $history);
+                $input = Toolbox::addslashes_deep($source_relation->fields);
+                unset($input['id']);
+                $input[$user_field] = $this->getID();
+                $target_relation = new $relation_class();
+                if (!$target_relation->can(-1, CREATE, $input)) {
+                    continue;
+                }
+                $target_relation->add($input, [], $history);
             }
         }
     }
