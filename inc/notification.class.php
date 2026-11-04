@@ -473,10 +473,14 @@ class Notification extends CommonDBTM {
    }
 
 
-   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
+
+   public static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids)
+   {
+      /** @var \DBmysql $DB */
+      global $DB;
 
       switch ($ma->getAction()) {
-         case 'add_template' :
+         case 'add_template':
             foreach ($ids as $id) {
                //load notification
                $notification = new Notification();
@@ -493,8 +497,15 @@ class Notification extends CommonDBTM {
                   $data = [
                      'mode'                     => $ma->POST['mode'],
                      'notificationtemplates_id' => $ma->POST['notificationtemplates_id'],
-                     'notifications_id'         => $id
+                     'notifications_id'         => $id,
                   ];
+
+                  if (!$notification_notificationtemplate->can(-1, CREATE, $data)) {
+                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                     $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                     continue;
+                  }
+
                   if ($notification_notificationtemplate->getFromDBByCrit($data)) {
                      $ma->itemDone(Notification::getType(), $ma->POST['notificationtemplates_id'], MassiveAction::ACTION_OK);
                   } else {
@@ -509,16 +520,33 @@ class Notification extends CommonDBTM {
 
             }
             return;
-         case 'remove_all_template' :
+         case 'remove_all_template':
             foreach ($ids as $id) {
-               //load notification
-               $notification = new Notification();
-               $notification->getFromDB($id);
+               $iterator = $DB->request([
+                  'FROM'  => Notification_NotificationTemplate::getTable(),
+                  'WHERE' => ['notifications_id' => $id],
+               ]);
 
-               //delete all links between notification and template
-               $notification_notificationtemplate = new Notification_NotificationTemplate();
-               $notification_notificationtemplate->deleteByCriteria(['notifications_id' => $id]);
-               $ma->itemDone(Notification::getType(), $id, MassiveAction::ACTION_OK);
+               $deleted = true;
+               foreach (Notification_NotificationTemplate::getFromIter($iterator) as $notification_notificationtemplate) {
+                  if (!$notification_notificationtemplate->can($notification_notificationtemplate->getID(), DELETE)) {
+                     $deleted = false;
+                     $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                     continue;
+                  }
+
+                  if (!$notification_notificationtemplate->delete(['id' => $notification_notificationtemplate->getID()])) {
+                     $deleted = false;
+                     $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+                     continue;
+                  }
+               }
+
+               if ($deleted) {
+                  $ma->itemDone(Notification::getType(), $id, MassiveAction::ACTION_OK);
+               } else {
+                  $ma->itemDone(Notification::getType(), $id, MassiveAction::ACTION_KO);
+               }
             }
             return;
       }

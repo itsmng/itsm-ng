@@ -89,6 +89,16 @@ class Profile_User extends CommonDBRelation {
              && Session::haveAccessToEntity($this->fields['entities_id']);
    }
 
+   function canPurgeItem() {
+      if (!parent::canPurgeItem()) {
+         return false;
+      }
+
+      return Profile::currentUserHaveMoreRightThan([$this->fields['profiles_id']])
+         && Session::haveAccessToEntity($this->fields['entities_id']);
+   }
+
+
    function prepareInputForAdd($input) {
 
       // TODO: check if the entities should not be inherited from the profile or the user

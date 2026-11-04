@@ -664,18 +664,21 @@ class Lock extends CommonGLPI {
                   }
                }
                foreach ($ids as $id) {
-                  $action_valid = false;
+                  $action_valid = true;
                   foreach ($links as $infos) {
                      $infos['condition'][$infos['field']] = $id;
                      $locked_items = $DB->request($infos['table'], $infos['condition']);
 
-                     if ($locked_items->count() === 0) {
-                        $action_valid = true;
-                        continue;
-                     }
                      foreach ($locked_items as $data) {
                         // Restore without history
-                        $action_valid = $infos['item']->restore(['id' => $data['id']]);
+                        if (!$infos['item']->can($data['id'], DELETE)) {
+                           $action_valid = false;
+                        continue;
+                     }
+
+                        if (!$infos['item']->restore(['id' => $data['id']])) {
+                           $action_valid = false;
+                        }
                      }
                   }
 

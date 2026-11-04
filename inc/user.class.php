@@ -133,6 +133,12 @@ class User extends CommonDBTM {
 
 
    function canDeleteItem() {
+
+      // Prevent deleting a user whose profiles exceed the active profile.
+      if (!$this->currentUserHaveMoreRightThan($this->fields['id'])) {
+         return false;
+      }
+
       if (Session::canViewAllEntities()
           || Session::haveAccessToAllOfEntities($this->getEntities())) {
          return true;

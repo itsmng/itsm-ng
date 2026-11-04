@@ -223,14 +223,24 @@ class Problem_Ticket extends CommonDBRelation{
             foreach ($ids as $id) {
                if ($item->can($id, READ)) {
                   if ($ticket->getFromDB($item->fields['tickets_id'])
-                      && $ticket->canSolve()) {
+                     && $ticket->canSolve()
+                  ) {
                      $solution = new ITILSolution();
-                     $added = $solution->add([
+
+                     $add_input = [
                         'itemtype'  => $ticket->getType(),
                         'items_id'  => $ticket->getID(),
                         'solutiontypes_id'   => $input['solutiontypes_id'],
-                        'content'            => $input['content']
-                     ]);
+                        'content'            => $input['content'],
+                     ];
+
+                     if (!$solution->can(-1, CREATE, $add_input)) {
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                        $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                        continue;
+                     }
+
+                     $added = $solution->add($add_input);
 
                      if ($added) {
                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);

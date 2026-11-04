@@ -529,11 +529,35 @@ class ObjectLock extends CommonDBTM {
 
 
    /**
+   * Check forced unlock permission using the profile saved before lock restrictions.
+   */
+   public static function canUnlockItem(CommonDBTM $item, $items_id) {
+      $active_profile = $_SESSION['glpiactiveprofile'];
+      try {
+         if (isset($_SESSION['glpilocksavedprofile'])) {
+            $_SESSION['glpiactiveprofile'] = $_SESSION['glpilocksavedprofile'];
+         }
+         return Session::haveRight($item::$rightname, UNLOCK)
+            && $item->can($items_id, UPDATE);
+      } finally {
+         $_SESSION['glpiactiveprofile'] = $active_profile;
+      }
+   }
+
+
+   /**
     * @see CommonDBTM::processMassiveActionsForOneItemtype
    **/
    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item,
-                                                       array $ids) {
+      array $ids
+   ) {
       foreach ($ids as $items_id) {
+         if (!self::canUnlockItem($item, $items_id)) {
+            $ma->itemDone($item->getType(), $items_id, MassiveAction::ACTION_NORIGHT);
+            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+            continue;
+         }
+
          $itemtype = get_class($item);
          $lo       = new self($itemtype, $items_id);
          if ($lo->getLockedObjectInfo()) {
