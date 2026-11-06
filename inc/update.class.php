@@ -556,6 +556,7 @@ class Update extends CommonGLPI {
             break;
 
          case ITSM_VERSION:
+         case '1.6.18@oidc1':
          case ITSM_SCHEMA_VERSION:
             break;
 
@@ -572,6 +573,9 @@ class Update extends CommonGLPI {
                die(1);
             }
       }
+
+        require_once GLPI_ROOT . '/install/oidc-migration.php';
+        migrateOidcProviders(false);
 
       // Update version number and default langage and new version_founded ---- LEAVE AT THE END
       Config::setConfigurationValues('core', ['version'             => ITSM_VERSION,

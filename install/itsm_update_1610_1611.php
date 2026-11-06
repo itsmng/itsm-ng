@@ -41,7 +41,7 @@ function update1610to1611() {
 
     $updateresult     = true;
 
-    if(!$DB->fieldExists('glpi_oidc_config', 'sso_link_users')) {
+    if ($DB->tableExists('glpi_oidc_config') && !$DB->fieldExists('glpi_oidc_config', 'sso_link_users')) {
         $query = "ALTER TABLE `glpi_oidc_config` ADD COLUMN (`sso_link_users` TINYINT(1) NOT NULL DEFAULT 1)";
         $DB->queryOrDie($query, "erreur lors de la mise a jour de la table de glpi_oidc_config".$DB->error());
     }

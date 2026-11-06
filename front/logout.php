@@ -73,39 +73,8 @@ if (isset($_SESSION["noAUTO"]) || isset($_GET['noAUTO'])) {
    $toADD .= "noAUTO=1";
 }
 
-if (isset($_SESSION["itsm_is_oidc"]) && $_SESSION["itsm_is_oidc"] == 1) {
-
-   //Get config from DB and use it to setup oidc
-   $criteria = "SELECT * FROM glpi_oidc_config";
-   $iterators = $DB->request($criteria);
-   foreach($iterators as $iterator) {
-      $oidc_db['Provider'] = $iterator['Provider'];
-      $oidc_db['ClientID'] = $iterator['ClientID'];
-      $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-      $oidc_db['scope'] = explode(',', addslashes($iterator['scope']));
-      $oidc_db['logout'] = empty($iterator['logout']) ? null : $iterator['logout'];
-      $oidc_db['proxy'] = $iterator['proxy'];
-      $oidc_db['cert'] = $iterator['cert'];
-   }
-
-   if (isset($oidc_db)) {
-      $oidc = new Jumbojett\OpenIDConnectClient($iterator['Provider'], $iterator['ClientID'], $iterator['ClientSecret']);
-      if (is_array($oidc_db['scope'])) {
-         $oidc->addScope($oidc_db['scope']);
-      }
-      if (isset($oidc_db['proxy']) && $oidc_db['proxy'] != '') {
-         $oidc->setHttpProxy($oidc_db['proxy']);
-      }
-      if (isset($oidc_db['cert']) && $oidc_db['proxy'] != '' && file_exists($oidc_db['cert'])) {
-         $oidc->setCertPath($oidc_db['cert']);
-      }
-      $sid = $_SESSION['itsm_oidc_idtoken'];
-
-      Session::destroy();
-      Auth::setRememberMeCookie('');
-
-      $oidc->signOut($sid, $oidc_db['logout'] ?? $CFG_GLPI["url_base"]."/index.php".$toADD);
-   }
+if (!empty($_SESSION['itsm_is_oidc'])) {
+    Oidc::logout();
 }
 
 Session::destroy();

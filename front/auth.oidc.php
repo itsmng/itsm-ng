@@ -34,6 +34,11 @@ include ('../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 
+OidcProvider::saveConfiguration();
+if (!empty($_GET['id'])) {
+    Html::redirect('auth.oidc.form.php?id=' . (int) $_GET['id']);
+}
+
 Html::header(__('External authentication sources'), $_SERVER['PHP_SELF'], "config", "auth", "oidc");
 
 Auth::showAuthOIDCConfig();

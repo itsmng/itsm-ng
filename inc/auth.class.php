@@ -111,6 +111,11 @@ class Auth extends CommonGLPI {
             $menu['options']['imap']['links']['search'] = AuthMail::getSearchURL(false);
             $menu['options']['imap']['links']['add']    = AuthMail::getFormURL(false);
 
+            $menu['options']['oidc']['title']           = OidcProvider::getTypeName();
+            $menu['options']['oidc']['page']            = '/front/auth.oidc.php';
+            $menu['options']['oidc']['links']['search'] = '/front/auth.oidc.php';
+            $menu['options']['oidc']['links']['add']    = '/front/auth.oidc.form.php';
+
             $menu['options']['others']['title']         = __('Others');
             $menu['options']['others']['page']          = '/front/auth.others.php';
 
@@ -1670,151 +1675,77 @@ class Auth extends CommonGLPI {
    }
 
    /**
-    * Show form for open ID connect authentication configuration.
+    * Show the configured OpenID Connect sources.
     *
     * Form is directly printed.
     */
-   static function showAuthOIDCConfig() {
-      global $DB;
-      
-      //Set or update config with the db
-      if (isset($_POST["mapping"])) {
-         Html::redirect("auth.oidc_profile.php");
-      }
-      if (isset($_POST["update"])) {
-         $oidc_result = [
-            'Provider'   => $_POST["provider"],
-            'ClientID'   => $_POST["clientID"],
-            'ClientSecret'  => $_POST["clientSecret"],
-            'is_activate'  => $_POST["useoidc"],
-            'is_forced'  => $_POST["forceoidc"],
-            'scope'  => $_POST["scope"],
-            'proxy'  => $_POST["proxy"],
-            'cert'  => $_POST["cert"],
-            'logout'  => $_POST["logout"],
-            'sso_link_users' => $_POST['sso_link_users'],
-         ];
-        $DB->updateOrInsert("glpi_oidc_config", $oidc_result, ['id'   => 0]);
-      }
-      $criteria = "SELECT * FROM glpi_oidc_config";
-      $iterators = $DB->request($criteria);
-      foreach($iterators as $iterator) {
-         $oidc_db['Provider'] = $iterator['Provider'];
-         $oidc_db['ClientID'] = $iterator['ClientID'];
-         $oidc_db['ClientSecret'] = $iterator['ClientSecret'];
-         $oidc_db['is_activate'] = $iterator['is_activate'];
-         $oidc_db['is_forced'] = $iterator['is_forced'];
-         $oidc_db['scope'] = $iterator['scope'];
-         $oidc_db['proxy'] = $iterator['proxy'];
-         $oidc_db['cert'] = $iterator['cert'];
-         $oidc_db['logout'] = $iterator['logout'];
-         $oidc_db['sso_link_users'] = $iterator['sso_link_users'];
-      }
-      
+    public static function showAuthOIDCConfig()
+    {
+        global $CFG_GLPI;
+        $base = $CFG_GLPI['root_doc'] . '/front/';
+        echo '<table class="tab_cadre_fixe table"><tr><th>' . __('Name') . '</th><th>' . __('Active') . '</th><th>' . __('Issuer') . '</th></tr>';
+        $choices = [0 => __('No automatic login')];
+        foreach (OidcProvider::all() as $item) {
+            echo '<tr><td><a href="' . OidcProvider::escape($base . 'auth.oidc.form.php?id=' . $item['id']) . '">' . OidcProvider::escape($item['name'])
+                . '</a></td><td>' . ($item['is_active'] ? __('Yes') : __('No')) . '</td><td>' . OidcProvider::escape($item['issuer']) . '</td></tr>';
+            if ($item['is_active']) {
+                $choices[$item['id']] = $item['name'];
+            }
+        }
+        echo '</table><form method="post" class="center"><label for="automatic_provider">' . __('Automatic login source') . '</label>';
+        OidcProvider::select('automatic_provider', $choices, $CFG_GLPI['oidc_auto_login_provider'] ?? 0);
+        echo '<button class="secondary" name="automatic" value="1">' . __('Save') . '</button>';
+        Html::closeForm();
+    }
 
-      echo "<form method='post' action='./auth.oidc.php' method='post'>";
-      echo "<table class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th colspan='2'>".__("Open ID connect configuration")."</th></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__("Activate open ID connect")."</td>";
-      echo "<td>";
-      if (isset($oidc_db['is_activate'])) {
-       Dropdown::showYesNo('useoidc', $oidc_db['is_activate'],-1,['use_checkbox' => false]);
-   } else {
-       Dropdown::showYesNo('useoidc', 0,-1,['use_checkbox' => false]);
-   }
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>".__("Forced connection with open ID connect")."</td>";
-      echo "<td>";
-      if (isset($oidc_db['is_forced'])) {
-       Dropdown::showYesNo('forceoidc', $oidc_db['is_forced'],-1,['use_checkbox' => false]);
-   } else {
-       Dropdown::showYesNo('forceoidc', 0,-1,['use_checkbox' => false]);
-   }
-      echo "</td></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>Provider</td>";
-      echo "<td>";
-   if (isset($oidc_db['Provider'])) {
-       echo "<input type='text' id='provider' name='provider'value=". $oidc_db['Provider'] .">";
-   } else {
-       echo "<input type='text' id='provider' name='provider' placeholder='https://id.provider.com'>";
-   }
-      echo "</td></tr>";
+    public static function showAuthOIDCForm($id)
+    {
+        global $CFG_GLPI;
+        $source = $id ? OidcProvider::load($id, false) : [];
+        $base = $CFG_GLPI['root_doc'] . '/front/';
+        echo '<form method="post" action="auth.oidc.form.php"><input type="hidden" name="id" value="' . (int) ($source['id'] ?? 0) . '"><table class="tab_cadre_fixe table">';
+        $labels = ['name' => __('Name'), 'issuer' => __('Issuer'), 'client_id' => __('Client ID'),
+            'client_secret' => __('Client secret (leave blank to retain)'), 'scope' => __('Scopes'),
+            'proxy' => __('Proxy'), 'cert' => __('Certificate path'), 'logout_redirect' => __('Logout return URL'),
+            'login_claim' => __('Username claim path'), 'email_claim' => __('Email claim path')];
+        foreach ($labels as $key => $label) {
+            $value = $key === 'client_secret' ? '' : ($source[$key] ?? ['scope' => 'openid profile email', 'login_claim' => '/preferred_username', 'email_claim' => '/email'][$key] ?? '');
+            echo '<tr><td><label for="oidc_' . $key . '">' . OidcProvider::escape($label) . '</label></td><td><input class="form-control" id="oidc_' . $key . '" name="' . $key
+                . '" type="' . ($key === 'client_secret' ? 'password' : 'text') . '" value="' . OidcProvider::escape($value) . '" autocomplete="off"></td></tr>';
+        }
+        echo '<tr><td><label for="dropdown_required_pluginoidc">' . __('Required plugin') . '</label></td><td>';
+        Dropdown::showFromArray('required_plugin', OidcProvider::pluginChoices($source['required_plugin'] ?? ''),
+            ['value' => $source['required_plugin'] ?? '', 'rand' => 'oidc', 'width' => '100%']);
+        echo '</td></tr>';
+        echo '<tr><td><label for="oidc_button_label">' . __('Login button text') . '</label></td><td><input class="form-control" id="oidc_button_label" name="button_label" maxlength="255" value="'
+            . OidcProvider::escape($source['button_label'] ?? '') . '" placeholder="' . OidcProvider::escape($source['name'] ?? __('OpenID Connect')) . '"></td></tr>';
+        echo '<tr><td><label for="oidc_button_icon">' . __('Login button icon') . '</label></td><td>';
+        OidcProvider::select('button_icon', OidcProvider::buttonIcons(), $source['button_icon'] ?? '', 'oidc_button_icon');
+        echo '</td></tr><tr><td><label for="oidc_button_color">' . __('Login button color') . '</label></td><td><label><input type="checkbox" name="use_button_color" value="1"'
+            . (!empty($source['button_color']) ? ' checked' : '') . '> ' . __('Use a custom color') . '</label> '
+            . '<input type="color" id="oidc_button_color" name="button_color" value="' . OidcProvider::escape(($source['button_color'] ?? '') ?: '#007bff') . '"></td></tr>';
+        foreach (['login_claim_source' => __('Username claim payload'), 'email_claim_source' => __('Email claim payload')] as $key => $label) {
+            echo '<tr><td><label for="' . $key . '">' . OidcProvider::escape($label) . '</label></td><td>';
+            OidcProvider::select($key, ['userinfo' => 'UserInfo', 'id_token' => 'ID token'], $source[$key] ?? 'userinfo');
+            echo '</td></tr>';
+        }
+        foreach (['is_active' => __('Active'), 'allow_provisioning' => __('Allow user creation'), 'use_pkce' => __('Use PKCE (S256)')] as $key => $label) {
+            echo '<tr><td><label for="oidc_' . $key . '">' . OidcProvider::escape($label) . '</label></td><td><input type="checkbox" id="oidc_' . $key . '" name="' . $key . '" value="1"' . (!empty($source[$key] ?? ($key === 'use_pkce' ? 1 : 0)) ? ' checked' : '') . '></td></tr>';
+        }
+        echo '<tr><td><label for="link_method">' . __('Initial account linking') . '</label></td><td>';
+        $methods = ['none' => __('Disabled'), 'username' => __('Username'), 'email' => __('Verified email'), 'plugin' => __('Plugin')];
+        if (!empty($source['is_legacy'])) {
+            $methods['legacy'] = __('Migrated legacy policy');
+        }
+        OidcProvider::select('link_method', $methods, $source['link_method'] ?? 'none');
+        echo '</td></tr></table><button class="vsubmit" name="save" value="1">' . __('Save') . '</button>';
+        if (!empty($source['id'])) {
+            echo ' <a class="secondary" href="' . OidcProvider::escape($base . 'auth.oidc_profile.php?id=' . $source['id']) . '">' . __('Mapping') . '</a>';
+        }
+        Html::closeForm();
+    }
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>Client ID</td>";
-      echo "<td>";
-   if (isset($oidc_db['ClientID'])) {
-       echo "<input type='text' id='clientID' name='clientID'value=". $oidc_db['ClientID'] .">";
-   } else {
-       echo "<input type='text' id='clientID' name='clientID'>";
-   }
-      echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>Client Secret</td>";
-      echo "<td>";
-   if (isset($oidc_db['ClientSecret'])) {
-       echo "<input type='password' id='clientSecret' name='clientSecret'value=". $oidc_db['ClientSecret'] .">";
-   } else {
-       echo "<input type='password' id='clientSecret' name='clientSecret' >";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Scopes') . "</td>";
-      echo "<td>";
-   if (isset($oidc_db['scope'])) {
-       echo "<input type='text' id='scope' name='scope'value=". str_replace(' ', '', $oidc_db['scope']) .">";
-   } else {
-       echo "<input type='text' id='scope' name='scope' placeholder='scope1,scope2'>";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Proxy') . "</td>";
-      echo "<td>";
-   if (isset($oidc_db['proxy'])) {
-       echo "<input type='text' id='proxy' name='proxy'value=". str_replace(' ', '', $oidc_db['proxy']) .">";
-   } else {
-       echo "<input type='text' id='proxy' name='proxy' placeholder='http://my.proxy.com:80/'>";
-   }
-      echo "</td></tr>";
-      
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Certificate') . "</td>";
-      echo "<td>";
-   if (isset($oidc_db['cert'])) {
-       echo "<input type='text' id='cert' name='cert'value=". str_replace(' ', '', $oidc_db['cert']) .">";
-   } else {
-       echo "<input type='text' id='cert' name='cert' placeholder='/path/to/my.cert'>";
-   }
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Logout URL') . "</td>";
-      echo "<td>";
-      if (isset($oidc_db['logout'])) {
-          echo "<input type='text' id='logout' name='logout'value=". str_replace(' ', '', $oidc_db['logout']) .">";
-      } else {
-          echo "<input type='text' id='logout' name='logout' placeholder='https://logout.url'>";
-      }
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Link accounts with other auth sources') . "</td>";
-      echo "<td>";
-      Dropdown::showYesNo('sso_link_users', ($oidc_db['sso_link_users']));
-      
-      echo "<tr class='tab_bg_2'><td class='center' colspan='4'>";
-      echo "<input type='submit' name='update' class='submit' value=\"".__s('Save')."\">" . '&nbsp;';
-      echo "<input type='submit' name='mapping' class='submit' value=\"".__s('Mapping')."\" >";
-      echo "</td></tr>";
-      echo "</table>";
-      Html::closeForm();
-      
-  }
 
    /**
     * Get authentication methods available

@@ -2961,6 +2961,20 @@ a.icon_nav_move {
       font-size: 1.3em;
    }
 
+   a.oidc-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 30px;
+      padding: 5px;
+      overflow-wrap: anywhere;
+      font-family: Arial, Helvetica;
+      font-size: 1.3em;
+      text-decoration: none;
+   }
+
    #forget {
       margin-top: 50px;
       color: #FFF;

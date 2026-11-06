@@ -59,7 +59,8 @@ class GLPIKey {
     */
    protected $fields = [
       'glpi_mailcollectors.passwd',
-      'glpi_authldaps.rootdn_passwd'
+      'glpi_authldaps.rootdn_passwd',
+       'glpi_oidcproviders.client_secret'
    ];
 
    /**

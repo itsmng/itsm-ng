@@ -840,6 +840,10 @@ class Group_User extends CommonDBRelation{
 
    function post_purgeItem() {
       global $DB;
+        if ($DB->tableExists('glpi_oidcgroupusers')) {
+            $DB->delete('glpi_oidcgroupusers', ['groups_users_id' => $this->getID()]);
+        }
+
 
       // remove user from plannings
       $groups_id  = $this->fields['groups_id'];

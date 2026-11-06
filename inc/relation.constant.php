@@ -633,6 +633,10 @@ $RELATION = [
       'glpi_users'                 => 'groups_id',
    ],
 
+   'glpi_groups_users' => [
+      '_glpi_oidcgroupusers' => 'groups_users_id',
+   ],
+
    'glpi_holidays' => [
       'glpi_calendars_holidays' => 'holidays_id',
    ],
@@ -873,6 +877,12 @@ $RELATION = [
          'olas_id_ttr',
          'olas_id_tto',
       ],
+   ],
+
+   'glpi_oidcproviders' => [
+      '_glpi_oidcmappings' => 'oidcproviders_id',
+      '_glpi_oidcidentities' => 'oidcproviders_id',
+      '_glpi_oidcgroupusers' => 'oidcproviders_id',
    ],
 
    'glpi_operatingsystemarchitectures' => [
@@ -1256,6 +1266,7 @@ $RELATION = [
    ],
 
    'glpi_users' => [
+      '_glpi_oidcidentities' => 'users_id',
       'glpi_cartridgeitems'           => 'users_id_tech',
       'glpi_certificates'             => [
          'users_id_tech',
