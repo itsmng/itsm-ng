@@ -133,7 +133,7 @@
 
     const {
         ClassicEditor, Essentials, Bold,
-        Italic, BlockQuote, Heading,
+        Italic, FontColor, FontBackgroundColor, BlockQuote, Heading,
         Link, AutoLink, Image, ImageUpload,
         Table, List, ListProperties,
         ImageInsert,
@@ -196,7 +196,7 @@
       .create(document.getElementById(editorId), {
         licenseKey: 'GPL',
         plugins: [
-            Essentials, Bold, Italic,
+            Essentials, Bold, Italic, FontColor, FontBackgroundColor,
             BlockQuote, Heading, Link,
             AutoLink, Image, ImageUpload,
             Table, List, ListProperties,
@@ -204,9 +204,19 @@
             GlpiRichTextUploadPlugin,
         ],
         toolbar: ['heading',
-          '|', 'bold', 'italic', 'blockQuote', 'link', 'insertImage',
+          '|', 'bold', 'italic', 'fontColor', 'fontBackgroundColor', 'blockQuote', 'link', 'insertImage',
           '|', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable',
           '|', 'sourceEditing'],
+        fontColor: {
+          colorPicker: {
+            format: 'hex'
+          }
+        },
+        fontBackgroundColor: {
+          colorPicker: {
+            format: 'hex'
+          }
+        },
         link: {
           decorators: {
             openInNewTab: {
