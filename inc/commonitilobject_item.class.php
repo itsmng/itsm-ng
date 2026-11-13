@@ -146,58 +146,49 @@ abstract class CommonItilObject_Item extends CommonDBRelation
 
                 $types = static::$itemtype_1::getAllTypesForHelpdesk();
                 $used = json_encode($params['used']);
+                $entity = json_encode($entity_restrict);
+                $emptyLabel = json_encode(Dropdown::EMPTY_VALUE);
+                $initialType = isset($types[$itemtype]) ? $itemtype : '';
                 $inputs = [
                     [
                        'type' => 'select',
                        'id' => "dropdown_itemtype$rand",
-                       'name' => 'itemtype',
-                       'noLib' => true,
+                       'name' => $myname,
                        'values' => [($params[static::$items_id_1] > 0) ? Dropdown::EMPTY_VALUE : __('General')] + $types,
-                       'col_lg' => 12,
-                       'col_md' => 12,
+                       'value' => $initialType ?: 0,
+                       'col_lg' => 6,
+                       'col_md' => 6,
+                       'col' => 6,
                        'hooks' => [
                           'change' => <<<JS
                           const val = this.value;
+                          const dropdown = $('#dropdown_add_items_id$rand');
+                          const request = (dropdown.data('type-request') || 0) + 1;
+                          dropdown.data('type-request', request);
+                          dropdown.empty().append(new Option($emptyLabel, 0));
+                          dropdown.val(0).prop('disabled', true).trigger('change');
+                          dropdown.closest('[data-dropdown-group]').children('.dropdown-action').remove();
+                          if (!val || val === '0') {
+                             return;
+                          }
                           $.ajax({
                              url: "{$CFG_GLPI['root_doc']}/ajax/dropdownTrackingDeviceType.php",
                              type: "POST",
+                             dataType: 'json',
                              data: {
                                 itemtype: val,
-                                entity_restrict: $entity_restrict,
+                                entity_restrict: $entity,
                                 admin: $admin,
                                 used: {$used},
                                 multiple: {$params['multiple']},
+                                _dropdown_definition: 1,
                              },
-                             success: function(data) {
-                                const jsonData = JSON.parse(data);
-                                
-                                const dropdown = document.getElementById(`dropdown_add_items_id$rand`);
-                                dropdown.innerHTML = '';
-                                
-                                const defaultOption = document.createElement('option');
-                                defaultOption.value = '';
-                                defaultOption.text = '-- Sélectionner --';
-                                dropdown.appendChild(defaultOption);
-                                
-                                for (const key in jsonData.results) {
-                                   if (jsonData.results[key].children) {
-                                      // add optgroup with options
-                                      const optgroup = document.createElement('optgroup');
-                                      optgroup.label = jsonData.results[key].label;
-                                      dropdown.appendChild(optgroup);
-                                      for (const child of jsonData.results[key].children) {
-                                         const option = document.createElement('option');
-                                         option.value = child.id;
-                                         option.text = child.text;
-                                         optgroup.appendChild(option);
-                                      }                                 
-                                   } else {
-                                      const option = document.createElement('option');
-                                      option.value = jsonData.results[key].id;
-                                      option.text = jsonData.results[key].text;
-                                      dropdown.appendChild(option);
-                                   }
+                             success: function(definition) {
+                                if (dropdown.data('type-request') !== request) {
+                                   return;
                                 }
+                                setAjaxDropdownOptions(dropdown, definition);
+                                dropdown.prop('disabled', false);
                              }
                           });
                           JS,
@@ -207,15 +198,23 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                        'type' => 'select',
                        'id' => "dropdown_add_items_id$rand",
                        'name' => 'items_id',
-                       'noLib' => true,
-                       'col_lg' => 12,
-                       'col_md' => 12,
-                    ]
+                       'values' => [0 => Dropdown::EMPTY_VALUE],
+                       'value' => $items_id,
+                       'col_lg' => 6,
+                       'col_md' => 6,
+                       'col' => 6,
+                    ] + ($initialType ? getAjaxDropdownOptionsByEntity(
+                        $initialType,
+                        $entity_restrict,
+                        [],
+                        $params['used'][$initialType] ?? []
+                    ) : ['disabled' => true])
                  ];
+                echo "<div class='row g-2'>";
                 foreach ($inputs as $input) {
                     renderTwigTemplate('macros/wrappedInput.twig', ['title' => '', 'input' => $input]);
                 }
-                echo "</span>\n";
+                echo "</div>\n";
             }
             echo "</div>";
         }

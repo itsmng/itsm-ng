@@ -57,6 +57,17 @@ if ($context == "impact") {
 
 // Make a select box
 if ($isValidItemtype) {
+    if (!empty($_POST['_dropdown_definition'])) {
+        header("Content-Type: application/json; charset=UTF-8");
+        outputAjaxDropdownDefinition(getAjaxDropdownOptionsByEntity(
+            $itemtype,
+            $_POST['entity_restrict'] ?? -1,
+            [],
+            $_POST['used'][$itemtype] ?? []
+        ));
+        exit;
+    }
+
     $table = getTableForItemType($itemtype);
 
     $rand = mt_rand();

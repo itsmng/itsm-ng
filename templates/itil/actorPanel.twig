@@ -1,3 +1,4 @@
+{% from 'macros/input.twig' import input as renderInput %}
 {% set panel_id = 'itil-actor-panels-' ~ random() %}
 <div id="{{ panel_id }}" class="itil-actor-panels">
   <style>
@@ -240,6 +241,7 @@
                  data-actor-type-id="{{ panel.actorTypeId }}"
                  data-item-type="{{ panel.itemtype }}"
                  data-items-id="{{ panel.itemsId }}"
+                 {% if panel.pickerForm is defined %}data-custom-picker{% endif %}
                  data-root-doc="{{ root_doc }}"
                  data-field-map="{{ panel.fieldMap|json_encode|e('html_attr') }}">
           <div class="itil-actor-card__header">
@@ -267,7 +269,27 @@
             {% endif %}
           </div>
 
-          {% if panel.allowAdd and panel.actorTypes %}
+          {% if panel.pickerForm is defined %}
+            <div class="itil-actor-picker">
+              <div class="itil-actor-picker__top">
+                <div class="itil-actor-picker__field">
+                  <label class="form-label" for="{{ panel.pickerForm.typeField.id }}">{{ 'Actor type'|trans }}</label>
+                  {{ renderInput(panel.pickerForm.typeField|merge({'form': panel.pickerForm.id}), root_doc) }}
+                </div>
+                <div><button type="submit" form="{{ panel.pickerForm.id }}" class="btn btn-primary btn-sm">{{ 'Add'|trans }}</button></div>
+              </div>
+              <div class="itil-actor-picker__details">
+                {% for type, field in panel.pickerForm.valueFields %}
+                  <div data-picker-type="{{ type }}" {% if type != panel.pickerForm.typeField.value %}class="d-none"{% endif %}>
+                    {{ renderInput(field|merge({'form': panel.pickerForm.id, 'data-picker-value': ''}), root_doc) }}
+                  </div>
+                {% endfor %}
+                <label class="form-label">{{ 'Email followup'|trans }}
+                  {{ renderInput(panel.pickerForm.notificationField|merge({'form': panel.pickerForm.id}), root_doc) }}
+                </label>
+              </div>
+            </div>
+          {% elseif panel.allowAdd and panel.actorTypes %}
             <div class="itil-actor-picker">
               <div class="itil-actor-picker__top">
                 <div class="itil-actor-picker__field">
@@ -325,7 +347,11 @@
                       <i class="fas fa-envelope"></i>
                     </button>
                   {% endif %}
-                  {% if actor.removable %}
+                  {% if actor.removeUrl %}
+                    <a href="{{ actor.removeUrl }}" class="btn btn-sm btn-outline-danger" aria-label="{{ 'Remove'|trans }}">
+                      <i class="fas fa-times"></i>
+                    </a>
+                  {% elseif actor.removable %}
                     <button type="button"
                             class="btn btn-sm btn-outline-danger"
                             data-role="remove-actor"
@@ -349,6 +375,10 @@
   </div>
 </div>
 
+{% if renderPickerForms is not defined or renderPickerForms %}
+  {% include 'itil/actorPickerForms.twig' %}
+{% endif %}
+
 <script>
   (() => {
     const root = document.getElementById('{{ panel_id }}');
@@ -358,6 +388,18 @@
 
     root.querySelectorAll('[data-panel-id]').forEach((panel) => {
       const $panel = $(panel);
+      if (panel.hasAttribute('data-custom-picker')) {
+        const $type = $panel.find('[data-role="custom-type-selector"]');
+        const updateFields = () => {
+          $panel.find('[data-picker-type]').each((_, element) => {
+            const enabled = String(element.dataset.pickerType) === String($type.val());
+            $(element).toggleClass('d-none', !enabled).find('input, select, textarea').prop('disabled', !enabled);
+          });
+        };
+        $type.on('change', updateFields);
+        updateFields();
+        return;
+      }
       const role = $panel.data('actor-role');
       const itemtype = $panel.data('item-type');
       const itemsId = parseInt($panel.data('items-id'), 10) || 0;

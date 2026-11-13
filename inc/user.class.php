@@ -3815,7 +3815,8 @@ class User extends CommonDBTM
         $start = 0,
         $limit = -1,
         $inactive_deleted = 0,
-        $with_no_right = 0
+        $with_no_right = 0,
+        array $conditions = []
     ) {
         global $DB;
 
@@ -4147,13 +4148,15 @@ class User extends CommonDBTM
                 $criteria['ORDERBY'] = [
                    'glpi_users.firstname',
                    'glpi_users.realname',
-                   'glpi_users.name'
+                   'glpi_users.name',
+                   'glpi_users.id'
                 ];
             } else {
                 $criteria['ORDERBY'] = [
                    'glpi_users.realname',
                    'glpi_users.firstname',
-                   'glpi_users.name'
+                   'glpi_users.name',
+                   'glpi_users.id'
                 ];
             }
 
@@ -4161,6 +4164,9 @@ class User extends CommonDBTM
                 $criteria['LIMIT'] = $limit;
                 $criteria['START'] = $start;
             }
+        }
+        if ($conditions) {
+            $WHERE[] = $conditions;
         }
         $criteria['WHERE'] = $WHERE;
         return $DB->request($criteria);

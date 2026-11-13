@@ -1,0 +1,22 @@
+{% for panel in panels %}
+  {% if panel.pickerForm is defined %}
+    <form id="{{ panel.pickerForm.id }}" action="{{ panel.pickerForm.action }}" method="post" hidden>
+      {% for field in panel.pickerForm.hiddenFields %}
+        <input type="hidden" name="{{ field.name }}" value="{{ field.value }}">
+      {% endfor %}
+    </form>
+    <script>
+      document.getElementById('{{ panel.pickerForm.id|e('js') }}').addEventListener('submit', (event) => {
+        const value = Array.from(event.target.elements).find(field => field.hasAttribute('data-picker-value') && !field.disabled);
+        if (value && (!value.value || value.value === '0')) {
+          event.preventDefault();
+          if ($(value).hasClass('select2-hidden-accessible')) {
+            $(value).select2('open');
+          } else {
+            value.focus();
+          }
+        }
+      });
+    </script>
+  {% endif %}
+{% endfor %}
