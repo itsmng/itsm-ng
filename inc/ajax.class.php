@@ -333,7 +333,8 @@ class Ajax
         $out .= "<iframe id='Iframe$domid' class='iframe hidden' title='Iframe'=></iframe></div>";
 
         $out .= "<script type='text/javascript'>
-         $.getScript('" . $CFG_GLPI["root_doc"] . "/node_modules/jquery-ui-dist/jquery-ui.min.js', function() {
+         (function() {
+            var initializeDialog = function() {
             $('#$domid').dialog({
                modal: true,
                autoOpen: false,
@@ -352,7 +353,13 @@ class Ajax
         }
 
         $out .= "title: \"" . addslashes((string) $param['title']) . "\"});
-         });
+            };
+            if ($.fn.dialog) {
+                initializeDialog();
+            } else {
+                $.getScript('" . $CFG_GLPI["root_doc"] . "/node_modules/jquery-ui-dist/jquery-ui.min.js', initializeDialog);
+            }
+         })();
             </script>";
 
         if ($param['display']) {

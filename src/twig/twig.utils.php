@@ -638,14 +638,15 @@ function getItemActionButtons(array $actions, string $itemType): array
                 }
                 $modalName = 'add_' . str_replace('\\', '_', $itemType) . '_' . mt_rand();
                 $formUrl = $item->getFormUrl();
-                $modal_script = Ajax::createModalWindow(
+                // Keep form submissions and redirects inside the creation dialog.
+                $modal_script = Ajax::createIframeModalWindow(
                     $modalName,
-                    $formUrl . (str_contains($formUrl, '?') ? '&' : '?') . '_in_modal=1',
-                    ['display' => false]
+                    $formUrl,
+                    ['width' => 800, 'height' => 400, 'display' => false]
                 );
                 $content = [
                     "icon" => "fas fa-plus",
-                    "onClick" => $modalName . ".dialog('open');",
+                    "onClick" => Html::jsGetElementbyID($modalName) . ".dialog('open');",
                     "info" => "Add",
                     "modal_script" => $modal_script,
                 ];
