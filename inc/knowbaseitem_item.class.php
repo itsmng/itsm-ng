@@ -164,7 +164,8 @@ class KnowbaseItem_Item extends CommonDBRelation
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _sx('button', 'Add'),
-                     'class' => 'btn btn-secondary'
+                     'class' => $item->getType() === 'Computer' ? 'btn btn-primary' : 'btn btn-secondary',
+                     'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                   ]
                ],
                'content' => [
@@ -213,39 +214,14 @@ class KnowbaseItem_Item extends CommonDBRelation
                               name: 'items_id'
                            };
                            $.post(url, data, function(response) {
-                              const jsonResponse = JSON.parse(response);
-                              $('#selectForItemKnowbaseItem').empty();
-                              for (const key in jsonResponse) {
-                                 if (jsonResponse.hasOwnProperty(key)) {
-                                    if (typeof(jsonResponse[key]) == 'object') {
-                                       const group = $("#selectForItemKnowbaseItem").append(
-                                          $("<optgroup></optgroup>")
-                                             .attr("label", key)
-                                       );
-                                       for (const [skey, svalue] of Object.entries(jsonResponse[key])) {
-                                          console.log(skey, svalue);
-                                          group.append(
-                                             $("<option></option>")
-                                                .attr("value", skey)
-                                                .text(svalue)
-                                          );
-                                       }
-                                    } else {
-                                       $("#selectForItemKnowbaseItem").append(
-                                          $("<option></option>")
-                                             .attr("value", key)
-                                             .text(jsonResponse[key])
-                                       );
-                                    }
-                                 }
-                              }
+                              setAjaxDropdownOptions('#selectForItemKnowbaseItem', JSON.parse(response));
                            });
                            JS,
                            ]
                         ] : [
                            'type' => 'select',
                            'name' => 'knowbaseitems_id',
-                           'values' => getOptionForItems(
+                           ...getAjaxDropdownOptions(
                                KnowbaseItem::class,
                                (isset(KnowbaseItem::getVisibilityCriteria()['WHERE'])
                                  && count(KnowbaseItem::getVisibilityCriteria()['WHERE']))
@@ -272,11 +248,7 @@ class KnowbaseItem_Item extends CommonDBRelation
             $no_txt = ($item_type == KnowbaseItem::getType()) ?
                __('No linked items') :
                __('No knowledge base entries linked');
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe' aria-label='Base Item'>";
-            echo "<tr><th>$no_txt</th></tr>";
-            echo "</table>";
-            echo "</div>";
+            echo '<div class="alert alert-info" role="status">' . $no_txt . '</div>';
             return;
         }
 

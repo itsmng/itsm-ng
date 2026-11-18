@@ -503,7 +503,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     Entity::getTypeName(1) => $this->canCreate() ? [
                        'type' => 'select',
                        'name' => 'entities_id',
-                       'values' => getOptionForItems(Entity::class),
+                       ...getAjaxDropdownOptions(Entity::class),
                        'value' => $this->fields['entities_id'] ?? 0,
                        'actions' => getItemActionButtons(['info', 'add'], Entity::class),
                        ] : [],
@@ -1050,7 +1050,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     echo " private' data-position='$number' data-id='{$this->getID()}";
                 }
                 echo "'>";
-                echo "<td class='small no-wrap'>";
+                echo "<td class='savedsearch-actions small no-wrap'>";
                 if (is_null($this->fields['IS_DEFAULT'])) {
                     echo "<a class='default fa fa-star bookmark_record' href=\"" .
                             $this->getSearchURL() . "?action=edit&amp; mark_default=1&amp;id=" .

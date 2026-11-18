@@ -157,6 +157,54 @@ class Ticket_Ticket extends DbTestCase
            ->integer['link']->isEqualTo(\Ticket_Ticket::SON_OF);
     }
 
+    public function testRelationshipLabelsFromBothTickets()
+    {
+        require_once GLPI_ROOT . '/src/twig/twig.class.php';
+        $twig = \Twig::load(GLPI_ROOT . '/templates', false);
+        $relations = [
+            \Ticket_Ticket::LINK_TO => __('Linked to'),
+            \Ticket_Ticket::DUPLICATE_WITH => __('Duplicates'),
+            \Ticket_Ticket::SON_OF => __('Son of'),
+            \Ticket_Ticket::PARENT_OF => __('Parent of'),
+        ];
+        $cases = [
+            [\Ticket_Ticket::SON_OF, __('Son of'), __('Parent of')],
+            [\Ticket_Ticket::PARENT_OF, __('Parent of'), __('Son of')],
+            [\Ticket_Ticket::DUPLICATE_WITH, __('Duplicates'), __('Duplicated by')],
+            [\Ticket_Ticket::LINK_TO, __('Linked to'), __('Linked to')],
+        ];
+
+        foreach ($cases as [$type, $firstLabel, $secondLabel]) {
+            $this->createTickets();
+            $link = new \Ticket_Ticket();
+            $linkId = (int)$link->add([
+                'tickets_id_1' => $this->tone->getID(),
+                'tickets_id_2' => $this->ttwo->getID(),
+                'link' => $type,
+            ]);
+            $this->integer($linkId)->isGreaterThan(0);
+
+            foreach ([$this->tone->getID() => $firstLabel, $this->ttwo->getID() => $secondLabel] as $ticketId => $expectedLabel) {
+                $links = \Ticket_Ticket::getLinkedTicketsTo($ticketId);
+                $this->string($links[$linkId]['link_name'])->isIdenticalTo($expectedLabel);
+                $html = $twig->render('macros/inputs/ticketSelect.twig', [
+                    'attributes' => [
+                        'name' => '_link',
+                        'ticket_id' => $ticketId,
+                        'relations' => $relations,
+                        'values' => $links,
+                    ],
+                ]);
+                $document = new \DOMDocument();
+                $markup = preg_replace('~<script\b[^>]*>.*?</script>~is', '', $html);
+                $document->loadHTML($markup, LIBXML_NOERROR | LIBXML_NOWARNING);
+                $xpath = new \DOMXPath($document);
+                $label = $xpath->evaluate('string(//tr[@data-link-id="' . $linkId . '"]/td[1])');
+                $this->string(trim($label))->isIdenticalTo($expectedLabel);
+            }
+        }
+    }
+
     public function testNumberOpen()
     {
         $this->login();

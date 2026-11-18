@@ -127,6 +127,13 @@ class Item_Rack extends CommonDBRelation
             );
         }
 
+        if ($canedit && $rack->canAddItem('itemtype')) {
+            $relation = new self();
+            $relation->getEmpty();
+            $relation->fields['racks_id'] = $ID;
+            $relation->showForm(-1, ['racks_id' => $ID, 'position' => 1]);
+        }
+
         echo "<div id='switchview'>";
         echo "<i id='sviewlist' class='pointer fa fa-list-alt' title='" . __('View as list') . "'></i>";
         echo "<i id='sviewgraph' class='pointer fa fa-th-large selected' title='" . __('View graphical representation') . "'></i>";
@@ -135,43 +142,34 @@ class Item_Rack extends CommonDBRelation
         $items = iterator_to_array($items);
         echo "<div id='viewlist'>";
 
-        echo "<h2>" . __("Racked items") . "</h2>";
-        if (!count($items)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No Item Found'><tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table>";
-        } else {
-            $massiveActionId = 'mass' . __CLASS__ . $rand;
-
-            $massiveactionparams = [
-               'num_displayed'   => min($_SESSION['glpilist_limit'], count($items)),
-               'container'       => $massiveActionId,
-               'display_arrow'   => false,
-            ];
-            Html::showMassiveActions($massiveactionparams);
-            $fields = [
-              'item' => _n('Item', 'Items', 1),
-              'position' => __('Position'),
-              'orientation' => __('Orientation')
-            ];
-            $values = [];
-            $massiveActionValues = [];
-            foreach ($items as $row) {
-                $item = new $row['itemtype']();
-                $item->getFromDB($row['items_id']);
-                $values[] = [
-                    'item' => $item->getLink(),
-                    'position' => $row['position'],
-                    'orientation' => $row['orientation'] == Rack::FRONT ? __('Front') : __('Rear')
-                ];
-                $massiveActionValues[] = sprintf("item[%s][%s]", $item->getType(), $item->getID());
+        $values = [];
+        $selection = [];
+        foreach ($items as $row) {
+            $item = getItemForItemtype($row['itemtype']);
+            if (!$item || !$item->getFromDB($row['items_id'])) {
+                continue;
             }
-            renderTwigTemplate('table.twig', [
-              'id' => $massiveActionId,
-              'fields' => $fields,
-              'values' => $values,
-              'massive_action' => $massiveActionValues,
-            ]);
+            $values[] = [$item->getLink(), (int) $row['position'],
+                $row['orientation'] == Rack::FRONT ? __('Front') : __('Rear')];
+            $selection[] = sprintf('item[%s][%s]', $item->getType(), $item->getID());
         }
+        $table_id = 'rackItems_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [_n('Item', 'Items', 1), __('Position'), __('Orientation')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
 
         PDU_Rack::showListForRack($rack);
 
@@ -579,6 +577,11 @@ JAVASCRIPT;
         $form = [
           'action' => $this->getFormURL(),
           'itemtype' => $this::class,
+          'buttons' => [[
+              'type' => 'submit', 'name' => $this->isNewID($ID) ? 'add' : 'update',
+              'value' => $this->isNewID($ID) ? _x('button', 'Add') : _x('button', 'Save'),
+              'class' => 'btn btn-primary', 'icon' => $this->isNewID($ID) ? 'fas fa-plus' : null,
+          ]],
          'content' => [
               $this->getTypeName(1) => [
                   'visible' => true,
@@ -619,18 +622,7 @@ JAVASCRIPT;
                                         entity_restrict: {$rack->fields['entities_id']}
                                     },
                                     success: function(data) {
-                                        const json = JSON.parse(data);
-                                        for (const [key, value] of Object.entries(json)) {
-                                            if (typeof value === 'object') {
-                                                const group = $('#dropdown_items_id').append($('<optgroup>').attr('label', key));
-                                                for (const [k, v] of Object.entries(value)) {
-                                                    group.append($('<option>').val(k).text(v));
-                                                }
-                                            } else {
-                                                $('#dropdown_items_id').append($('<option>').val(key).text(value));
-                                            }
-                                        }
-                                        $('#dropdown_items_id').prop('disabled', false);
+                                       setAjaxDropdownOptions("#dropdown_items_id", typeof data === 'string' ? JSON.parse(data) : data);
                                     }
                                 });
                             JS,
@@ -641,9 +633,9 @@ JAVASCRIPT;
                           'id' => 'dropdown_items_id',
                           'name' => 'items_id',
                           'value' => $this->fields["items_id"] ?? 0,
-                          'values' => isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])
-                              ? getItemByEntity(new $this->fields['itemtype'](), $this->fields['entities_id'])
-                              : []
+                          ...(isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])
+                              ? getAjaxDropdownOptionsByEntity($this->fields['itemtype'], $this->fields['entities_id'])
+                              : [])
                       ],
                       Rack::getTypeName(1) => [
                           'type' => 'select',
@@ -694,15 +686,13 @@ JAVASCRIPT;
         ];
         renderTwigForm($form, '', $this->fields);
 
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>";
 
         echo Html::scriptBlock("
          var toggleUsed = function(reserved) {
             if (reserved == 1) {
-               $('#used_').val('" . json_encode($used_reserved) . "');
+               $('#used_input').val('" . json_encode($used_reserved) . "');
             } else {
-               $('#used_').val('" . json_encode($used) . "');
+               $('#used_input').val('" . json_encode($used) . "');
             }
             // force change of itemtype dropdown to have a correct (with empty/filled used input)
             // filtered items list

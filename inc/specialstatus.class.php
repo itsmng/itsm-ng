@@ -149,42 +149,29 @@ class SpecialStatus extends CommonTreeDropdown
             );
         }
 
-        echo "<form aria-label='Informations' method='post' action='./specialstatus.php' method='post'>";
-        echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='Special Status'>";
-        echo "<tr><th colspan='5'>" . __("Special Status") . "</th></tr>";
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><b>" . __("Name") . "</b></td>";
-        echo "<td><b>" . __("Weight") . "</b></td>";
-        echo "<td><b>" . __("Active") . "</b></td>";
-        echo "<td><b>" . __("Color") . "</b></td>";
-        echo "<td><b>" . __("Delete") . "</b></td>";
-        echo "</tr>";
-
+        $content = [];
         $iterators = $DB->request($criteria);
         while ($data = $iterators->next()) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . $data["name"] . "</td>";
-            echo "<td><input type='number' id='weight_" . $data["id"] . "' name='weight_" . $data["id"] . "' value='" . $data["weight"] . "' min='1'></td>";
-            echo "<td>";
-            Dropdown::showYesNo("is_active_" . $data["id"], $data["is_active"], -1, ['use_checkbox' => true]);
-            echo "</td>";
-            if ($data["color"] == "Default") {
-                echo "<td>";
-                echo "<td>";
-            } else {
-                echo "<td><input type='color' id='color_" . $data["id"] . "' name='color_" . $data["id"] . "' value='" . $data["color"] . "'>";
-                echo "<td>";
-                echo "<a class='planning_link planning_add_filter' href='javascript:specialstatus.showStatusModal(" . $data["id"] . ");'>";
-                echo "<i style='color:#772317' class='fa fa-trash-alt pointer fa-2x' title='" . __("Delete") . "'></i>";
-                echo "</a>";
+            $id = (int) $data['id'];
+            $inputs = [
+                __('Weight') => ['type' => 'number', 'id' => 'weight_' . $id, 'name' => 'weight_' . $id, 'value' => $data['weight'], 'min' => 1],
+                __('Active') => ['type' => 'checkbox', 'name' => 'is_active_' . $id, 'value' => $data['is_active']],
+            ];
+            if ($data['color'] != 'Default') {
+                $inputs[__('Color')] = ['type' => 'color', 'id' => 'color_' . $id, 'name' => 'color_' . $id, 'value' => $data['color']];
+                $inputs[__('Delete')] = ['content' => '<button type="button" class="btn btn-outline-danger" onclick="specialstatus.showStatusModal(' . $id . ')"><i class="fas fa-trash-alt me-2" aria-hidden="true"></i>' . __('Delete') . '</button>'];
             }
-            echo "</td></tr>";
+            // Keep the complete ordering configuration in one submission.
+            $content[] = ['visible' => false, 'inputs' => [
+                ['content' => '<h3 class="h5">' . htmlspecialchars($data['name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false) . '</h3>', 'col_lg' => 12, 'col_md' => 12],
+            ] + $inputs];
         }
-        echo "<tr class='tab_bg_1'><td class='center' colspan='5'>";
-        echo "<input type='submit' name='update' value='" . _sx('button', 'Save') . "' class='btn btn-secondary'>";
-        echo "</td></tr>";
-        echo "</table>";
-        Html::closeForm();
+        echo '<h2 class="form-section-header">' . __('Special Status') . '</h2>';
+        renderTwigForm([
+            'action' => './specialstatus.php',
+            'buttons' => [['type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'), 'class' => 'btn btn-primary']],
+            'content' => $content,
+        ]);
     }
 
     public static function deleteStatus($id)
@@ -201,25 +188,25 @@ class SpecialStatus extends CommonTreeDropdown
                 $result[] = $tab["id"][$data["status"]];
             }
         }
-        echo "<form aria-label='Status' method='post' action='./specialstatus.php' method='post'>";
-        if (isset($result)) {
-            $count = count($result);
-
-            if ($count <= 1) {
-                echo "<b>" . "$count " . __('Ticket is still using this status, are you sure to remove the status?') . "</b>";
-            } else {
-                echo "<b>" . "$count " . __('Tickets are still using this status, are you sure to remove the status?') . "</b>";
-            }
+        $count = count($result ?? []);
+        if ($count == 1) {
+            $message = $count . ' ' . __('Ticket is still using this status, are you sure to remove the status?');
+        } elseif ($count > 1) {
+            $message = $count . ' ' . __('Tickets are still using this status, are you sure to remove the status?');
         } else {
-            echo "<b>" . __('Are you sure to remove the status?') . "</b>";
+            $message = __('Are you sure to remove the status?');
         }
-        echo "<br>";
-        $_SESSION["id"] = $id;
-        echo "<table style='width:40%; margin-top: 2.5em; text-align:center' cellpadding='2'><tr class='tab_bg_1' aria-label='Confirm / Cancel'>";
-        echo "<td><input type='submit' name='force' value='" . _sx('button', 'Confirm') . "' class='submit'></td>";
-        echo "<td><input type='submit' name='cancel' value='" . _sx('button', 'Cancel') . "' class='submit'></td>";
-        echo "</tr></table>";
-        Html::closeForm();
+        $_SESSION['id'] = $id;
+        renderTwigForm([
+            'action' => './specialstatus.php',
+            'buttons' => [
+                ['type' => 'submit', 'name' => 'force', 'value' => _x('button', 'Confirm'), 'class' => 'btn btn-danger'],
+                ['type' => 'submit', 'name' => 'cancel', 'value' => _x('button', 'Cancel'), 'class' => 'btn btn-secondary'],
+            ],
+            'content' => [__('Delete') => ['visible' => true, 'inputs' => [
+                ['content' => '<p>' . $message . '</p>', 'col_lg' => 12, 'col_md' => 12],
+            ]]],
+        ]);
     }
 
     public function addStatus()
@@ -243,27 +230,16 @@ class SpecialStatus extends CommonTreeDropdown
             $after = Ticket::getAllStatusArray(false, true);
             self::keepStatusSet($before, $after);
         }
-        echo "<form aria-label='Status' method='post' action='./specialstatus.form.php' method='post'>";
-        echo "<table style='width:40%' class='tab_cadre' cellpadding='5' aria-label='New / Special Status'>";
-        echo "<tr><th colspan='4'>" . __("New Status - Special status") . "</th></tr>";
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><b>" . __("Name") . "</b></td>";
-        echo "<td><b>" . __("Weight") . "</b></td>";
-        echo "<td><b>" . __("Active") . "</b></td>";
-        echo "<td><b>" . __("Color") . "</b></td></tr>";
-        echo "<tr class='tab_bg_1'>";
-        echo "<td><input type='text' id='name' name='name' placeholder='Name'></td>";
-        echo "<td><input type='number' id='weight' name='weight' value='1' min='1'></td>";
-        echo "<td>";
-        Dropdown::showYesNo("is_active", 1, -1, ['use_checkbox' => true]);
-        echo "</td>";
-        echo "<td><input type='color' id='color' name='color'value='#131425'>";
-        echo "</td></tr>";
-        echo "<tr class='tab_bg_1'><td class='center' colspan='4'>";
-        echo "<input type='submit' name='update' class='submit' value=\"" . _sx('button', 'Add') . "\">";
-        echo "</td></tr>";
-        echo "</table>";
-        Html::closeForm();
+        renderTwigForm([
+            'action' => './specialstatus.form.php',
+            'buttons' => [['type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Add'), 'class' => 'btn btn-primary', 'icon' => 'fas fa-plus']],
+            'content' => [__('New Status - Special status') => ['visible' => true, 'inputs' => [
+                __('Name') => ['type' => 'text', 'id' => 'name', 'name' => 'name'],
+                __('Weight') => ['type' => 'number', 'id' => 'weight', 'name' => 'weight', 'value' => 1, 'min' => 1],
+                __('Active') => ['type' => 'checkbox', 'name' => 'is_active', 'value' => 1],
+                __('Color') => ['type' => 'color', 'id' => 'color', 'name' => 'color', 'value' => '#131425'],
+            ]]],
+        ]);
     }
 
     public function keepStatusSet($before, $after)

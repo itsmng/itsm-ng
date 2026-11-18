@@ -1,0 +1,381 @@
+.appointment-calendar-form-error {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e0aaa6;
+  border-radius: 4px;
+  background: #fff2f1;
+  color: #7f1d1d;
+}
+
+.appointment-target-list {
+  width: min(1480px, calc(100% - 24px));
+  margin: 18px auto 0;
+}
+
+.appointment-target-list__search {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.appointment-target-list__search-field {
+  position: relative;
+  width: min(360px, 100%);
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    color: #6b7280;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  input {
+    padding-left: 34px;
+  }
+}
+
+.appointment-target-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  i {
+    width: 18px;
+    color: #4b5563;
+    text-align: center;
+  }
+}
+
+.appointment-calendar-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  margin-bottom: 4px;
+
+  h2 {
+    flex: 1 1 280px;
+    margin: 0;
+    min-width: 0;
+  }
+}
+
+.appointment-calendar-header__actions {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px 14px;
+  min-width: 0;
+}
+
+.appointment-calendar-show-all {
+  margin-bottom: 12px;
+}
+
+.appointment-calendar-target-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0;
+  min-width: 0;
+
+  label {
+    margin: 0;
+    font-weight: 700;
+    color: #343a46;
+  }
+
+  select {
+    width: min(300px, 100%);
+    min-height: 34px;
+  }
+
+  .select2,
+  .select2-container {
+    width: min(360px, 100%) !important;
+    min-width: min(280px, 100%);
+  }
+
+  .select2-selection__rendered {
+    min-width: 0;
+  }
+}
+
+.appointment-target-list__empty {
+  display: none;
+}
+
+.appointment-target-list__empty td {
+  color: #5b6472;
+  text-align: center;
+}
+
+.appointment-target-admin {
+  width: min(1480px, calc(100% - 24px));
+  margin: 18px auto 0;
+}
+
+.appointment-target-admin__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #20242d;
+  }
+
+  p {
+    margin: 3px 0 0;
+    color: #5b6472;
+  }
+}
+
+.appointment-target-admin__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.appointment-target-admin__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.appointment-office-hours,
+.appointment-target-calendar {
+  border: 1px solid #d9dee6;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.appointment-office-hours {
+  padding: 14px;
+}
+
+.appointment-office-hours__header h3,
+.appointment-target-calendar__heading h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #252a34;
+}
+
+.appointment-office-hours__list {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.appointment-office-hours__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid #e7ebf0;
+  border-radius: 4px;
+  background: #f8fafc;
+
+  strong,
+  span {
+    display: block;
+  }
+
+  strong {
+    font-size: 0.9rem;
+    color: #242934;
+  }
+
+  span {
+    margin-top: 2px;
+    color: #5b6472;
+    font-size: 0.82rem;
+  }
+
+  form {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .btn {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.78rem;
+  }
+}
+
+.appointment-office-hours__form {
+  padding-top: 12px;
+  border-top: 1px solid #e7ebf0;
+
+  form {
+    display: grid;
+    gap: 10px;
+  }
+
+  label {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    font-weight: 700;
+    color: #343a46;
+  }
+
+  label span {
+    font-size: 0.82rem;
+  }
+
+  select,
+  input[type="time"] {
+    width: 100%;
+    min-height: 34px;
+  }
+
+  .btn {
+    justify-self: start;
+  }
+}
+
+.appointment-target-calendar {
+  min-width: 0;
+  padding: 14px 10px;
+}
+
+.appointment-target-calendar__heading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 4px 12px;
+
+  span {
+    color: #5b6472;
+    font-size: 0.85rem;
+  }
+}
+
+#appointment-calendar,
+#appointment-target-calendar {
+  .fc-toolbar {
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .fc-toolbar h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #252a34;
+  }
+
+  .fc-button,
+  .fc-button-primary,
+  .fc-button-primary:disabled,
+  .fc-button-primary:not(:disabled):active,
+  .fc-button-primary:not(:disabled).fc-button-active {
+    padding: 0.375rem 0.75rem;
+    border-color: #6c757d;
+    background: #6c757d;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-transform: none;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      border-color: #5a6268;
+      background: #5a6268;
+      color: #fff;
+      box-shadow: none;
+    }
+  }
+
+  .fc-head th {
+    padding: 8px 4px;
+    background: #f7f8fa;
+    color: #343a46;
+    font-weight: 700;
+  }
+
+  .fc-time-grid .fc-slats td {
+    height: 2.2em;
+  }
+
+  .fc-time-grid .fc-highlight {
+    background: rgba(47, 95, 147, 0.16);
+  }
+
+  .appointment-availability-background {
+    background: rgba(52, 121, 88, 0.3);
+  }
+
+  .appointment-unavailability-open {
+    border-color: #2f7d5b;
+    background: #3f936d;
+    color: #fff;
+  }
+
+  .appointment-unavailability-closed {
+    border-color: #9f4040;
+    background: #b95050;
+    color: #fff;
+  }
+
+  .appointment-booked-event {
+    border-color: #365d86;
+    background: #476a93;
+    color: #fff;
+  }
+
+  .fc-event .fc-content {
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .appointment-calendar-header,
+  .appointment-calendar-header__actions,
+  .appointment-calendar-target-switcher {
+    justify-content: stretch;
+  }
+
+  .appointment-calendar-header__actions,
+  .appointment-calendar-target-switcher {
+    width: 100%;
+  }
+
+  .appointment-calendar-target-switcher {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+
+    .select2,
+    .select2-container {
+      width: 100% !important;
+    }
+  }
+
+  .appointment-target-admin__header,
+  .appointment-target-admin__actions {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .appointment-target-admin__body {
+    grid-template-columns: 1fr;
+  }
+}

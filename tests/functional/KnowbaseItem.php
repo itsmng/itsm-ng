@@ -39,6 +39,61 @@ use DbTestCase;
 
 class KnowbaseItem extends DbTestCase
 {
+    public function testVisibilityTargetsRemainSelectedForDeletion()
+    {
+        $this->login();
+
+        $kb = new \KnowbaseItem();
+        $id = $kb->add([
+           'name' => 'KB target deletion',
+           'answer' => 'Target deletion regression',
+           'users_id' => \Session::getLoginUserID(),
+        ]);
+        $this->integer((int) $id)->isGreaterThan(0);
+
+        $group_id = (new \Group())->add(['name' => 'KB target group', 'entities_id' => 0]);
+        $this->integer((int) $group_id)->isGreaterThan(0);
+        $targets = [
+           \KnowbaseItem_User::class => ['users_id' => \Session::getLoginUserID()],
+           \Group_KnowbaseItem::class => [
+              'groups_id' => $group_id,
+              'entities_id' => 0,
+           ],
+           \Entity_KnowbaseItem::class => ['entities_id' => 0],
+           \KnowbaseItem_Profile::class => [
+              'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+              'entities_id' => 0,
+           ],
+        ];
+        $expected = [];
+        foreach ($targets as $type => $input) {
+            $relation_id = (new $type())->add(['knowbaseitems_id' => $id] + $input);
+            $this->integer((int) $relation_id)->isGreaterThan(0);
+            $expected[$type] = [$relation_id => $relation_id];
+        }
+        $this->boolean($kb->getFromDB($id))->isTrue();
+
+        ob_start();
+        $kb->showVisibility();
+        $html = ob_get_clean();
+        preg_match('/<script type="application\/json"[^>]*>(.*?)<\/script>/s', $html, $matches);
+        $this->boolean(isset($matches[1]))->isTrue();
+        $config = json_decode($matches[1], true, 512, JSON_THROW_ON_ERROR);
+        $this->array($config['selection']['values'])->hasSize(4);
+
+        // Use the table's actual selection values through both massive-action stages.
+        foreach ($config['selection']['values'] as $selection) {
+            parse_str($selection . '=1', $post);
+            $initial = new \MassiveAction($post + [
+               'specific_actions' => ['delete' => 'Delete permanently'],
+            ], [], 'initial');
+            $action = new \MassiveAction($initial->getInput() + ['action' => 'delete'], [], 'specialize');
+            $type = array_key_first($action->getItems());
+            $this->boolean(isset($expected[$type]))->isTrue();
+            $this->array($action->getItems())->isEqualTo([$type => $expected[$type]]);
+        }
+    }
+
     public function testGetTypeName()
     {
         $expected = 'Knowledge base';

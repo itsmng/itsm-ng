@@ -1,7 +1,7 @@
 {% macro file(attributes, root_doc) %}
   {% set rand=random() %}
   <div>
-    <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k != 'values') %} {{name}}="{{value}}" {% endfor %}
+    <input class='form-control h-100' {% for name, value in attributes|filter((v, k) => k not in ['values', 'uploads']) %} {{name}}="{{value}}" {% endfor %}
     {% if attributes.id is not defined %}
       id={{rand}}
     {% endif %}

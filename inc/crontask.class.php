@@ -1276,49 +1276,20 @@ class CronTask extends CommonDBTM
     {
         global $DB;
 
-        echo "<br><div class='center'>";
-        echo "<table class='tab_cadre' aria-label='Statistics'>";
-        echo "<tr><th colspan='2'>&nbsp;" . __('Statistics') . "</th></tr>\n";
-
-        $nbstart = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => CronTaskLog::STATE_START
-            ]
-        );
-        $nbstop = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => CronTaskLog::STATE_STOP
-            ]
-        );
-        $nberror = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => CronTaskLog::STATE_ERROR
-            ]
-        );
-
-        echo "<tr class='tab_bg_2'><td>" . __('Run count') . "</td><td class='right'>";
-        if ($nbstart == $nbstop) {
-            echo $nbstart;
-        } else {
-            // This should not appen => task crash ?
-            //TRANS: %s is the number of starts
-            printf(_n('%s start', '%s starts', $nbstart), $nbstart);
-            echo "<br>";
-            //TRANS: %s is the number of stops
-            printf(_n('%s stop', '%s stops', $nbstop), $nbstop);
-            echo "<br>";
-            //TRANS: %s is the number of errors
-            printf(_n('%s error', '%s errors', $nberror), $nberror);
+        $counts = [];
+        foreach (['start' => CronTaskLog::STATE_START, 'stop' => CronTaskLog::STATE_STOP,
+            'error' => CronTaskLog::STATE_ERROR] as $key => $state) {
+            $counts[$key] = countElementsInTable('glpi_crontasklogs', [
+                'crontasks_id' => $this->getID(), 'state' => $state,
+            ]);
         }
-        echo "</td></tr>";
-
-        if ($nbstop) {
+        $count = $counts['start'] == $counts['stop'] ? $counts['start'] : implode('<br>', [
+            sprintf(_n('%s start', '%s starts', $counts['start']), $counts['start']),
+            sprintf(_n('%s stop', '%s stops', $counts['stop']), $counts['stop']),
+            sprintf(_n('%s error', '%s errors', $counts['error']), $counts['error']),
+        ]);
+        $values = [['name' => __('Run count'), 'value' => $count]];
+        if ($counts['stop']) {
             $data = $DB->request([
                 'SELECT' => [
                     'MIN' => [
@@ -1346,72 +1317,31 @@ class CronTask extends CommonDBTM
                 ]
             ])->next();
 
-            echo "<tr class='tab_bg_1'><td>" . __('Start date') . "</td>";
-            echo "<td class='right'>" . Html::convDateTime($data['datemin']) . "</td></tr>";
 
-            echo "<tr class='tab_bg_2'><td>" . __('Minimal time') . "</td>";
-            echo "<td class='right'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedmin']),
-                number_format($data['elapsedmin'], 2)
-            );
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'><td>" . __('Maximal time') . "</td>";
-            echo "<td class='right'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedmax']),
-                number_format($data['elapsedmax'], 2)
-            );
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_2'><td>" . __('Average time') . "</td>";
-            echo "<td class='right b'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedavg']),
-                number_format($data['elapsedavg'], 2)
-            );
-            echo "</td></tr>";
-
-            echo "<tr class='tab_bg_1'><td>" . __('Total duration') . "</td>";
-            echo "<td class='right'>" . sprintf(
-                _n('%s second', '%s seconds', $data['elapsedtot']),
-                number_format($data['elapsedtot'], 2)
-            );
-            echo "</td></tr>";
-
+            $values[] = ['name' => __('Start date'), 'value' => Html::convDateTime($data['datemin'])];
+            foreach (['elapsedmin' => __('Minimal time'), 'elapsedmax' => __('Maximal time'),
+                'elapsedavg' => __('Average time'), 'elapsedtot' => __('Total duration')] as $key => $label) {
+                $values[] = ['name' => $label, 'value' => sprintf(
+                    _n('%s second', '%s seconds', $data[$key]), number_format($data[$key], 2)
+                )];
+            }
             if ($data['voltot'] > 0) {
-                echo "<tr class='tab_bg_2'><td>" . __('Minimal count') . "</td>";
-                echo "<td class='right'>" . sprintf(
-                    _n('%s item', '%s items', $data['volmin']),
-                    $data['volmin']
-                ) . "</td></tr>";
-
-                echo "<tr class='tab_bg_1'><td>" . __('Maximal count') . "</td>";
-                echo "<td class='right'>" . sprintf(
-                    _n('%s item', '%s items', $data['volmax']),
-                    $data['volmax']
-                ) . "</td></tr>";
-
-                echo "<tr class='tab_bg_2'><td>" . __('Average count') . "</td>";
-                echo "<td class='right b'>" . sprintf(
-                    _n('%s item', '%s items', $data['volavg']),
-                    number_format($data['volavg'], 2)
-                ) .
-                    "</td></tr>";
-
-                echo "<tr class='tab_bg_1'><td>" . __('Total count') . "</td>";
-                echo "<td class='right'>" . sprintf(
-                    _n('%s item', '%s items', $data['voltot']),
-                    $data['voltot']
-                ) . "</td></tr>";
-
-                echo "<tr class='tab_bg_2'><td>" . __('Average speed') . "</td>";
-                echo "<td class='left'>" . sprintf(
-                    __('%s items/sec'),
-                    number_format($data['voltot'] / $data['elapsedtot'], 2)
-                );
-                echo "</td></tr>";
+                foreach (['volmin' => __('Minimal count'), 'volmax' => __('Maximal count'),
+                    'volavg' => __('Average count'), 'voltot' => __('Total count')] as $key => $label) {
+                    $values[] = ['name' => $label, 'value' => sprintf(
+                        _n('%s item', '%s items', $data[$key]),
+                        $key === 'volavg' ? number_format($data[$key], 2) : $data[$key]
+                    )];
+                }
+                $values[] = ['name' => __('Average speed'), 'value' => $data['elapsedtot'] > 0
+                    ? sprintf(__('%s items/sec'), number_format($data['voltot'] / $data['elapsedtot'], 2)) : NOT_AVAILABLE];
             }
         }
-        echo "</table></div>";
+        renderTwigTemplate('table.twig', [
+            'id' => 'cronStatistics_' . $this->getID(), 'state_key' => 'cronStatistics_' . $this->getID(),
+            'fields' => ['name' => __('Name'), 'value' => __('Value')],
+            'values' => $values, 'pageSize' => 15, 'minimal' => true, 'show_export' => false,
+        ]);
     }
 
 
@@ -1422,183 +1352,116 @@ class CronTask extends CommonDBTM
      **/
     public function showHistory()
     {
-        global $DB;
-
-        if (isset($_GET["crontasklogs_id"]) && $_GET["crontasklogs_id"]) {
-            return $this->showHistoryDetail($_GET["crontasklogs_id"]);
+        if (!empty($_GET['crontasklogs_id'])) {
+            return $this->showHistoryDetail((int) $_GET['crontasklogs_id']);
         }
 
-        if (isset($_GET["start"])) {
-            $start = $_GET["start"];
-        } else {
-            $start = 0;
-        }
-
-        // Total Number of events
-        $number = countElementsInTable(
-            'glpi_crontasklogs',
-            [
-                'crontasks_id' => $this->fields['id'],
-                'state' => [CronTaskLog::STATE_STOP, CronTaskLog::STATE_ERROR],
-            ]
-        );
-
-        echo "<br><div class='center'>";
-        if ($number < 1) {
-            echo "<table class='tab_cadre_fixe' aria-label='History'>";
-            echo "<tr><th>" . __('No item found') . "</th></tr>";
-            echo "</table>";
-            echo "</div>";
-            return;
-        }
-
-        // Display the pager
-        Html::printAjaxPager(__('Last run list'), $start, $number);
-
-        $iterator = $DB->request([
-            'FROM' => 'glpi_crontasklogs',
-            'WHERE' => [
-                'crontasks_id' => $this->fields['id'],
-                'state' => [CronTaskLog::STATE_STOP, CronTaskLog::STATE_ERROR],
-            ],
-            'ORDER' => 'id DESC',
-            'START' => (int) $start,
-            'LIMIT' => (int) $_SESSION['glpilist_limit']
-        ]);
-
-        if (count($iterator)) {
-            echo "<table class='tab_cadrehov' aria-label='Activity Log'>";
-            $header = "<tr>";
-            $header .= "<th>" . _n('Date', 'Dates', 1) . "</th>";
-            $header .= "<th>" . __('Total duration') . "</th>";
-            $header .= "<th>" . _x('quantity', 'Number') . "</th>";
-            $header .= "<th>" . __('Description') . "</th>";
-            $header .= "</tr>\n";
-            echo $header;
-
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td><a href='javascript:reloadTab(\"crontasklogs_id=" .
-                    $data['crontasklogs_id'] . "\");'>" . Html::convDateTime($data['date']) .
-                    "</a></td>";
-                echo "<td class='right'>" . sprintf(
-                    _n(
-                        '%s second',
-                        '%s seconds',
-                        intval($data['elapsed'])
-                    ),
-                    number_format($data['elapsed'], 3)
-                ) .
-                    "&nbsp;&nbsp;&nbsp;</td>";
-                echo "<td class='numeric'>" . $data['volume'] . "</td>";
-                // Use gettext to display
-                echo "<td>" . __($data['content']) . "</td>";
-                echo "</tr>\n";
-            }
-            echo $header;
-            echo "</table>";
-        } else { // Not found
-            echo __('No item found');
-        }
-        Html::printAjaxPager(__('Last run list'), $start, $number);
-
-        echo "</div>";
+        $this->showHistoryTable();
     }
 
 
     /**
-     * Display detail of a runned task
-     *
-     * @param $logid : crontasklogs_id
-     *
-     * @return void
-     **/
+     * Display the events of a single run.
+     */
     public function showHistoryDetail($logid)
+    {
+        echo "<p><a href='javascript:reloadTab(\"crontasklogs_id=0\");'>" . __('Last run list') . "</a></p>";
+        $this->showHistoryTable((int) $logid);
+    }
+
+
+    /**
+     * Render the shared remote table for runs or their events.
+     */
+    private function showHistoryTable(int $logid = 0)
+    {
+        global $CFG_GLPI;
+
+        $fields = ['date' => _n('Date', 'Dates', 1)];
+        if ($logid > 0) {
+            $fields['state'] = __('Status');
+        }
+        $fields['elapsed'] = $logid > 0 ? __('Duration') : __('Total duration');
+        $fields['volume'] = _x('quantity', 'Number');
+        $fields['content'] = __('Description');
+
+        renderTwigTemplate('table.twig', [
+            'id' => 'cronTaskLogsTable',
+            'state_key' => 'CronTaskLogs_' . $this->getID() . '_' . $logid,
+            'fields' => $fields,
+            'url' => $CFG_GLPI['root_doc'] . '/ajax/v2/crontasklogs.php?' . http_build_query([
+                'id' => $this->getID(),
+                'crontasklogs_id' => $logid,
+            ]),
+            'pageSize' => (int) $_SESSION['glpilist_limit'],
+            'show_export' => false,
+        ]);
+    }
+
+
+    /**
+     * Return a bounded page and the total count for the automatic action log table.
+     */
+    public function getPaginatedLogs(array $options = [])
     {
         global $DB;
 
-        echo "<br><div class='center'>";
-        echo "<p><a href='javascript:reloadTab(\"crontasklogs_id=0\");'>" . __('Last run list') . "</a>" .
-            "</p>";
-
+        $this->check($this->getID(), READ);
+        $logid = max(0, (int) ($options['crontasklogs_id'] ?? 0));
+        $where = ['crontasks_id' => $this->getID()];
+        if ($logid > 0) {
+            $where['OR'] = ['id' => $logid, 'crontasklogs_id' => $logid];
+        } else {
+            $where['state'] = [CronTaskLog::STATE_STOP, CronTaskLog::STATE_ERROR];
+        }
+        $total = countElementsInTable('glpi_crontasklogs', $where);
+        $sort = $options['sort'] ?? '';
+        $order = [];
+        if (is_string($sort) && in_array($sort, ['date', 'state', 'elapsed', 'volume', 'content'], true)) {
+            $order[] = $sort . (is_string($options['order'] ?? null) && strtolower($options['order']) === 'desc' ? ' DESC' : ' ASC');
+        }
+        $order[] = $logid > 0 ? 'id ASC' : 'id DESC';
         $iterator = $DB->request([
             'FROM' => 'glpi_crontasklogs',
-            'WHERE' => [
-                'OR' => [
-                    'id' => $logid,
-                    'crontasklogs_id' => $logid
-                ]
-            ],
-            'ORDER' => 'id ASC'
+            'WHERE' => $where,
+            'ORDER' => $order,
+            'START' => max(0, (int) ($options['offset'] ?? 0)),
+            'LIMIT' => max(1, min(10000, (int) ($options['limit'] ?? $_SESSION['glpilist_limit']))),
         ]);
 
-        if (count($iterator)) {
-            echo "<table class='tab_cadrehov' aria-label='Activity Log Table'><tr>";
-            echo "<th>" . _n('Date', 'Dates', 1) . "</th>";
-            echo "<th>" . __('Status') . "</th>";
-            echo "<th>" . __('Duration') . "</th>";
-            echo "<th>" . _x('quantity', 'Number') . "</th>";
-            echo "<th>" . __('Description') . "</th>";
-            echo "</tr>\n";
-
-            $first = true;
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center'>" . ($first ? Html::convDateTime($data['date'])
-                    : "&nbsp;") . "</a></td>";
-                $content = $data['content'];
-                switch ($data['state']) {
-                    case CronTaskLog::STATE_START:
-                        echo "<td>" . __('Start') . "</td>";
-                        // Pass content to gettext
-                        // implode (Run mode: XXX)
-                        $list = explode(':', (string) $data['content']);
-                        if (count($list) == 2) {
-                            $content = sprintf('%1$s: %2$s', __($list[0]), $list[1]);
-                        }
-                        break;
-
-                    case CronTaskLog::STATE_STOP:
-                        echo "<td>" . __('End') . "</td>";
-                        // Pass content to gettext
-                        $content = __($data['content']);
-                        break;
-
-                    case CronTaskLog::STATE_ERROR:
-                        echo "<td>" . __('Error') . "</td>";
-                        // Pass content to gettext
-                        $content = __($data['content']);
-                        break;
-
-                    default:
-                        echo "<td>" . __('Running') . "</td>";
-                        // Pass content to gettext
-                        $content = __($data['content']);
-                }
-
-                echo "<td class='right'>" . sprintf(
-                    _n(
-                        '%s second',
-                        '%s seconds',
-                        intval($data['elapsed'])
-                    ),
-                    number_format($data['elapsed'], 3)
-                ) .
-                    "&nbsp;&nbsp;</td>";
-                echo "<td class='numeric'>" . $data['volume'] . "</td>";
-
-                echo "<td>" . $content . "</td>";
-                echo "</tr>\n";
-                $first = false;
+        $rows = [];
+        foreach ($iterator as $data) {
+            $date = Html::convDateTime($data['date']);
+            if ($logid === 0) {
+                $date = "<a href='javascript:reloadTab(\"crontasklogs_id="
+                    . (int) $data['crontasklogs_id'] . "\");'>" . $date . "</a>";
             }
-            ;
-
-            echo "</table>";
-        } else { // Not found
-            echo __('No item found');
+            $content = __($data['content']);
+            if ($logid > 0 && (int) $data['state'] === CronTaskLog::STATE_START) {
+                $list = explode(':', (string) $data['content']);
+                if (count($list) === 2) {
+                    $content = sprintf('%1$s: %2$s', __($list[0]), $list[1]);
+                }
+            }
+            $states = [
+                CronTaskLog::STATE_START => __('Start'),
+                CronTaskLog::STATE_STOP => __('End'),
+                CronTaskLog::STATE_ERROR => __('Error'),
+            ];
+            $row = ['date' => $date];
+            if ($logid > 0) {
+                $row['state'] = $states[$data['state']] ?? __('Running');
+            }
+            $row['elapsed'] = sprintf(
+                _n('%s second', '%s seconds', (int) $data['elapsed']),
+                number_format($data['elapsed'], 3)
+            );
+            $row['volume'] = (int) $data['volume'];
+            $row['content'] = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+            $rows[] = $row;
         }
 
-        echo "</div>";
+        return ['total' => $total, 'rows' => $rows];
     }
 
 

@@ -1,0 +1,61 @@
+<div id="{{ id }}_view">
+    <button type="button" class="btn btn-primary mb-3 kb-compare">{{ 'Compare selected revisions'|trans }}</button>
+    {% include 'table.twig' with {id: id, state_key: id, fields: fields, values: values, pageSize: pageSize} only %}
+</div>
+<script src="{{ root_doc }}/public/lib/jquery-prettytextdiff.js"></script>
+<script>
+(function() {
+    const view = document.getElementById({{ (id ~ '_view')|json_encode|raw }});
+    let oldId = {{ initial|json_encode|raw }}, diffId = 0, oldOrder = 1;
+    const sync = function() {
+        view.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.checked = Number(input.value) === (input.name === 'oldid' ? oldId : diffId);
+            if (input.name === 'diff') input.style.visibility = Number(input.dataset.order) < oldOrder ? 'visible' : 'hidden';
+        });
+    };
+    view.addEventListener('change', function(event) {
+        const input = event.target;
+        if (input.name === 'oldid') {
+            oldId = Number(input.value);
+            oldOrder = Number(input.dataset.order);
+            // The current version always remains available when the older selection changes.
+            diffId = 0;
+        } else if (input.name === 'diff') {
+            diffId = Number(input.value);
+        }
+        sync();
+    });
+    new MutationObserver(sync).observe(view, {childList: true, subtree: true});
+    sync();
+    const fail = function() { window.alert({{ 'Unable to load requested comparison!'|trans|json_encode|raw }}); };
+    $(view).on('click', '.kb-restore-revision', function() {
+        return window.confirm({{ 'Do you want to restore the selected revision?'|trans|json_encode|raw }});
+    });
+    $(view).on('click', '.kb-show-revision', function() {
+        const button = this;
+        $.ajax({url: {{ (root_doc ~ '/ajax/getKbRevision.php')|json_encode|raw }}, method: 'post',
+            data: {revid: button.dataset.revid},
+            success: function(data) {
+                const dialog = $('<div>').attr('title', {{ 'Show revision %rev'|trans|json_encode|raw }}.replace('%rev', button.dataset.rev));
+                dialog.append($('<h2>').text({{ 'Subject'|trans|json_encode|raw }}), $('<div>').html(data.name));
+                dialog.append($('<h2>').text({{ 'Content'|trans|json_encode|raw }}), $('<div>').html(data.answer));
+                dialog.appendTo('body').dialog({height: 'auto', width: 'auto', modal: true, close: function() { $(this).remove(); }});
+            }, error: fail});
+    });
+    $(view).on('click', '.kb-compare', function() {
+        $.ajax({url: {{ (root_doc ~ '/ajax/compareKbRevisions.php')|json_encode|raw }}, method: 'post',
+            data: {oldid: oldId, diffid: diffId, kbid: {{ kb_id|json_encode|raw }}},
+            success: function(data) {
+                const dialog = $('<div>').attr('title', {{ 'Compare revisions old and diff'|trans|json_encode|raw }}.replace('old', oldId).replace('diff', diffId || {{ 'current'|trans|json_encode|raw }}));
+                const table = $('<table class="table table-bordered">');
+                table.append($('<thead>').append($('<tr>').append($('<th>'), $('<th>').text({{ 'Original'|trans|json_encode|raw }}), $('<th>').text({{ 'Changed'|trans|json_encode|raw }}), $('<th>').text({{ 'Differences'|trans|json_encode|raw }}))));
+                const body = $('<tbody>');
+                [['name', {{ 'Subject'|trans|json_encode|raw }}], ['answer', {{ 'Content'|trans|json_encode|raw }}]].forEach(([key, label]) => {
+                    body.append($('<tr>').append($('<th>').text(label), $('<td class="original">').html(data.old[key]), $('<td class="changed">').html(data.diff[key]), $('<td class="diff">')));
+                });
+                dialog.append(table.append(body)).appendTo('body').dialog({height: 'auto', width: 'auto', modal: true, close: function() { $(this).remove(); }});
+                body.find('tr').prettyTextDiff();
+            }, error: fail});
+    });
+})();
+</script>

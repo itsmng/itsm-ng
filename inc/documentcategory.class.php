@@ -47,7 +47,7 @@ class DocumentCategory extends CommonTreeDropdown
            __('As child of') => [
               'name'  => $this->getForeignKeyField(),
               'type'  => 'select',
-              'values'  => getOptionForItems('DocumentCategory', ['NOT' => ['id' => $this->getID()]]),
+              ...getAjaxDropdownOptions('DocumentCategory', ['NOT' => ['id' => $this->getID()]]),
               'value' => $this->fields[$this->getForeignKeyField()],
            ]
         ];

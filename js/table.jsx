@@ -2,6 +2,7 @@ import {
     createColumnHelper,
     createTable,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
 } from '@tanstack/table-core';
@@ -41,6 +42,7 @@ import { batch, signal } from '@preact/signals';
         const trash = toolbar.trash || {};
         const view = rawConfig.view || {};
         const exportConfig = rawConfig.export || {};
+        const search = rawConfig.search || {};
 
         return {
             id: String(rawConfig.id),
@@ -51,6 +53,7 @@ import { batch, signal } from '@preact/signals';
                 type: isRemote ? 'remote' : 'local',
                 url: isRemote ? dataSource.url : null,
                 rows: isRemote ? [] : (dataSource.rows || []),
+                rowOrder: !isRemote && Array.isArray(dataSource.rowOrder) ? dataSource.rowOrder : null,
             },
             selection: {
                 type: selection.type || 'none',
@@ -75,6 +78,10 @@ import { batch, signal } from '@preact/signals';
                 enabled: exportConfig.enabled !== false,
                 target: exportConfig.target || null,
                 params: exportConfig.params || null,
+            },
+            search: {
+                enabled: !!search.enabled,
+                placeholder: search.placeholder || 'Search',
             },
         };
     };
@@ -117,6 +124,7 @@ import { batch, signal } from '@preact/signals';
         const exportParams = config.export.params || null;
         const hasServerExport = !!(exportTarget && exportParams);
         const canExport = showExport && hasServerExport;
+        const searchEnabled = !!(config.search && config.search.enabled);
         const tableStateSignal = signal({});
         const tableDataSignal = signal([]);
         const serverTotalSignal = signal(null);
@@ -162,6 +170,22 @@ import { batch, signal } from '@preact/signals';
         };
 
         const flexRender = (comp, props) => (typeof comp === 'function' ? comp(props) : comp);
+
+        const getTicketHighlightStyle = (color) => {
+            if (typeof color !== 'string' || !/^#[0-9a-f]{6}$/i.test(color)) {
+                return undefined;
+            }
+            // Choose the text color with the greater WCAG contrast ratio.
+            const channels = color.slice(1).match(/../g).map(channel => {
+                const value = parseInt(channel, 16) / 255;
+                return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+            });
+            const luminance = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+            return {
+                '--ticket-highlight-bg': color,
+                '--ticket-highlight-color': luminance > 0.179 ? '#000000' : '#ffffff',
+            };
+        };
 
         const storeState = (state) => {
             localStorage.setItem('tableState_pagination_' + stateKey, JSON.stringify(state.pagination));
@@ -218,6 +242,9 @@ import { batch, signal } from '@preact/signals';
                 fetchUrl.searchParams.set('sort', sorting[0].id);
                 fetchUrl.searchParams.set('order', sorting[0].desc ? 'desc' : 'asc');
             }
+            if (state.globalFilter) {
+                fetchUrl.searchParams.set('search', state.globalFilter);
+            }
 
             try {
                 const response = await fetch(fetchUrl.toString());
@@ -257,18 +284,29 @@ import { batch, signal } from '@preact/signals';
 
         const updateTableState = (updater) => {
             const currentState = tableStateSignal.value;
-            const newState = typeof updater === 'function' ? updater(currentState) : updater;
+            let newState = typeof updater === 'function' ? updater(currentState) : updater;
             const paginationChanged = hasTableStateChanged(currentState, newState, 'pagination');
             const sortingChanged = hasTableStateChanged(currentState, newState, 'sorting');
+            const searchChanged = hasTableStateChanged(currentState, newState, 'globalFilter');
 
-            if (url && paginationChanged) {
+            if (searchChanged) {
+                newState = {
+                    ...newState,
+                    pagination: {
+                        ...newState.pagination,
+                        pageIndex: 0,
+                    },
+                };
+            }
+
+            if (url && (paginationChanged || searchChanged)) {
                 massiveActionSelectionSignal.value = [];
             }
 
             tableStateSignal.value = newState;
             storeState(newState);
 
-            if (url && (paginationChanged || sortingChanged)) {
+            if (url && (paginationChanged || sortingChanged || searchChanged)) {
                 fetchData(newState);
             }
         };
@@ -286,13 +324,27 @@ import { batch, signal } from '@preact/signals';
                 state: {},
                 onStateChange: updateTableState,
                 getCoreRowModel: getCoreRowModel(),
+                getFilteredRowModel: getFilteredRowModel(),
                 getPaginationRowModel: getPaginationRowModel(),
                 getSortedRowModel: getSortedRowModel(),
                 data: initialData,
                 ...restOptions,
-                initialState,
+                initialState: {
+                    ...initialState,
+                    pagination: {
+                        ...initialState.pagination,
+                        pageIndex: 0,
+                    },
+                },
             });
-            tableStateSignal.value = tableInstance.initialState;
+            // Restore the current page without making it the target of TanStack's filter resets.
+            tableStateSignal.value = {
+                ...tableInstance.initialState,
+                pagination: {
+                    ...tableInstance.initialState.pagination,
+                    ...initialState.pagination,
+                },
+            };
             return tableInstance;
         };
 
@@ -338,8 +390,17 @@ import { batch, signal } from '@preact/signals';
         }));
         columns = columns.concat(dataColumns);
 
-        const data = Object.values(values).map(value => {
+        // JSON objects with numeric record IDs enumerate in ID order in JavaScript.
+        // Keep the server's query order without changing the keys used for selection.
+        const rowKeys = config.dataSource.rowOrder
+            ? [...new Set([...config.dataSource.rowOrder.map(String), ...Object.keys(values)])]
+            : Object.keys(values);
+        const data = rowKeys.filter(key => values[key]).map(key => {
+            const value = values[key];
             const row = {};
+            if (value._ticketHighlight) {
+                row._ticketHighlight = value._ticketHighlight;
+            }
             fieldKeys.forEach(field => {
                 row[String(field)] = value[String(field)];
             });
@@ -356,10 +417,12 @@ import { batch, signal } from '@preact/signals';
             columns,
             manualPagination: !!url,
             manualSorting: !!url,
+            manualFiltering: !!url,
             initialState: {
                 pagination: {
                     pageSize,
                 },
+                globalFilter: '',
             },
         });
 
@@ -751,7 +814,7 @@ import { batch, signal } from '@preact/signals';
                 <div class="fixed-table-pagination">
                     <div class="float-left pagination-detail">
                         <span class="pagination-info">
-                            Showing {Math.min(totalRows, currentPageSize)} of {totalRows} entries
+                            {window.__('Showing %1 of %2 entries', 'glpi', Math.min(totalRows, currentPageSize), totalRows)}
                         </span>
                         {renderPageSizeDropdown()}
                     </div>
@@ -801,7 +864,7 @@ import { batch, signal } from '@preact/signals';
                 <div class="fixed-table-pagination">
                     <div class="float-left pagination-detail">
                         <span class="pagination-info">
-                            Showing {startRow} to {endRow} of {totalRows} entries
+                            {window.__('Showing %1 to %2 of %3 entries', 'glpi', startRow, endRow, totalRows)}
                         </span>
                         {renderPageSizeDropdown()}
                     </div>
@@ -877,6 +940,18 @@ import { batch, signal } from '@preact/signals';
                             )}
                         </div>
                     </div>
+                    {searchEnabled && (
+                        <div class="float-left search">
+                            <input
+                                type="search"
+                                class="form-control search-input"
+                                value={table.getState().globalFilter || ''}
+                                placeholder={__(config.search.placeholder)}
+                                aria-label={__(config.search.placeholder)}
+                                onInput={(event) => table.setGlobalFilter(event.target.value)}
+                            />
+                        </div>
+                    )}
                     <div class="float-right btn-group columns columns-right">
                         {canTrash && (
                             <button
@@ -983,14 +1058,17 @@ import { batch, signal } from '@preact/signals';
                                 <tbody class="table-light">
                                     <tr class="no-records-found">
                                         <td colspan={table.getAllColumns().length}>
-                                            No matching records found
+                                            {window.__('No matching records found')}
                                         </td>
                                     </tr>
                                 </tbody>
                             ) : (
                             <tbody class="table-light">
                                 {table.getRowModel().rows.map(row => (
-                                    <tr>
+                                    <tr
+                                        class={getTicketHighlightStyle(row.original._ticketHighlight) ? 'ticket-source-highlight' : ''}
+                                        style={getTicketHighlightStyle(row.original._ticketHighlight)}
+                                    >
                                         {row.getVisibleCells().map(cell => {
                                             const isSelectColumn = cell.column.id === 'select';
                                             const isDisabled = isSelectColumn && !radio && hasMassiveAction && !row.original.value;

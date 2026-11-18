@@ -53,25 +53,25 @@ class ITILCategory extends CommonTreeDropdown
             __('As child of') => [
               'type' => 'select',
               'name' => $this->getForeignKeyField(),
-              'values' => getOptionForItems('ITILCategory'),
+              ...getAjaxDropdownOptions('ITILCategory'),
               'value' => $this->fields[$this->getForeignKeyField()]
             ],
             __('Technician in charge of the hardware') => [
               'type' => 'select',
               'name' => 'users_id',
-              'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+              ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
               'value' => $this->fields['users_id']
             ],
             __('Group in charge of the hardware') => [
               'type' => 'select',
               'name' => 'groups_id',
-              'values' => getOptionForItems('Group', ['is_assign' => 1]),
+              ...getAjaxDropdownOptions('Group', ['is_assign' => 1]),
               'value' => $this->fields['groups_id']
             ],
             __('Knowledge base') => [
               'type' => 'select',
               'name' => 'knowbaseitemcategories_id',
-              'values' => getOptionForItems('KnowbaseItemCategory'),
+              ...getAjaxDropdownOptions('KnowbaseItemCategory'),
               'value' => $this->fields['knowbaseitemcategories_id']
             ],
             __('Code representing the ticket category') => [
@@ -115,25 +115,25 @@ class ITILCategory extends CommonTreeDropdown
            __('Template for a request') => [
               'type' => 'select',
               'name' => 'tickettemplates_id_demand',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['tickettemplates_id_demand']
            ],
            __('Template for an incident') => [
               'type' => 'select',
               'name' => 'tickettemplates_id_incident',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['tickettemplates_id_incident']
            ],
            __('Template for a change') => [
               'type' => 'select',
               'name' => 'changetemplates_id',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['changetemplates_id']
            ],
            __('Template for a problem') => [
               'type' => 'select',
               'name' => 'problemtemplates_id',
-              'values' => getOptionForItems('TicketTemplate'),
+              ...getAjaxDropdownOptions('TicketTemplate'),
               'value' => $this->fields['problemtemplates_id']
            ],
         ]);
@@ -441,8 +441,6 @@ class ITILCategory extends CommonTreeDropdown
             return false;
         }
 
-        echo "<div class='center'>";
-
         $iterator = $DB->request([
            'FROM'   => 'glpi_itilcategories',
            'WHERE'  => [
@@ -456,62 +454,20 @@ class ITILCategory extends CommonTreeDropdown
            'ORDER'  => 'name'
         ]);
 
-        echo "<table class='tab_cadre_fixe' aria-label='Item Detail'>";
-        echo "<tr><th colspan='5'>";
-        $itilcategory_type = $itilcategory->getType();
-        echo "<a href='" . $itilcategory_type::getSearchURL() . "'>";
-        echo self::getTypeName(count($iterator));
-        echo "</a>";
-        echo "</th></tr>";
-        if (count($iterator)) {
-            echo "<th>" . __('Name') . "</th>";
-            echo "<th>" . __('Incident') . "</th>";
-            echo "<th>" . __('Request') . "</th>";
-            echo "<th>" . Change::getTypeName(1) . "</th>";
-            echo "<th>" . Problem::getTypeName(1) . "</th>";
-            echo "</tr>";
-
-            while ($data = $iterator->next()) {
-                echo "<tr class='tab_bg_2'>";
-                $itilcategory->getFromDB($data['id']);
-                echo "<td>" . $itilcategory->getLink(['comments' => true]) . "</td>";
-                if ($data['tickettemplates_id_incident'] == $ID) {
-                    echo "<td class='center'>
-                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
-                             "\" width='14' height='14'>
-                     </td>";
-                } else {
-                    echo "<td>&nbsp;</td>";
-                }
-                if ($data['tickettemplates_id_demand'] == $ID) {
-                    echo "<td class='center'>
-                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
-                             "\" width='14' height='14'>
-                     </td>";
-                } else {
-                    echo "<td>&nbsp;</td>";
-                }
-                if ($data['changetemplates_id'] == $ID) {
-                    echo "<td class='center'>
-                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
-                             "\" width='14' height='14'>
-                     </td>";
-                } else {
-                    echo "<td>&nbsp;</td>";
-                }
-                if ($data['problemtemplates_id'] == $ID) {
-                    echo "<td class='center'>
-                     <img src='" . $CFG_GLPI["root_doc"] . "/pics/ok.png' alt=\"" . __('OK') .
-                             "\" width='14' height='14'>
-                     </td>";
-                } else {
-                    echo "<td>&nbsp;</td>";
-                }
+        $values = [];
+        foreach ($iterator as $data) {
+            $itilcategory->getFromResultSet($data);
+            $row = [$itilcategory->getLink(['comments' => true])];
+            foreach (['tickettemplates_id_incident', 'tickettemplates_id_demand', 'changetemplates_id', 'problemtemplates_id'] as $field) {
+                $row[] = Dropdown::getYesNo($data[$field] == $ID);
             }
-        } else {
-            echo "<tr><th colspan='5'>" . __('No item found') . "</th></tr>";
+            $values[] = $row;
         }
-
-        echo "</table></div>";
+        $id = 'categoriesFor_' . $tt->getType() . '_' . $ID;
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id,
+            'fields' => [__('Name'), __('Incident'), __('Request'), Change::getTypeName(1), Problem::getTypeName(1)],
+            'values' => $values, 'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
 }

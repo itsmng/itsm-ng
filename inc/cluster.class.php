@@ -124,14 +124,14 @@ class Cluster extends CommonDBTM
                     __('Auto update system') => [
                        'name' => 'autoupdatesystems_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('AutoUpdateSystem'),
+                       ...getAjaxDropdownOptions('AutoUpdateSystem'),
                        'value' => $this->fields['autoupdatesystems_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "AutoUpdateSystem"),
                     ],
                     __('Technician in charge of the hardware') => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']  ?? '']),
                        'value' => $this->fields['users_id_tech'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], "User"),
                     ],

@@ -156,7 +156,19 @@ function expandForm($form, $fields = [], $template = null)
                     isset($template) &&
                     $template->isHiddenField($input["name"])
                 ) {
-                    $shouldHide = true;
+                    // Keep the value in the submission without rendering the field or its actions.
+                    $input = [
+                        'type' => 'hidden',
+                        'name' => $input['name'],
+                        'value' => $input['value'] ?? $fields[$input['name']] ?? '',
+                    ];
+                } elseif (
+                    isset($input['name'], $template)
+                    && ($input['type'] ?? '') !== 'hidden'
+                    && $template->isMandatoryField($input['name'])
+                ) {
+                    $input['required'] = true;
+                    $inputKey .= $template->getMandatoryMark($input['name']);
                 }
 
                 if (
@@ -176,7 +188,7 @@ function expandForm($form, $fields = [], $template = null)
 
                 $filteredInputs[$inputKey] = $input;
 
-                if ($input["type"] ?? "" == "select") {
+                if (($input["type"] ?? "") === "select") {
                     expandSelect($filteredInputs[$inputKey], $fields);
                 }
             }
@@ -625,10 +637,11 @@ function getItemActionButtons(array $actions, string $itemType): array
                 if (!$item->canView()) {
                     continue 2;
                 }
-                $itemSearchUrl = $item->getSearchUrl();
+                $itemFormUrl = json_encode($item->getFormURL(), JSON_HEX_APOS | JSON_HEX_QUOT);
+                $itemSearchUrl = json_encode($item->getSearchURL(), JSON_HEX_APOS | JSON_HEX_QUOT);
                 $content = [
                     "icon" => "fas fa-info",
-                    "onClick" => "window.location.href = '{$itemSearchUrl}'",
+                    "onClick" => "openDropdownItem(this, {$itemFormUrl}, {$itemSearchUrl});",
                     "info" => "Info",
                 ];
                 break;

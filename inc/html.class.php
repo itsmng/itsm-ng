@@ -1565,7 +1565,9 @@ class Html
         //  CSS link
         echo Html::scss('css/styles');
         echo Html::scss('css/colors');
-        echo Html::scss('css/itsm2');
+        echo Html::scss('css/itsm2', [
+            'version' => ITSM_VERSION . '-' . filemtime(GLPI_ROOT . '/css/itsm2.scss'),
+        ]);
         if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {
             echo Html::scss('css/highcontrast');
         }
@@ -1606,7 +1608,9 @@ class Html
             $locales_url = $CFG_GLPI['root_doc'] . '/front/locale.php?'
                . http_build_query([
                   'domains' => array_keys($locales_domains),
+                  'language' => $_SESSION['glpilanguage'],
                   'version' => sha1(json_encode($locales_domains)),
+                  'catalog' => filemtime(GLPI_I18N_DIR . '/' . $CFG_GLPI['languages'][$_SESSION['glpilanguage']][1]),
                ])
                . ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? '&debug' : '');
             $locales_url = json_encode($locales_url, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
@@ -1711,7 +1715,7 @@ JAVASCRIPT
               'title' => __('Tools'),
               'types' => [
                  'Project', 'Reminder', 'RSSFeed', 'KnowbaseItem',
-                 'ReservationItem', 'Report', 'MigrationCleaner',
+                 'ReservationItem', 'AppointmentTarget', 'Report', 'MigrationCleaner',
                  'SavedSearch', 'Impact'
               ]
            ],
@@ -2054,7 +2058,9 @@ JAVASCRIPT
         echo Html::script("node_modules/preact/dist/preact.umd.js");
         echo Html::script("node_modules/preact/hooks/dist/hooks.umd.js");
         echo Html::script("public/build/displaypreferences.js");
-        echo Html::script("public/build/table.js");
+        echo Html::script("public/build/table.js", [
+            'version' => ITSM_VERSION . '-' . filemtime(GLPI_ROOT . '/public/build/table.js'),
+        ]);
         echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");
@@ -2911,6 +2917,7 @@ JAVASCRIPT
         }
 
         $identifier = $p['container'];
+        $sidecar_fields = json_encode(array_values($p['extraparams']['massive_action_fields'] ?? []));
         $max        = Toolbox::get_max_input_vars();
         $out = '';
 
@@ -2954,11 +2961,16 @@ JAVASCRIPT
                   for (let i = 0; i < rows.length; i++) {
                      fields[rows[i].value] = 1;
                   }
-                  $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').each(function( index ) {
-                     fields[$(this).attr('name')] = $(this).attr('value');
-                     if (($(this).attr('type') == 'checkbox') && (!$(this).is(':checked'))) {
-                        fields[$(this).attr('name')] = 0;
-                     }
+                  const selectedItems = new Set(rows.map(row => row.value));
+                  const configuredFields = $sidecar_fields;
+                  const sidecarFields = $('[data-itsm-table-fields="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').filter(function() {
+                     const name = this.name || '';
+                     return configuredFields.includes(name.split('[')[0])
+                        && (!this.dataset.itsmTableRow || selectedItems.has(this.dataset.itsmTableRow));
+                  });
+                  $('table[id="$container"] [data-glpicore-ma-tags~={$p['tag_to_send']}]').add(sidecarFields).each(function() {
+                     if (!this.name || this.disabled) return;
+                     fields[this.name] = this.type === 'checkbox' ? (this.checked ? $(this).val() : 0) : $(this).val();
                   });
                JS;
                 } else {
@@ -3274,18 +3286,18 @@ JS;
            ? " disabled='disabled'"
            : "";
         $clear    = $p['maybeempty'] && $p['canedit']
-           ? "<a data-clear  title='" . __s('Clear') . "'>
-               <i class='fa fa-times-circle pointer'></i>
-            </a>"
+           ? "<button type='button' class='btn btn-sm border' data-clear aria-label='" . __s('Clear') . "'>
+               <i class='fa fa-times-circle' aria-hidden='true'></i>
+            </button>"
            : "";
 
         $output = <<<HTML
-         <div class="no-wrap flatpickr" id="showdate{$p['rand']}">
-            <input type="text" name="{$name}" value="{$p['value']}"
+         <div class="flatpickr input-group flex-nowrap w-100" id="showdate{$p['rand']}">
+            <input type="text" class="form-control form-control-sm" name="{$name}" value="{$p['value']}"
                    {$required} {$disabled} data-input>
-            <a class="input-button" data-toggle>
-               <i class="far fa-calendar-alt fa-lg pointer" title="Select Date"></i>
-            </a>
+            <button type="button" class="btn btn-sm border" data-toggle {$disabled} aria-label="Select Date">
+               <i class="far fa-calendar-alt" aria-hidden="true"></i>
+            </button>
             $clear
          </div>
 HTML;
@@ -5724,6 +5736,31 @@ JAVASCRIPT;
 
 
     /**
+     * Returns FullCalendar script tags, including the current locale when available.
+     *
+     * @return string
+     */
+    public static function fullCalendarScripts()
+    {
+        global $CFG_GLPI;
+
+        $scripts = [self::script('public/lib/fullcalendar.js')];
+        if (isset($_SESSION['glpilanguage'])) {
+            foreach ([2, 3] as $loc) {
+                $filename = "public/lib/fullcalendar/locales/" .
+                   strtolower((string) $CFG_GLPI["languages"][$_SESSION['glpilanguage']][$loc]) . ".js";
+                if (file_exists(GLPI_ROOT . '/' . $filename)) {
+                    $scripts[] = self::script($filename);
+                    break;
+                }
+            }
+        }
+
+        return implode("\n", $scripts);
+    }
+
+
+    /**
      * Creates a link element for CSS stylesheets.
      *
      * @since 0.85
@@ -6464,7 +6501,7 @@ JAVASCRIPT;
         echo Html::scriptBlock("
       $(function() {
          var lastClicked = null;
-         $('input[type=submit], button[type=submit]').click(function(e) {
+         $('$selector').on('click', ':submit', function(e) {
             e = e || event;
             lastClicked = e.target || e.srcElement;
          });
@@ -6473,11 +6510,14 @@ JAVASCRIPT;
             e.preventDefault();
             var form = $(this);
             var formData = form.closest('form').serializeArray();
-            //push submit button
-            formData.push({
-               name: $(lastClicked).attr('name'),
-               value: $(lastClicked).val()
-            });
+            // Include implicit submit buttons from Twig forms as well as keyboard submissions.
+            var submitter = (e.originalEvent && e.originalEvent.submitter) || lastClicked;
+            if (submitter && submitter.name) {
+               formData.push({
+                  name: submitter.name,
+                  value: $(submitter).val()
+               });
+            }
 
             $.ajax({
                url: form.attr('action'),

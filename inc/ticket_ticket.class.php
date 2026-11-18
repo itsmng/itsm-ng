@@ -193,6 +193,7 @@ class Ticket_Ticket extends CommonDBRelation
                    'tickets_id' => $data['tickets_id_2']
                 ];
             }
+            $tickets[$data['id']]['link_name'] = self::getLinkName($data['link'], $data['tickets_id_1'] != $ID);
         }
 
         ksort($tickets);

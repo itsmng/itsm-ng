@@ -87,208 +87,52 @@ class KnowbaseItem_Revision extends CommonDBTM
     **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        global $DB, $CFG_GLPI;
+        global $DB;
 
-        $item_id = $item->getID();
-        $item_type = $item::getType();
-        if (isset($_GET["start"])) {
-            $start = intval($_GET["start"]);
-        } else {
-            $start = 0;
-        }
-
-        // Total Number of revisions
-        if ($item->getType() == KnowbaseItem::getType()) {
-            $where = [
-               'knowbaseitems_id' => $item->getID(),
-               'language'         => ''
-            ];
-        } else {
-            $where = [
-               'knowbaseitems_id' => $item->fields['knowbaseitems_id'],
-               'language'         => $item->fields['language']
-            ];
-        }
-
-        $number = countElementsInTable(
-            'glpi_knowbaseitems_revisions',
-            $where
-        );
-
-        // No revisions in database
-        if ($number < 1) {
-            $no_txt = __('No revisions');
-            echo "<div class='center'>";
-            echo "<table class='tab_cadre_fixe' aria-label='No Revisions'>";
-            echo "<tr><th>$no_txt</th></tr>";
-            echo "</table>";
-            echo "</div>";
-            return;
-        }
-        // Display the pager
-
-        Html::printAjaxPager(self::getTypeName(1), $start, $number);
-        // Output events
-        echo "<div class='center'>";
-        echo "<input type='button' name='compare' value='" . _sx('button', 'Compare selected revisions') .
-               "' class='submit compare'>";
-        echo "<table class='tab_cadre_fixehov' aria-label='Revisions'>";
-        $header = '<tr>';
-        $header .= "<th title='" . _sn('Revision', 'Revisions', 1) . "'>#</th>";
-        $header .= "<th>&nbsp;</th>";
-        $header .= "<th>" . __('Author')  . "</th>";
-        $header .= "<th>" . __('Creation date') . "</th>";
-        $header .= "<th></th></tr>";
-        echo $header;
-
+        $where = $item instanceof KnowbaseItem
+            ? ['knowbaseitems_id' => $item->getID(), 'language' => '']
+            : ['knowbaseitems_id' => $item->fields['knowbaseitems_id'], 'language' => $item->fields['language']];
+        $id = 'kbRevisions_' . $item->getType() . '_' . $item->getID();
         $user = new User();
         $user->getFromDB($item->fields['users_id']);
-
-        //current contents
-        echo "<tr class='tab_bg_2'>";
-        echo "<td>(" . __('cur')  . ")</td>" .
-                "<td><input type='radio' name='oldid' value='0' style='visibility:hidden'/>" .
-                "<input type='radio' name='diff' value='0' checked='checked'/></td>" .
-                "<td>" . $user->getLink() . "</td>" .
-                "<td class='tab_date'>" . $item->fields['date_mod'] . "</td>" .
-                "<td></td>" .
-                "</tr>";
-
-        $revisions = $DB->request(
-            'glpi_knowbaseitems_revisions',
-            $where + ['ORDER' => 'id DESC']
-        );
-
-        $is_checked = true;
-        foreach ($revisions as $revision) {
-            // Before GLPI 9.3.1, author was not stored in revision.
-            // See https://github.com/glpi-project/glpi/issues/4377.
-            $hasRevUser = $user->getFromDB($revision['users_id']);
-
-            echo "<tr class='tab_bg_2'>";
-            echo "<td>" . $revision['revision']  . "</td>" .
-                    "<td><input type='radio' name='oldid' value='{$revision['id']}'";
-
-            if ($is_checked) {
-                echo " checked='checked'";
-                $is_checked = false;
+        $values = [0 => [
+            'revision' => '(' . __('cur') . ')',
+            'selection' => "<input type='radio' name='diff' value='0' data-order='0' aria-label='" . __s('Changed') . "'>",
+            'author' => $user->getLink(), 'date' => Html::convDateTime($item->fields['date_mod']), 'actions' => '',
+        ]];
+        $order = 0;
+        $initial = null;
+        $canedit = $withtemplate != 2 && $item->can($item->getID(), UPDATE);
+        foreach ($DB->request([
+            'FROM' => self::getTable(), 'WHERE' => $where, 'ORDER' => 'id DESC',
+        ]) as $revision) {
+            $order++;
+            $revisionID = (int) $revision['id'];
+            $initial ??= $revisionID;
+            $author = $user->getFromDB($revision['users_id']) ? $user->getLink() : __('Unknown user');
+            $actions = "<button type='button' class='btn btn-link p-0 kb-show-revision' data-revid='$revisionID' data-rev='"
+                . (int) $revision['revision'] . "'>" . __('show') . '</button>';
+            if ($canedit) {
+                $actions .= " <a class='kb-restore-revision' href='" . $item::getFormURLWithID($item->getID())
+                    . "&amp;to_rev=$revisionID'>" . __('restore') . '</a>';
             }
-
-            echo "/> <input type='radio' name='diff' value='{$revision['id']}'/></td>";
-
-            echo "<td>" . ($hasRevUser ? $user->getLink() : __('Unknown user')) . "</td>" .
-                "<td class='tab_date'>" . $revision['date_creation'] . "</td>";
-
-            $form = null;
-            if ($item->getType() == KnowbaseItem::getType()) {
-                $form = KnowbaseItem::getFormURLWithID($revision['knowbaseitems_id']);
-            } else {
-                $form = KnowbaseItemTranslation::getFormURLWithID($revision['knowbaseitems_id']);
-            }
-
-            echo "<td><a href='#' data-rev='" . $revision['revision']  . "'
-                    data-revid='" . $revision['id']  . "' class='show'>" . __('show') . "</a>
-                 - <a href='$form&to_rev={$revision['id']}' class='restore'>" .
-                       __('restore')  . "</a></td>";
-            echo "</tr>";
+            $values[$revisionID] = [
+                'revision' => (int) $revision['revision'],
+                'selection' => "<input type='radio' name='oldid' value='$revisionID' data-order='$order' aria-label='" . __s('Original') . "'> "
+                    . "<input type='radio' name='diff' value='$revisionID' data-order='$order' aria-label='" . __s('Changed') . "'>",
+                'author' => $author, 'date' => Html::convDateTime($revision['date_creation']), 'actions' => $actions,
+            ];
         }
-
-        echo Html::script("public/lib/jquery-prettytextdiff.js");
-        echo "<script type='text/javascript'>
-            $(function() {
-               $('.restore').on('click', function(e) {
-                  lastClickedElement = e.target;
-                  return window.confirm('" . __s('Do you want to restore the selected revision?')  . "');
-               });
-
-               $('.show').on('click', function(e) {
-                  e.preventDefault();
-                  var _this = $(this);
-
-                  $.ajax({
-                     url: '{$CFG_GLPI['root_doc']}/ajax/getKbRevision.php',
-                     method: 'post',
-                     cache: false,
-                     data: {
-                        'revid': _this.data('revid')
-                     },
-                     success: function(data) {
-                        var title = '" . __('Show revision %rev') . "'.replace(/%rev/, _this.data('rev'));
-                        var html = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\" aria-label='Revision'>';
-                        html += '<h2>" . __('Subject') . "</h2>';
-                        html += '<div>' + data.name + '</div>';
-                        html += '<h2>" . __('Content') . "</h2>';
-                        html += '<div>' + data.answer + '</div>';
-                        html += '</div>';
-                        $(html).appendTo('body').dialog({
-                           height: 'auto',
-                           width: 'auto',
-                           modal: true
-                        });
-                     },
-                     error: function() { " .
-                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load revision!')) . "
-                     }
-                  });
-               });
-
-               $('.compare').on('click', function(e) {
-                  e.preventDefault();
-                  var _oldid = $('[name=oldid]:checked').val();
-                  var _diffid = $('[name=diff]:checked').val();
-
-                  $.ajax({
-                     url: '{$CFG_GLPI['root_doc']}/ajax/compareKbRevisions.php',
-                     method: 'post',
-                     cache: false,
-                     data: {
-                        'oldid' :  _oldid,
-                        'diffid': _diffid,
-                        'kbid'  : '{$revision['knowbaseitems_id']}'
-                     },
-                     success: function(data) {
-                        if (_diffid == 0) {
-                           _diffid = '" . __('current') . "';
-                        }
-                        var title = '" . __s('Compare revisions old and diff') . "'.replace(/old/, _oldid).replace(/diff/, _diffid);
-                        var html_compare = '<div title=\"' + title + '\" id=\"compare_view\"><table class=\"tab_cadre_fixehov\" aria-label='Revision'>';
-                        html_compare += '<tr><th></th><th>" . __s('Original') . "</th><th>" . __s('Changed') . "</th><th>" . __('Differences')  . "</th></tr>';
-                        html_compare += '<tr><th>" . __s('Subject') . "</th><td class=\"original\">' + data['old']['name'] + '</td><td class=\"changed\">' + data['diff']['name'] + '</td><td class=\"diff\"></td></tr>';
-                        html_compare += '<tr><th>" . __s('Content')  . "</th><td class=\"original\">' + data['old']['answer'] + '</td><td class=\"changed\">' + data['diff']['answer'] + '</td><td class=\"diff\"></td></tr>';
-                        html_compare += '</table></div>';
-                        $(html_compare).appendTo('body').dialog({
-                           height: 'auto',
-                           width: 'auto',
-                           modal: true
-                        });
-                        $('#compare_view tr').prettyTextDiff();
-                     },
-                     error: function() { " .
-                          Html::jsAlertCallback(__('Contact your ITSM-NG admin!'), __('Unable to load requested comparison!')) . "
-                     }
-                  });
-               });
-
-               $('[name=diff]:gt(0)').css('visibility', 'hidden');
-               $('[name=oldid]').on('click', function(e) {
-                  var _index = $(this).index('[name=oldid]');
-
-                  var _checked_index = $('[name=diff]:checked').index('[name=diff]');
-                  if (_checked_index >= _index) {
-                     $('[name=diff]:eq(' + (_index - 1) +')').prop('checked', true);
-                  }
-
-                  $('[name=diff]:gt(' + _index + '), [name=diff]:eq(' + _index + ')').css('visibility', 'hidden');
-                  $('[name=diff]:lt(' + _index + ')').css('visibility', 'visible');
-               });
-            });
-         </script>";
-
-        echo $header;
-        echo "</table>";
-        echo "<input type='button' name='compare' value='" . _sx('button', 'Compare selected revisions') . "' class='submit compare'>";
-        echo "</div>";
-        Html::printAjaxPager(self::getTypeName(1), $start, $number);
+        if ($initial === null) {
+            echo "<p class='text-muted'>" . __('No revisions') . '</p>';
+            return;
+        }
+        renderTwigTemplate('knowledgebase/revisions.twig', [
+            'id' => $id, 'initial' => $initial, 'kb_id' => $where['knowbaseitems_id'],
+            'fields' => ['revision' => _n('Revision', 'Revisions', 1), 'selection' => __('Compare selected revisions'),
+                'author' => __('Author'), 'date' => __('Creation date'), 'actions' => __('Actions')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
     }
 
     /**

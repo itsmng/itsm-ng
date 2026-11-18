@@ -130,78 +130,50 @@ class IPNetwork_Vlan extends CommonDBRelation
         }
 
         if ($canedit) {
-            echo "<div class='firstbloc'>\n";
-            echo "<form aria-label='VLAN' method='post' action='" . static::getFormURL() . "'>\n";
-            echo "<table class='tab_cadre_fixe' aria-label='Associate a VLAN'>\n";
-            echo "<tr><th>" . __('Associate a VLAN') . "</th></tr>";
-
-            echo "<tr class='tab_bg_1'><td class='center'>";
-            echo "<input type='hidden' name='ipnetworks_id' value='$ID'>";
-            Vlan::dropdown(['used' => $used]);
-            echo "&nbsp;<input type='submit' name='add' value='" . _sx('button', 'Associate') .
-                         "' class='submit'>";
-            echo "</td></tr>\n";
-
-            echo "</table>\n";
-            Html::closeForm();
-            echo "</div>\n";
+            renderTwigForm([
+                'action' => self::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'add', 'value' => _x('button', 'Associate'),
+                    'class' => 'btn btn-primary', 'icon' => 'fas fa-plus',
+                ]],
+                'content' => [__('Associate a VLAN') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'ipnetworks_id', 'value' => $ID],
+                        Vlan::getTypeName(1) => [
+                            'type' => 'select', 'name' => 'vlans_id',
+                            ...getAjaxDropdownOptions(Vlan::class, [], true, false, $used),
+                        ],
+                    ],
+                ]],
+            ]);
         }
-
-        echo "<div class='spaced'>";
-        if ($canedit && $number) {
-            Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-            $massiveactionparams = ['num_displayed' => min($_SESSION['glpilist_limit'], $number),
-                                         'container'     => 'mass' . __CLASS__ . $rand];
-            Html::showMassiveActions($massiveactionparams);
-        }
-        echo "<table class='tab_cadre_fixehov' aria-label='editable entity table'>";
-
-        $header_begin  = "<tr>";
-        $header_top    = '';
-        $header_bottom = '';
-        $header_end    = '';
-        if ($canedit && $number) {
-            $header_top    .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            $header_top    .= "</th>";
-            $header_bottom .= "<th width='10'>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-            $header_bottom .= "</th>";
-        }
-        $header_end .= "<th>" . __('Name') . "</th>";
-        $header_end .= "<th>" . Entity::getTypeName(1) . "</th>";
-        $header_end .= "<th>" . __('ID TAG') . "</th>";
-        $header_end .= "</tr>";
-        echo $header_begin . $header_top . $header_end;
-
-        $used = [];
+        $values = [];
+        $selection = [];
+        $object = new Vlan();
         foreach ($vlans as $data) {
-            echo "<tr class='tab_bg_1'>";
-            if ($canedit) {
-                echo "<td>";
-                Html::showMassiveActionCheckBox(__CLASS__, $data["assocID"]);
-                echo "</td>";
-            }
-            $name = $data["name"];
-            if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
-                $name = sprintf(__('%1$s (%2$s)'), $name, $data["id"]);
-            }
-            echo "<td class='center b'>
-               <a href='" . $CFG_GLPI["root_doc"] . "/front/vlan.form.php?id=" . $data["id"] . "'>" . $name .
-                 "</a>";
-            echo "</td>";
-            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data["entities_id"]);
-            echo "<td class='numeric'>" . $data["tag"] . "</td>";
-            echo "</tr>";
+            $object->getFromResultSet($data);
+            $values[] = [$object->getLink(), htmlspecialchars(Dropdown::getDropdownName('glpi_entities', $data['entities_id']), ENT_QUOTES, 'UTF-8', false), (int) $data['tag']];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['assocID']);
         }
-        if ($number) {
-            echo $header_begin . $header_bottom . $header_end;
+        $table_id = self::class . '_ipnetworks_id_' . $ID;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name'), Entity::getTypeName(1), __('ID TAG')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
         }
-        echo "</table>";
-        if ($canedit && $number) {
-            $massiveactionparams['ontop'] = false;
-            Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
-        }
-        echo "</div>";
+        renderTwigTemplate('table.twig', $table);
     }
 
 

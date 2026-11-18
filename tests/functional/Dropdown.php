@@ -40,6 +40,172 @@ use Generator;
 
 class Dropdown extends DbTestCase
 {
+    public function testExpandSelectGeneratesUserDropdownToken()
+    {
+        global $CFG_GLPI;
+
+        $select = [
+            'type' => 'select',
+            'values' => [],
+            'ajax' => [
+                'url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php',
+                'data' => ['right' => 'own_ticket', 'entity_restrict' => '42'],
+            ],
+        ];
+        \expandSelect($select);
+        $data = $select['ajax']['data'] + ['itemtype' => 'User'];
+        $this->boolean(\Session::validateIDOR($data))->isTrue();
+        foreach (['right' => 'all', 'entity_restrict' => '-1', 'itemtype' => 'Group'] as $key => $value) {
+            $this->boolean(\Session::validateIDOR(array_replace($data, [$key => $value])))->isFalse();
+        }
+
+        $token = $data['_idor_token'];
+        \expandSelect($select);
+        $this->string($select['ajax']['data']['_idor_token'])->isEqualTo($token);
+
+        $select['ajax'] = ['url' => $CFG_GLPI['root_doc'] . '/ajax/getDropdownUsers.php'];
+        \expandSelect($select);
+        $this->boolean(\Session::validateIDOR($select['ajax']['data'] + ['itemtype' => 'User']))->isTrue();
+
+        $select['ajax'] = ['url' => 'https://example.com/ajax/getDropdownUsers.php'];
+        \expandSelect($select);
+        $this->array($select['ajax'])->notHasKey('data');
+    }
+
+    public function testExpandSelectKeepsOnlySelectionsAndFilters()
+    {
+        $select = [
+            'type' => 'select',
+            'value' => [73, 74],
+            'values' => [73 => 'Saved computer', 74 => 'Other saved computer'],
+            'toadd' => [-1 => 'Inherited'],
+            ...\getAjaxDropdownOptions(\Computer::class, [
+                'entities_id' => 42,
+                'is_recursive' => 1,
+                'is_template' => 0,
+            ], true, false, [90 => 90]),
+        ];
+        \expandSelect($select);
+        $this->array($select['values'])->isIdenticalTo([
+            -1 => 'Inherited', 73 => 'Saved computer', 74 => 'Other saved computer', 0 => \Dropdown::EMPTY_VALUE,
+        ]);
+        $data = $select['ajax']['data'];
+        $this->integer($data['entity_restrict'])->isEqualTo(42);
+        $this->array($data['used'])->isIdenticalTo([90]);
+        $this->array($_SESSION['glpicondition'][$data['condition']])->isIdenticalTo(['is_template' => 0]);
+        $before = $select;
+        \expandSelect($select);
+        $this->array($select)->isIdenticalTo($before);
+    }
+
+    public function testExpandSelectSupportsConditionKeysAndAliases()
+    {
+        $key = \Dropdown::addNewCondition(['is_active' => 1]);
+        $select = \getAjaxDropdownOptions(\TaskTemplate::class, $key);
+        \expandSelect($select);
+        $this->array($select['values'])->isIdenticalTo([0 => \Dropdown::EMPTY_VALUE]);
+        $this->array($_SESSION['glpicondition'][$select['ajax']['data']['condition']])->isIdenticalTo(['is_active' => 1]);
+
+        $select = ['itemtype' => \SoftwareVersion::class, 'conditions' => ['softwares_id' => 15]];
+        \expandSelect($select, ['entities_id' => 42]);
+        $data = $select['ajax']['data'];
+        $this->integer($data['entity_restrict'])->isEqualTo(42);
+        $this->array($_SESSION['glpicondition'][$data['condition']])->isIdenticalTo(['softwares_id' => 15]);
+    }
+
+    public function testExpandUserSelectPreservesRightsAndEntityScope()
+    {
+        $rights = ['validate_incident', 'validate_request'];
+        $select = \getAjaxUserDropdownOptions($rights, ['entities_id' => [42, 43]], false);
+        \expandSelect($select, ['entities_id' => 99]);
+        $data = $select['ajax']['data'];
+        $this->array($select['values'])->isEmpty();
+        $this->array($data['right'])->isIdenticalTo($rights);
+        $this->string($data['entity_restrict'])->isEqualTo('[42,43]');
+        $this->boolean(\Session::validateIDOR($data))->isTrue();
+
+        $select = \getAjaxUserDropdownOptions('all');
+        \expandSelect($select, ['entities_id' => 99]);
+        $this->integer($select['ajax']['data']['entity_restrict'])->isEqualTo(-1);
+    }
+
+    public function testDirectSelectTemplatePreparesAjax()
+    {
+        require_once GLPI_ROOT . '/src/twig/twig.class.php';
+        $twig = \Twig::load(GLPI_ROOT . '/templates', false);
+        $html = $twig->render('macros/input.twig', [
+            'type' => 'select',
+            'name' => 'users_id',
+            ...\getAjaxUserDropdownOptions('all'),
+        ]);
+        $this->integer(substr_count($html, '<option'))->isEqualTo(1);
+        $this->string($html)->contains('getDropdownUsers.php')->contains('_idor_token');
+    }
+
+    public function testAjaxDropdownDefaultActions()
+    {
+        $profile = $_SESSION['glpiactiveprofile'] ?? [];
+        try {
+            foreach ([0 => [], READ => ['info'], READ | CREATE => ['info', 'add']] as $rights => $expected) {
+                $_SESSION['glpiactiveprofile']['computer'] = $rights;
+                $select = \getAjaxDropdownOptions(\Computer::class);
+                \expandSelect($select);
+                $this->array(array_keys($select['actions']))->isIdenticalTo($expected);
+                $prepared = $select;
+                \expandSelect($select);
+                $this->array($select)->isIdenticalTo($prepared);
+            }
+            foreach ([[], ['custom' => ['info' => 'Custom action']]] as $actions) {
+                $select = ['actions' => $actions] + \getAjaxDropdownOptions(\Computer::class);
+                \expandSelect($select);
+                $this->array($select['actions'])->isIdenticalTo($actions);
+            }
+            $_SESSION['glpiactiveprofile']['software'] = READ | CREATE;
+            $select = \getAjaxDropdownOptions(\SoftwareVersion::class);
+            \expandSelect($select);
+            $this->array($select['actions'])->isEmpty();
+        } finally {
+            $_SESSION['glpiactiveprofile'] = $profile;
+        }
+    }
+
+    public function testAjaxDropdownActionsRendering()
+    {
+        require_once GLPI_ROOT . '/src/twig/twig.class.php';
+        $profile = $_SESSION['glpiactiveprofile'] ?? [];
+        try {
+            $_SESSION['glpiactiveprofile']['computer'] = READ | CREATE;
+            $select = ['type' => 'select', 'name' => 'computers_id'] + \getAjaxDropdownOptions(\Computer::class);
+            $twig = \Twig::load(GLPI_ROOT . '/templates', false);
+            foreach (['macros/input.twig' => $select, 'macros/wrappedInput.twig' => ['title' => 'Computer', 'input' => $select]] as $template => $vars) {
+                $html = $twig->render($template, $vars);
+                $this->integer(substr_count($html, 'aria-label="Info"'))->isEqualTo(1);
+                $this->integer(substr_count($html, 'aria-label="Add"'))->isEqualTo(1);
+                $this->integer(substr_count($html, '<option'))->isEqualTo(1);
+                $this->integer(substr_count($html, 'data-dropdown-group'))->isEqualTo(1);
+                $document = new \DOMDocument();
+                // DOMDocument uses an HTML4 parser and misreads closing tags in inline JavaScript.
+                $markup = preg_replace('~<script\b[^>]*>.*?</script>~is', '', $html);
+                $document->loadHTML($markup, LIBXML_NOERROR | LIBXML_NOWARNING);
+                $this->integer((new \DOMXPath($document))->query('//select/../button')->length)->isEqualTo(2);
+            }
+            ob_start();
+            \outputAjaxDropdownDefinition($select);
+            $definition = json_decode(ob_get_clean(), true);
+            $this->string($definition['actions_html'])->contains('aria-label="Info"')->contains('aria-label="Add"');
+            $this->string($definition['ajax']['url'])->contains('getDropdownValue.php');
+
+            $first = \getItemActionButtons(['add'], \Computer::class);
+            $second = \getItemActionButtons(['add'], \Computer::class);
+            $this->string($first['add']['onClick'])->isNotEqualTo($second['add']['onClick']);
+            $_SESSION['glpiactiveprofile'][\DeviceCaseModel::$rightname] = READ | CREATE;
+            $buttons = \getItemActionButtons(['add'], \DeviceCaseModel::class);
+            $this->string($buttons['add']['modal_script'])->contains('itemtype=DeviceCaseModel&_in_modal=1');
+        } finally {
+            $_SESSION['glpiactiveprofile'] = $profile;
+        }
+    }
+
     public function testGetItemActionButtonsHonorsItemRights()
     {
         $_SESSION['glpiactiveprofile'][\RequestType::$rightname] = READ | CREATE;
@@ -1220,7 +1386,8 @@ class Dropdown extends DbTestCase
                        'title'  => 'tech - tech',
                     ]
                  ],
-                 'count' => 5
+                 'count' => 5,
+                 'pagination' => ['more' => false]
               ]
            ], [
               'params'    => [
@@ -1251,7 +1418,8 @@ class Dropdown extends DbTestCase
                        'title'  => 'post-only - post-only',
                     ]
                  ],
-                 'count' => 3
+                 'count' => 3,
+                 'pagination' => ['more' => false]
               ]
            ], [
               'params'    => [
@@ -1275,7 +1443,8 @@ class Dropdown extends DbTestCase
                        'title'  => '_test_user - _test_user',
                     ]
                  ],
-                 'count' => 1
+                 'count' => 1,
+                 'pagination' => ['more' => false]
               ]
            ]
         ];

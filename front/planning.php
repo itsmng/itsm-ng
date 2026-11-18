@@ -33,7 +33,8 @@
 
 include('../inc/includes.php');
 
-if (!isset($_GET['genical'])) {
+// Only the iCal export may authenticate with its own token below.
+if (!isset($_GET['genical']) || isset($_GET['checkavailability'])) {
     Session::checkRight("planning", READ);
 }
 

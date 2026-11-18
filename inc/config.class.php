@@ -408,6 +408,12 @@ class Config extends CommonDBTM
                           'max' => 200,
                           'col_lg' => 6,
                       ],
+                      __('Allow selecting users before their account validity starts') => [
+                          'name' => 'allow_future_users_in_dropdowns',
+                          'type' => 'checkbox',
+                          'value' => $CFG_GLPI['allow_future_users_in_dropdowns'] ?? 0,
+                          'col_lg' => 12,
+                      ],
                       __('Autocompletion of text fields') => [
                         'name' => 'use_ajax_autocompletion',
                         'type' => 'checkbox',
@@ -471,7 +477,7 @@ class Config extends CommonDBTM
                       __('Profile to be used when locking items') => ($CFG_GLPI["lock_use_lock_item"]) ? [
                         'name' => 'lock_lockprofile_id',
                         'type' => 'select',
-                        'values' => getOptionForItems('Profile'),
+                        ...getAjaxDropdownOptions('Profile'),
                         'value' => $CFG_GLPI["lock_lockprofile_id"],
                         'action' => getItemActionButtons(['info'], 'Profile'),
                       ] : [
@@ -568,7 +574,7 @@ class Config extends CommonDBTM
                        __('Software category deleted by the dictionary rules') => [
                         'name' => 'softwarecategories_id_ondelete',
                         'type' => 'select',
-                        'values' => getOptionForItems('SoftwareCategory'),
+                        ...getAjaxDropdownOptions('SoftwareCategory'),
                         'value' => $CFG_GLPI["softwarecategories_id_ondelete"],
                         'col_lg' => 6,
                        ],
@@ -630,7 +636,8 @@ class Config extends CommonDBTM
                        && Session::isMultiEntitiesMode()) ? [
                         'name' => 'transfers_id_auto',
                         'type' => 'select',
-                        'values' => array_merge([__('No automatic transfer')], getOptionForItems('Transfer')),
+                        ...getAjaxDropdownOptions(Transfer::class),
+                        'emptylabel' => __('No automatic transfer'),
                         'value' => $CFG_GLPI["transfers_id_auto"],
                        ] : [],
                    ]
@@ -1088,7 +1095,7 @@ class Config extends CommonDBTM
                        __('Default heading when adding a document to a ticket') => [
                         'name' => 'documentcategories_id_forticket',
                         'type' => 'select',
-                        'values' => getOptionForItems('DocumentCategory'),
+                        ...getAjaxDropdownOptions('DocumentCategory'),
                         'value' => $CFG_GLPI["documentcategories_id_forticket"],
                         'actions' => getItemActionButtons(['info', 'add'], 'DocumentCategory'),
                        ],
@@ -1131,7 +1138,36 @@ class Config extends CommonDBTM
                         'matrix' => $matrix,
                        ]
                    ]
-               ]
+               ],
+               __('Child tickets') => [
+                   'visible' => true,
+                   'inputs' => [
+                       '' => [
+                           'content' => '<p>' . __('Propagation applies to all descendants and respects their permissions and status transitions. Private followups are never copied.') . '</p>',
+                           'col_lg' => 12,
+                       ],
+                       __('Move new child tickets to processing when their parent starts processing') => [
+                           'name' => 'child_ticket_propagate_processing',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_processing'] ?? 0,
+                       ],
+                       __('Resolve child tickets when their parent is resolved') => [
+                           'name' => 'child_ticket_propagate_solved',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_solved'] ?? 0,
+                       ],
+                       __('Close child tickets when their parent is closed') => [
+                           'name' => 'child_ticket_propagate_closed',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_closed'] ?? 0,
+                       ],
+                       __('Copy newly added public followups to child tickets') => [
+                           'name' => 'child_ticket_propagate_public_followups',
+                           'type' => 'checkbox',
+                           'value' => $CFG_GLPI['child_ticket_propagate_public_followups'] ?? 0,
+                       ],
+                   ],
+               ],
             ]
         ];
         //debug matrix
@@ -1365,7 +1401,7 @@ class Config extends CommonDBTM
                     __('Request sources by default') => [
                        'type' => 'select',
                        'name' => 'default_requesttypes_id',
-                       'values' => getOptionForItems('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
+                       ...getAjaxDropdownOptions('RequestType', ['is_active' => 1, 'is_ticketheader' => 1]),
                        'value' => $data["default_requesttypes_id"],
                     ],
                     __('Tasks state by default') => [
@@ -1374,7 +1410,8 @@ class Config extends CommonDBTM
                        'values' => [
                           Planning::INFO => _n('Information', 'Information', 1),
                           Planning::TODO => __('To do'),
-                          Planning::DONE => __('Done')
+                          Planning::DONE => __('Done'),
+                          Planning::CANCELLED => __('Cancelled')
                        ],
                        'value' => $data["task_state"],
                     ],

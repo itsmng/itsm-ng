@@ -186,7 +186,7 @@ abstract class HTMLTableEntity
             }
         } else {
             // Manage __RAND__ to be computed on display
-            $content = $this->content;
+            $content = (string) $this->content;
             $content = str_replace('__RAND__', mt_rand(), $content);
             echo $content;
         }

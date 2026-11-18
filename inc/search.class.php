@@ -3607,6 +3607,10 @@ JAVASCRIPT;
         }
         $ret = "";
         switch ($itemtype) {
+            case 'Ticket':
+                $ret = "`glpi_tickets`.`requesttypes_id` AS requesttypes_id,";
+                break;
+
             case 'FieldUnicity':
                 $ret = "`glpi_fieldunicities`.`itemtype` AS ITEMTYPE,";
                 break;
@@ -7528,6 +7532,32 @@ JAVASCRIPT;
                         self::$search[$itemtype] = $item->searchOptions();
                     }
                     break;
+            }
+
+            if (
+                !($item instanceof CommonDBTM)
+                && $itemtype !== 'AllAssets'
+                && !isset($CFG_GLPI['union_search_type'][$itemtype])
+            ) {
+                $item = getItemForItemtype($itemtype);
+            }
+
+            $has_native_last_updater = false;
+            if ($item instanceof CommonDBTM) {
+                $has_native_last_updater = !empty($item->getSearchOptionByField('linkfield', 'users_id_lastupdater'));
+            }
+
+            if ($itemtype === 'AllAssets') {
+                self::$search[$itemtype][CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION]
+                    = CommonDBTM::getLastHistoryUserSearchOption('asset_types', 'AllAssets');
+            } elseif (
+                $item instanceof CommonDBTM
+                && $item->dohistory
+                && !$has_native_last_updater
+                && !isset(self::$search[$itemtype][CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION])
+            ) {
+                self::$search[$itemtype][CommonDBTM::LAST_HISTORY_USER_SEARCH_OPTION]
+                    = CommonDBTM::getLastHistoryUserSearchOption($item->getTable(), $itemtype);
             }
 
             if (

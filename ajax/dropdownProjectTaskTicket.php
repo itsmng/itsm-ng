@@ -52,15 +52,11 @@ if (isset($_POST["projects_id"])) {
         $condition['glpi_projecttasks.entities_id'] = $_POST['entity_restrict'];
     }
 
-    $values = getItemByEntity(ProjectTask::class, Session::getActiveEntity(), $condition);
-    if (isset($_POST["used"]) && !empty($_POST["used"])) {
-        $used = $_POST["used"];
-        foreach ($used as $key => $value) {
-            if (isset($values[$key])) {
-                unset($values[$key]);
-            }
-        }
-    }
-
-    echo json_encode($values);
+    $select = getAjaxDropdownOptionsByEntity(
+        ProjectTask::class,
+        $_POST['entity_restrict'] ?? Session::getActiveEntity(),
+        $condition,
+        array_values($_POST['used'] ?? [])
+    );
+    echo json_encode(expandSelect($select));
 }

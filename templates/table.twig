@@ -37,7 +37,8 @@
     "dataSource": {
         "type": {{ (has_remote_data ? 'remote' : 'local')|json_encode|raw }},
         "url": {{ has_remote_data ? url|json_encode|raw : "null" }},
-        "rows": {{ has_remote_data ? '[]' : values|json_encode|raw }}
+        "rows": {{ has_remote_data ? '[]' : values|json_encode|raw }},
+        "rowOrder": {{ has_remote_data ? 'null' : values|default([])|keys|json_encode|raw }}
     },
     "selection": {
         "type": {{ (has_radio_selection ? 'radio' : (has_massive_action ? 'massive-action' : 'none'))|json_encode|raw }},
@@ -62,6 +63,10 @@
         "enabled": {{ show_export is defined ? (show_export ? "true" : "false") : "true" }},
         "target": {{ export_target is defined ? export_target|json_encode|raw : "null" }},
         "params": {{ export_params is defined ? export_params|json_encode|raw : "null" }}
+    },
+    "search": {
+        "enabled": {{ search is defined and search ? "true" : "false" }},
+        "placeholder": {{ search_placeholder is defined ? search_placeholder|json_encode|raw : "Search"|json_encode|raw }}
     }
 }
 </script>

@@ -66,7 +66,6 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
         $already_used = in_array($_POST["field"], $used);
     }
 
-    echo "<table width='100%'><tr><td width='30%' aria-label='Rule action settings table'>";
     $rule = getItemForItemtype($_POST["sub_type"]);
     $actions_options = $rule->getAllActions();
     $action_type = '';
@@ -91,6 +90,8 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
     foreach ($actions as $action) {
         $elements[$action] = RuleAction::getActionByID($action);
     }
+    $value = json_encode($_POST['value'] ?? '', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    $initialType = json_encode($action_type);
     $updateScript = <<<JS
        var condition = $('#DropdownForConditionAction').val();
        var condition_span = $('#action_type_span');
@@ -98,6 +99,7 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
 
        condition_span.load(url, {
            action_type: condition,
+           value: condition === $initialType ? $value : '',
            field: "{$_POST['field']}",
            sub_type: "{$_POST['sub_type']}",
            {$item->getForeignKeyField()}: "{$_POST[$item->getForeignKeyField()]}"
@@ -114,5 +116,5 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
          ],
          'init' => $updateScript
     ]);
-    echo "<span id='action_type_span'></span>\n";
+    echo "<div class='mt-3' id='action_type_span'></div>\n";
 }

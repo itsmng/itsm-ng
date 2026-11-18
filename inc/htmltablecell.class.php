@@ -175,6 +175,11 @@ class HTMLTableCell extends HTMLTableEntity
     }
 
 
+    public function isOnLine($index)
+    {
+        return $index >= $this->start && $index < $this->start + $this->numberOfLines;
+    }
+
     public function getNumberOfLines()
     {
         return $this->numberOfLines;

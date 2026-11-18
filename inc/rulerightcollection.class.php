@@ -78,71 +78,59 @@ class RuleRightCollection extends RuleCollection
     */
     public function showTestResults($rule, array $output, $global_result)
     {
-
         $actions = $rule->getActions();
-        echo "<tr><th colspan='4'>" . __('Rule results') . "</th></tr>";
-        echo "<tr class='tab_bg_2'>";
-        echo "<td class='center' colspan='2'>" . _n('Validation', 'Validations', 1) . "</td><td colspan='2'>" .
-             "<span class='b'>" . Dropdown::getYesNo($global_result) . "</span></td>";
-
-        if (isset($output["_ldap_rules"]["rules_entities"])) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='4'>" . __('Entities assignment') . "</td>";
-            foreach ($output["_ldap_rules"]["rules_entities"] as $entities) {
-                foreach ($entities as $entity) {
-                    $this->displayActionByName("entity", $entity[0]);
-                    if (isset($entity[1])) {
-                        $this->displayActionByName("recursive", $entity[1]);
-                    }
+        $values = [['group' => __('Rule results'), 'field' => _n('Validation', 'Validations', 1),
+            'value' => Dropdown::getYesNo($global_result)]];
+        $add = static function ($group, $field, $value) use (&$values) {
+            switch ($field) {
+                case 'entity':
+                    $label = Entity::getTypeName(1);
+                    $display = Dropdown::getDropdownName('glpi_entities', $value);
+                    break;
+                case 'profile':
+                    $label = _n('Profile', 'Profiles', Session::getPluralNumber());
+                    $display = Dropdown::getDropdownName('glpi_profiles', $value);
+                    break;
+                default:
+                    $label = __('Recursive');
+                    $display = Dropdown::getYesNo($value);
+            }
+            $values[] = ['group' => $group, 'field' => $label, 'value' => $display];
+        };
+        foreach ($output['_ldap_rules']['rules_entities'] ?? [] as $entities) {
+            foreach ($entities as $entity) {
+                $add(__('Entities assignment'), 'entity', $entity[0]);
+                if (isset($entity[1])) {
+                    $add(__('Entities assignment'), 'is_recursive', $entity[1]);
                 }
             }
         }
-
-        if (isset($output["_ldap_rules"]["rules_rights"])) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td colspan='4' class='center'>" . __('Rights assignment') . "</td>";
-            foreach ($output["_ldap_rules"]["rules_rights"] as $val) {
-                $this->displayActionByName("profile", $val[0]);
+        foreach ($output['_ldap_rules']['rules_rights'] ?? [] as $assignment) {
+            $add(__('Rights assignment'), 'profile', $assignment[0]);
+        }
+        foreach ($output['_ldap_rules']['rules_entities_rights'] ?? [] as $assignment) {
+            foreach ((array) $assignment[0] as $entity) {
+                $add(__('Rights and entities assignment'), 'entity', $entity);
+            }
+            if (isset($assignment[1])) {
+                $add(__('Rights and entities assignment'), 'profile', $assignment[1]);
+            }
+            if (isset($assignment[2])) {
+                $add(__('Rights and entities assignment'), 'is_recursive', $assignment[2]);
             }
         }
-
-        if (isset($output["_ldap_rules"]["rules_entities_rights"])) {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td colspan='4' class='center'>" . __('Rights and entities assignment') . "</td>";
-            foreach ($output["_ldap_rules"]["rules_entities_rights"] as $val) {
-                if (is_array($val[0])) {
-                    foreach ($val[0] as $tmp) {
-                        $this->displayActionByName("entity", $tmp);
-                    }
-                } else {
-                    $this->displayActionByName("entity", $val[0]);
-                }
-                if (isset($val[1])) {
-                    $this->displayActionByName("profile", $val[1]);
-                }
-                if (isset($val[2])) {
-                    $this->displayActionByName("is_recursive", $val[2]);
-                }
+        unset($output['_ldap_rules']);
+        foreach ($output as $field => $value) {
+            if (isset($actions[$field])) {
+                $values[] = ['group' => __('Rule results'), 'field' => $actions[$field]['name'],
+                    'value' => $rule->getActionValue($field, $actions[$field]['action_type'] ?? '', $value)];
             }
         }
-
-        if (isset($output["_ldap_rules"])) {
-            unset($output["_ldap_rules"]);
-        }
-        foreach ($output as $criteria => $value) {
-            if (isset($actions[$criteria])) { // ignore _* fields
-                if (isset($actions[$criteria]['action_type'])) {
-                    $actiontype = $actions[$criteria]['action_type'];
-                } else {
-                    $actiontype = '';
-                }
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center'>" . $actions[$criteria]["name"] . "</td>";
-                echo "<td class='center'>" . $rule->getActionValue($criteria, $actiontype, $value);
-                echo "</td></tr>\n";
-            }
-        }
-        echo "</tr>";
+        renderTwigTemplate('table.twig', [
+            'id' => 'ruleRightResults', 'state_key' => 'ruleRightResults',
+            'fields' => ['group' => __('Type'), 'field' => _n('Field', 'Fields', 1), 'value' => __('Value')],
+            'values' => $values, 'pageSize' => max(1, (int) ($_SESSION['glpilist_limit'] ?? 15)),
+        ]);
     }
 
 

@@ -163,7 +163,8 @@ class Rack extends CommonDBTM
                 'type' => 'submit',
                 'name' => $isNew ? 'add' : 'update',
                 'value' => $isNew ? __('Add') : __('Update'),
-                'class' => 'btn btn-secondary'
+                'class' => $isNew ? 'btn btn-primary' : 'btn btn-secondary',
+                'icon' => $isNew ? 'fas fa-plus' : null
               ] : []),
               !$isNew && !$this->isDeleted() && $this->canDeleteItem() ? [
                 'type' => 'submit',
@@ -204,21 +205,21 @@ class Rack extends CommonDBTM
                     __("Type") => [
                        'name' => 'racktypes_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('RackType'),
+                       ...getAjaxDropdownOptions('RackType'),
                        'value' => $this->fields['racktypes_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "RackType"),
                     ],
                     __("Technician in charge of the hardware") => [
                        'name' => 'users_id_tech',
                        'type' => 'select',
-                       'values' => getOptionsForUsers('own_ticket', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('own_ticket', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields['users_id_tech'],
                        'actions' => getItemActionButtons(['info'], "User"),
                     ],
                     __("Manufacturer") => [
                        'name' => 'manufacturers_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('Manufacturer'),
+                       ...getAjaxDropdownOptions('Manufacturer'),
                        'value' => $this->fields['manufacturers_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "Manufacturer"),
                     ],
@@ -233,7 +234,7 @@ class Rack extends CommonDBTM
                     __("Model") => [
                        'name' => 'rackmodels_id',
                        'type' => 'select',
-                       'values' => getOptionForItems('RackModel'),
+                       ...getAjaxDropdownOptions('RackModel'),
                        'value' => $this->fields['rackmodels_id'],
                        'actions' => getItemActionButtons(['info', 'add'], "RackModel"),
                     ],
@@ -575,52 +576,31 @@ class Rack extends CommonDBTM
         echo "<div id='viewlist'>";
 
         $rack = new self();
-        if (!count($racks)) {
-            echo "<table class='tab_cadre_fixe' aria-label='No rack Found'><tr><th>" . __('No rack found') . "</th></tr>";
-            echo "</table>";
-        } else {
-            if ($canedit) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = [
-                   'num_displayed'   => min($_SESSION['glpilist_limit'], count($racks)),
-                   'container'       => 'mass' . __CLASS__ . $rand
-                ];
-                Html::showMassiveActions($massiveactionparams);
-            }
-
-            echo "<table class='tab_cadre_fixehov' aria-label='Rack List'>";
-            $header = "<tr>";
-            if ($canedit) {
-                $header .= "<th width='10'>";
-                $header .= Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                $header .= "</th>";
-            }
-            $header .= "<th>" . __('Name') . "</th>";
-            $header .= "</tr>";
-
-            echo $header;
-            foreach ($racks as $row) {
-                $rack->getFromResultSet($row);
-                echo "<tr lass='tab_bg_1'>";
-                if ($canedit) {
-                    echo "<td>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $row["id"]);
-                    echo "</td>";
-                }
-                echo "<td>" . $rack->getLink() . "</td>";
-                echo "</tr>";
-            }
-            echo $header;
-            echo "</table>";
-
-            if ($canedit && count($racks)) {
-                $massiveactionparams['ontop'] = false;
-                Html::showMassiveActions($massiveactionparams);
-            }
-            if ($canedit) {
-                Html::closeForm();
-            }
+        $values = [];
+        $selection = [];
+        foreach ($racks as $data) {
+            $rack->getFromResultSet($data);
+            $values[] = [$rack->getLink()];
+            $selection[] = sprintf('item[%s][%s]', self::class, $data['id']);
         }
+        $table_id = 'roomRacks_' . $room_id;
+        $table = [
+            'id' => $table_id,
+            'state_key' => $table_id,
+            'fields' => [__('Name')],
+            'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ];
+        if ($canedit) {
+            Html::showMassiveActions([
+                'container' => $table_id,
+                'num_displayed' => min((int) ($_SESSION['glpilist_limit'] ?? 15), count($values)),
+                'itemtype' => self::class,
+                'display_arrow' => false,
+            ]);
+            $table['massive_action'] = $selection;
+        }
+        renderTwigTemplate('table.twig', $table);
         echo "</div>";
 
         echo "<div id='viewgraph'>";

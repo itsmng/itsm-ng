@@ -60,7 +60,7 @@ class DeviceMotherboard extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicemotherboardmodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceMotherBoardModel'),
+                 ...getAjaxDropdownOptions('DeviceMotherBoardModel'),
                  'value' => $this->fields['devicemotherboardmodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceMotherBoardModel'),
               ]

@@ -2,6 +2,8 @@
 @import "./spacing";
 @import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
 @import "./colors.scss";
+@import "./components/appointments";
+@import "./components/planning";
 
 :root {
     --header-height: 3.5rem;
@@ -1286,6 +1288,20 @@ div.chip>p {
 
 .itsm-table-shell {
     position: relative;
+}
+
+.bootstrap-table .table > tbody > tr.ticket-source-highlight > td {
+    --bs-table-bg: var(--ticket-highlight-bg);
+    --bs-table-color: var(--ticket-highlight-color);
+    --bs-table-striped-bg: var(--ticket-highlight-bg);
+    --bs-table-striped-color: var(--ticket-highlight-color);
+    --bs-table-hover-bg: var(--ticket-highlight-bg);
+    --bs-table-hover-color: var(--ticket-highlight-color);
+
+    a:not(.btn):not(.badge) {
+        color: var(--ticket-highlight-color);
+        text-decoration: underline;
+    }
 }
 
 .sticky-table-header {

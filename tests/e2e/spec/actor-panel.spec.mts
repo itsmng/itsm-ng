@@ -36,8 +36,6 @@ async function addObserver(
   const actorSelect = await waitForActorValueSelect(observerPanel);
   const actorId = userId === null ? '0' : String(userId);
 
-  await expect(actorSelect.locator(`option[value="${actorId}"]`)).toHaveCount(1);
-
   if (userId === null) {
     await actorSelect.selectOption(actorId);
   } else {
@@ -47,7 +45,7 @@ async function addObserver(
           && response.request().method() === 'GET'
           && response.ok();
       }),
-      actorSelect.selectOption(actorId),
+      selectObserver(observerPanel, actorId),
     ]);
   }
 
@@ -77,16 +75,28 @@ async function addObserver(
   );
 }
 
-async function getAvailableObserverUserIds(observerPanel: Locator, count: number): Promise<number[]> {
-  const actorSelect = await waitForActorValueSelect(observerPanel);
-  const actorIds = await actorSelect.locator('option').evaluateAll((options) => {
-    return Array.from(new Set(options
-      .map((option) => option.getAttribute('value') || '')
-      .filter((value) => value !== '' && value !== '0')))
-      .map((value) => Number(value))
-      .filter((value) => Number.isInteger(value) && value > 0);
-  });
+async function openObserverChoices(panel: Locator): Promise<Array<{ id: number | string; text: string }>> {
+  const select = await waitForActorValueSelect(panel);
+  const responsePromise = panel.page().waitForResponse((response) =>
+    response.url().includes('/ajax/getDropdownUsers.php') && response.ok());
+  await select.locator('..').locator('.select2-selection').click();
+  const response = await responsePromise;
+  const data = await response.json();
+  return data.results;
+}
 
+async function selectObserver(panel: Locator, userId: string): Promise<void> {
+  const choices = await openObserverChoices(panel);
+  const user = choices.find((choice) => String(choice.id) === userId);
+  expect(user).toBeDefined();
+  await panel.page().getByRole('option', { name: user!.text, exact: true }).click();
+}
+
+async function getAvailableObserverUserIds(observerPanel: Locator, count: number): Promise<number[]> {
+  const choices = await openObserverChoices(observerPanel);
+  const actorIds = choices.map((choice) => Number(choice.id))
+    .filter((id) => Number.isInteger(id) && id > 0);
+  await observerPanel.page().keyboard.press('Escape');
   expect(actorIds.length).toBeGreaterThanOrEqual(count);
   return actorIds.slice(0, count);
 }
@@ -115,16 +125,16 @@ test('shows the pending badge and submits pending observer changes with manual e
   await expect(pendingObserver).toContainText(alternativeEmail);
   await expect(pendingObserver).toContainText('Email followup: No');
   await expect(
-    pendingObserver.locator('input[type="hidden"][name="_itil_observer[_type]"][value="user"]')
+    pendingObserver.locator('input[type="hidden"][name="_itil_observer[0][_type]"][value="user"]')
   ).toHaveCount(1);
   await expect(
-    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[users_id]"][value="${seed.userId}"]`)
+    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[0][users_id]"][value="${seed.userId}"]`)
   ).toHaveCount(1);
   await expect(
-    pendingObserver.locator('input[type="hidden"][name="_itil_observer[use_notification][]"][value="0"]')
+    pendingObserver.locator('input[type="hidden"][name="_itil_observer[0][use_notification][]"][value="0"]')
   ).toHaveCount(1);
   await expect(
-    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[alternative_email][]"][value="${alternativeEmail}"]`)
+    pendingObserver.locator(`input[type="hidden"][name="_itil_observer[0][alternative_email][]"][value="${alternativeEmail}"]`)
   ).toHaveCount(1);
 
   await submitForm(page, 'update');
@@ -163,10 +173,10 @@ test('does not submit a pending observer that was removed before saving', async 
   await pendingObserver.locator('[data-role="remove-actor"]').click();
   await expect(observerPanel.locator('[data-actor-entry]')).toHaveCount(0);
   await expect(observerPanel.locator('[data-role="empty-state"]')).toBeVisible();
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[_type]"]')).toHaveCount(0);
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[users_id]"]')).toHaveCount(0);
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[use_notification][]"]')).toHaveCount(0);
-  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[alternative_email][]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][_type]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][users_id]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][use_notification][]"]')).toHaveCount(0);
+  await expect(observerPanel.locator('input[type="hidden"][name="_itil_observer[0][alternative_email][]"]')).toHaveCount(0);
 
   await submitForm(page, 'update');
 
@@ -227,3 +237,54 @@ test('submits multiple pending observers in a single save', async ({ page, reque
     `[data-actor-entry][data-entry-type="user"][data-entry-id="${secondObserverId}"][data-persisted="1"]`
   )).toBeVisible();
 });
+
+for (const role of ['requester', 'observer', 'assign'] as const) {
+  test(`keeps two pending ${role} users and saves both on an existing ticket`, async ({ page, request }) => {
+    const seed = await seedTicket(request, { withoutActors: true });
+    await openTicket(page, seed);
+    await openObserverPanel(page);
+    const panel = getActorPanel(page, role);
+    const [firstUserId, secondUserId] = await getAvailableObserverUserIds(panel, 2);
+    for (const userId of [firstUserId, secondUserId]) {
+      await selectObserver(panel, String(userId));
+      await panel.locator('[data-role="add-actor"]').click();
+    }
+    await expect(panel.locator('[data-actor-entry][data-persisted="0"]')).toHaveCount(2);
+    await expect(panel.locator('.badge.text-bg-warning')).toHaveCount(2);
+    await submitForm(page, 'update');
+    await page.reload();
+    await openObserverPanel(page);
+    for (const userId of [firstUserId, secondUserId]) {
+      await expect(panel.locator(
+        `[data-actor-entry][data-entry-type="user"][data-entry-id="${userId}"][data-persisted="1"]`
+      )).toBeVisible();
+    }
+  });
+}
+
+for (const role of ['assign', 'observer'] as const) {
+  test(`associates myself as ${role === 'assign' ? 'technician' : 'observer'} and persists after reload`, async ({ page, request }) => {
+    const seed = await seedTicket(request, { withoutActors: true });
+    await openTicket(page, seed);
+    await openObserverPanel(page);
+
+    const panel = getActorPanel(page, role);
+    const button = panel.locator(`button[name="addme_${role}"]`);
+    await expect(panel.locator('[data-actor-entry]')).toHaveCount(0);
+    await expect(button).toBeVisible();
+    await button.click();
+    await page.waitForLoadState('networkidle');
+    await openObserverPanel(page);
+
+    const entry = panel.locator(`[data-actor-entry][data-entry-type="user"][data-entry-id="${seed.userId}"][data-persisted="1"]`);
+    await expect(entry).toBeVisible();
+    await expect(panel.locator('[data-actor-entry]')).toHaveCount(1);
+    await expect(button).toHaveCount(0);
+
+    await page.reload();
+    await openObserverPanel(page);
+    await expect(entry).toBeVisible();
+    await expect(panel.locator('[data-actor-entry]')).toHaveCount(1);
+    await expect(button).toHaveCount(0);
+  });
+}

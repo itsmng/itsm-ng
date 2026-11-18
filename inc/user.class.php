@@ -288,6 +288,7 @@ class User extends CommonDBTM
         $this->addStandardTab('Change_Item', $ong, $options);
         $this->addStandardTab('Document_Item', $ong, $options);
         $this->addStandardTab('Reservation', $ong, $options);
+        $this->addStandardTab('AppointmentTarget', $ong, $options);
         $this->addStandardTab('Auth', $ong, $options);
         $this->addStandardTab('Link', $ong, $options);
         $this->addStandardTab('Certificate_Item', $ong, $options);
@@ -354,9 +355,33 @@ class User extends CommonDBTM
         $ol = new ObjectLock();
         $ol->deleteByCriteria(['users_id' => $this->fields['id']]);
 
-        // Reminder does not extends CommonDBConnexity
-        $r = new Reminder();
-        $r->deleteByCriteria(['users_id' => $this->fields['id']]);
+        // Remove the user's visibility first, including visibility on their own notes/feeds.
+        $this->deleteChildrenAndRelationsFromDb([
+            Reminder_User::class,
+            RSSFeed_User::class,
+            Item_Kanban::class,
+        ]);
+
+        // Keep shared notes and feeds available to their remaining audiences.
+        foreach ([new Reminder(), new RSSFeed()] as $item) {
+            $iterator = $DB->request([
+                'SELECT' => ['id'],
+                'FROM'   => $item->getTable(),
+                'WHERE'  => ['users_id' => $this->fields['id']],
+            ]);
+            foreach ($iterator as $row) {
+                if ($item->getFromDB($row['id']) && $item->countVisibilities() === 0) {
+                    $item->delete(['id' => $row['id']], 1);
+                }
+            }
+            $DB->update($item->getTable(), ['users_id' => 0], ['users_id' => $this->fields['id']]);
+        }
+
+        $recall = new PlanningRecall();
+        $recall->deleteByCriteria(['users_id' => $this->fields['id']], 1);
+
+        $dashboard = new Dashboard();
+        $dashboard->deleteByCriteria(['userId' => $this->fields['id']], 1);
 
         // Delete private bookmark
         $ss = new SavedSearch();
@@ -402,8 +427,6 @@ class User extends CommonDBTM
               Profile_User::class,
               ProjectTaskTeam::class,
               ProjectTeam::class,
-              Reminder_User::class,
-              RSSFeed_User::class,
               SavedSearch_User::class,
               Ticket_User::class,
               UserEmail::class,
@@ -2597,7 +2620,7 @@ class User extends CommonDBTM
                    _x('person', 'Title') => [
                       'type' => 'select',
                       'name' => 'usertitles_id',
-                      'values' => getOptionForItems('UserTitle'),
+                      ...getAjaxDropdownOptions('UserTitle'),
                       'value' => $this->fields['usertitles_id'],
                       'actions' => getItemActionButtons(['info', 'add'], 'UserTitle'),
                    ],
@@ -2609,14 +2632,14 @@ class User extends CommonDBTM
                    Profile::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_profiles_id',
-                      'values' => getOptionForItems('Profile'),
+                      ...getAjaxDropdownOptions('Profile'),
                       'value' => Profile::getDefault(),
                       'actions' => getItemActionButtons(['info', 'add'], 'Profile'),
                    ],
                    Entity::getTypeName(1) => [
                       'type' => 'select',
                       'name' => '_entities_id',
-                      'values' => getOptionForItems('Entity'),
+                      ...getAjaxDropdownOptions('Entity'),
                       'actions' => getItemActionButtons(['info', 'add'], 'Entity'),
                    ],
                    __('Recursive') => [
@@ -2647,9 +2670,9 @@ class User extends CommonDBTM
                       'col_lg' => 6,
                    ] : [],
                    __('Responsible') => ($higherrights) ? [
-                      'type' => 'select',
                       'name' => 'users_id_supervisor',
-                      'values' => getOptionsForUsers('all'),
+                      'type' => 'select',
+                      ...getAjaxUserDropdownOptions('all'),
                       'value' => $this->fields['users_id_supervisor'],
                       'col_lg' => 6,
                    ] : [],
@@ -3803,6 +3826,8 @@ class User extends CommonDBTM
      * @param integer         $limit            limit LIMIT value (default -1 no limit)
      * @param boolean         $inactive_deleted true to retreive also inactive or deleted users
      *
+     * @param array $conditions Additional SQL filters applied before pagination
+     *
      * @return mysqli_result|boolean
      */
     public static function getSqlSearchResult(
@@ -3818,7 +3843,7 @@ class User extends CommonDBTM
         $with_no_right = 0,
         array $conditions = []
     ) {
-        global $DB;
+        global $DB, $CFG_GLPI;
 
         // No entity define : use active ones
         if ($entity_restrict < 0) {
@@ -4050,12 +4075,6 @@ class User extends CommonDBTM
                   'glpi_users.is_active'  => 1,
                   [
                      'OR' => [
-                        ['glpi_users.begin_date' => null],
-                        ['glpi_users.begin_date' => ['<', new QueryExpression('NOW()')]]
-                     ]
-                  ],
-                  [
-                     'OR' => [
                         ['glpi_users.end_date' => null],
                         ['glpi_users.end_date' => ['>', new QueryExpression('NOW()')]]
                      ]
@@ -4063,6 +4082,14 @@ class User extends CommonDBTM
 
                 ]
             );
+            if (empty($CFG_GLPI['allow_future_users_in_dropdowns'])) {
+                $WHERE[] = [
+                    'OR' => [
+                        ['glpi_users.begin_date' => null],
+                        ['glpi_users.begin_date' => ['<', new QueryExpression('NOW()')]]
+                    ]
+                ];
+            }
         }
 
         if (
@@ -4398,35 +4425,19 @@ class User extends CommonDBTM
      */
     public static function showAddExtAuthForm()
     {
-
-        if (!Session::haveRight("user", self::IMPORTEXTAUTHUSERS)) {
+        if (!Session::haveRight('user', self::IMPORTEXTAUTHUSERS)) {
             return false;
         }
-
-        echo "<div class='center'>\n";
-        echo "<form aria-label='External Authentication' method='post' action='" . Toolbox::getItemTypeFormURL('User') . "'>\n";
-
-        echo "<table class='tab_cadre' aria-label='External Auth form'>\n";
-        echo "<tr><th colspan='4'>" . __('Automatically add a user of an external source') . "</th></tr>\n";
-
-        echo "<tr class='tab_bg_1'><td>" . __('Login') . "</td>\n";
-        echo "<td><input type='text' name='login'></td></tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td class='tab_bg_2 center' colspan='2'>\n";
-        echo "<input type='submit' name='add_ext_auth_ldap' value=\"" . __s('Import from directories') . "\"
-             class='submit'>\n";
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td class='tab_bg_2 center' colspan='2'>\n";
-        echo "<input type='submit' name='add_ext_auth_simple' value=\"" . __s('Import from other sources') . "\"
-             class='submit'>\n";
-        echo "</td></tr>\n";
-
-        echo "</table>";
-        Html::closeForm();
-        echo "</div>\n";
+        renderTwigForm([
+            'action' => Toolbox::getItemTypeFormURL('User'),
+            'buttons' => [
+                ['type' => 'submit', 'name' => 'add_ext_auth_ldap', 'value' => __('Import from directories'), 'class' => 'btn btn-primary', 'icon' => 'fas fa-plus'],
+                ['type' => 'submit', 'name' => 'add_ext_auth_simple', 'value' => __('Import from other sources'), 'class' => 'btn btn-primary', 'icon' => 'fas fa-plus'],
+            ],
+            'content' => [__('Automatically add a user of an external source') => ['visible' => true, 'inputs' => [
+                __('Login') => ['type' => 'text', 'name' => 'login'],
+            ]]],
+        ]);
     }
 
 
@@ -4546,219 +4557,85 @@ class User extends CommonDBTM
     {
         global $DB, $CFG_GLPI;
 
-        $ID = $this->getField('id');
-
-        if ($tech) {
-            $type_user   = $CFG_GLPI['linkuser_tech_types'];
-            $type_group  = $CFG_GLPI['linkgroup_tech_types'];
-            $field_user  = 'users_id_tech';
-            $field_group = 'groups_id_tech';
-        } else {
-            $type_user   = $CFG_GLPI['linkuser_types'];
-            $type_group  = $CFG_GLPI['linkgroup_types'];
-            $field_user  = 'users_id';
-            $field_group = 'groups_id';
+        $ID = $this->getID();
+        $type_user = $CFG_GLPI[$tech ? 'linkuser_tech_types' : 'linkuser_types'];
+        $type_group = $CFG_GLPI[$tech ? 'linkgroup_tech_types' : 'linkgroup_types'];
+        $field_user = $tech ? 'users_id_tech' : 'users_id';
+        $field_group = $tech ? 'groups_id_tech' : 'groups_id';
+        $escape = static function ($value) {
+            return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        };
+        $groups = [];
+        foreach ($DB->request([
+            'SELECT' => ['glpi_groups_users.groups_id', 'glpi_groups.name'],
+            'FROM' => 'glpi_groups_users',
+            'LEFT JOIN' => ['glpi_groups' => ['FKEY' => [
+                'glpi_groups_users' => 'groups_id', 'glpi_groups' => 'id',
+            ]]],
+            'WHERE' => ['glpi_groups_users.users_id' => $ID],
+        ]) as $data) {
+            $groups[$data['groups_id']] = $data['name'];
         }
 
-        $group_where = "";
-        $groups      = [];
-
-        $iterator = $DB->request([
-           'SELECT'    => [
-              'glpi_groups_users.groups_id',
-              'glpi_groups.name'
-           ],
-           'FROM'      => 'glpi_groups_users',
-           'LEFT JOIN' => [
-              'glpi_groups' => [
-                 'FKEY' => [
-                    'glpi_groups_users'  => 'groups_id',
-                    'glpi_groups'        => 'id'
-                 ]
-              ]
-           ],
-           'WHERE'     => ['glpi_groups_users.users_id' => $ID]
-        ]);
-        $number = count($iterator);
-
-        $group_where = [];
-        while ($data = $iterator->next()) {
-            $group_where[$field_group][] = $data['groups_id'];
-            $groups[$data["groups_id"]] = $data["name"];
-        }
-
-        echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='items information'>";
-        $header = "<tr><th>" . _n('Type', 'Types', 1) . "</th>";
-        $header .= "<th>" . Entity::getTypeName(1) . "</th>";
-        $header .= "<th>" . __('Name') . "</th>";
-        $header .= "<th>" . __('Serial number') . "</th>";
-        $header .= "<th>" . __('Inventory number') . "</th>";
-        $header .= "<th>" . __('Status') . "</th>";
-        $header .= "<th>&nbsp;</th></tr>";
-        echo $header;
-
-        foreach ($type_user as $itemtype) {
-            if (!($item = getItemForItemtype($itemtype))) {
+        foreach (['direct' => $type_user, 'groups' => $type_group] as $scope => $types) {
+            if ($scope === 'groups' && !$groups) {
                 continue;
             }
-            if ($item->canView()) {
-                $itemtable = getTableForItemType($itemtype);
-                $iterator_params = [
-                   'FROM'   => $itemtable,
-                   'WHERE'  => [$field_user => $ID]
-                ];
-
-                if ($item->maybeTemplate()) {
-                    $iterator_params['WHERE']['is_template'] = 0;
-                }
-                if ($item->maybeDeleted()) {
-                    $iterator_params['WHERE']['is_deleted'] = 0;
-                }
-
-                $item_iterator = $DB->request($iterator_params);
-
-                $type_name = $item->getTypeName();
-
-                while ($data = $item_iterator->next()) {
-                    $cansee = $item->can($data["id"], READ);
-                    if (!isset($data["name"])) {
-                        $linked_component = new ($itemtype::getDeviceType())();
-                        $linked_component->getFromDB($data[getForeignKeyFieldForItemType($itemtype::getDeviceType())]);
-                        $link = $linked_component->fields['designation'] . " (" . $data['id'] . ")";
-                    } else {
-                        $link   = $data["name"];
-                    }
-                    if ($cansee) {
-                        $link_item = $item::getFormURLWithID($data['id']);
-                        if ($_SESSION["glpiis_ids_visible"] || empty($link)) {
-                            $link = sprintf(__('%1$s (%2$s)'), $link, $data["id"]);
-                        }
-                        $link = "<a href='" . $link_item . "'>" . $link . "</a>";
-                    }
-                    $linktype = "";
-                    if ($data[$field_user] == $ID) {
-                        $linktype = self::getTypeName(1);
-                    }
-                    echo "<tr class='tab_bg_1'><td class='center'>$type_name</td>";
-                    echo "<td class='center'>" . Dropdown::getDropdownName(
-                        "glpi_entities",
-                        $data["entities_id"]
-                    ) . "</td>";
-                    echo "<td class='center'>$link</td>";
-                    echo "<td class='center'>";
-                    if (isset($data["serial"]) && !empty($data["serial"])) {
-                        echo $data["serial"];
-                    } else {
-                        echo '&nbsp;';
-                    }
-                    echo "</td><td class='center'>";
-                    if (isset($data["otherserial"]) && !empty($data["otherserial"])) {
-                        echo $data["otherserial"];
-                    } else {
-                        echo '&nbsp;';
-                    }
-                    echo "</td><td class='center'>";
-                    if (isset($data["states_id"])) {
-                        echo Dropdown::getDropdownName("glpi_states", $data['states_id']);
-                    } else {
-                        echo '&nbsp;';
-                    }
-
-                    echo "</td><td class='center'>$linktype</td></tr>";
-                }
-            }
-        }
-        if ($number) {
-            echo $header;
-        }
-        echo "</table></div>";
-
-        if (count($group_where)) {
-            echo "<div class='spaced'><table class='tab_cadre_fixehov' aria-label='Items Informations'>";
-            $header = "<tr>" .
-                  "<th>" . _n('Type', 'Types', 1) . "</th>" .
-                  "<th>" . Entity::getTypeName(1) . "</th>" .
-                  "<th>" . __('Name') . "</th>" .
-                  "<th>" . __('Serial number') . "</th>" .
-                  "<th>" . __('Inventory number') . "</th>" .
-                  "<th>" . __('Status') . "</th>" .
-                  "<th>&nbsp;</th></tr>";
-            echo $header;
-            $nb = 0;
-            foreach ($type_group as $itemtype) {
-                if (!($item = getItemForItemtype($itemtype))) {
+            $values = [];
+            foreach ($types as $itemtype) {
+                $item = getItemForItemtype($itemtype);
+                if (!$item || !$item->canView() || ($scope === 'groups' && !$item->isField($field_group))) {
                     continue;
                 }
-                if ($item->canView() && $item->isField($field_group)) {
-                    $itemtable = getTableForItemType($itemtype);
-                    $iterator_params = [
-                       'FROM'   => $itemtable,
-                       'WHERE'  => ['OR' => $group_where]
+                $criteria = [
+                    'FROM' => getTableForItemType($itemtype),
+                    'WHERE' => [$scope === 'direct' ? $field_user : $field_group => $scope === 'direct' ? $ID : array_keys($groups)],
+                ];
+                if ($item->maybeTemplate()) {
+                    $criteria['WHERE']['is_template'] = 0;
+                }
+                if ($item->maybeDeleted()) {
+                    $criteria['WHERE']['is_deleted'] = 0;
+                }
+                foreach ($DB->request($criteria) as $data) {
+                    $name = $data['name'] ?? '';
+                    if (!isset($data['name'])) {
+                        $component = getItemForItemtype($itemtype::getDeviceType());
+                        if ($component && $component->getFromDB($data[getForeignKeyFieldForItemType($itemtype::getDeviceType())])) {
+                            $name = $component->fields['designation'] . ' (' . $data['id'] . ')';
+                        }
+                    }
+                    $cansee = $item->can($data['id'], READ);
+                    if ($cansee && ($_SESSION['glpiis_ids_visible'] || $name === '')) {
+                        $name = sprintf(__('%1$s (%2$s)'), $name, $data['id']);
+                    }
+                    $link = $escape($name);
+                    if ($cansee) {
+                        $link = '<a href="' . $escape($item::getFormURLWithID($data['id'])) . '">' . $link . '</a>';
+                    }
+                    $relation = $scope === 'direct' ? self::getTypeName(1) : sprintf(
+                        __('%1$s = %2$s'), Group::getTypeName(1), $groups[$data[$field_group]] ?? ''
+                    );
+                    $values[] = [
+                        $escape($item->getTypeName()),
+                        $escape(Dropdown::getDropdownName('glpi_entities', $data['entities_id'])),
+                        $link,
+                        $escape($data['serial'] ?? ''),
+                        $escape($data['otherserial'] ?? ''),
+                        isset($data['states_id']) ? $escape(Dropdown::getDropdownName('glpi_states', $data['states_id'])) : '',
+                        $escape($relation),
                     ];
-
-                    if ($item->maybeTemplate()) {
-                        $iterator_params['WHERE']['is_template'] = 0;
-                    }
-                    if ($item->maybeDeleted()) {
-                        $iterator_params['WHERE']['is_deleted'] = 0;
-                    }
-
-                    $group_iterator = $DB->request($iterator_params);
-
-                    $type_name = $item->getTypeName();
-
-                    while ($data = $group_iterator->next()) {
-                        $nb++;
-                        $cansee = $item->can($data["id"], READ);
-                        $link   = $data["name"];
-                        if ($cansee) {
-                            $link_item = $item::getFormURLWithID($data['id']);
-                            if ($_SESSION["glpiis_ids_visible"] || empty($link)) {
-                                $link = sprintf(__('%1$s (%2$s)'), $link, $data["id"]);
-                            }
-                            $link = "<a href='" . $link_item . "'>" . $link . "</a>";
-                        }
-                        $linktype = "";
-                        if (isset($groups[$data[$field_group]])) {
-                            $linktype = sprintf(
-                                __('%1$s = %2$s'),
-                                Group::getTypeName(1),
-                                $groups[$data[$field_group]]
-                            );
-                        }
-                        echo "<tr class='tab_bg_1'><td class='center'>$type_name</td>";
-                        echo "<td class='center'>" . Dropdown::getDropdownName(
-                            "glpi_entities",
-                            $data["entities_id"]
-                        );
-                        echo "</td><td class='center'>$link</td>";
-                        echo "<td class='center'>";
-                        if (isset($data["serial"]) && !empty($data["serial"])) {
-                            echo $data["serial"];
-                        } else {
-                            echo '&nbsp;';
-                        }
-                        echo "</td><td class='center'>";
-                        if (isset($data["otherserial"]) && !empty($data["otherserial"])) {
-                            echo $data["otherserial"];
-                        } else {
-                            echo '&nbsp;';
-                        }
-                        echo "</td><td class='center'>";
-                        if (isset($data["states_id"])) {
-                            echo Dropdown::getDropdownName("glpi_states", $data['states_id']);
-                        } else {
-                            echo '&nbsp;';
-                        }
-
-                        echo "</td><td class='center'>$linktype</td></tr>";
-                    }
                 }
             }
-            if ($nb) {
-                echo $header;
-            }
-            echo "</table></div>";
+            $id = 'userItems_' . $ID . '_' . ($tech ? 'managed' : 'owned') . '_' . $scope;
+            renderTwigTemplate('table.twig', [
+                'id' => $id,
+                'state_key' => $id,
+                'fields' => [_n('Type', 'Types', 1), Entity::getTypeName(1), __('Name'),
+                    __('Serial number'), __('Inventory number'), __('Status'), __('Association')],
+                'values' => $values,
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+            ]);
         }
     }
 
@@ -4949,79 +4826,30 @@ class User extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        echo '<form aria-label="Password Update" method="post" action="' . $CFG_GLPI['root_doc'] . '/front/updatepassword.php">';
-        echo '<table class="tab_cadre" aria-label="Password Update">';
-        echo '<tr><th colspan="2">' . __('Password update') . '</th></tr>';
-
-        if (Session::mustChangePassword()) {
-            echo '<tr class="tab_bg_2 center">';
-            echo '<td colspan="2" class="red b">';
-            echo __('Your password has expired. You must change it to be able to login.');
-            echo '</td>';
-            echo '</tr>';
-        }
-
-        echo '<tr class="tab_bg_1">';
-        echo '<td>';
-        echo __('Login');
-        echo '</td>';
-        echo '<td>';
-        echo '<input type="text" name="name" value="' . $this->fields['name'] . '" readonly="readonly" />';
-        echo '</td>';
-        echo '</tr>';
-
-        echo '<tr class="tab_bg_1">';
-        echo '<td>';
-        echo '<label for="current_password">' . __('Current password') . '</label>';
-        echo '</td>';
-        echo '<td>';
-        echo '<input type="password" id="current_password" name="current_password" />';
-        echo '</td>';
-        echo '</tr>';
-
-        echo '<tr class="tab_bg_1">';
-        echo '<td>';
-        echo '<label for="password">' . __('New password') . '</label>';
-        echo '</td>';
-        echo '<td>';
-        echo '<input type="password" id="password" name="password" autocomplete="new-password" onkeyup="return passwordCheck();" />';
-        echo '</td>';
-        echo '</tr>';
-
-        echo '<tr class="tab_bg_1">';
-        echo '<td>';
-        echo '<label for="password2">' . __('New password confirmation') . '</label>';
-        echo '</td>';
-        echo '<td>';
-        echo '<input type="password" id="password2" name="password2" autocomplete="new-password" />';
-        echo '</td>';
-        echo '</tr>';
-
+        $inputs = [
+            __('Login') => ['type' => 'text', 'name' => 'name', 'value' => $this->fields['name'], 'readonly' => true],
+            __('Current password') => ['type' => 'password', 'id' => 'current_password', 'name' => 'current_password'],
+            __('New password') => ['type' => 'password', 'id' => 'password', 'name' => 'password', 'autocomplete' => 'new-password', 'onkeyup' => 'return passwordCheck();'],
+            __('New password confirmation') => ['type' => 'password', 'id' => 'password2', 'name' => 'password2', 'autocomplete' => 'new-password'],
+        ];
         if ($CFG_GLPI['use_password_security']) {
-            echo '<tr class="tab_bg_1">';
-            echo '<td>' . __('Password security policy') . '</td>';
-            echo '<td>';
+            ob_start();
             Config::displayPasswordSecurityChecks();
-            echo '</td>';
-            echo '</tr>';
+            $inputs[__('Password security policy')] = ['content' => ob_get_clean(), 'col_lg' => 12, 'col_md' => 12];
         }
-
-        echo '<tr class="tab_bg_2 center">';
-        echo '<td colspan="2">';
-        echo '<input type="submit" name="update" value="' . __s('Save') . '" class="submit" />';
-        echo '</td>';
-        echo '</tr>';
-
-        if (!empty($error_messages)) {
-            echo '<tr class="tab_bg_2 center">';
-            echo '<td colspan="2" class="red b">';
-            echo implode('<br/>', $error_messages);
-            echo '</td>';
-            echo '</tr>';
+        if (Session::mustChangePassword()) {
+            echo '<div class="alert alert-warning" role="alert">' . __('Your password has expired. You must change it to be able to login.') . '</div>';
         }
-
-        echo '</table>';
-        Html::closeForm();
+        if ($error_messages) {
+            echo '<div class="alert alert-danger" role="alert">' . implode('<br>', array_map(static function ($message) {
+                return htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+            }, $error_messages)) . '</div>';
+        }
+        renderTwigForm([
+            'action' => $CFG_GLPI['root_doc'] . '/front/updatepassword.php',
+            'buttons' => [['type' => 'submit', 'name' => 'update', 'value' => __('Save'), 'class' => 'btn btn-primary']],
+            'content' => [__('Password update') => ['visible' => true, 'inputs' => $inputs]],
+        ]);
     }
 
 
@@ -5037,46 +4865,25 @@ class User extends CommonDBTM
         global $CFG_GLPI;
 
         if (!User::getUserByForgottenPasswordToken($token)) {
-            echo "<div class='center'>";
-            echo __('Your password reset request has expired or is invalid. Please renew it.');
-            echo "</div>";
-
+            echo '<div class="alert alert-warning" role="alert">' . __('Your password reset request has expired or is invalid. Please renew it.') . '</div>';
             return;
         }
-
-        echo "<div class='center'>";
-        echo "<form aria-label='Forget Password' method='post' name='forgetpassword' action='" . $CFG_GLPI['root_doc'] .
-                 "/front/lostpassword.php'>";
-        echo "<table class='tab_cadre' aria-label='Forgot Password'>";
-        echo "<tr><th colspan='2'>" . __('Forgotten password?') . "</th></tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td colspan='2'>" . __('Please enter your new password.') . "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . __('Password') . "</td>";
-        echo "<td><input id='password' type='password' name='password' value='' size='20'
-                  autocomplete='new-password' onkeyup=\"return passwordCheck();\">";
-        echo "</td></tr>";
-
-        echo "<tr class='tab_bg_1'><td>" . __('Password confirmation') . "</td>";
-        echo "<td><input type='password' name='password2' value='' size='20' autocomplete='new-password'>";
-        echo "</td></tr>";
-
+        $inputs = [
+            ['type' => 'hidden', 'name' => 'password_forget_token', 'value' => $token],
+            __('Password') => ['type' => 'password', 'id' => 'password', 'name' => 'password', 'autocomplete' => 'new-password', 'onkeyup' => 'return passwordCheck();'],
+            __('Password confirmation') => ['type' => 'password', 'name' => 'password2', 'autocomplete' => 'new-password'],
+        ];
         if (Config::arePasswordSecurityChecksEnabled()) {
-            echo "<tr class='tab_bg_1'><td>" . __('Password security policy') . "</td>";
-            echo "<td>";
+            ob_start();
             Config::displayPasswordSecurityChecks();
-            echo "</td></tr>";
+            $inputs[__('Password security policy')] = ['content' => ob_get_clean(), 'col_lg' => 12, 'col_md' => 12];
         }
-
-        echo "<tr class='tab_bg_2 center'><td colspan='2'>";
-        echo "<input type='hidden' name='password_forget_token' value='$token'>";
-        echo "<input type='submit' name='update' value=\"" . __s('Save') . "\" class='submit'>";
-        echo "</td></tr>";
-
-        echo "</table>";
-        Html::closeForm();
-        echo "</div>";
+        echo '<p>' . __('Please enter your new password.') . '</p>';
+        renderTwigForm([
+            'action' => $CFG_GLPI['root_doc'] . '/front/lostpassword.php', 'attributes' => ['name' => 'forgetpassword'],
+            'buttons' => [['type' => 'submit', 'name' => 'update', 'value' => __('Save'), 'class' => 'btn btn-primary']],
+            'content' => [__('Forgotten password?') => ['visible' => true, 'inputs' => $inputs]],
+        ]);
     }
 
 

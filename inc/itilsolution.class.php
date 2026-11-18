@@ -195,6 +195,7 @@ class ITILSolution extends CommonDBChild
                        'name' => 'solutiontemplates_id',
                        'id' => 'DropdownForSolutionTemplate',
                        'itemtype' => SolutionTemplate::class,
+                       'condition' => SolutionTemplate::getGroupVisibilityCondition(),
                        'actions' => getItemActionButtons(['info', 'add'], SolutionTemplate::class),
                        'hooks' => [
                           'change' => <<<JS
@@ -395,10 +396,14 @@ class ITILSolution extends CommonDBChild
                 }
             }
 
-            $this->item->update([
+            $update = [
                'id'     => $this->item->getID(),
                'status' => $status
-            ]);
+            ];
+            if (isset($this->input['_disablenotif'])) {
+                $update['_disablenotif'] = true;
+            }
+            $this->item->update($update);
         }
 
         parent::post_addItem();

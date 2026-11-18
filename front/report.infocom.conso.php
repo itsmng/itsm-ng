@@ -67,12 +67,12 @@ $form = [
    'buttons' => [
       [
          'value' => __s('Display report'),
-         'class' => 'btn btn-secondary',
+         'class' => 'btn btn-primary',
       ]
    ],
    'content' => [
       '' => [
-         'visible' => true,
+         'visible' => false,
          'inputs' => [
             __('Start date') => [
                'type' => 'date',
@@ -177,8 +177,7 @@ function display_infocoms_report($itemtype, $begin, $end)
         count($iterator)
           && ($item = getItemForItemtype($itemtype))
     ) {
-        echo "<h2>" . $item->getTypeName(1) . "</h2>";
-        echo "<table class='tab_cadre' aria-label='Report Data for Each Item Type' >";
+        echo '<section class="mb-4">';
 
         $valeursoustot      = 0;
         $valeurnettesoustot = 0;
@@ -253,7 +252,7 @@ function display_infocoms_report($itemtype, $begin, $end)
         $valeurnettetot += $valeurnettesoustot;
 
         if (count($valeurnettegraph) > 0) {
-            echo "<tr><td colspan='5' class='center'>";
+            echo '<div class="my-3">';
             ksort($valeurnettegraph);
             $valeurnettegraphdisplay = array_map(round(...), $valeurnettegraph);
 
@@ -278,11 +277,11 @@ function display_infocoms_report($itemtype, $begin, $end)
                 $chart_opts
             );
 
-            echo "</td></tr>\n";
+            echo '</div>';
         }
 
         if (count($valeurgraph) > 0) {
-            echo "<tr><td colspan='5' class='center'>";
+            echo '<div class="my-3">';
             ksort($valeurgraph);
             $valeurgraphdisplay = array_map(round(...), $valeurgraph);
 
@@ -305,9 +304,9 @@ function display_infocoms_report($itemtype, $begin, $end)
                 ],
                 $chart_opts
             );
-            echo "</td></tr>";
+            echo '</div>';
         }
-        echo "</table>\n";
+        echo '</section>';
         return true;
     }
     return false;
@@ -316,30 +315,10 @@ function display_infocoms_report($itemtype, $begin, $end)
 
 $types = $CFG_GLPI["infocom_types"];
 
-$i = 0;
-echo "<table width='90%' aria-label='Total Values'><tr><td class='center top'>";
-while (count($types) > 0) {
-    $type = array_shift($types);
-
-    if (display_infocoms_report($type, $_POST["date1"], $_POST["date2"])) {
-        echo "</td>";
-        $i++;
-
-        if (($i % 2) == 0) {
-            echo "</tr><tr>";
-        }
-
-        echo "<td class='center top'>";
-    }
+foreach ($types as $type) {
+    display_infocoms_report($type, $_POST['date1'], $_POST['date2']);
 }
 
-if (($i % 2) == 0) {
-    echo "&nbsp;</td><td>&nbsp;";
-}
-
-echo "&nbsp;</td></tr></table>";
-
-//TRANS: %1$s and %2$s are values
 $tmpmsg = sprintf(
     __('Total: Value=%1$s - Account net value=%2$s'),
     Html::formatNumber($valeurtot),

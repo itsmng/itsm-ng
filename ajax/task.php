@@ -45,7 +45,14 @@ Session::checkLoginUser();
 
 if (isset($_POST['tasktemplates_id']) && ($_POST['tasktemplates_id'] > 0)) {
     $template = new TaskTemplate();
-    $template->getFromDB($_POST['tasktemplates_id']);
+    if (
+        !$template->getFromDB($_POST['tasktemplates_id'])
+        || !TaskTemplate::isVisibleForCurrentUser((int)$_POST['tasktemplates_id'])
+    ) {
+        http_response_code(403);
+        echo json_encode([]);
+        return;
+    }
 
     if (DropdownTranslation::isDropdownTranslationActive()) {
         $template->fields['content'] = DropdownTranslation::getTranslatedValue(
@@ -57,6 +64,11 @@ if (isset($_POST['tasktemplates_id']) && ($_POST['tasktemplates_id'] > 0)) {
         );
     }
 
+    $template->fields['taskcategories_name'] = Dropdown::getDropdownName('glpi_taskcategories', $template->fields['taskcategories_id']);
+    $template->fields['users_name'] = getUserName($template->fields['users_id_tech']);
+    $template->fields['groups_name'] = Dropdown::getDropdownName('glpi_groups', $template->fields['groups_id_tech']);
     $template->fields = array_map('html_entity_decode', $template->fields);
     echo json_encode($template->fields);
+} else {
+    echo json_encode([]);
 }

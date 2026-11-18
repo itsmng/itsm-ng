@@ -47,7 +47,7 @@ class SoftwareCategory extends CommonTreeDropdown
            __('As child of') => [
               'name'  => $this->getForeignKeyField(),
               'type'  => 'select',
-              'values'  => getOptionForItems('SoftwareCategory', ['NOT' => ['id' => $this->getID()]]),
+              ...getAjaxDropdownOptions('SoftwareCategory', ['NOT' => ['id' => $this->getID()]]),
               'value' => $this->fields[$this->getForeignKeyField()],
            ]
         ];

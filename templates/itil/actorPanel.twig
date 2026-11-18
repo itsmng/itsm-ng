@@ -198,6 +198,11 @@
       word-break: break-word;
     }
 
+    #{{ panel_id }} .itil-actor-row__name a:hover,
+    #{{ panel_id }} .itil-actor-row__name a:focus-visible {
+      text-decoration: underline;
+    }
+
     #{{ panel_id }} .itil-actor-row__meta {
       color: #61728a;
       font-size: 0.85rem;
@@ -234,7 +239,7 @@
 
   <div class="row g-3 justify-content-center">
     {% for panel in panels %}
-      <div class="col-12 col-md-10 col-lg-6 col-xl-4 itil-actor-col">
+      <div class="col-12 col-md-10 col-lg-6 col-xl-4 itil-actor-col{% if panel.hidden %} d-none{% endif %}">
         <section class="itil-actor-card"
                  data-panel-id="{{ panel.id }}"
                  data-actor-role="{{ panel.actorType }}"
@@ -312,7 +317,7 @@
 
           <div class="itil-actor-list" data-role="actor-list">
             {% for actor in panel.values %}
-              <div class="itil-actor-row"
+              <div class="itil-actor-row{% if actor.hidden %} d-none{% endif %}"
                    data-actor-entry
                    data-entry-type="{{ actor.type }}"
                    data-entry-id="{{ actor.id }}"
@@ -323,7 +328,13 @@
                     <i class="{{ actor.icon|raw }}"></i>
                   </span>
                   <div class="itil-actor-row__text">
-                    <div class="itil-actor-row__name">{{ actor.name|raw }}</div>
+                    <div class="itil-actor-row__name">
+                      {% if actor.url %}
+                        <a href="{{ actor.url }}">{{ actor.name|raw }}</a>
+                      {% else %}
+                        {{ actor.name|raw }}
+                      {% endif %}
+                    </div>
                     {% if actor.subtitle %}
                       <div class="itil-actor-row__meta">{{ actor.subtitle|raw }}</div>
                     {% endif %}
@@ -411,6 +422,13 @@
       const $list = $panel.find('[data-role="actor-list"]');
       const $emptyState = $panel.find('[data-role="empty-state"]');
       const form = panel.closest('form');
+      let nextActorIndex = 0;
+      $list.find('input[type="hidden"]').each((_, input) => {
+        const match = input.name.match(/^_itil_(?:requester|observer|assign)\[(\d+)\]/);
+        if (match) {
+          nextActorIndex = Math.max(nextActorIndex, Number(match[1]) + 1);
+        }
+      });
 
       const updateEmptyState = () => {
         const hasEntries = $list.find('[data-actor-entry]').length > 0;
@@ -495,6 +513,12 @@
             </div>
           </div>
         `);
+
+        if (entry.url) {
+          $body.find('.itil-actor-row__name').empty().append(
+            $('<a>', { href: entry.url, text: entry.name })
+          );
+        }
 
         const $actions = $('<div>', { class: 'itil-actor-row__actions' });
         if (entry.removable) {
@@ -591,20 +615,16 @@
 
         const hiddenFields = [];
         if (itemsId > 0) {
-          $list.find('[data-actor-entry]').filter((_, element) => {
-            const $element = $(element);
-            return $element.data('persisted') !== 1 && $element.data('persisted') !== '1';
-          }).remove();
-
+          const tempFieldRoot = `${spec.tempFieldRoot}[${nextActorIndex++}]`;
           hiddenFields.push(
-            { name: `${spec.tempFieldRoot}[_type]`, value: selectedType },
-            { name: spec.tempValueField, value: actorId }
+            { name: `${tempFieldRoot}[_type]`, value: selectedType },
+            { name: `${tempFieldRoot}[${selectedType}s_id]`, value: actorId }
           );
 
           if (spec.notifField) {
             hiddenFields.push(
-              { name: `${spec.tempFieldRoot}[use_notification][]`, value: useNotification },
-              { name: `${spec.tempFieldRoot}[alternative_email][]`, value: alternativeEmail }
+              { name: `${tempFieldRoot}[use_notification][]`, value: useNotification },
+              { name: `${tempFieldRoot}[alternative_email][]`, value: alternativeEmail }
             );
           }
         } else {
@@ -622,6 +642,8 @@
           type: selectedType,
           icon: spec.icon,
           name: actorId !== '0' && actorLabel !== '' ? actorLabel : alternativeEmail,
+          url: Number(actorId) > 0 && spec.formUrl
+            ? `${spec.formUrl}${spec.formUrl.includes('?') ? '&' : '?'}id=${encodeURIComponent(actorId)}` : '',
           subtitle: subtitleParts.join(' | '),
           alternativeEmail,
           persisted: false,

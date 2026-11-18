@@ -129,12 +129,12 @@ class Contract_Supplier extends CommonDBRelation
         $number = count($iterator);
 
         $contracts = [];
-        $options = getOptionForItems('Contract', [
+        $options = getAjaxDropdownOptions('Contract', [
            'entities_id' => $supplier->fields["entities_id"],
            'is_recursive' => $supplier->fields["is_recursive"]
         ]);
         while ($data = $iterator->next()) {
-            unset($options[$data['id']]);
+            $options['used'][] = $data['id'];
             $contracts[$data['linkid']] = $data;
         };
 
@@ -161,7 +161,7 @@ class Contract_Supplier extends CommonDBRelation
                         '' => [
                            'type' => 'select',
                            'name' => 'contracts_id',
-                           'values' => $options,
+                           ...$options,
                            'actions' => getItemActionButtons(['info'], 'Contract'),
                            'col_lg' => 12,
                            'col_md' => 12,
@@ -278,7 +278,7 @@ class Contract_Supplier extends CommonDBRelation
                             __('Add a supplier') => [
                                 'type' => 'select',
                                 'name' => 'suppliers_id',
-                                'values' => getOptionForItems('Supplier', [], true, false, $used),
+                                ...getAjaxDropdownOptions('Supplier', [], true, false, $used),
                                 'actions' => getItemActionButtons(['info'], 'Supplier'),
                                 'col_lg' => 12,
                                 'col_md' => 12,

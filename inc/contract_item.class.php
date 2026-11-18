@@ -369,11 +369,12 @@ class Contract_Item extends CommonDBRelation
                      'type' => 'submit',
                      'name' => 'add',
                      'value' => _sx('button', 'Add'),
-                     'class' => 'btn btn-secondary',
+                     'class' => $item->getType() === 'Computer' ? 'btn btn-primary' : 'btn btn-secondary',
+                     'icon' => $item->getType() === 'Computer' ? 'fas fa-plus' : null,
                   ]
                ],
                'content' => [
-                  '' => [
+                  ($item->getType() === 'Computer' ? __('Add a contract') : '') => [
                      'visible' => true,
                      'inputs' => [
                         [
@@ -389,7 +390,7 @@ class Contract_Item extends CommonDBRelation
                         __('Add a contract') => [
                            'type' => 'select',
                            'name' => 'contracts_id',
-                           'values' => getOptionForItems('Contract', array_merge([
+                           ...getAjaxDropdownOptions('Contract', array_merge([
                               'entities_id' => $item->fields['entities_id'],
                               'OR' => [
                                  'renewal' => 1,

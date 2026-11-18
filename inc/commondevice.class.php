@@ -161,7 +161,7 @@ abstract class CommonDevice extends CommonDropdown
            Manufacturer::getTypeName(1) => [
               'name'  => 'manufacturers_id',
               'type'  => 'select',
-              'values' => getOptionForItems('Manufacturer'),
+              ...getAjaxDropdownOptions('Manufacturer'),
               'value' => $this->fields['manufacturers_id'],
               'actions' => getItemActionButtons(['info', 'add'], 'Manufacturer')
            ]

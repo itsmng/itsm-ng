@@ -335,7 +335,7 @@ class DomainRecord extends CommonDBChild
                     Domain::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'domains_id',
-                       'values' => getOptionForItems(Domain::class),
+                       ...getAjaxDropdownOptions(Domain::class),
                        'value' => $this->fields['domains_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], Domain::class)
                     ],
@@ -347,7 +347,7 @@ class DomainRecord extends CommonDBChild
                     DomainRecordType::getTypeName(1) => [
                        'type' => 'select',
                        'name' => 'domainrecordtypes_id',
-                       'values' => getOptionForItems(DomainRecordType::class),
+                       ...getAjaxDropdownOptions(DomainRecordType::class),
                        'value' => $this->fields['domainrecordtypes_id'] ?? '',
                        'actions' => getItemActionButtons(['info', 'add'], DomainRecordType::class)
                     ],
@@ -364,7 +364,7 @@ class DomainRecord extends CommonDBChild
                     __('Technician in charge') => [
                        'type' => 'select',
                        'name' => "users_id_tech",
-                       'values' => getOptionsForUsers('interface', ['entities_id' => Session::getActiveEntity()]),
+                       ...getAjaxUserDropdownOptions('interface', ['entities_id' => Session::getActiveEntity()]),
                        'value' => $this->fields["users_id_tech"] ?? '',
                        'actions' => getItemActionButtons(['info'], User::class),
                     ],

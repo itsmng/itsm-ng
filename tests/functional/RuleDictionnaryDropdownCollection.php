@@ -6,6 +6,49 @@ use DbTestCase;
 
 class RuleDictionnaryDropdownCollection extends DbTestCase
 {
+    public function testManufacturerPagination()
+    {
+        $this->login();
+        $collection = new \RuleDictionnaryManufacturerCollection();
+        $before = $collection->getPaginatedRules(['limit' => 15]);
+        $created = [];
+        for ($i = 0; $i < 31; $i++) {
+            $rule = new \RuleDictionnaryManufacturer();
+            $id = (int) $rule->add([
+                'name' => 'pagination-' . $this->getUniqueString(),
+                'description' => 'Pagination regression',
+                'is_active' => $i % 2,
+                'match' => \Rule::AND_MATCHING,
+            ]);
+            $this->integer($id)->isGreaterThan(0);
+            $created[] = sprintf('item[RuleDictionnaryManufacturer][%s]', $id);
+        }
+
+        $seen = [];
+        $total = $before['total'] + 31;
+        for ($offset = 0; $offset < $total; $offset += 15) {
+            $page = $collection->getPaginatedRules(['offset' => $offset, 'limit' => 15]);
+            $this->integer($page['total'])->isEqualTo($total);
+            $this->array($page['rows'])->hasSize(min(15, $total - $offset));
+            foreach ($page['rows'] as $row) {
+                $seen[] = $row['value'];
+            }
+        }
+        $this->array(array_unique($seen))->hasSize($total);
+        $this->array(array_diff($created, $seen))->isEmpty();
+        $this->array($collection->getPaginatedRules(['offset' => $total])['rows'])->isEmpty();
+
+        $ascending = $collection->getPaginatedRules(['sort' => '0', 'order' => 'asc', 'limit' => 1]);
+        $descending = $collection->getPaginatedRules([
+            'sort' => '0', 'order' => 'desc', 'offset' => $total - 1, 'limit' => 1,
+        ]);
+        $this->string($ascending['rows'][0]['value'])->isEqualTo($descending['rows'][0]['value']);
+        $invalid_sort = $collection->getPaginatedRules(['sort' => 'invalid', 'limit' => 15]);
+        $default_sort = $collection->getPaginatedRules(['limit' => 15]);
+        $this->array(array_column($invalid_sort['rows'], 'value'))
+            ->isEqualTo(array_column($default_sort['rows'], 'value'));
+    }
+
     protected function nonSoftwareCollectionProvider()
     {
         return [

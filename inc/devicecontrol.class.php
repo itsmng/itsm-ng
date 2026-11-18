@@ -62,7 +62,7 @@ class DeviceControl extends CommonDevice
               __('Interface') => [
                  'name'  => 'interfacetypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('InterfaceType'),
+                 ...getAjaxDropdownOptions('InterfaceType'),
                  'value' => $this->fields['interfacetypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'InterfaceType'),
                  'col_lg' => 6,
@@ -70,7 +70,7 @@ class DeviceControl extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicecontrolmodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceControlModel'),
+                 ...getAjaxDropdownOptions('DeviceControlModel'),
                  'value' => $this->fields['devicecontrolmodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceControlModel'),
                  'col_lg' => 6,

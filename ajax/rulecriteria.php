@@ -64,15 +64,17 @@ if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"])
         }
 
         $elements = [];
-        foreach (RuleCriteria::getConditions($_POST['sub_type'], '') as $pattern => $label) {
+        foreach (RuleCriteria::getConditions($_POST['sub_type'], $_POST['criteria']) as $pattern => $label) {
             if (
-                empty($p['allow_conditions'])
-                || (!empty($p['allow_conditions']) && in_array($pattern, $p['allow_conditions']))
+                empty($allow_condition)
+                || in_array($pattern, $allow_condition)
             ) {
                 $elements[$pattern] = $label;
             }
         }
 
+        $value = json_encode($_POST['value'] ?? '', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        $initialCondition = json_encode((string) ($_POST['condition'] ?? ''));
         $updateScript = <<<JS
           var condition = $('#DropdownForConditionCriterias').val();
           var condition_span = $('#condition_span');
@@ -80,6 +82,7 @@ if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"])
 
           condition_span.load(url, {
               condition: condition,
+              value: condition === $initialCondition ? $value : '',
               criteria: "{$_POST['criteria']}",
               sub_type: "{$_POST['sub_type']}"
           });
@@ -89,12 +92,13 @@ if (isset($_POST["sub_type"]) && ($rule = getItemForItemtype($_POST["sub_type"])
             'name' => 'condition',
             'id' => 'DropdownForConditionCriterias',
             'type' => 'select',
+            'value' => $_POST['condition'] ?? '',
             'values' => $elements,
             'hooks' => [
                 'change' => $updateScript
             ],
             'init' => $updateScript
         ]);
-        echo "<span id='condition_span'></span>\n";
+        echo "<div class='mt-3' id='condition_span'></div>\n";
     }
 }

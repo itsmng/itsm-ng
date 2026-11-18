@@ -646,15 +646,12 @@ class FieldUnicity extends CommonDropdown
         if (!$item = getItemForItemtype($unicity->fields['itemtype'])) {
             return;
         }
-        foreach (explode(',', (string) $unicity->fields['fields']) as $field) {
+        foreach (array_filter(array_map('trim', explode(',', (string) $unicity->fields['fields']))) as $field) {
             $fields[]       = $field;
             $where_fields[] = $field;
         }
 
         if (!empty($fields)) {
-            $colspan = count($fields) + 1;
-            echo "<table class='tab_cadre_fixe' aria-label='Duplicates'>";
-            echo "<tr class='tab_bg_2'><th colspan='" . $colspan . "'>" . __('Duplicates') . "</th></tr>";
 
             $entities = [$unicity->fields['entities_id']];
             if ($unicity->fields['is_recursive']) {
@@ -697,37 +694,32 @@ class FieldUnicity extends CommonDropdown
                 }
             }
 
-            if (empty($results)) {
-                echo "<tr class='tab_bg_2'>";
-                echo "<td class='center' colspan='$colspan'>" . __('No item to display') . "</td></tr>";
-            } else {
-                echo "<tr class='tab_bg_2'>";
-                foreach ($fields as $field) {
-                    $searchOption = $item->getSearchOptionByField('field', $field);
-                    echo "<th>" . $searchOption["name"] . "</th>";
-                }
-                echo "<th>" . _x('quantity', 'Number') . "</th></tr>";
-
-                foreach ($results as $result) {
-                    echo "<tr class='tab_bg_2'>";
-                    foreach ($fields as $field) {
-                        $table = getTableNameForForeignKeyField($field);
-                        if ($table != '') {
-                            echo "<td>" . Dropdown::getDropdownName($table, $result[$field]) . "</td>";
-                        } else {
-                            echo "<td>" . $result[$field] . "</td>";
-                        }
-                    }
-                    echo "<td class='numeric'>" . $result['cpt'] . "</td></tr>";
-                }
-            }
         } else {
-            echo "<tr class='tab_bg_2'>";
-            echo "<td class='center' colspan='$colspan'>" . __('No item to display') . "</td></tr>";
+            $results = [];
         }
-        echo "</table>";
+        $columns = [];
+        foreach ($fields as $field) {
+            $option = $item->getSearchOptionByField('field', $field);
+            $columns[] = $option['name'] ?? $field;
+        }
+        $columns[] = _x('quantity', 'Number');
+        $values = [];
+        foreach ($results as $result) {
+            $row = [];
+            foreach ($fields as $field) {
+                $table = getTableNameForForeignKeyField($field);
+                $value = $table ? Dropdown::getDropdownName($table, $result[$field]) : $result[$field];
+                $row[] = htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false);
+            }
+            $row[] = (int) $result['cpt'];
+            $values[] = $row;
+        }
+        $id = 'fieldUnicityDuplicates_' . $unicity->getID();
+        renderTwigTemplate('table.twig', [
+            'id' => $id, 'state_key' => $id, 'fields' => $columns, 'values' => $values,
+            'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+        ]);
     }
-
 
     /**
      * Display debug information for current object

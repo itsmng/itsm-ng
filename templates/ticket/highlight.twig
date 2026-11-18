@@ -1,0 +1,14 @@
+{# The color is validated by RequestType before it reaches this template. #}
+<style>
+    main#page,
+    main#page .navigationheader {
+        background-color: {{ color }};
+        color: {{ text_color }};
+    }
+    main#page .navigationheader a:not(.btn) {
+        color: inherit;
+    }
+    main#page .form-section {
+        color: var(--bs-body-color, #212529);
+    }
+</style>

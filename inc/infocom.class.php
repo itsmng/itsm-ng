@@ -1208,19 +1208,28 @@ JS;
                     $ic->can(-1, CREATE, $input)
                     && ($withtemplate != 2)
                 ) {
-                    echo "<div class='spaced b'>";
-                    echo "<table class='tab_cadre_fixe' aria-label='financial and administrative information'><tr class='tab_bg_1'><th>";
-                    echo sprintf(__('%1$s - %2$s'), $item->getTypeName(1), $item->getName()) . "</th></tr>";
-                    echo "<tr class='tab_bg_1'><td class='center'>";
+                    echo '<section class="mb-4"><h2 class="h4">';
+                    echo htmlspecialchars(sprintf(__('%1$s - %2$s'), $item->getTypeName(1), $item->getName()), ENT_QUOTES, 'UTF-8', false) . '</h2>';
 
-                    Html::showSimpleForm(
-                        Infocom::getFormURL(),
-                        'add',
-                        __('Enable the financial and administrative information'),
-                        ['itemtype' => $item->getType(),
-                                                'items_id' => $dev_ID]
-                    );
-                    echo "</td></tr></table></div>";
+                    renderTwigForm([
+                        'action' => self::getFormURL(),
+                        'buttons' => [[
+                            'type' => 'submit',
+                            'name' => 'add',
+                            'value' => __('Enable the financial and administrative information'),
+                            'class' => 'btn btn-primary',
+                            'icon' => 'fas fa-plus',
+                        ]],
+                        'content' => [[
+                            'visible' => false,
+                            'attributes' => ['hidden' => 'hidden'],
+                            'inputs' => [
+                                ['type' => 'hidden', 'name' => 'itemtype', 'value' => $item->getType()],
+                                ['type' => 'hidden', 'name' => 'items_id', 'value' => $dev_ID],
+                            ],
+                        ]],
+                    ]);
+                    echo '</section>';
                 }
             } else { // getFromDBforDevice
                 $canedit = ($ic->canEdit($ic->fields['id']) && ($withtemplate != 2));

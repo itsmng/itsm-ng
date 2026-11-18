@@ -41,6 +41,11 @@ include('../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
+$userSelectName = !empty($_POST['name']) ? $_POST['name'] : 'users_id_validate';
+if (!str_ends_with($userSelectName, '[]')) {
+    $userSelectName .= '[]';
+}
+
 if (isset($_POST["validatortype"])) {
     switch ($_POST["validatortype"]) {
         case 'user':
@@ -48,14 +53,25 @@ if (isset($_POST["validatortype"])) {
                 $_POST['users_id_validate'] = [];
             }
             $value = (isset($_POST['users_id_validate'][0]) ? $_POST['users_id_validate'][0] : 0);
-            echo json_encode(getOptionsForUsers($_POST['right'], $_POST['entity'] ? ['entities_id' => $_POST['entity']] : []));
+            renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $userSelectName,
+                'multiple' => true,
+                'value' => $_POST['users_id_validate'] ?? [],
+                ...getAjaxUserDropdownOptions($_POST['right'], ['entities_id' => $_POST['entity'] ?? -1], false),
+            ]);
             break;
 
         case 'group':
             $name = !empty($_POST['name']) ? $_POST['name'] . '[groups_id]' : 'groups_id';
             $value = (isset($_POST['users_id_validate']['groups_id']) ? $_POST['users_id_validate']['groups_id'] : $_POST['groups_id']);
 
-            echo json_encode(getItemByEntity(Group::class, $_POST['entity'] ?? Session::getActiveEntity()));
+            renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $name,
+                'value' => $value,
+                ...getAjaxDropdownOptionsByEntity(Group::class, $_POST['entity'] ?? Session::getActiveEntity()),
+            ]);
             break;
 
         case 'list_users':
@@ -65,42 +81,18 @@ if (isset($_POST["validatortype"])) {
             $opt             = ['groups_id' => $_POST["groups_id"],
                                      'right'     => $_POST['right'],
                                      'entity'    => $_POST["entity"]];
-            $data_users      = TicketValidation::getGroupUserHaveRights($opt);
-            $users           = [];
-            $param['values'] = [];
-            $values          = [];
-            if (isset($_POST['users_id_validate']) && is_array($_POST['users_id_validate'])) {
-                $values = $_POST['users_id_validate'];
+            $values = is_array($_POST['users_id_validate'] ?? null) ? $_POST['users_id_validate'] : [];
+            if (!empty($_POST['all_users'])) {
+                $values = array_column(TicketValidation::getGroupUserHaveRights($opt), 'id');
             }
-            foreach ($data_users as $data) {
-                $users[$data['id']] = formatUserName(
-                    $data['id'],
-                    $data['name'],
-                    $data['realname'],
-                    $data['firstname']
-                );
-                if (in_array($data['id'], $values)) {
-                    $param['values'][] = $data['id'];
-                }
-            }
-
-            // Display all users
-            if (
-                isset($_POST['all_users'])
-                && $_POST['all_users']
-            ) {
-                $param['values'] =  array_keys($users);
-            }
-            $param['multiple'] = true;
-            $param['display'] = true;
-            $param['size']    = count($users);
-
-            $users = Toolbox::stripslashes_deep($users);
-            $rand  = Dropdown::showFromArray(
-                !empty($_POST['name']) ? $_POST['name'] : 'users_id_validate',
-                $users,
-                $param
-            );
+            renderTwigTemplate('macros/input.twig', [
+                'type' => 'select',
+                'name' => $userSelectName,
+                'multiple' => true,
+                'value' => $values,
+                'groups_id' => $_POST['groups_id'],
+                ...getAjaxUserDropdownOptions($_POST['right'], ['entities_id' => $_POST['entity']], false),
+            ]);
 
             // Display all/none buttons to select all or no users in group
             if (!empty($_POST['groups_id'])) {

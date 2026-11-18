@@ -328,12 +328,9 @@ class ReservationItem extends CommonDBChild
 
         $ri = new self();
 
-        echo "<div>";
-        echo "<table class='tab_cadre_fixe' aria-label='Reserve an item'>";
-        echo "<tr><th colspan='2'>" . __('Reserve an item') . "</th></tr>";
-        echo "<tr class='tab_bg_1'>";
+        echo '<section class="mb-4"><h2 class="h4">' . __('Reserve an item') . '</h2><div class="d-flex flex-wrap gap-2">';
         if ($ri->getFromDBbyItem($item->getType(), $item->getID())) {
-            echo "<td class='center'>";
+
             //Switch reservation state
 
             if ($ri->fields["is_active"]) {
@@ -354,7 +351,6 @@ class ReservationItem extends CommonDBChild
                 );
             }
 
-            echo '</td><td>';
             Html::showSimpleForm(
                 static::getFormURL(),
                 'purge',
@@ -365,25 +361,30 @@ class ReservationItem extends CommonDBChild
                 [__('Are you sure you want to return this non-reservable item?'),
                                        __('That will remove all the reservations in progress.')]
             );
-
-            echo "</td>";
         } else {
-            echo "<td class='center'>";
-            Html::showSimpleForm(
-                static::getFormURL(),
-                'add',
-                __('Authorize reservations'),
-                ['items_id'     => $item->getID(),
-                                       'itemtype'     => $item->getType(),
-                                       'entities_id'  => $item->getEntityID(),
-                                       'is_recursive' => $item->isRecursive(),]
-            );
-            echo "</td>";
+            renderTwigForm([
+                'action' => static::getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit',
+                    'name' => 'add',
+                    'value' => __('Authorize reservations'),
+                    'class' => 'btn btn-primary',
+                    'icon' => 'fas fa-plus',
+                ]],
+                'content' => [[
+                    'visible' => false,
+                    'attributes' => ['hidden' => 'hidden'],
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'itemtype', 'value' => $item->getType()],
+                        ['type' => 'hidden', 'name' => 'items_id', 'value' => $item->getID()],
+                        ['type' => 'hidden', 'name' => 'entities_id', 'value' => $item->getEntityID()],
+                        ['type' => 'hidden', 'name' => 'is_recursive', 'value' => $item->isRecursive()],
+                    ],
+                ]],
+            ]);
         }
-        echo "</tr></table>";
-        echo "</div>";
+        echo '</div></section>';
     }
-
 
     public function showForm($ID, $options = [])
     {
@@ -404,26 +405,27 @@ class ReservationItem extends CommonDBChild
                 }
             }
 
-            echo "<div class='center'><form aria-label='Modify Comment' method='post' name=form action='" . $this->getFormURL() . "'>";
-            echo "<input type='hidden' name='id' value='$ID'>";
-            echo "<table class='tab_cadre' aria-label='Modify the comment'>";
-            echo "<tr><th colspan='2'>" . __s('Modify the comment') . "</th></tr>";
-
-            // Ajouter le nom du materiel
-            echo "<tr class='tab_bg_1'><td>" . _n('Item', 'Items', 1) . "</td>";
-            echo "<td class='b'>" . sprintf(__('%1$s - %2$s'), $type, $name) . "</td></tr>\n";
-
-            echo "<tr class='tab_bg_1'><td>" . __('Comments') . "</td>";
-            echo "<td><textarea name='comment' cols='30' rows='10' >" . $r->fields["comment"];
-            echo "</textarea></td></tr>\n";
-
-            echo "<tr class='tab_bg_2'><td colspan='2' class='top center'>";
-            echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='btn btn-secondary'>";
-            echo "</td></tr>\n";
-
-            echo "</table>";
-            Html::closeForm();
-            echo "</div>";
+            renderTwigForm([
+                'action' => $this->getFormURL(),
+                'buttons' => [[
+                    'type' => 'submit', 'name' => 'update', 'value' => _x('button', 'Save'),
+                    'class' => 'btn btn-primary',
+                ]],
+                'content' => [__('Modify the comment') => [
+                    'visible' => true,
+                    'inputs' => [
+                        ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
+                        _n('Item', 'Items', 1) => ['content' => htmlspecialchars(
+                            sprintf(__('%1$s - %2$s'), $type, $name), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false
+                        )],
+                        __('Comments') => [
+                            'type' => 'textarea', 'name' => 'comment', 'rows' => 10,
+                            'value' => htmlspecialchars($r->fields['comment'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false),
+                            'col_lg' => 12, 'col_md' => 12,
+                        ],
+                    ],
+                ]],
+            ]);
             return true;
         }
         return false;
@@ -438,7 +440,6 @@ class ReservationItem extends CommonDBChild
             return false;
         }
 
-        $ok         = false;
         $showentity = Session::isMultiEntitiesMode();
         $values     = [];
 
@@ -578,246 +579,36 @@ class ReservationItem extends CommonDBChild
         echo "</div>";
 
         echo "<div id='nosearch' style='width: 100%;'>";
-        echo "<form aria-label='Reservation' name='form' method='GET' action='" . self::getReservationFormURL() . "'>";
 
-        echo "<div class='table-responsive'>";
-        echo "<table class='table table-striped table-hover' aria-label='Reservation table' style='width: 90%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;'>";
-        echo "<thead class='table-dark'>";
-        echo "<tr>";
-        echo "<th scope='col' style='width: " . ($showentity ? "50%" : "60%") . "; min-width: " . ($showentity ? "50%" : "60%") . ";'>";
-        echo "<i class='fas fa-desktop me-1'></i>" . __('Item');
-        echo "</th>";
-        echo "<th scope='col' style='width: " . ($showentity ? "25%" : "30%") . "; min-width: " . ($showentity ? "25%" : "30%") . ";'>";
-        echo "<i class='fas fa-map-marker-alt me-1'></i>" . __('Location');
-        echo "</th>";
-        echo "<th scope='col' style='width: " . ($showentity ? "15%" : "10%") . "; min-width: " . ($showentity ? "15%" : "10%") . ";'>";
-        echo "<i class='fas fa-comment me-1'></i>" . __('Comments');
-        echo "</th>";
+        $fields = [
+           'item'     => __('Item'),
+           'location' => __('Location'),
+           'comment'  => __('Comments'),
+        ];
         if ($showentity) {
-            echo "<th scope='col' style='width: 10%; min-width: 10%;'>";
-            echo "<i class='fas fa-building me-1'></i>" . Entity::getTypeName(1);
-            echo "</th>";
-        }
-        echo "</tr>";
-        echo "</thead>";
-
-        echo "<tbody>";
-
-        foreach ($CFG_GLPI["reservation_types"] as $itemtype) {
-            if (!($item = getItemForItemtype($itemtype))) {
-                continue;
-            }
-            $itemtable = getTableForItemType($itemtype);
-            $itemname  = $item->getNameField();
-
-            $otherserial = new \QueryExpression($DB->quote('') . ' AS ' . $DB->quoteName('otherserial'));
-            if ($item->isField('otherserial')) {
-                $otherserial = "$itemtable.otherserial AS otherserial";
-            }
-            $criteria = [
-               'SELECT' => [
-                  'glpi_reservationitems.id',
-                  'glpi_reservationitems.comment',
-                  "$itemtable.$itemname AS name",
-                  "$itemtable.entities_id AS entities_id",
-                  $otherserial,
-                  'glpi_locations.id AS location',
-                  'glpi_locations.completename AS location_name',
-                  'glpi_reservationitems.items_id AS items_id'
-               ],
-               'FROM'   => self::getTable(),
-               'INNER JOIN'   => [
-                  $itemtable  => [
-                     'ON'  => [
-                        'glpi_reservationitems' => 'items_id',
-                        $itemtable              => 'id', [
-                           'AND' => [
-                              'glpi_reservationitems.itemtype' => $itemtype
-                           ]
-                        ]
-                     ]
-                  ]
-               ],
-               'LEFT JOIN'    =>  [
-                  'glpi_locations'  => [
-                     'ON'  => [
-                        $itemtable        => 'locations_id',
-                        'glpi_locations'  => 'id'
-                     ]
-                  ]
-               ],
-               'WHERE'        => [
-                  'glpi_reservationitems.is_active'   => 1,
-                  'glpi_reservationitems.is_deleted'  => 0,
-                  "$itemtable.is_deleted"             => 0,
-               ] + getEntitiesRestrictCriteria($itemtable, '', $_SESSION['glpiactiveentities'], $item->maybeRecursive()),
-               'ORDERBY'      => [
-                  "$itemtable.entities_id",
-                  "$itemtable.$itemname"
-               ]
-            ];
-
-            $begin = $_POST['reserve']["begin"];
-            $end   = $_POST['reserve']["end"];
-            if (isset($_POST['submit']) && isset($begin) && isset($end)) {
-                $criteria['LEFT JOIN']['glpi_reservations'] = [
-                   'ON'  => [
-                      'glpi_reservationitems' => 'id',
-                      'glpi_reservations'     => 'reservationitems_id', [
-                         'AND' => [
-                            'glpi_reservations.end'    => ['>=', $begin],
-                            'glpi_reservations.begin'  => ['<=', $end]
-                         ]
-                      ]
-                   ]
-                ];
-                $criteria['WHERE'][] = ['glpi_reservations.id' => null];
-            }
-            if (isset($_POST["reservation_types"]) && !empty($_POST["reservation_types"])) {
-                $tmp = explode('#', (string) $_POST["reservation_types"]);
-                $criteria['WHERE'][] = ['glpi_reservationitems.itemtype' => $tmp[0]];
-                if (
-                    isset($tmp[1]) && ($tmp[0] == 'Peripheral')
-                    && ($itemtype == 'Peripheral')
-                ) {
-                    $criteria['LEFT JOIN']['glpi_peripheraltypes'] = [
-                       'ON' => [
-                          'glpi_peripherals'      => 'peripheraltypes_id',
-                          'glpi_peripheraltypes'  => 'id'
-                       ]
-                    ];
-                    $criteria['WHERE'][] = ["$itemtable.peripheraltypes_id" => $tmp[1]];
-                }
-            }
-
-            $iterator = $DB->request($criteria);
-            while ($row = $iterator->next()) {
-                echo "<tr style='width: 100%;'>";
-
-                $typename = $item->getTypeName();
-                if ($itemtype == 'Peripheral') {
-                    $item->getFromDB($row['items_id']);
-                    if (
-                        isset($item->fields["peripheraltypes_id"])
-                          && ($item->fields["peripheraltypes_id"] != 0)
-                    ) {
-                        $typename = Dropdown::getDropdownName(
-                            "glpi_peripheraltypes",
-                            $item->fields["peripheraltypes_id"]
-                        );
-                    }
-                }
-
-                echo "<td class='align-middle' style='width: " . ($showentity ? "50%" : "60%") . ";'>";
-                echo "<a href='reservation.php?reservationitems_id=" . $row['id'] . "' class='text-decoration-none'>";
-                echo "<div class='d-flex align-items-center'>";
-                echo "<input type='checkbox' name='item[" . $row["id"] . "]' value='" . $row["id"] . "' class='form-check-input me-2' style='margin-top: 0;'>";
-                echo "<i class='fas fa-desktop text-primary me-2'></i>";
-                echo "<div>";
-                echo "<strong>" . htmlspecialchars((string) $row["name"]) . "</strong><br>";
-                echo "<small class='text-muted'>" . htmlspecialchars($typename) . "</small>";
-                if (!empty($row['otherserial'])) {
-                    echo "<br><small class='text-info'>S/N: " . htmlspecialchars((string) $row['otherserial']) . "</small>";
-                }
-                echo "</div>";
-                echo "</div>";
-                echo "</a>";
-                echo "</td>";
-
-                echo "<td class='align-middle' style='width: " . ($showentity ? "25%" : "30%") . ";'>";
-                if (!empty($row["location_name"])) {
-                    echo "<div class='d-flex align-items-center'>";
-                    echo "<i class='fas fa-map-marker-alt text-success me-2'></i>";
-                    echo "<span>" . htmlspecialchars((string) $row["location_name"]) . "</span>";
-                    echo "</div>";
-                } else {
-                    echo "<span class='text-muted'><i class='fas fa-minus'></i> " . __('Not defined') . "</span>";
-                }
-                echo "</td>";
-
-                echo "<td class='align-middle' style='width: " . ($showentity ? "15%" : "10%") . ";'>";
-                if (!empty($row["comment"])) {
-                    $comment = htmlspecialchars((string) $row["comment"]);
-                    if (strlen($comment) > 100) {
-                        echo "<span data-bs-toggle='tooltip' data-bs-placement='top' title='" . $comment . "'>";
-                        echo substr($comment, 0, 97) . "...";
-                        echo "</span>";
-                    } else {
-                        echo $comment;
-                    }
-                } else {
-                    echo "<span class='text-muted'>-</span>";
-                }
-                echo "</td>";
-
-                if ($showentity) {
-                    echo "<td class='align-middle' style='width: 10%;'>";
-                    echo "<div class='d-flex align-items-center'>";
-                    echo "<i class='fas fa-building text-warning me-2'></i>";
-                    echo "<small>" . htmlspecialchars(Dropdown::getDropdownName("glpi_entities", $row["entities_id"])) . "</small>";
-                    echo "</div>";
-                    echo "</td>";
-                }
-
-                echo "</tr>\n";
-                $ok = true;
-            }
+            $fields['entity'] = Entity::getTypeName(1);
         }
 
-        echo "</tbody>";
-        echo "</table>";
-        echo "</div>";
-
-        if ($ok) {
-            echo "<div class='mt-3 text-center'>";
-            if (isset($_POST['reserve'])) {
-                echo Html::hidden('begin', ['value' => $_POST['reserve']["begin"]]);
-                echo Html::hidden('end', ['value'   => $_POST['reserve']["end"]]);
-            }
-            echo "<button type='submit' class='btn btn-primary btn-lg'>";
-            echo "<i class='fas fa-plus me-1'></i>" . _sx('button', 'Add');
-            echo "</button>";
-            echo "</div>";
-        } else {
-            echo "<div class='alert alert-info text-center mt-3'>";
-            echo "<i class='fas fa-info-circle me-2'></i>";
-            if (isset($_POST['submit'])) {
-                echo __('No free item found for the specified period');
-            } else {
-                echo __('No reservable item available');
-            }
-            echo "</div>";
+        $url_params = [];
+        if (isset($_POST['submit'])) {
+            $url_params['begin'] = $_POST['reserve']['begin'] ?? '';
+            $url_params['end'] = $_POST['reserve']['end'] ?? '';
+        }
+        if (!empty($_POST['reservation_types'])) {
+            $url_params['reservation_types'] = $_POST['reservation_types'];
         }
 
-        echo "<input type='hidden' name='id' value=''>";
-        echo "</form>";// No CSRF token needed
+        renderTwigTemplate('table.twig', [
+           'id'                 => 'reservation-item-table',
+           'fields'             => $fields,
+           'url'                => $CFG_GLPI['root_doc'] . '/ajax/v2/reservationitem.php?' . http_build_query($url_params),
+           'search'             => true,
+           'search_placeholder' => __('Search'),
+           'show_export'        => false,
+           'pageSize'           => (int) $_SESSION['glpilist_limit'],
+        ]);
+
         echo "</div>\n";
-
-        echo "<script>
-        $(document).ready(function() {
-            // Activer les tooltips Bootstrap
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-            
-            // Sélection multiple avec Ctrl+click
-            $('input[type=\"checkbox\"]').on('click', function(e) {
-                if (!e.ctrlKey && !e.metaKey) {
-                    $('input[type=\"checkbox\"]').not(this).prop('checked', false);
-                }
-            });
-            
-            // Highlight de la ligne sélectionnée
-            $('input[type=\"checkbox\"]').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $(this).closest('tr').addClass('table-primary');
-                } else {
-                    $(this).closest('tr').removeClass('table-primary');
-                }
-            });
-        });
-        </script>";
     }
 
     /**

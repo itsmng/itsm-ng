@@ -162,6 +162,51 @@ class Change extends DbTestCase
         $this->integer((int)$change->fields['actiontime'])->isEqualTo(0);
     }
 
+    public function testChangeFollowupFormKeepsPrivateToggle()
+    {
+        $this->login('itsm', 'itsm');
+
+        $change = new \Change();
+        $changes_id = $change->add([
+           'name'    => 'change followup private toggle',
+           'content' => 'ensure followup form still exposes private toggle on changes',
+        ]);
+        $this->integer($changes_id)->isGreaterThan(0);
+        $this->boolean($change->getFromDB($changes_id))->isTrue();
+
+        $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+        ob_start();
+        $followup = new \ITILFollowup();
+        $followup->showForm(0, ['item' => $change]);
+        $output = ob_get_clean();
+
+        $this->integer(preg_match('/id=["\']is_privateswitch["\']/', $output))->isEqualTo(1);
+    }
+
+    public function testChangeTaskFormKeepsPrivateToggle()
+    {
+        $this->login('itsm', 'itsm');
+
+        $change = new \Change();
+        $changes_id = $change->add([
+           'name'    => 'change task private toggle',
+           'content' => 'ensure task form still exposes private toggle on changes',
+        ]);
+        $this->integer($changes_id)->isGreaterThan(0);
+        $this->boolean($change->getFromDB($changes_id))->isTrue();
+
+        $_SESSION['_glpi_csrf_token'] = \Session::getNewCSRFToken();
+
+        ob_start();
+        $task = new \ChangeTask();
+        $task->getEmpty();
+        $task->showForm(0, ['parent' => $change]);
+        $output = ob_get_clean();
+
+        $this->integer(preg_match('/id=["\']checkboxForIsPrivate["\']/', $output))->isEqualTo(1);
+    }
+
     public function testPrepareInputForAddTranslatesItilRequesterPayload()
     {
         $this->login();

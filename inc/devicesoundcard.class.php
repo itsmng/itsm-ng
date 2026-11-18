@@ -62,7 +62,7 @@ class DeviceSoundCard extends CommonDevice
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicesoundcardmodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceSoundCardModel'),
+                 ...getAjaxDropdownOptions('DeviceSoundCardModel'),
                  'value' => $this->fields['devicesoundcardmodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceSoundCardModel'),
               ],

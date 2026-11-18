@@ -890,8 +890,7 @@ class Problem extends CommonITILObject
            : $total_row_count;
 
         if ($displayed_row_count > 0) {
-            echo "<table class='tab_cadrehov' aria-label='Home Display'>";
-            echo "<tr class='noHover'><th colspan='3'>";
+            echo '<p class="my-3">';
 
             $options  = [
                'criteria' => [],
@@ -998,16 +997,33 @@ class Problem extends CommonITILObject
                 }
             }
 
-            echo "</th></tr>";
-            echo "<tr><th></th>";
-            echo "<th>" . _n('Requester', 'Requesters', 1) . "</th>";
-            echo "<th>" . __('Description') . "</th></tr>";
+            echo '</p>';
+            $values = [];
             $i = 0;
             while ($i < $displayed_row_count && ($data = $iterator->next())) {
+                ob_start();
                 self::showVeryShort($data['id'], $forcetab);
+                $html = ob_get_clean();
+                $document = new DOMDocument();
+                @$document->loadHTML('<?xml encoding="UTF-8"><table>' . $html . '</table>', LIBXML_NONET | LIBXML_NOERROR | LIBXML_NOWARNING);
+                $xpath = new DOMXPath($document);
+                $row = [];
+                foreach ($xpath->query('//table[1]/tr[1]/td') as $cell) {
+                    $content = '';
+                    foreach ($cell->childNodes as $child) {
+                        $content .= $document->saveHTML($child);
+                    }
+                    $row[] = $content;
+                }
+                if ($row) {
+                    $values[] = $row;
+                }
                 $i++;
             }
-            echo "</table>";
+            $id = 'centralProblems_' . ($showgroupproblems ? 'group' : 'personal') . '_' . preg_replace('/[^a-z0-9_]/i', '_', $status);
+            renderTwigTemplate('table.twig', ['id' => $id, 'state_key' => $id,
+                'pageSize' => (int) ($_SESSION['glpilist_limit'] ?? 15),
+                'fields' => [__('ID'), _n('Requester', 'Requesters', 1), __('Description')], 'values' => $values]);
         }
     }
 
@@ -1103,30 +1119,30 @@ class Problem extends CommonITILObject
         $options['criteria'][0]['link']       = 'AND';
         $options['reset']                     = 'reset';
 
-        echo "<table class='tab_cadrehov' aria-label='Problem followup'>";
-        echo "<tr class='noHover'><th colspan='2'>";
+        echo "<table class='table table-striped align-middle' aria-label='" . __s('Problem followup') . "'>";
+        echo "<caption class='caption-top'>";
 
-        echo "<p class='table-title mt-0'><a href=\"" . $CFG_GLPI["root_doc"] . "/front/problem.php?" .
+        echo "<p class='mb-0'><a href=\"" . $CFG_GLPI["root_doc"] . "/front/problem.php?" .
                  Toolbox::append_params($options, '&amp;') . "\">" . __('Problem followup') . "</a> </p>";
 
-        echo "</th></tr>";
+        echo "</caption>";
         echo "<tr><th>" . Problem::getTypeName(Session::getPluralNumber()) . "</th>
-            <th class='numeric'>" . _x('quantity', 'Number') . "</th></tr>";
+            <th class='text-end'>" . _x('quantity', 'Number') . "</th></tr>";
 
         foreach ($status as $key => $val) {
             $options['criteria'][0]['value'] = $key;
-            echo "<tr class='tab_bg_2'>";
+            echo "<tr>";
             echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/problem.php?" .
                        Toolbox::append_params($options, '&amp;') . "\">" . self::getStatus($key) . "</a></td>";
-            echo "<td class='numeric'>$val</td></tr>";
+            echo "<td class='text-end'>$val</td></tr>";
         }
 
         $options['criteria'][0]['value'] = 'all';
         $options['is_deleted']  = 1;
-        echo "<tr class='tab_bg_2'>";
+        echo "<tr>";
         echo "<td><a href=\"" . $CFG_GLPI["root_doc"] . "/front/problem.php?" .
                    Toolbox::append_params($options, '&amp;') . "\">" . __('Deleted') . "</a></td>";
-        echo "<td class='numeric'>" . $number_deleted . "</td></tr>";
+        echo "<td class='text-end'>" . $number_deleted . "</td></tr>";
 
         echo "</table><br>";
     }
@@ -1236,6 +1252,7 @@ class Problem extends CommonITILObject
             return false;
         }
 
+        $ID = $this->isNewID($ID) ? 0 : $ID;
         $default_values = self::getDefaultValues();
 
         // Restore saved value or override with page parameter
@@ -1255,6 +1272,23 @@ class Problem extends CommonITILObject
                     }
                 }
             }
+        }
+
+        if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
+            $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
+            $ticket = new Ticket();
+            if ($ticket->getFromDB($tickets_id)) {
+                if (isset($options['tickets_id'])) {
+                    // Copy the source once; category reloads carry the user's submitted values.
+                    foreach (['content', 'name', 'impact', 'urgency', 'priority', 'itilcategories_id', 'time_to_resolve', 'entities_id'] as $field) {
+                        $options[$field] = $ticket->getField($field);
+                    }
+                }
+            }
+        }
+
+        if (!$ID) {
+            $this->check(-1, CREATE, $options);
         }
 
         $canupdate = !$ID || (Session::getCurrentInterface() == "central" && $this->canUpdateItem());
@@ -1299,24 +1333,29 @@ class Problem extends CommonITILObject
         $predefined_fields = [];
         $tpl_key = $this->getTemplateFormFieldName();
         if (!$ID) {
+            foreach ($options['_predefined_fields'] as $field => $value) {
+                if (array_key_exists($field, $default_values) && !isset($tt->predefined[$field])
+                    && $this->isITILTemplateFieldValue($field, $options[$field] ?? null, $value)) {
+                    $options[$field] = $default_values[$field];
+                }
+            }
             if (isset($tt->predefined) && count($tt->predefined)) {
                 foreach ($tt->predefined as $predeffield => $predefvalue) {
-                    if (isset($default_values[$predeffield])) {
+                    if (array_key_exists($predeffield, $default_values)) {
                         // Is always default value : not set
                         // Set if already predefined field
                         // Set if ticket template change
                         if (
-                            ((count($options['_predefined_fields']) == 0)
-                             && ($options[$predeffield] == $default_values[$predeffield]))
+                            ((count($options['_predefined_fields']) == 0 || (isset($options[$tpl_key]) && $options[$tpl_key] != $tt->getID()))
+                             && ($this->isITILTemplateFieldValue($predeffield, $options[$predeffield], $default_values[$predeffield])))
                             || (isset($options['_predefined_fields'][$predeffield])
-                                && ($options[$predeffield] == $options['_predefined_fields'][$predeffield]))
-                            || (isset($options[$tpl_key])
-                                && ($options[$tpl_key] != $tt->getID()))
+                                && ($this->isITILTemplateFieldValue($predeffield, $options[$predeffield], $options['_predefined_fields'][$predeffield])))
                             // user pref for requestype can't overwrite requestype from template
                             // when change category
                             || (($predeffield == 'requesttypes_id')
                                 && empty($saved))
-                            || (isset($ticket) && $options[$predeffield] == $ticket->getField($predeffield))
+                            || (isset($options['tickets_id'], $ticket->fields[$predeffield])
+                                && $options[$predeffield] == $ticket->getField($predeffield))
                         ) {
                             // Load template data
                             $options[$predeffield]            = $predefvalue;
@@ -1332,7 +1371,7 @@ class Problem extends CommonITILObject
             } else { // No template load : reset predefined values
                 if (count($options['_predefined_fields'])) {
                     foreach ($options['_predefined_fields'] as $predeffield => $predefvalue) {
-                        if ($options[$predeffield] == $predefvalue) {
+                        if (array_key_exists($predeffield, $default_values) && $this->isITILTemplateFieldValue($predeffield, $options[$predeffield] ?? null, $predefvalue)) {
                             $options[$predeffield] = $default_values[$predeffield];
                         }
                     }
@@ -1350,22 +1389,8 @@ class Problem extends CommonITILObject
             }
         }
 
-        if (isset($options['tickets_id']) || isset($options['_tickets_id'])) {
-            $tickets_id = $options['tickets_id'] ?? $options['_tickets_id'];
-            $ticket = new Ticket();
-            if ($ticket->getFromDB($tickets_id)) {
-                $this->fields['content']             = $ticket->getField('content');
-                $this->fields['name']                = $ticket->getField('name');
-                $this->fields['impact']              = $ticket->getField('impact');
-                $this->fields['urgency']             = $ticket->getField('urgency');
-                $this->fields['priority']            = $ticket->getField('priority');
-                if (isset($options['tickets_id'])) {
-                    //page is reloaded on category change, we only want category on the very first load
-                    $this->fields['itilcategories_id']   = $ticket->getField('itilcategories_id');
-                }
-                $this->fields['time_to_resolve']     = $ticket->getField('time_to_resolve');
-                $this->fields['entities_id']         = $ticket->getField('entities_id');
-            }
+        if (!$ID) {
+            $this->fields = array_replace($this->fields, array_intersect_key($options, $this->fields));
         }
 
         // Put ticket template on $options for actors
@@ -1419,7 +1444,7 @@ class Problem extends CommonITILObject
                     __('Opening date') => [
                        'type' => 'datetime-local',
                        'name' => 'date',
-                       'value' => !$ID ? date("Y-m-d H:i:s") : $this->fields["date"]
+                       'value' => $this->fields["date"]
                     ],
                     __('Time to resolve') => [
                        'type' => 'datetime-local',
@@ -1430,7 +1455,7 @@ class Problem extends CommonITILObject
                        'type' => 'select',
                        'name' => 'users_id_recipient',
                        'value' => $this->fields["users_id_recipient"],
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields["entities_id"]]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields["entities_id"]]),
                        'actions' => getItemActionButtons(['info'], User::class),
                     ] : [],
                     __('Last update') => $ID ? [
@@ -1476,6 +1501,7 @@ class Problem extends CommonITILObject
                      'type'  => 'select',
                      'name' => 'itilcategories_id',
                      'itemtype' => ITILCategory::class,
+                     'hooks' => ['change' => !$ID ? "if (this.form.dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}))) { this.form.submit(); }" : ''],
                      'value' => $this->fields['itilcategories_id'],
                      'actions' => getItemActionButtons(['info', 'add'], ITILCategory::class),
                      $canupdate ? '' : 'disabled' => '',
@@ -1566,8 +1592,13 @@ class Problem extends CommonITILObject
               ],
            ]
          ];
-        renderTwigForm($form, '', $this->fields);
-        $this->displayHiddenItemsIdInput($options);
+        if (!$ID) {
+            $form['content'][$this->getTypeName()]['inputs'] = array_merge(
+                $form['content'][$this->getTypeName()]['inputs'],
+                $this->getITILTemplateHiddenInputs($tt, $options, $predefined_fields)
+            );
+        }
+        renderTwigForm($form, '', $this->fields, $tt);
 
         return true;
     }
@@ -1730,23 +1761,25 @@ class Problem extends CommonITILObject
                 break;
 
             case 'Group':
-                // Mini search engine
+                $tree = 0;
                 if ($item->haveChildren()) {
                     $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-                    echo "<table class='tab_cadre_fixe' aria-label='Last Problem'>";
-                    echo "<tr class='tab_bg_1'><th>" . __('Last problems') . "</th></tr>";
-                    echo "<tr class='tab_bg_1'><td class='center'>";
-                    echo __('Child groups');
-                    Dropdown::showYesNo(
-                        'tree',
-                        $tree,
-                        -1,
-                        ['on_change' => 'reloadTab("start=0&tree="+this.value)']
-                    );
-                } else {
-                    $tree = 0;
+                    renderTwigForm([
+                        'action' => $item->getFormURL(),
+                        'buttons' => [[]],
+                        'content' => [[
+                            'visible' => false,
+                            'inputs' => [
+                                __('Child groups') => [
+                                    'type' => 'checkbox',
+                                    'name' => 'tree',
+                                    'value' => $tree,
+                                    'hooks' => ['change' => 'reloadTab("start=0&tree=" + (this.checked ? 1 : 0));'],
+                                ],
+                            ],
+                        ]],
+                    ]);
                 }
-                echo "</td></tr></table>";
 
                 $restrict['glpi_groups_problems.groups_id'] = ($tree ? getSonsOf('glpi_groups', $item->getID()) : $item->getID());
 
@@ -1770,68 +1803,23 @@ class Problem extends CommonITILObject
             && !(!empty($withtemplate) && $withtemplate == 2)
             && (!isset($item->fields['is_template']) || $item->fields['is_template'] == 0)
         ) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                Problem::getFormURL(),
-                '_add_fromitem',
+            self::showItemCreateForm(
                 __('New problem for this item...'),
                 [
-                  '_from_itemtype' => $item->getType(),
-                  '_from_items_id' => $item->getID(),
-                  'entities_id'    => $item->fields['entities_id']
+                    '_from_itemtype' => $item->getType(),
+                    '_from_items_id' => $item->getID(),
+                    'entities_id' => $item->fields['entities_id'],
                 ]
             );
-            echo "</div>";
         }
 
         $criteria = self::getCommonCriteria();
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
-        $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
         $iterator = $DB->request($criteria);
         $number = count($iterator);
 
-        // Ticket for the item
-        echo "<div><table class='tab_cadre_fixe' aria-label='Item'>";
+        self::showItemListTable($iterator, $item);
 
-        $colspan = 11;
-        if (count($_SESSION["glpiactiveentities"]) > 1) {
-            $colspan++;
-        }
-        if ($number > 0) {
-            Session::initNavigateListItems(
-                'Problem',
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item->getTypeName(1),
-                    $item->getName()
-                )
-            );
-
-            echo "<tr><th colspan='$colspan'>";
-
-            //TRANS : %d is the number of problems
-            echo sprintf(_n('Last %d problem', 'Last %d problems', $number), $number);
-            // echo "<span class='small_space'><a href='".$CFG_GLPI["root_doc"]."/front/ticket.php?".
-            //         Toolbox::append_params($options,'&amp;')."'>".__('Show all')."</a></span>";
-
-            echo "</th></tr>";
-        } else {
-            echo "<tr><th>" . __('No problem found.') . "</th></tr>";
-        }
-        // Ticket list
-        if ($number > 0) {
-            self::commonListHeader(Search::HTML_OUTPUT);
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Problem', $data["id"]);
-                self::showShort($data["id"]);
-            }
-            self::commonListHeader(Search::HTML_OUTPUT);
-        }
-
-        echo "</table></div>";
 
         // Tickets for linked items
         $linkeditems = $item->getLinkedItems();
@@ -1851,23 +1839,8 @@ class Problem extends CommonITILObject
             $iterator = $DB->request($criteria);
             $number = count($iterator);
 
-            echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Problems on linked items'>";
-            echo "<tr><th colspan='$colspan'>";
-            echo __('Problems on linked items');
-
-            echo "</th></tr>";
-            if ($number > 0) {
-                self::commonListHeader(Search::HTML_OUTPUT);
-
-                while ($data = $iterator->next()) {
-                    // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
-                    self::showShort($data["id"]);
-                }
-                self::commonListHeader(Search::HTML_OUTPUT);
-            } else {
-                echo "<tr><th>" . __('No problem found.') . "</th></tr>";
-            }
-            echo "</table></div>";
+            echo '<h2 class="mt-4">' . __('Problems on linked items') . '</h2>';
+            self::showItemListTable($iterator, $item, true);
         } // Subquery for linked item
     }
 
@@ -1926,6 +1899,9 @@ class Problem extends CommonITILObject
            '_add_validation'            => 0,
            'users_id_validate'          => [],
            '_tasktemplates_id'          => [],
+           '_documents_id'              => [],
+           'date'                       => $_SESSION['glpi_currenttime'],
+           'status'                     => self::INCOMING,
            'items_id'                   => 0,
         ];
     }

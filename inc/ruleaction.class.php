@@ -559,7 +559,7 @@ class RuleAction extends CommonDBChild
                                 'type' => 'select',
                                 'name' => 'value',
                                 'value' => $param['value'],
-                                'values' => getOptionForItems(getItemTypeForTable($table), $param['condition'] ?? []),
+                                ...getAjaxDropdownOptions(getItemTypeForTable($table), $param['condition'] ?? []),
                             ]);
                             $display = true;
                             break;
@@ -581,7 +581,7 @@ class RuleAction extends CommonDBChild
                                 'type' => 'select',
                                 'name' => 'value',
                                 'value' => $param['value'],
-                                'values' => getOptionsForUsers('own_ticket'),
+                                ...getAjaxUserDropdownOptions('own_ticket'),
                             ]);
                             $display = true;
                             break;
@@ -593,7 +593,7 @@ class RuleAction extends CommonDBChild
                                 'type' => 'select',
                                 'name' => 'value',
                                 'value' => $param['value'],
-                                'values' => getOptionsForUsers('all'),
+                                ...getAjaxUserDropdownOptions('all'),
                             ]);
                             $display = true;
                             break;
@@ -685,14 +685,14 @@ class RuleAction extends CommonDBChild
                                     $used[] = $data['value'];
                                 }
                             }
-                            $options = getOptionsForUsers(['validate_incident','validate_request']);
+                            $options = getAjaxUserDropdownOptions(['validate_incident','validate_request']);
                             foreach ($used as $key => $value) {
-                                unset($options[$value]);
+                                $options['used'][] = $value;
                             }
                             renderTwigTemplate('macros/input.twig', [
                                 'type' => 'select',
                                 'name' => 'value',
-                                'values' => $options,
+                                ...$options,
                                 'value' => $param['value'],
                             ]);
                             $display        = true;
@@ -725,7 +725,7 @@ class RuleAction extends CommonDBChild
                             renderTwigTemplate('macros/input.twig', [
                                 'type' => 'select',
                                 'name' => 'value',
-                                'values' => getOptionForItems('Group', $param['condition'] ?? []),
+                                ...getAjaxDropdownOptions('Group', $param['condition'] ?? []),
                                 'value' => $param['value'],
                             ]);
                             $display            = true;
@@ -795,15 +795,18 @@ class RuleAction extends CommonDBChild
            'action' => $this->getFormURL(),
            'buttons' => [
               [
-                 'name'  => 'add',
-                 'value' => __('Add'),
-                 'class' => 'btn btn-secondary',
+                 'type' => 'submit',
+                 'name' => $ID > 0 ? 'update' : 'add',
+                 'value' => $ID > 0 ? _x('button', 'Update') : _x('button', 'Add'),
+                 'class' => 'btn btn-primary',
+                 'icon' => $ID > 0 ? 'fas fa-save' : 'fas fa-plus',
               ]
            ],
            'content' => [
-              '' => [
+              ($ID > 0 ? _n('Action', 'Actions', 1) : __('Add a new action')) => [
                  'visible' => true,
                  'inputs' => [
+                    ['type' => 'hidden', 'name' => 'id', 'value' => $ID],
                     [
                        'type' => 'hidden',
                        'name' => $rule->getRuleIdField(),

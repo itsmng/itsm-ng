@@ -677,6 +677,8 @@ class Change extends CommonITILObject
             return false;
         }
 
+        $ID = $this->isNewID($ID) ? 0 : $ID;
+
         // In percent
         $colsize1 = '13';
         $colsize2 = '37';
@@ -805,6 +807,12 @@ class Change extends CommonITILObject
         $predefined_fields = [];
         $tpl_key = $this->getTemplateFormFieldName();
         if (!$ID) {
+            foreach ($options['_predefined_fields'] as $field => $value) {
+                if (isset($default_values[$field]) && !isset($tt->predefined[$field])
+                    && $this->isITILTemplateFieldValue($field, $options[$field] ?? null, $value)) {
+                    $options[$field] = $default_values[$field];
+                }
+            }
             if (isset($tt->predefined) && count($tt->predefined)) {
                 foreach ($tt->predefined as $predeffield => $predefvalue) {
                     if (isset($default_values[$predeffield])) {
@@ -812,18 +820,16 @@ class Change extends CommonITILObject
                         // Set if already predefined field
                         // Set if ticket template change
                         if (
-                            ((count($options['_predefined_fields']) == 0)
-                             && ($options[$predeffield] == $default_values[$predeffield]))
+                            ((count($options['_predefined_fields']) == 0 || (isset($options[$tpl_key]) && $options[$tpl_key] != $tt->getID()))
+                             && ($this->isITILTemplateFieldValue($predeffield, $options[$predeffield], $default_values[$predeffield])))
                             || (isset($options['_predefined_fields'][$predeffield])
-                                && ($options[$predeffield] == $options['_predefined_fields'][$predeffield]))
-                            || (isset($options[$tpl_key])
-                                && ($options[$tpl_key] != $tt->getID()))
+                                && ($this->isITILTemplateFieldValue($predeffield, $options[$predeffield], $options['_predefined_fields'][$predeffield])))
                             // user pref for requestype can't overwrite requestype from template
                             // when change category
                             || (($predeffield == 'requesttypes_id')
                                 && empty($saved))
-                            || (isset($ticket) && $options[$predeffield] == $ticket->getField($predeffield))
-                            || (isset($problem) && $options[$predeffield] == $problem->getField($predeffield))
+                            || (isset($ticket->fields[$predeffield]) && $options[$predeffield] == $ticket->getField($predeffield))
+                            || (isset($problem->fields[$predeffield]) && $options[$predeffield] == $problem->getField($predeffield))
                         ) {
                             // Load template data
                             $options[$predeffield]            = $predefvalue;
@@ -839,7 +845,7 @@ class Change extends CommonITILObject
             } else { // No template load : reset predefined values
                 if (count($options['_predefined_fields'])) {
                     foreach ($options['_predefined_fields'] as $predeffield => $predefvalue) {
-                        if ($options[$predeffield] == $predefvalue) {
+                        if (isset($default_values[$predeffield]) && $this->isITILTemplateFieldValue($predeffield, $options[$predeffield] ?? null, $predefvalue)) {
                             $options[$predeffield] = $default_values[$predeffield];
                         }
                     }
@@ -855,6 +861,13 @@ class Change extends CommonITILObject
                     $options[$name] = $value;
                 }
             }
+            if (!$ID) {
+                $this->fields[$name] = $options[$name];
+            }
+        }
+
+        if (!$ID) {
+            $this->fields = array_replace($this->fields, array_intersect_key($options, $this->fields));
         }
 
         // Put ticket template on $options for actors
@@ -869,9 +882,6 @@ class Change extends CommonITILObject
             }
         }
 
-        if ($ID == -1) {
-            $ID = 0;
-        }
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => self::class,
@@ -916,7 +926,7 @@ class Change extends CommonITILObject
                     __('Opening date') => [
                        'type' => 'datetime-local',
                        'name' => 'date',
-                       'value' => $this->isNewID($ID) ? $this->fields['date'] : date("Y-m-d H:i:s"),
+                       'value' => $this->fields['date'],
                     ],
                     __('Time to resolve') => [
                        'type' => 'datetime-local',
@@ -926,7 +936,7 @@ class Change extends CommonITILObject
                     __('By') => $ID ? [
                        'type' => 'select',
                        'name' => 'users_id_recipient',
-                       'values' => getOptionsForUsers('all', ['entities_id' => $this->fields['entities_id']]),
+                       ...getAjaxUserDropdownOptions('all', ['entities_id' => $this->fields['entities_id']]),
                        'value' => $this->fields["users_id_recipient"]
                     ] : [],
                     __('Last update') => $ID ? [
@@ -973,6 +983,7 @@ class Change extends CommonITILObject
                      'name' => 'itilcategories_id',
                      'itemtype' => ItilCategory::class,
                      'value' => $this->fields['itilcategories_id'],
+                     'hooks' => ['change' => !$ID ? "if (this.form.dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}))) { this.form.submit(); }" : ''],
                      'actions' => getItemActionButtons(['info', 'add'], ITILCategory::class),
                      $canupdate ? '' : 'disabled' => '',
                      'col_lg' => 6,
@@ -1036,13 +1047,21 @@ class Change extends CommonITILObject
                      'value' => $tt->predefined['global_validation'],
                   ] : [],
                   __('Approval request') => (!$ID) ? [
-                     'type' => 'select',
-                     'name' => 'users_id_validate',
-                     'values' => [
-                          Dropdown::EMPTY_VALUE,
-                          'user'  => User::getTypeName(1),
-                          'group' => Group::getTypeName(1)
-                     ],
+                     'name' => '_add_validation',
+                     'value' => $options['_add_validation'],
+                     'content' => (function () use ($tt, $options) {
+                         if ($tt->isHiddenField('_add_validation')) {
+                             return '';
+                         }
+                         ob_start();
+                         ChangeValidation::dropdownValidator([
+                             'right' => ['validate'],
+                             'name' => 'users_id_validate',
+                             'entity' => $this->fields['entities_id'],
+                             'users_id_validate' => $options['users_id_validate'],
+                         ]);
+                         return ob_get_clean();
+                     })(),
                   ] : [],
                   _n('Approval', 'Approvals', 1) => ($ID) ? (
                       Session::haveRightsOr('changevalidation', ChangeValidation::getCreateRights()) ? [
@@ -1051,6 +1070,8 @@ class Change extends CommonITILObject
                         'values' => CommonITILValidation::getAllStatusArray(),
                         'value' => $this->fields['global_validation'],
                       ] : [
+                      'name' => 'global_validation',
+                      'value' => $this->fields['global_validation'],
                       'content' => ChangeValidation::getStatus($this->fields['global_validation'])
                       ]
                   ) : [],
@@ -1132,22 +1153,18 @@ class Change extends CommonITILObject
                      'col_lg' => 12,
                      'col_md' => 12,
                   ],
-                  (!$options['template_preview']) && ($tt->isField('id') && ($tt->fields['id'] > 0)) ? [
-                     'type' => 'hidden',
-                     'name' => $tpl_key,
-                     'value' => $tt->fields['id']
-                  ] : [],
-                  (!$options['template_preview']) && ($tt->isField('id') && ($tt->fields['id'] > 0)) ? [
-                     'type' => 'hidden',
-                     'name' => '_predefined_fields',
-                     'value' => Toolbox::prepareArrayForInput($predefined_fields)
-                  ] : [],
                ]
               ] : [],
 
            ]
         ];
-        renderTwigForm($form, '', $this->fields);
+        if (!$ID) {
+            $form['content'][$this->getTypeName()]['inputs'] = array_merge(
+                $form['content'][$this->getTypeName()]['inputs'],
+                $this->getITILTemplateHiddenInputs($tt, $options, $predefined_fields)
+            );
+        }
+        renderTwigForm($form, '', $this->fields, $tt);
 
         return true;
     }
@@ -1161,9 +1178,10 @@ class Change extends CommonITILObject
 
         $this->check($this->getField('id'), READ);
         $canedit = $this->canEdit($this->getField('id'));
+        $tt ??= $this->getITILTemplateToUse(0, null, $this->fields['itilcategories_id'], $this->fields['entities_id']);
 
         $form = [
-           'actions' => $canedit ? $this->getFormURL() : '',
+           'action' => $canedit ? $this->getFormURL() : '',
            'buttons' => [
               [
                  'type' => 'submit',
@@ -1179,7 +1197,7 @@ class Change extends CommonITILObject
                     [
                        'type' => 'hidden',
                        'name' => 'id',
-                       'value' => $ID,
+                       'value' => $this->getID(),
                     ],
                     __('Impacts') => [
                        'type' => 'textarea',
@@ -1199,7 +1217,7 @@ class Change extends CommonITILObject
               ]
            ]
         ];
-        renderTwigForm($form);
+        renderTwigForm($form, '', ['noEntity' => true] + $this->fields, $tt);
     }
 
     /**
@@ -1210,9 +1228,10 @@ class Change extends CommonITILObject
 
         $this->check($this->getField('id'), READ);
         $canedit            = $this->canEdit($this->getField('id'));
+        $tt ??= $this->getITILTemplateToUse(0, null, $this->fields['itilcategories_id'], $this->fields['entities_id']);
 
         $form = [
-           'actions' => $canedit ? $this->getFormURL() : '',
+           'action' => $canedit ? $this->getFormURL() : '',
            'buttons' => [
               [
                  'type' => 'submit',
@@ -1228,7 +1247,7 @@ class Change extends CommonITILObject
                     [
                        'type' => 'hidden',
                        'name' => 'id',
-                       'value' => $ID,
+                       'value' => $this->getID(),
                     ],
                     __('Deployment plan') => [
                        'type' => 'textarea',
@@ -1255,7 +1274,7 @@ class Change extends CommonITILObject
               ]
            ]
         ];
-        renderTwigForm($form);
+        renderTwigForm($form, '', ['noEntity' => true] + $this->fields, $tt);
     }
 
 
@@ -1370,23 +1389,25 @@ class Change extends CommonITILObject
                 break;
 
             case 'Group':
-                // Mini search engine
+                $tree = 0;
                 if ($item->haveChildren()) {
                     $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
-                    echo "<table class='tab_cadre_fixe' aria-label='Last changes'>";
-                    echo "<tr class='tab_bg_1'><th>" . __('Last changes') . "</th></tr>";
-                    echo "<tr class='tab_bg_1'><td class='center'>";
-                    echo __('Child groups');
-                    Dropdown::showYesNo(
-                        'tree',
-                        $tree,
-                        -1,
-                        ['on_change' => 'reloadTab("start=0&tree="+this.value)']
-                    );
-                } else {
-                    $tree = 0;
+                    renderTwigForm([
+                        'action' => $item->getFormURL(),
+                        'buttons' => [[]],
+                        'content' => [[
+                            'visible' => false,
+                            'inputs' => [
+                                __('Child groups') => [
+                                    'type' => 'checkbox',
+                                    'name' => 'tree',
+                                    'value' => $tree,
+                                    'hooks' => ['change' => 'reloadTab("start=0&tree=" + (this.checked ? 1 : 0));'],
+                                ],
+                            ],
+                        ]],
+                    ]);
                 }
-                echo "</td></tr></table>";
 
                 $restrict['glpi_changes_groups.groups_id'] = ($tree ? getSonsOf('glpi_groups', $item->getID()) : $item->getID());
 
@@ -1410,66 +1431,23 @@ class Change extends CommonITILObject
             && !(!empty($withtemplate) && $withtemplate == 2)
             && (!isset($item->fields['is_template']) || $item->fields['is_template'] == 0)
         ) {
-            echo "<div class='firstbloc'>";
-            Html::showSimpleForm(
-                Change::getFormURL(),
-                '_add_fromitem',
+            self::showItemCreateForm(
                 __('New change for this item...'),
                 [
-                  '_from_itemtype' => $item->getType(),
-                  '_from_items_id' => $item->getID(),
-                  'entities_id'    => $item->fields['entities_id']
+                    '_from_itemtype' => $item->getType(),
+                    '_from_items_id' => $item->getID(),
+                    'entities_id' => $item->fields['entities_id'],
                 ]
             );
-            echo "</div>";
         }
 
         $criteria = self::getCommonCriteria();
         $criteria['WHERE'] = $restrict + getEntitiesRestrictCriteria(self::getTable());
-        $criteria['LIMIT'] = (int)$_SESSION['glpilist_limit'];
         $iterator = $DB->request($criteria);
         $number = count($iterator);
 
-        // Ticket for the item
-        echo "<div><table class='tab_cadre_fixe' aria-label='Changes'>";
+        self::showItemListTable($iterator, $item);
 
-        $colspan = 11;
-        if (count($_SESSION["glpiactiveentities"]) > 1) {
-            $colspan++;
-        }
-        if ($number > 0) {
-            Session::initNavigateListItems(
-                'Change',
-                //TRANS : %1$s is the itemtype name,
-                //        %2$s is the name of the item (used for headings of a list)
-                sprintf(
-                    __('%1$s = %2$s'),
-                    $item->getTypeName(1),
-                    $item->getName()
-                )
-            );
-
-            echo "<tr><th colspan='$colspan'>";
-
-            //TRANS : %d is the number of problems
-            echo sprintf(_n('Last %d change', 'Last %d changes', $number), $number);
-
-            echo "</th></tr>";
-        } else {
-            echo "<tr><th>" . __('No change found.') . "</th></tr>";
-        }
-        // Ticket list
-        if ($number > 0) {
-            self::commonListHeader(Search::HTML_OUTPUT);
-
-            while ($data = $iterator->next()) {
-                Session::addToNavigateListItems('Problem', $data["id"]);
-                self::showShort($data["id"]);
-            }
-            self::commonListHeader(Search::HTML_OUTPUT);
-        }
-
-        echo "</table></div>";
 
         // Tickets for linked items
         $linkeditems = $item->getLinkedItems();
@@ -1489,23 +1467,8 @@ class Change extends CommonITILObject
             $iterator = $DB->request($criteria);
             $number = count($iterator);
 
-            echo "<div class='spaced'><table class='tab_cadre_fixe' aria-label='Changes on linked items'>";
-            echo "<tr><th colspan='$colspan'>";
-            echo __('Changes on linked items');
-
-            echo "</th></tr>";
-            if ($number > 0) {
-                self::commonListHeader(Search::HTML_OUTPUT);
-
-                while ($data = $iterator->next()) {
-                    // Session::addToNavigateListItems(TRACKING_TYPE,$data["id"]);
-                    self::showShort($data["id"]);
-                }
-                self::commonListHeader(Search::HTML_OUTPUT);
-            } else {
-                echo "<tr><th>" . __('No change found.') . "</th></tr>";
-            }
-            echo "</table></div>";
+            echo '<h2 class="mt-4">' . __('Changes on linked items') . '</h2>';
+            self::showItemListTable($iterator, $item, true);
         } // Subquery for linked item
     }
 
@@ -1547,6 +1510,7 @@ class Change extends CommonITILObject
            '_groups_id_observer'        => 0,
            '_suppliers_id_assign'       => 0,
            'priority'                   => 3,
+           'status'                     => self::INCOMING,
            'urgency'                    => 3,
            'impact'                     => 3,
            'content'                    => '',
@@ -1557,6 +1521,8 @@ class Change extends CommonITILObject
            '_add_validation'            => 0,
            'users_id_validate'          => [],
            '_tasktemplates_id'          => [],
+           '_documents_id'              => [],
+           'date'                       => $_SESSION['glpi_currenttime'],
            'controlistcontent'          => '',
            'impactcontent'              => '',
            'rolloutplancontent'         => '',

@@ -55,14 +55,14 @@ class DeviceCase extends CommonDevice
               _n('Type', 'Types', 1) => [
                  'name'  => 'devicecasetypes_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceCaseType'),
+                 ...getAjaxDropdownOptions('DeviceCaseType'),
                  'value' => $this->fields['devicecasetypes_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceCaseType')
               ],
               _n('Model', 'Models', 1) => [
                  'name'  => 'devicecasemodels_id',
                  'type'  => 'select',
-                 'values' => getOptionForItems('DeviceCaseModel'),
+                 ...getAjaxDropdownOptions('DeviceCaseModel'),
                  'value' => $this->fields['devicecasemodels_id'],
                  'actions' => getItemActionButtons(['info', 'add'], 'DeviceCaseModel')
               ]
