@@ -25334,3 +25334,19 @@ msgstr "Résolu via le ticket parent n° %s."
 #: inc/ticketchildpropagation.class.php
 msgid "Some child tickets could not receive the public followup. Check your followup permissions."
 msgstr "Certains tickets enfants n’ont pas pu recevoir le suivi public. Vérifiez vos droits sur les suivis."
+
+#: inc/requesttype.class.php:86
+msgid "Ticket highlight color"
+msgstr "Couleur de surbrillance des tickets"
+
+#: inc/requesttype.class.php:91
+msgid "Highlight ticket rows"
+msgstr "Mettre les lignes des tickets en surbrillance"
+
+#: inc/requesttype.class.php:96
+msgid "Highlight ticket page background"
+msgstr "Mettre l’arrière-plan des tickets en surbrillance"
+
+#: inc/requesttype.class.php:121
+msgid "Invalid highlight color. Use a six-digit hexadecimal color."
+msgstr "Couleur de surbrillance invalide. Utilisez une couleur hexadécimale à six chiffres."
