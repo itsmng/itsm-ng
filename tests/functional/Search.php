@@ -1385,6 +1385,112 @@ class Search extends DbTestCase
         $this->variable(\Search::makeTextSearchValue($value))->isIdenticalTo($expected);
     }
 
+    protected function multipleValuesProvider(): iterable
+    {
+        return [
+           // search type, value, expected values
+           ['contains',    'pc1;pc2;pc3',      ['pc1', 'pc2', 'pc3']],
+           ['contains',    ' pc1 ;; pc2 ;',    ['pc1', 'pc2']],
+           ['contains',    'pc1;pc1;pc2',      ['pc1', 'pc2']],
+           ['contains',    'pc1',              ['pc1']],
+           ['notcontains', 'pc1;pc2',          ['pc1', 'pc2']],
+           ['equals',      'pc1;pc2',          ['pc1', 'pc2']],
+           ['notequals',   'pc1;pc2',          ['pc1', 'pc2']],
+           // HTML entities contain a ";" that must not be used as a separator
+           ['contains',    '&lt;5;&gt;10',     ['&lt;5', '&gt;10']],
+           ['contains',    'a&#38;b;c',        ['a&#38;b', 'c']],
+           // other search types are never split
+           ['under',       '1;2',              ['1;2']],
+           ['lessthan',    '1;2',              ['1;2']],
+        ];
+    }
+
+    /**
+     * @dataProvider multipleValuesProvider
+     */
+    public function testGetMultipleSearchValues($searchtype, $value, $expected)
+    {
+        $this->array(\Search::getMultipleSearchValues($searchtype, $value))->isIdenticalTo($expected);
+    }
+
+    public function testAddWhereMultipleValues()
+    {
+        $this->login();
+
+        // OR for a positive search
+        $where = \Search::addWhere(' AND ', 0, \Computer::class, 1, 'contains', 'pc1;pc2;pc3');
+        $this->string($where)
+           ->contains("LIKE '%pc1%'")
+           ->contains("LIKE '%pc2%'")
+           ->contains("LIKE '%pc3%'");
+        $this->integer(substr_count($where, ' OR '))->isGreaterThanOrEqualTo(2);
+
+        // AND for a negative search
+        $where = \Search::addWhere(' AND ', 0, \Computer::class, 1, 'notcontains', 'pc1;pc2');
+        $this->string($where)
+           ->contains("NOT LIKE '%pc1%'")
+           ->contains("NOT LIKE '%pc2%'")
+           ->contains(') AND (');
+
+        // Trailing separator is ignored
+        $this->string(\Search::addWhere(' AND ', 0, \Computer::class, 1, 'contains', 'pc1;'))
+           ->isIdenticalTo(\Search::addWhere(' AND ', 0, \Computer::class, 1, 'contains', 'pc1'));
+
+        $where = \Search::addWhere(' AND ', 0, \Computer::class, 1, 'equals', 'pc1;pc2');
+        $this->string($where)->contains("= 'pc1'")->contains("= 'pc2'")->contains(' OR ');
+    }
+
+    /**
+     * Search with several values: a value that does not exist must not prevent
+     * the others from being found.
+     */
+    public function testSearchMultipleValues()
+    {
+        $this->login();
+
+        $computer = new \Computer();
+        $ids = [];
+        foreach (['multival-pc1', 'multival-pc2'] as $name) {
+            $ids[] = (int) $computer->add(['name' => $name, 'entities_id' => 0]);
+        }
+
+        $data = $this->doSearch(\Computer::class, [
+           'is_deleted' => 0,
+           'start'      => 0,
+           'criteria'   => [
+              [
+                 'field'      => 1,
+                 'searchtype' => 'contains',
+                 'value'      => 'multival-pc1;does-not-exist;multival-pc2',
+              ]
+           ],
+           'metacriteria' => []
+        ]);
+
+        $this->integer((int) $data['data']['totalcount'])->isEqualTo(2);
+
+        // Negative search
+        $data = $this->doSearch(\Computer::class, [
+           'is_deleted' => 0,
+           'start'      => 0,
+           'criteria'   => [
+              [
+                 'field'      => 1,
+                 'searchtype' => 'contains',
+                 'value'      => 'multival-pc',
+              ],
+              [
+                 'link'       => 'AND',
+                 'field'      => 1,
+                 'searchtype' => 'notcontains',
+                 'value'      => 'multival-pc1;does-not-exist',
+              ]
+           ],
+           'metacriteria' => []
+        ]);
+        $this->integer((int) $data['data']['totalcount'])->isEqualTo(1);
+    }
+
     public function providerAddWhere()
     {
         return [
