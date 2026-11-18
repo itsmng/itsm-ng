@@ -3607,6 +3607,10 @@ JAVASCRIPT;
         }
         $ret = "";
         switch ($itemtype) {
+            case 'Ticket':
+                $ret = "`glpi_tickets`.`requesttypes_id` AS requesttypes_id,";
+                break;
+
             case 'FieldUnicity':
                 $ret = "`glpi_fieldunicities`.`itemtype` AS ITEMTYPE,";
                 break;

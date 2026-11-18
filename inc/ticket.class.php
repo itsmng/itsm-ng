@@ -42,6 +42,21 @@ if (!defined('GLPI_ROOT')) {
  **/
 class Ticket extends CommonITILObject
 {
+    public function display($options = [])
+    {
+        parent::display($options);
+
+        if (!$this->isNewItem()) {
+            $colors = RequestType::getTicketHighlightColors('page');
+            if (isset($colors[$this->fields['requesttypes_id'] ?? 0])) {
+                renderTwigTemplate('ticket/highlight.twig', [
+                    'color' => $colors[$this->fields['requesttypes_id']],
+                    'text_color' => RequestType::getTicketHighlightTextColor($colors[$this->fields['requesttypes_id']]),
+                ]);
+            }
+        }
+    }
+
     // From CommonDBTM
     public $dohistory                   = true;
     protected static $forward_entity_to = ['TicketValidation', 'TicketCost'];
@@ -6351,10 +6366,14 @@ class Ticket extends CommonITILObject
             ];
             $values = [];
             $job = new Ticket();
+            $highlightColors = RequestType::getTicketHighlightColors('rows');
             while ($data = $iterator->next()) {
                 $newValue = [];
                 $rand = mt_rand();
                 if ($job->getFromDBwithData($data['id'], 0)) {
+                    if (isset($highlightColors[$job->fields['requesttypes_id'] ?? 0])) {
+                        $newValue['_ticketHighlight'] = $highlightColors[$job->fields['requesttypes_id']];
+                    }
                     $bgcolor = $_SESSION["glpipriority_" . $job->fields["priority"]];
                     $name    = sprintf(__('%1$s: %2$s'), __('ID'), $job->fields["id"]);
                     $newValue[] = "<div class='priority_block' style='border-color: $bgcolor'>
@@ -6676,9 +6695,10 @@ class Ticket extends CommonITILObject
             $fields = array_merge($fields, [__('Priority'), _n('Requester', 'Requesters', 1), __('Assigned'),
                 _n('Associated element', 'Associated elements', Session::getPluralNumber()), __('Category'), __('Title'), __('Planification')]);
             $values = [];
+            $highlightColors = RequestType::getTicketHighlightColors('rows');
             while ($data = $iterator->next()) {
                 Session::addToNavigateListItems('Ticket', $data['id']);
-                $row = self::showShort($data['id'], ['return_values' => true]);
+                $row = self::showShort($data['id'], ['return_values' => true, 'ticket_highlight_colors' => $highlightColors]);
                 if ($row) {
                     array_shift($row);
                     $values[] = $row;

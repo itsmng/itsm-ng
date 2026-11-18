@@ -171,6 +171,22 @@ import { batch, signal } from '@preact/signals';
 
         const flexRender = (comp, props) => (typeof comp === 'function' ? comp(props) : comp);
 
+        const getTicketHighlightStyle = (color) => {
+            if (typeof color !== 'string' || !/^#[0-9a-f]{6}$/i.test(color)) {
+                return undefined;
+            }
+            // Choose the text color with the greater WCAG contrast ratio.
+            const channels = color.slice(1).match(/../g).map(channel => {
+                const value = parseInt(channel, 16) / 255;
+                return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+            });
+            const luminance = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+            return {
+                '--ticket-highlight-bg': color,
+                '--ticket-highlight-color': luminance > 0.179 ? '#000000' : '#ffffff',
+            };
+        };
+
         const storeState = (state) => {
             localStorage.setItem('tableState_pagination_' + stateKey, JSON.stringify(state.pagination));
             localStorage.setItem('tableState_sorting_' + stateKey, JSON.stringify(state.sorting));
@@ -382,6 +398,9 @@ import { batch, signal } from '@preact/signals';
         const data = rowKeys.filter(key => values[key]).map(key => {
             const value = values[key];
             const row = {};
+            if (value._ticketHighlight) {
+                row._ticketHighlight = value._ticketHighlight;
+            }
             fieldKeys.forEach(field => {
                 row[String(field)] = value[String(field)];
             });
@@ -1046,7 +1065,10 @@ import { batch, signal } from '@preact/signals';
                             ) : (
                             <tbody class="table-light">
                                 {table.getRowModel().rows.map(row => (
-                                    <tr>
+                                    <tr
+                                        class={getTicketHighlightStyle(row.original._ticketHighlight) ? 'ticket-source-highlight' : ''}
+                                        style={getTicketHighlightStyle(row.original._ticketHighlight)}
+                                    >
                                         {row.getVisibleCells().map(cell => {
                                             const isSelectColumn = cell.column.id === 'select';
                                             const isDisabled = isSelectColumn && !radio && hasMassiveAction && !row.original.value;

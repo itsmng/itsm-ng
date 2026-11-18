@@ -44,6 +44,10 @@ function update213to220(): bool
     $migration->displayTitle(sprintf(__('Update to %s'), '2.2.0'));
     $migration->setVersion('2.2.0');
 
+    $migration->addField('glpi_requesttypes', 'ticket_highlight_color', "varchar(7) NOT NULL DEFAULT '#fff2cc'");
+    $migration->addField('glpi_requesttypes', 'highlight_ticket_rows', 'bool');
+    $migration->addField('glpi_requesttypes', 'highlight_ticket_page', 'bool');
+
     $migration->addConfig([
         'child_ticket_propagate_processing' => 0,
         'child_ticket_propagate_solved' => 0,

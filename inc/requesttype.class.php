@@ -83,7 +83,91 @@ class RequestType extends CommonDropdown
               'type'  => 'checkbox',
               'value' => $this->fields['is_itilfollowup']
            ],
+           __('Ticket highlight color') => [
+              'name' => 'ticket_highlight_color',
+              'type' => 'color',
+              'value' => ($this->fields['ticket_highlight_color'] ?? '') ?: '#fff2cc',
+           ],
+           __('Highlight ticket rows') => [
+              'name' => 'highlight_ticket_rows',
+              'type' => 'checkbox',
+              'value' => $this->fields['highlight_ticket_rows'] ?? 0,
+           ],
+           __('Highlight ticket page background') => [
+              'name' => 'highlight_ticket_page',
+              'type' => 'checkbox',
+              'value' => $this->fields['highlight_ticket_page'] ?? 0,
+           ],
         ];
+    }
+
+    public function prepareInputForAdd($input)
+    {
+        $input = parent::prepareInputForAdd($input);
+        return $this->prepareHighlightInput($input);
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        $input = parent::prepareInputForUpdate($input);
+        return $this->prepareHighlightInput($input);
+    }
+
+    private function prepareHighlightInput($input)
+    {
+        if (array_key_exists('ticket_highlight_color', $input)) {
+            if (!is_string($input['ticket_highlight_color'])
+                || !preg_match('/^#[0-9a-fA-F]{6}$/D', $input['ticket_highlight_color'])) {
+                Session::addMessageAfterRedirect(__('Invalid highlight color. Use a six-digit hexadecimal color.'), false, ERROR);
+                return false;
+            }
+            $input['ticket_highlight_color'] = strtolower($input['ticket_highlight_color']);
+        }
+        foreach (['highlight_ticket_rows', 'highlight_ticket_page'] as $field) {
+            if (isset($input[$field])) {
+                $input[$field] = (int) in_array($input[$field], [1, '1', true], true);
+            }
+        }
+        return $input;
+    }
+
+    /**
+     * Load source colors once per rendered list, independently of visible columns.
+     * Disabled sources still describe existing tickets and retain their highlighting.
+     *
+     * @return array<int, string>
+     */
+    public static function getTicketHighlightColors($location)
+    {
+        global $DB;
+
+        $fields = ['rows' => 'highlight_ticket_rows', 'page' => 'highlight_ticket_page'];
+        if (!isset($fields[$location])) {
+            return [];
+        }
+        $colors = [];
+        foreach ($DB->request([
+            'SELECT' => ['id', 'ticket_highlight_color'],
+            'FROM' => self::getTable(),
+            'WHERE' => [$fields[$location] => 1],
+        ]) as $source) {
+            $color = $source['ticket_highlight_color'];
+            if (is_string($color) && preg_match('/^#[0-9a-fA-F]{6}$/D', $color)) {
+                $colors[$source['id']] = $color;
+            }
+        }
+        return $colors;
+    }
+
+    /** Choose black or white text for a validated highlight color. */
+    public static function getTicketHighlightTextColor($color)
+    {
+        $channels = array_map(static function ($channel) {
+            $value = hexdec($channel) / 255;
+            return $value <= 0.04045 ? $value / 12.92 : (($value + 0.055) / 1.055) ** 2.4;
+        }, str_split(substr($color, 1), 2));
+        $luminance = $channels[0] * 0.2126 + $channels[1] * 0.7152 + $channels[2] * 0.0722;
+        return $luminance > 0.179 ? '#000000' : '#ffffff';
     }
 
 

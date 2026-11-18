@@ -1565,7 +1565,9 @@ class Html
         //  CSS link
         echo Html::scss('css/styles');
         echo Html::scss('css/colors');
-        echo Html::scss('css/itsm2');
+        echo Html::scss('css/itsm2', [
+            'version' => ITSM_VERSION . '-' . filemtime(GLPI_ROOT . '/css/itsm2.scss'),
+        ]);
         if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {
             echo Html::scss('css/highcontrast');
         }
@@ -2056,7 +2058,9 @@ JAVASCRIPT
         echo Html::script("node_modules/preact/dist/preact.umd.js");
         echo Html::script("node_modules/preact/hooks/dist/hooks.umd.js");
         echo Html::script("public/build/displaypreferences.js");
-        echo Html::script("public/build/table.js");
+        echo Html::script("public/build/table.js", [
+            'version' => ITSM_VERSION . '-' . filemtime(GLPI_ROOT . '/public/build/table.js'),
+        ]);
         echo Html::script("vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js");
         echo Html::script("node_modules/select2/dist/js/select2.min.js");
         echo Html::script("node_modules/tableexport.jquery.plugin/tableExport.min.js");

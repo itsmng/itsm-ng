@@ -7501,6 +7501,7 @@ abstract class CommonITILObject extends CommonDBTM
            'id_for_massiveaction'   => 0,
            'followups'              => false,
            'return_values'          => false,
+           'ticket_highlight_colors' => [],
         ];
 
         if (count($options)) {
@@ -7886,6 +7887,9 @@ abstract class CommonITILObject extends CommonDBTM
             echo "<td colspan='6' ><i>" . __('No item in progress.') . "</i></td></tr>";
         }
         if ($p['return_values']) {
+            if ($item instanceof Ticket && isset($p['ticket_highlight_colors'][$item->fields['requesttypes_id'] ?? 0])) {
+                $values['_ticketHighlight'] = $p['ticket_highlight_colors'][$item->fields['requesttypes_id']];
+            }
             return $values;
         }
     }
@@ -7934,6 +7938,7 @@ abstract class CommonITILObject extends CommonDBTM
 
         $values = [];
         $selection = [];
+        $highlightColors = static::getType() === 'Ticket' ? RequestType::getTicketHighlightColors('rows') : [];
         if (!$linked) {
             Session::initNavigateListItems(
                 static::getType(),
@@ -7941,7 +7946,7 @@ abstract class CommonITILObject extends CommonDBTM
             );
         }
         foreach ($iterator as $data) {
-            $row = static::showShort($data['id'], ['return_values' => true]);
+            $row = static::showShort($data['id'], ['return_values' => true, 'ticket_highlight_colors' => $highlightColors]);
             if (empty($row)) {
                 continue;
             }

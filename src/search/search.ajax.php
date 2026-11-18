@@ -79,9 +79,13 @@ $formattedDatas = [];
 $params['as_map'] = '0';
 
 $datas = Search::getDatas($itemtype, $params);
+$highlightColors = $itemtype === 'Ticket' ? RequestType::getTicketHighlightColors('rows') : [];
 
 foreach ($datas['data']['rows'] as $row) {
     $newData = [$row['id'] => $row['id']];
+    if (isset($highlightColors[$row['requesttypes_id'] ?? 0])) {
+        $newData['_ticketHighlight'] = $highlightColors[$row['requesttypes_id']];
+    }
     if (
         !isset($row['entities_id'])
         || in_array($row['entities_id'], $_SESSION['glpiactiveentities'])
