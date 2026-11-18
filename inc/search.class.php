@@ -1749,6 +1749,8 @@ class Search {
             }
 
             $typenames = [];
+            $highlight_colors = $data['itemtype'] === 'Ticket' && $data['display_type'] == self::HTML_OUTPUT
+               ? RequestType::getTicketHighlightColors('rows') : [];
             // Display Loop
             foreach ($data['data']['rows'] as $rowkey => $row) {
                // Column num
@@ -1756,7 +1758,8 @@ class Search {
                $row_num++;
                // New line
                echo self::showNewLine($data['display_type'], ($row_num%2),
-                                    $data['search']['is_deleted']);
+                                    $data['search']['is_deleted'],
+                                    $highlight_colors[$row['requesttypes_id'] ?? 0] ?? null);
 
                $current_type       = (isset($row['TYPE']) ? $row['TYPE'] : $data['itemtype']);
                $massiveaction_type = $current_type;
@@ -3457,6 +3460,9 @@ JAVASCRIPT;
       }
       $ret = "";
       switch ($itemtype) {
+         case 'Ticket' :
+            $ret = "`glpi_tickets`.`requesttypes_id` AS requesttypes_id,";
+            break;
 
          case 'FieldUnicity' :
             $ret = "`glpi_fieldunicities`.`itemtype` AS ITEMTYPE,";
@@ -7699,10 +7705,11 @@ JAVASCRIPT;
     * @param integer $type        Display type (0=HTML, 1=Sylk, 2=PDF, 3=CSV)
     * @param boolean $odd         Is it a new odd line ? (false by default)
     * @param boolean $is_deleted  Is it a deleted search ? (false by default)
+    * @param string|null $highlight_color Validated request-source color for HTML rows
     *
     * @return string HTML to display
    **/
-   static function showNewLine($type, $odd = false, $is_deleted = false) {
+   static function showNewLine($type, $odd = false, $is_deleted = false, $highlight_color = null) {
 
       $out = "";
       switch ($type) {
@@ -7721,11 +7728,14 @@ JAVASCRIPT;
             break;
 
          default :
-            $class = " class='tab_bg_2".($is_deleted?'_2':'')."' ";
-            if ($odd) {
-               $class = " class='tab_bg_1".($is_deleted?'_2':'')."' ";
+            $class = 'tab_bg_'.($odd ? '1' : '2').($is_deleted ? '_2' : '');
+            $style = '';
+            if (is_string($highlight_color) && preg_match('/^#[0-9a-fA-F]{6}$/D', $highlight_color)) {
+               $class .= ' ticket-source-highlight';
+               $text_color = RequestType::getTicketHighlightTextColor($highlight_color);
+               $style = " style='--ticket-highlight-bg:$highlight_color;--ticket-highlight-color:$text_color'";
             }
-            $out = "<tr $class>";
+            $out = "<tr class='$class'$style>";
       }
       return $out;
    }

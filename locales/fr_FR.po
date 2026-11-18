@@ -23577,3 +23577,19 @@ msgstr "Voir les documents liés"
 #: inc/auth.class.php:1791
 msgid "Link accounts with other auth sources"
 msgstr "Lier des comptes à d'autres sources d'authentification"
+
+#: inc/requesttype.class.php:79
+msgid "Ticket highlight color"
+msgstr "Couleur de surbrillance des tickets"
+
+#: inc/requesttype.class.php:82
+msgid "Highlight ticket rows"
+msgstr "Mettre les lignes des tickets en surbrillance"
+
+#: inc/requesttype.class.php:85
+msgid "Highlight ticket page background"
+msgstr "Mettre l’arrière-plan des tickets en surbrillance"
+
+#: inc/requesttype.class.php:105
+msgid "Invalid highlight color. Use a six-digit hexadecimal color."
+msgstr "Couleur de surbrillance invalide. Utilisez une couleur hexadécimale à six chiffres."

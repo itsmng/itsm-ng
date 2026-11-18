@@ -37,6 +37,15 @@ if (!defined('GLPI_ROOT')) {
 /// Class RequestType
 class RequestType extends CommonDropdown {
 
+   private static $ticket_highlight_colors = [];
+
+   function post_getEmpty() {
+      parent::post_getEmpty();
+      $this->fields['ticket_highlight_color'] = '#fff2cc';
+      $this->fields['highlight_ticket_rows'] = 0;
+      $this->fields['highlight_ticket_page'] = 0;
+   }
+
 
    static function getTypeName($nb = 0) {
       return _n('Request source', 'Request sources', $nb);
@@ -66,7 +75,84 @@ class RequestType extends CommonDropdown {
                    ['name'  => 'is_itilfollowup',
                          'label' => __('Request source visible for followups'),
                          'type'  => 'bool'],
+                   ['name'  => 'ticket_highlight_color',
+                         'label' => __('Ticket highlight color'),
+                         'type'  => 'color'],
+                   ['name'  => 'highlight_ticket_rows',
+                         'label' => __('Highlight ticket rows'),
+                         'type'  => 'bool'],
+                   ['name'  => 'highlight_ticket_page',
+                         'label' => __('Highlight ticket page background'),
+                         'type'  => 'bool'],
                          ];
+   }
+
+
+   public function prepareInputForAdd($input) {
+      $input = parent::prepareInputForAdd($input);
+      return $this->prepareHighlightInput($input);
+   }
+
+   public function prepareInputForUpdate($input) {
+      $input = parent::prepareInputForUpdate($input);
+      return $this->prepareHighlightInput($input);
+   }
+
+   private function prepareHighlightInput($input) {
+      if (array_key_exists('ticket_highlight_color', $input)) {
+         if (!is_string($input['ticket_highlight_color'])
+            || !preg_match('/^#[0-9a-fA-F]{6}$/D', $input['ticket_highlight_color'])) {
+            Session::addMessageAfterRedirect(__('Invalid highlight color. Use a six-digit hexadecimal color.'), false, ERROR);
+            return false;
+         }
+         $input['ticket_highlight_color'] = strtolower($input['ticket_highlight_color']);
+      }
+      foreach (['highlight_ticket_rows', 'highlight_ticket_page'] as $field) {
+         if (isset($input[$field])) {
+            $input[$field] = (int) in_array($input[$field], [1, '1', true], true);
+         }
+      }
+      return $input;
+   }
+
+   /**
+    * Load source colors once per rendered list, independently of visible columns.
+    * Disabled sources still describe existing tickets and retain their highlighting.
+    *
+    * @return array<int, string>
+   **/
+   public static function getTicketHighlightColors($location) {
+      global $DB;
+
+      if (isset(self::$ticket_highlight_colors[$location])) {
+         return self::$ticket_highlight_colors[$location];
+      }
+      $fields = ['rows' => 'highlight_ticket_rows', 'page' => 'highlight_ticket_page'];
+      if (!isset($fields[$location])) {
+         return [];
+      }
+      $colors = [];
+      foreach ($DB->request([
+         'SELECT' => ['id', 'ticket_highlight_color'],
+         'FROM' => self::getTable(),
+         'WHERE' => [$fields[$location] => 1],
+      ]) as $source) {
+         $color = $source['ticket_highlight_color'];
+         if (is_string($color) && preg_match('/^#[0-9a-fA-F]{6}$/D', $color)) {
+            $colors[$source['id']] = $color;
+         }
+      }
+      return self::$ticket_highlight_colors[$location] = $colors;
+   }
+
+   /** Choose black or white text for a validated highlight color. */
+   public static function getTicketHighlightTextColor($color) {
+      $channels = array_map(static function ($channel) {
+         $value = hexdec($channel) / 255;
+         return $value <= 0.04045 ? $value / 12.92 : (($value + 0.055) / 1.055) ** 2.4;
+      }, str_split(substr($color, 1), 2));
+      $luminance = $channels[0] * 0.2126 + $channels[1] * 0.7152 + $channels[2] * 0.0722;
+      return $luminance > 0.179 ? '#000000' : '#ffffff';
    }
 
 
@@ -138,6 +224,7 @@ class RequestType extends CommonDropdown {
 
 
    function post_addItem() {
+      self::$ticket_highlight_colors = [];
       global $DB;
 
       $update = [];
@@ -173,6 +260,7 @@ class RequestType extends CommonDropdown {
     * @see CommonDBTM::post_updateItem()
    **/
    function post_updateItem($history = 1) {
+      self::$ticket_highlight_colors = [];
       global $DB;
       $update =[];
 
@@ -241,6 +329,7 @@ class RequestType extends CommonDropdown {
 
 
    function cleanDBonPurge() {
+      self::$ticket_highlight_colors = [];
       Rule::cleanForItemCriteria($this);
    }
 

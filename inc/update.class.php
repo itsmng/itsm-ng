@@ -553,6 +553,8 @@ class Update extends CommonGLPI {
          case "1.6.19":
             include_once "{$updir}itsm_update_1610_1611.php";
             update1610to1611();
+            include_once "{$updir}itsm_update_1611_1619.php";
+            update1611to1619();
             break;
 
          case ITSM_VERSION:

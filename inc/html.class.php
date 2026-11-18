@@ -1448,7 +1448,9 @@ class Html
       }
 
       //  CSS link
-      echo Html::scss('css/styles');
+      echo Html::scss('css/styles', [
+         'version' => ITSM_VERSION.'-'.filemtime(GLPI_ROOT.'/css/styles.scss')
+      ]);
       if (isset($_SESSION['glpihighcontrast_css']) && $_SESSION['glpihighcontrast_css']) {
          echo Html::scss('css/highcontrast');
       }

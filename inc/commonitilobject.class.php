@@ -6205,7 +6205,10 @@ abstract class CommonITILObject extends CommonDBTM {
          $item_num = 1;
          $bgcolor  = $_SESSION["glpipriority_".$item->fields["priority"]];
 
-         echo Search::showNewLine($p['output_type'], $p['row_num']%2, $item->isDeleted());
+         $highlight_colors = $item instanceof Ticket && $p['output_type'] == Search::HTML_OUTPUT
+            ? RequestType::getTicketHighlightColors('rows') : [];
+         echo Search::showNewLine($p['output_type'], $p['row_num']%2, $item->isDeleted(),
+                                 $highlight_colors[$item->fields['requesttypes_id'] ?? 0] ?? null);
 
          $check_col = '';
          if (($candelete || $canupdate)

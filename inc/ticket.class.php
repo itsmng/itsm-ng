@@ -41,6 +41,25 @@ if (!defined('GLPI_ROOT')) {
 **/
 class Ticket extends CommonITILObject {
 
+   function display($options = []) {
+      parent::display($options);
+
+      if (!$this->isNewItem()) {
+         $colors = RequestType::getTicketHighlightColors('page');
+         $color = $colors[$this->fields['requesttypes_id'] ?? 0] ?? null;
+         if ($color !== null) {
+            $text_color = RequestType::getTicketHighlightTextColor($color);
+            // Colors are validated six-digit hexadecimal values from RequestType.
+            echo "<style>
+               #page, #page .navigationheader { background-color: $color; color: $text_color; }
+               #page .navigationheader a { color: inherit; }
+               #page .tab_cadre, #page .tab_cadre_fixe, #page .tab_cadre_fixehov,
+               #page .tab_cadrehov, #page .ui-tabs-panel { color: #000; }
+            </style>";
+         }
+      }
+   }
+
    // From CommonDBTM
    public $dohistory                   = true;
    static protected $forward_entity_to = ['TicketValidation', 'TicketCost'];
@@ -6134,7 +6153,9 @@ class Ticket extends CommonITILObject {
          $bgcolor = $_SESSION["glpipriority_".$job->fields["priority"]];
          $name    = sprintf(__('%1$s: %2$s'), __('ID'), $job->fields["id"]);
          // $rand    = mt_rand();
-         echo "<tr class='tab_bg_2'>";
+         $highlight_colors = RequestType::getTicketHighlightColors('rows');
+         echo Search::showNewLine(Search::HTML_OUTPUT, false, $job->isDeleted(),
+                                 $highlight_colors[$job->fields['requesttypes_id'] ?? 0] ?? null);
          echo "<td>
             <div class='priority_block' style='border-color: $bgcolor'>
                <span style='background: $bgcolor'></span>&nbsp;$name

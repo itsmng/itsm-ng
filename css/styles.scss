@@ -1349,6 +1349,16 @@ th, td {}
    margin: 0px;
 }
 
+tr.ticket-source-highlight,
+tr.ticket-source-highlight > td {
+   background-color: var(--ticket-highlight-bg) !important;
+   color: var(--ticket-highlight-color);
+}
+
+tr.ticket-source-highlight > td a:not(.vsubmit):not(.button) {
+   color: var(--ticket-highlight-color);
+}
+
 .tab_bg_1 {
    background-color: #FFF;
 }
