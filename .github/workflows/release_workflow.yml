@@ -29,7 +29,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, gd, sqlsrv, pdo_sqlsrv
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, sqlsrv, pdo_sqlsrv
           coverage: none
 
       - name: Install NodeJS
@@ -40,26 +40,33 @@ jobs:
       - name: Run composer install
         run: export NODE_OPTIONS=--openssl-legacy-provider && php bin/console dependencies install
 
-      - name: Start MySQL
+      - name: Set up MariaDB
+        shell: bash
         run: |
-          sudo apt autoremove --purge mysql*
-          sudo apt update
-          sudo apt install mariadb-server
-          sudo mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
-          sudo mysql -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
-          sudo mysql -e "GRANT ALL PRIVILEGES ON $DB_DATABASE.* TO '$DB_USER'@'localhost';"
-          sudo mysql -e "FLUSH PRIVILEGES;"
+          sudo apt-get update
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get purge -y --no-auto-remove \
+            mysql-server mysql-server-core mysql-client mysql-client-core mysql-common
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-auto-remove mariadb-server
+          sudo systemctl start mariadb
+
+          php --ri gd
+
+          sudo mariadb <<SQL
+          CREATE DATABASE IF NOT EXISTS \`${DB_DATABASE}\`;
+          CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
+          GRANT ALL PRIVILEGES ON \`${DB_DATABASE}\`.* TO '${DB_USER}'@'localhost';
+          SQL
 
       - name: Install ITSM-ng
         run: php bin/console itsmng:database:install -H localhost -u $DB_USER -p $DB_PASSWORD -d $DB_DATABASE -n
 
       - name: Setup migration environment
         run: |
-          sudo mysql -e "CREATE DATABASE IF NOT EXISTS itsm_migration;"
-          sudo mysql -e "CREATE USER IF NOT EXISTS 'itsm_migration'@'localhost' IDENTIFIED BY 'itsm_migration';"
-          sudo mysql -e "GRANT ALL PRIVILEGES ON itsm_migration.* TO 'itsm_migration'@'localhost';"
-          sudo mysql -e "FLUSH PRIVILEGES;"
-          sudo mysql -u itsm_migration -pitsm_migration itsm_migration < tests/migrations/schema.sql
+          sudo mariadb -e "CREATE DATABASE IF NOT EXISTS itsm_migration;"
+          sudo mariadb -e "CREATE USER IF NOT EXISTS 'itsm_migration'@'localhost' IDENTIFIED BY 'itsm_migration';"
+          sudo mariadb -e "GRANT ALL PRIVILEGES ON itsm_migration.* TO 'itsm_migration'@'localhost';"
+          sudo mariadb -e "FLUSH PRIVILEGES;"
+          sudo mariadb -u itsm_migration -pitsm_migration itsm_migration < tests/migrations/schema.sql
 
       - name: Run migration tests
         run: php bin/console itsmng:database:update --config-dir=/home/runner/work/itsm-ng/itsm-ng/tests/migrations -n
