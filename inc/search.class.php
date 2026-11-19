@@ -48,7 +48,6 @@ class Search
     public const GLOBAL_DISPLAY_COUNT = 10;
     // EXPORT TYPE
     public const GLOBAL_SEARCH        = -1;
-    public const MULTIPLE_VALUES_SEPARATOR = ';';
     public const HTML_OUTPUT          = 0;
     public const SYLK_OUTPUT          = 1;
     public const PDF_OUTPUT_LANDSCAPE = 2;
@@ -62,6 +61,9 @@ class Search
     public const LONGSEP  = '$$##$$';
 
     public const NULLVALUE = '__NULL__';
+
+    // Separator used to search several values at once
+    public const MULTIPLE_VALUES_SEPARATOR = ';';
 
     public static $output_type = self::HTML_OUTPUT;
     public static $search = [];
