@@ -1220,7 +1220,8 @@ class Dropdown extends DbTestCase
                        'title'  => 'tech - tech',
                     ]
                  ],
-                 'count' => 5
+                 'count' => 5,
+                 'pagination' => ['more' => false]
               ]
            ], [
               'params'    => [
@@ -1251,7 +1252,8 @@ class Dropdown extends DbTestCase
                        'title'  => 'post-only - post-only',
                     ]
                  ],
-                 'count' => 3
+                 'count' => 3,
+                 'pagination' => ['more' => false]
               ]
            ], [
               'params'    => [
@@ -1275,7 +1277,8 @@ class Dropdown extends DbTestCase
                        'title'  => '_test_user - _test_user',
                     ]
                  ],
-                 'count' => 1
+                 'count' => 1,
+                 'pagination' => ['more' => false]
               ]
            ]
         ];
