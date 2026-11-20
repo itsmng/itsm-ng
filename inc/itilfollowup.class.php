@@ -272,59 +272,52 @@ class ITILFollowup extends CommonDBChild
             $donotif = false; // Done for ITILObject update (new status)
         }
 
-        //manage reopening of ITILObject
+        $is_change = $parentitem instanceof Change;
+        $has_explicit_status = isset($this->input['_status']);
+        if (!$has_explicit_status) {
+            $this->input['_status'] = $parentitem->fields['status'];
+        }
+
+        // A Change follow-up with a status selection takes precedence over automatic reopening.
         $reopened = false;
-        if (!isset($this->input['_status'])) {
-            $this->input['_status'] = $parentitem->fields["status"];
-        }
-        // if reopen set (from followup form or mailcollector)
-        // and status is reopenable and not changed in form
         if (
-            isset($this->input["_reopen"])
-            && $this->input["_reopen"]
-            && in_array($parentitem->fields["status"], $parentitem::getReopenableStatusArray())
-            && $this->input['_status'] == $parentitem->fields["status"]
+            !empty($this->input['_reopen'])
+            && !($is_change && $has_explicit_status)
+            && in_array($parentitem->fields['status'], $parentitem::getReopenableStatusArray())
+            && $this->input['_status'] == $parentitem->fields['status']
         ) {
-            $needupdateparent = false;
-            if (
-                ($parentitem->countUsers(CommonITILActor::ASSIGN) > 0)
-                || ($parentitem->countGroups(CommonITILActor::ASSIGN) > 0)
-                || ($parentitem->countSuppliers(CommonITILActor::ASSIGN) > 0)
-            ) {
-                //check if lifecycle allowed new status
-                if (
-                    Session::isCron()
-                    || Session::getCurrentInterface() == "helpdesk"
-                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::ASSIGNED)
-                ) {
-                    $needupdateparent = true;
-                    $update['status'] = CommonITILObject::ASSIGNED;
-                }
+            if ($is_change) {
+                // Match the reopen destinations used by Change::canReopen().
+                $reopen_statuses = [Change::INCOMING, Change::EVALUATION];
             } else {
-                //check if lifecycle allowed new status
-                if (
-                    Session::isCron()
-                    || Session::getCurrentInterface() == "helpdesk"
-                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::INCOMING)
-                ) {
-                    $needupdateparent = true;
-                    $update['status'] = CommonITILObject::INCOMING;
-                }
+                $has_assignee = $parentitem->countUsers(CommonITILActor::ASSIGN) > 0
+                    || $parentitem->countGroups(CommonITILActor::ASSIGN) > 0
+                    || $parentitem->countSuppliers(CommonITILActor::ASSIGN) > 0;
+                $reopen_statuses = [$has_assignee ? CommonITILObject::ASSIGNED : CommonITILObject::INCOMING];
             }
 
-            if ($needupdateparent) {
-                $update['id'] = $parentitem->fields['id'];
-
-                // Use update method for history
-                $parentitem->update($update);
-                $reopened     = true;
+            foreach ($reopen_statuses as $status) {
+                if (
+                    (!$is_change && (Session::isCron() || Session::getCurrentInterface() == 'helpdesk'))
+                    || $parentitem::isAllowedStatus($parentitem->fields['status'], $status)
+                ) {
+                    $parentitem->update([
+                       'id'     => $parentitem->fields['id'],
+                       'status' => $status,
+                    ]);
+                    $reopened = true;
+                    break;
+                }
             }
         }
 
-        //change ITILObject status only if imput change
         if (
             !$reopened
             && $this->input['_status'] != $parentitem->fields['status']
+            && (!$is_change || (
+                (is_int($this->input['_status']) || is_string($this->input['_status']))
+                && isset($parentitem::getAllowedStatusArray($parentitem->fields['status'])[$this->input['_status']])
+            ))
         ) {
             $update['status'] = $this->input['_status'];
             $update['id']     = $parentitem->fields['id'];
@@ -992,7 +985,7 @@ class ITILFollowup extends CommonDBChild
                           && $item->haveAGroup(CommonITILActor::REQUESTER, $_SESSION['glpigroups'])));
 
         $reopen_case = false;
-        if ($this->isNewID($ID)) {
+        if ($this->isNewID($ID) && !($tech && $item instanceof Change)) {
             if ($item->canReopen()) {
                 $reopen_case = true;
                 echo "<div class='center b'>" . __('If you want to reopen the ticket, you must specify a reason') . "</div>";
