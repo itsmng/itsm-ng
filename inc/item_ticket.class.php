@@ -259,17 +259,17 @@ class Item_Ticket extends CommonItilObject_Item
         // Show associated item dropdowns
         if ($canedit) {
             echo "<div class='row'>";  // Using row for grid structure
+            echo "<div class='col-md-6'>";  // First column
             $p = ['used'       => $params['items_id'],
                   'rand'       => $rand,
                   'tickets_id' => $params['id']];
             // My items
             if ($params['_users_id_requester'] > 0) {
-                echo "<div class='col-md-6'>";
                 Item_Ticket::dropdownMyDevices($params['_users_id_requester'], $ticket->fields["entities_id"], $params['itemtype'], 0, $p);
-                echo "</div>";
             }
+            echo "</div>";
 
-            echo "<div class='" . ($params['_users_id_requester'] > 0 ? 'col-md-6' : 'col-12') . "'>";
+            echo "<div class='col-md-6'>";  // Second column
             // Global search
             Item_Ticket::dropdownAllDevices("itemtype", $params['itemtype'], 0, 1, $params['_users_id_requester'], $ticket->fields["entities_id"], $p);
             echo "</div>";
@@ -719,30 +719,37 @@ class Item_Ticket extends CommonItilObject_Item
                 $options[$itemtype] = $itemtype::getTypeName(1);
             };
 
-            $isAdmin = Session::haveRight('config', UPDATE) > 0 ? 1 : 0;
             $used = json_encode(self::getUsedItems($instID));
+            $emptyLabel = json_encode(Dropdown::EMPTY_VALUE);
             $updateDevices = <<<JS
-            $.ajax({
-               url: '{$CFG_GLPI['root_doc']}/ajax/dropdownTrackingDeviceType.php',
-               method: 'POST',
-               dataType: 'html',
-               data: {
-                  'action'     : 'getItemsForType',
-                  'itemtype'   : $(this).val(),
-                  'tickets_id' : $instID,
-                  'used'       : $used,
-                  'admin'      : '$isAdmin',
-                  'entity_restrict' : '{$ticket->fields["entities_id"]}'
-               },
-               success: function(response) {
-                  const jsonResp = JSON.parse(response);
-                  $('#itemIdDropdownForItemTicket').empty();
-                  for (const value of jsonResp.results) {
-                     console.log(value);
-                     $('#itemIdDropdownForItemTicket').append($('<option value="' + value.id + '">' + value.text + '</option>'));
+            const itemtype = this.value;
+            const usedItems = $used;
+            const dropdown = $('#itemIdDropdownForItemTicket');
+            if (dropdown.hasClass('select2-hidden-accessible')) {
+               dropdown.select2('destroy');
+            }
+            dropdown.empty().append(new Option($emptyLabel, 0));
+            const options = {theme: 'bootstrap-5'};
+            if (itemtype && itemtype !== '0') {
+               options.ajax = {
+                  url: '{$CFG_GLPI['root_doc']}/ajax/getDropdownValue.php',
+                  method: 'POST',
+                  dataType: 'json',
+                  delay: 250,
+                  data: function (params) {
+                     return {
+                        'itemtype'        : itemtype,
+                        'entity_restrict' : '{$ticket->fields["entities_id"]}',
+                        'used'            : usedItems[itemtype] || [],
+                        'displaywith'     : ['contact', 'serial', 'otherserial'],
+                        'searchText'      : params.term,
+                        'page'            : params.page || 1,
+                        'page_limit'      : 100
+                     };
                   }
-               }
-            });
+               };
+            }
+            dropdown.select2(options);
          JS;
 
             $form = [

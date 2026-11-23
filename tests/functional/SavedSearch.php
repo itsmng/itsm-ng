@@ -39,6 +39,25 @@ use DbTestCase;
 
 class SavedSearch extends DbTestCase
 {
+    public function testNewSearchDefaultsToPrivate()
+    {
+        $this->login('normal', 'normal');
+        $this->boolean((bool) \SavedSearch::canCreate())->isFalse();
+
+        $savedSearch = new \SavedSearch();
+        $input = [
+            'name' => 'Private search',
+            'itemtype' => 'Ticket',
+            'type' => \SavedSearch::SEARCH,
+            'url' => '/front/ticket.php',
+        ];
+        $this->boolean($savedSearch->can(-1, CREATE, $input))->isTrue();
+        $this->checkInput($savedSearch, $savedSearch->add($input), [
+            'is_private' => 1,
+            'users_id' => \Session::getLoginUserID(),
+        ]);
+    }
+
     public function testAddVisibilityRestrict()
     {
         //first, as a super-admin

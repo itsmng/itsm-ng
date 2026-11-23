@@ -36,8 +36,6 @@ async function addObserver(
   const actorSelect = await waitForActorValueSelect(observerPanel);
   const actorId = userId === null ? '0' : String(userId);
 
-  await expect(actorSelect.locator(`option[value="${actorId}"]`)).toHaveCount(1);
-
   if (userId === null) {
     await actorSelect.selectOption(actorId);
   } else {
@@ -47,7 +45,7 @@ async function addObserver(
           && response.request().method() === 'GET'
           && response.ok();
       }),
-      actorSelect.selectOption(actorId),
+      selectObserver(observerPanel, actorId),
     ]);
   }
 
@@ -77,16 +75,28 @@ async function addObserver(
   );
 }
 
-async function getAvailableObserverUserIds(observerPanel: Locator, count: number): Promise<number[]> {
-  const actorSelect = await waitForActorValueSelect(observerPanel);
-  const actorIds = await actorSelect.locator('option').evaluateAll((options) => {
-    return Array.from(new Set(options
-      .map((option) => option.getAttribute('value') || '')
-      .filter((value) => value !== '' && value !== '0')))
-      .map((value) => Number(value))
-      .filter((value) => Number.isInteger(value) && value > 0);
-  });
+async function openObserverChoices(panel: Locator): Promise<Array<{ id: number | string; text: string }>> {
+  const select = await waitForActorValueSelect(panel);
+  const responsePromise = panel.page().waitForResponse((response) =>
+    response.url().includes('/ajax/getDropdownUsers.php') && response.ok());
+  await select.locator('..').locator('.select2-selection').click();
+  const response = await responsePromise;
+  const data = await response.json();
+  return data.results;
+}
 
+async function selectObserver(panel: Locator, userId: string): Promise<void> {
+  const choices = await openObserverChoices(panel);
+  const user = choices.find((choice) => String(choice.id) === userId);
+  expect(user).toBeDefined();
+  await panel.page().getByRole('option', { name: user!.text, exact: true }).click();
+}
+
+async function getAvailableObserverUserIds(observerPanel: Locator, count: number): Promise<number[]> {
+  const choices = await openObserverChoices(observerPanel);
+  const actorIds = choices.map((choice) => Number(choice.id))
+    .filter((id) => Number.isInteger(id) && id > 0);
+  await observerPanel.page().keyboard.press('Escape');
   expect(actorIds.length).toBeGreaterThanOrEqual(count);
   return actorIds.slice(0, count);
 }

@@ -33,9 +33,12 @@
 
 namespace tests\units;
 
+use Change;
 use CommonITILActor;
 use DbTestCase;
 use ITILFollowup as CoreITILFollowup;
+use Profile_User;
+use Session;
 use Ticket;
 use Ticket_User;
 use User;
@@ -114,6 +117,72 @@ class ITILFollowup extends DbTestCase
         $this->boolean((bool) $fup->canViewItem())->isTrue();
         $this->boolean((bool) $fup->canUpdateItem())->isTrue();
         $this->boolean((bool) $fup->canPurgeItem())->isTrue();
+    }
+
+    public function testPendingChangeFollowupKeepsSelectedStatus()
+    {
+        $this->login();
+
+        $users_id = Session::getLoginUserID();
+        $profiles_id = getItemByTypeName('Profile', 'Technician', true);
+        $entities_id = getItemByTypeName('Entity', '_test_root_entity', true);
+        $profile_user = new Profile_User();
+        $this->integer((int) $profile_user->add([
+           'profiles_id' => $profiles_id,
+           'users_id'    => $users_id,
+           'entities_id' => $entities_id,
+        ]))->isGreaterThan(0);
+
+        $change = new Change();
+        $changes_id = $change->add([
+           'name'                => 'Pending change with a technician as requester and assignee',
+           'content'             => 'Pending change description',
+           'entities_id'         => $entities_id,
+           'status'              => Change::WAITING,
+           '_users_id_requester' => $users_id,
+           '_users_id_assign'    => $users_id,
+        ]);
+        $this->integer((int) $changes_id)->isGreaterThan(0);
+
+        $this->login();
+        Session::changeProfile($profiles_id);
+        $this->integer((int) $_SESSION['glpiactiveprofile']['id'])->isEqualTo((int) $profiles_id);
+        $this->boolean($change->getFromDB($changes_id))->isTrue();
+        $this->boolean($change->isUser(CommonITILActor::REQUESTER, $users_id))->isTrue();
+        $this->boolean($change->isUser(CommonITILActor::ASSIGN, $users_id))->isTrue();
+        $this->integer((int) $change->fields['status'])->isEqualTo(Change::WAITING);
+
+        $_SESSION['glpiactiveprofile'][Change::STATUS_MATRIX_FIELD] = [
+           Change::WAITING => [Change::INCOMING => 0, Change::TEST => 0],
+        ];
+
+        $input = [
+           'itemtype'   => Change::class,
+           'items_id'   => $changes_id,
+           'content'    => 'Technician follow-up',
+           'add_reopen' => '1',
+        ];
+        foreach ([
+           Change::WAITING  => Change::WAITING,
+           Change::ASSIGNED => Change::WAITING,
+           Change::TEST     => Change::WAITING,
+           Change::ACCEPTED => Change::ACCEPTED,
+        ] as $selected_status => $expected_status) {
+            $followup = new CoreITILFollowup();
+            $submission = $input + ['_status' => (string) $selected_status];
+            $this->boolean($followup->can(-1, \CREATE, $submission))->isTrue();
+            $followup_id = $followup->add($submission);
+            $this->integer((int) $followup_id)->isGreaterThan(0);
+            $this->boolean($followup->getFromDB($followup_id))->isTrue();
+            $this->boolean($change->getFromDB($changes_id))->isTrue();
+            $this->integer((int) $change->fields['status'])->isEqualTo($expected_status);
+        }
+
+        $this->boolean($change->update(['id' => $changes_id, 'status' => Change::WAITING]))->isTrue();
+        $followup = new CoreITILFollowup();
+        $this->integer((int) $followup->add($input))->isGreaterThan(0);
+        $this->boolean($change->getFromDB($changes_id))->isTrue();
+        $this->integer((int) $change->fields['status'])->isEqualTo(Change::EVALUATION);
     }
 
     public function testUpdateAndDelete()

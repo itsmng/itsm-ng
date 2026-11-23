@@ -101,6 +101,7 @@ if (isset($_POST["type"])
                     'id'          => $select_id,
                     'name'        => $options['name'],
                     'itemtype'    => User::class,
+                    'actions'     => [],
                     'right'       => $right,
                 ];
                 $hook_lines = [];
@@ -179,6 +180,7 @@ if (isset($_POST["type"])
                     'name'        => $param['name'],
                     'conditions' => $cond,
                     'itemtype'    => Group::class,
+                    'actions'     => [],
                 ];
                 renderTwigTemplate('macros/input.twig', expandSelect($selectOptions, [
                     'condition' => [
@@ -236,6 +238,7 @@ if (isset($_POST["type"])
                     'id'          => $select_id,
                     'name'        => $options['name'],
                     'itemtype'    => Supplier::class,
+                    'actions'     => [],
                 ];
                 $hook_lines = [];
                 $hook_lines[] = "$.getJSON('{$CFG_GLPI["root_doc"]}/ajax/v2/itilActorEmail.php', { type: 'supplier', id: this.value || '0' }).done((response) => { if (response && response.success) { $('#{$email_id}').val(response.email || '').attr('data-default-email', response.email || ''); } });";
