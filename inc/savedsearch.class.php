@@ -453,11 +453,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     public function showForm($ID, $options = [])
     {
 
-        $ID = $this->getID();
+        $isNew = self::isNewID($this->getID());
+        $isPrivate = $isNew ? 1 : $this->fields['is_private'];
 
         $form = [
            'action' => $this->getFormURL(),
            'itemtype' => $this::class,
+           'canCreate' => $isNew && (new self())->can(-1, CREATE),
            'content' => [
               '' => [
                  'visible' => true,
@@ -496,9 +498,9 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                        'type' => 'select',
                        'name' => 'is_private',
                        'values' => [__('Public'), __('Private')],
-                       'value' => $this->fields['is_private'] ?? 1,
+                       'value' => $isPrivate,
                     ] : [
-                       'content' => $this->fields['is_private'] ? __('Private') : __('Public')
+                       'content' => $isPrivate ? __('Private') : __('Public')
                     ],
                     Entity::getTypeName(1) => $this->canCreate() ? [
                        'type' => 'select',

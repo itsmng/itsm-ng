@@ -195,7 +195,7 @@ function expandForm($form, $fields = [], $template = null)
 
         $form["buttons"] = [
             $isNew
-                ? ($item::canCreate()
+                ? (($form["canCreate"] ?? $item::canCreate())
                     ? [
                         "class" => "btn btn-secondary",
                         "name" => "add",
