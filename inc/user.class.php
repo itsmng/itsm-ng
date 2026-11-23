@@ -952,7 +952,7 @@ class User extends CommonDBTM
             unset($input["password"]);
         }
 
-        // prevent changing tokens and emails from users with lower rights
+        // Protect sensitive fields when updating another user outside the active profile hierarchy.
         if (Session::getLoginUserID() !== false
             && ((int) $input['id'] !== Session::getLoginUserID())) {
             $protected_input_keys = [
@@ -965,6 +965,9 @@ class User extends CommonDBTM
                 '_emails',
                 '_useremails',
                 'is_active',
+                'is_deleted',
+                'begin_date',
+                'end_date',
             ];
             if (count(array_intersect($protected_input_keys, array_keys($input))) > 0
                 && !$this->currentUserHaveMoreRightThan($input['id'])
