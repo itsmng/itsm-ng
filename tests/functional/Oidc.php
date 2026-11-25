@@ -141,9 +141,14 @@ class Oidc extends \DbTestCase
         $rules->list = [];
     }
 
-    public function testAddUserDataRecordsOidcLogin()
+    public function testAddUserDataRecordsOidcLoginAndPreservesPlanning()
     {
         $this->login();
+        \Planning::initSessionForCurrentUser();
+        $_SESSION['glpi_plannings']['filters']['Example\\PlanningType'] = $_SESSION['glpi_plannings']['filters']['TicketTask'];
+        \Planning::savePlanningsInDB();
+        $saved_plannings = exportArrayToDB($_SESSION['glpi_plannings']);
+
         $user = getItemByTypeName('User', TU_USER);
         $currentTime = $_SESSION['glpi_currenttime'];
         $oidcLoginTime = '2025-01-02 03:04:05';
@@ -154,6 +159,7 @@ class Oidc extends \DbTestCase
 
             $this->boolean($user->getFromDB($user->getID()))->isTrue();
             $this->string($user->fields['last_login'])->isIdenticalTo($oidcLoginTime);
+            $this->string($user->fields['plannings'])->isIdenticalTo($saved_plannings);
         } finally {
             $_SESSION['glpi_currenttime'] = $currentTime;
         }

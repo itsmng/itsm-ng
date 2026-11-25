@@ -425,6 +425,8 @@ class Oidc extends CommonDBTM
                 ]
             );
             $input['_ruleright_process'] = true;
+            // Planning preferences are saved separately as JSON.
+            unset($input['plannings']);
             $user->update(Toolbox::addslashes_deep($input));
         }
 

@@ -1893,10 +1893,13 @@ class Planning extends CommonGLPI
 
     public static function savePlanningsInDB()
     {
+        global $DB;
 
         $user = new User();
-        $user->update(['id' => $_SESSION['glpiID'],
-                            'plannings' => exportArrayToDB($_SESSION['glpi_plannings'])]);
+        $user->update([
+            'id' => $_SESSION['glpiID'],
+            'plannings' => $DB->escape(exportArrayToDB($_SESSION['glpi_plannings'])),
+        ]);
     }
 
 
