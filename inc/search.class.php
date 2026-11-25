@@ -62,6 +62,9 @@ class Search
 
     public const NULLVALUE = '__NULL__';
 
+    // Separator used to search several values at once
+    public const MULTIPLE_VALUES_SEPARATOR = ';';
+
     public static $output_type = self::HTML_OUTPUT;
     public static $search = [];
 
@@ -3248,8 +3251,9 @@ JAVASCRIPT;
                 break;
             default:
                 if (!$display) {
-                    echo "<input type='text' size='13' name='$inputname' class='form-control' value=\"" .
-                             Html::cleanInputText($request['value']) . "\">";
+                    echo "<input type='text' size='13' name='$inputname' class='form-control' title=\"" .
+                             Html::cleanInputText(__('Separate several values with ";" (e.g. pc1;pc2;pc3)')) .
+                             "\" value=\"" . Html::cleanInputText($request['value']) . "\">";
                 }
                 break;
         }
@@ -3271,6 +3275,39 @@ JAVASCRIPT;
      * @return select string
     **/
     public static function addHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val)
+    {
+        $values = self::getMultipleSearchValues($searchtype, $val);
+        if (count($values) > 1) {
+            $out = self::combineMultipleValues(
+                fn ($value) => self::addSingleHaving('', $NOT, $itemtype, $ID, $searchtype, $value),
+                $LINK,
+                $NOT,
+                $searchtype,
+                $values
+            );
+            if ($out !== null) {
+                return $out;
+            }
+        } elseif (count($values) === 1 && $values[0] !== $val) {
+            $val = $values[0];
+        }
+
+        return self::addSingleHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val);
+    }
+
+    /**
+     * Add having to a request for one single value
+     *
+     * @param string  $LINK           link to use
+     * @param string  $NOT            is is a negative search ?
+     * @param string  $itemtype       item type
+     * @param integer $ID             ID of the item to search
+     * @param string  $searchtype     search type ('contains' or 'equals')
+     * @param string  $val            value search
+     *
+     * @return string|false
+    **/
+    private static function addSingleHaving($LINK, $NOT, $itemtype, $ID, $searchtype, $val)
     {
 
         global $DB;
@@ -4322,7 +4359,76 @@ JAVASCRIPT;
     }
 
     /**
+     * Split a search value on ";" (contains, notcontains, equals and notequals only)
+     *
+     * @param string $searchtype Search type used
+     * @param mixed  $val        Value searched
+     *
+     * @return array Non empty values, or the untouched value if it must not be split
+    **/
+    public static function getMultipleSearchValues($searchtype, $val): array
+    {
+        if (
+            !is_string($val)
+            || !str_contains($val, self::MULTIPLE_VALUES_SEPARATOR)
+            || !in_array($searchtype, ['contains', 'notcontains', 'equals', 'notequals'], true)
+        ) {
+            return [$val];
+        }
+
+        // Do not split on the ";" of HTML entities (&lt;, &#38;...)
+        $protected = preg_replace(
+            '/(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*));/i',
+            "$1\x00",
+            $val
+        );
+
+        $values = [];
+        foreach (explode(self::MULTIPLE_VALUES_SEPARATOR, $protected) as $value) {
+            $value = trim(str_replace("\x00", self::MULTIPLE_VALUES_SEPARATOR, $value));
+            if ($value !== '') {
+                $values[] = $value;
+            }
+        }
+
+        return array_values(array_unique($values));
+    }
+
+    /**
+     * Combine the SQL of several values: OR for a positive search, AND for a negative one
+     *
+     * @param callable $builder    Returns the SQL (without link) for one value
+     * @param string   $link       Link string
+     * @param boolean  $nott       Is it a negative search ?
+     * @param string   $searchtype Search type used
+     * @param array    $values     Values to search
+     *
+     * @return string|null
+    **/
+    private static function combineMultipleValues(callable $builder, $link, $nott, $searchtype, array $values): ?string
+    {
+        $negative = (bool) $nott !== in_array($searchtype, ['notcontains', 'notequals'], true);
+
+        $parts = [];
+        foreach ($values as $value) {
+            $part = $builder($value);
+            if ($part === false || $part === null || trim((string) $part) === '') {
+                continue;
+            }
+            $parts[] = '(' . $part . ')';
+        }
+
+        if (!count($parts)) {
+            return null;
+        }
+
+        return " $link (" . implode($negative ? ' AND ' : ' OR ', $parts) . ") ";
+    }
+
+    /**
      * Generic Function to add where to a request
+     *
+     * The value may hold several values separated by ";".
      *
      * @param string  $link         Link string
      * @param boolean $nott         Is it a negative search ?
@@ -4335,6 +4441,40 @@ JAVASCRIPT;
      * @return string Where string
     **/
     public static function addWhere($link, $nott, $itemtype, $ID, $searchtype, $val, $meta = 0)
+    {
+        $values = self::getMultipleSearchValues($searchtype, $val);
+        if (count($values) > 1) {
+            $out = self::combineMultipleValues(
+                fn ($value) => self::addSingleWhere('', $nott, $itemtype, $ID, $searchtype, $value, $meta),
+                $link,
+                $nott,
+                $searchtype,
+                $values
+            );
+            if ($out !== null) {
+                return $out;
+            }
+        } elseif (count($values) === 1 && $values[0] !== $val) {
+            $val = $values[0];
+        }
+
+        return self::addSingleWhere($link, $nott, $itemtype, $ID, $searchtype, $val, $meta);
+    }
+
+    /**
+     * Add where to a request for one single value
+     *
+     * @param string  $link         Link string
+     * @param boolean $nott         Is it a negative search ?
+     * @param string  $itemtype     Item type
+     * @param integer $ID           ID of the item to search
+     * @param string  $searchtype   Searchtype used (equals or contains)
+     * @param string  $val          Item num in the request
+     * @param integer $meta         Is a meta search (meta=2 in search.class.php) (default 0)
+     *
+     * @return string|false Where string
+    **/
+    private static function addSingleWhere($link, $nott, $itemtype, $ID, $searchtype, $val, $meta = 0)
     {
 
         global $DB;
