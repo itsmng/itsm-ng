@@ -985,6 +985,9 @@ class Auth extends CommonGLPI
                     // Then ensure addslashes
                     $input = Toolbox::addslashes_deep($input);
 
+                    // Planning preferences are saved separately as JSON.
+                    unset($input['plannings']);
+
                     // Add the user e-mail if present
                     if (isset($email)) {
                         $this->user->fields['_useremails'] = $email;

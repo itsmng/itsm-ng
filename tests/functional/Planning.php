@@ -37,6 +37,27 @@ namespace tests\units;
 
 class Planning extends \DbTestCase
 {
+    public function testAddedCalendarPersistsWithNamespacedFilter()
+    {
+        $this->login();
+        \Planning::initSessionForCurrentUser();
+
+        $filter = 'Example\\PlanningType';
+        $_SESSION['glpi_plannings']['filters'][$filter] = $_SESSION['glpi_plannings']['filters']['TicketTask'];
+        $other_user = new \User();
+        $users_id = $other_user->add(['name' => '_test_planning_other_user']);
+        $this->integer($users_id)->isGreaterThan(0);
+        \Planning::sendAddUserForm(['users_id' => $users_id]);
+        $saved_plannings = $_SESSION['glpi_plannings'];
+        $user = new \User();
+        $this->boolean($user->getFromDB(\Session::getLoginUserID()))->isTrue();
+        $this->string($user->fields['plannings'])->isIdenticalTo(exportArrayToDB($saved_plannings));
+
+        $this->login();
+        $this->array($_SESSION['glpi_plannings'])->isIdenticalTo($saved_plannings);
+        $this->array($_SESSION['glpi_plannings']['plannings'])->hasKey('user_' . $users_id);
+    }
+
     public function testCloneEvent()
     {
         $this->login();

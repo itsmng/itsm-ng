@@ -134,6 +134,20 @@ class Oidc extends \DbTestCase
         }
     }
 
+    public function testAddUserDataPreservesPlanning()
+    {
+        $this->login();
+        \Planning::initSessionForCurrentUser();
+        \Planning::savePlanningsInDB();
+        $saved_plannings = exportArrayToDB($_SESSION['glpi_plannings']);
+
+        $user = getItemByTypeName('User', TU_USER);
+        \Oidc::addUserData([], $user->getID());
+
+        $this->boolean($user->getFromDB($user->getID()))->isTrue();
+        $this->string($user->fields['plannings'])->isIdenticalTo($saved_plannings);
+    }
+
     private function resetRules()
     {
         $rules = \SingletonRuleList::getInstance('RuleRight', 0);
