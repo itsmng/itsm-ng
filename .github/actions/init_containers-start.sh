@@ -4,9 +4,9 @@ echo "Init app container home"
 mkdir -p $APP_CONTAINER_HOME
 
 echo "Pull and start containers"
-docker-compose pull --quiet
-docker-compose up --no-start
-docker-compose start
+docker compose pull --quiet
+docker compose up --no-start
+docker compose start
 
 if [[ "$UPDATE_FILES_ACL" = true ]]; then
   echo "Change files rights to give write access to app container user"
@@ -16,7 +16,7 @@ if [[ "$UPDATE_FILES_ACL" = true ]]; then
 fi
 
 echo "Check services health"
-for CONTAINER_ID in `docker-compose ps -a -q`; do
+for CONTAINER_ID in `docker compose ps -a -q`; do
   CONTAINER_NAME=`/usr/bin/docker inspect --format='{{print .Name}}{{if .Config.Image}} ({{print .Config.Image}}){{end}}' $CONTAINER_ID`
   HEALTHY=false
   TOTAL_COUNT=0

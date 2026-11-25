@@ -137,20 +137,20 @@ jobs:
       - name: "Install dependencies"
         if: env.skip != 'true'
         run: |
-          docker-compose exec -T app .github/actions/init_build.sh
+          docker compose exec -T app .github/actions/init_build.sh
       - name: "Install DB tests"
         if: env.skip != 'true'
         run: |
-          docker-compose exec -T app .github/actions/test_install.sh
+          docker compose exec -T app .github/actions/test_install.sh
       - name: "Update DB tests"
         if: env.skip != 'true'
         run: |
           .github/actions/init_initialize-old-dbs.sh
-          docker-compose exec -T app .github/actions/test_update-from-older-version.sh
+          docker compose exec -T app .github/actions/test_update-from-older-version.sh
       - name: "Unit tests"
         if: env.skip != 'true'
         run: |
-          docker-compose exec -T app .github/actions/test_tests-units.sh
+          docker compose exec -T app .github/actions/test_tests-units.sh
       - name: "Cleanup containers"
         if: env.skip != 'true' && always()
         run: |

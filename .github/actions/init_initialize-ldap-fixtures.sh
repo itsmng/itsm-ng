@@ -10,5 +10,5 @@ for f in `ls $ROOT_DIR/tests/LDAP/ldif/*.ldif`; do
   || true
 done
 for f in `ls $ROOT_DIR/tests/LDAP/ldif/*.ldif`; do
-  cat $f | docker-compose exec -T openldap ldapadd -x -H ldap://127.0.0.1:3890/ -D "cn=Manager,dc=itsm,dc=org" -w insecure
+  cat $f | docker compose exec -T openldap ldapadd -x -H ldap://127.0.0.1:3890/ -D "cn=Manager,dc=itsm,dc=org" -w insecure
 done
