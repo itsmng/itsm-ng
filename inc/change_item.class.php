@@ -104,6 +104,8 @@ class Change_Item extends CommonItilObject_Item
         $number = count($types_iterator);
 
         if ($canedit) {
+            $used = json_encode(self::getUsedItems($instID));
+            $emptyLabel = json_encode(Dropdown::EMPTY_VALUE);
             $form = [
                'action' => Toolbox::getItemTypeFormURL(__CLASS__),
                'buttons' => [
@@ -131,29 +133,35 @@ class Change_Item extends CommonItilObject_Item
                            'col_lg' => 6,
                            'hooks' => [
                               'change' => <<<JS
-                              $.ajax({
-                                    method: "POST",
-                                    url: "$CFG_GLPI[root_doc]/ajax/getDropdownValue.php",
-                                    data: {
-                                       itemtype: this.value,
-                                       display_emptychoice: 1,
-                                    },
-                                    success: function(response) {
-                                       const data = response.results;
-                                       $('#dropdown_items_id').empty();
-                                       for (let i = 0; i < data.length; i++) {
-                                          if (data[i].children) {
-                                             const group = $('#dropdown_items_id')
-                                                .append("<optgroup label='" + data[i].text + "'></optgroup>");
-                                             for (let j = 0; j < data[i].children.length; j++) {
-                                                group.append("<option value='" + data[i].children[j].id + "'>" + data[i].children[j].text + "</option>");
-                                             }
-                                          } else {
-                                             $('#dropdown_items_id').append("<option value='" + data[i].id + "'>" + data[i].text + "</option>");
-                                          }
-                                       }
+                              const itemtype = this.value;
+                              const usedItems = $used;
+                              const dropdown = $('#dropdown_items_id');
+                              if (dropdown.hasClass('select2-hidden-accessible')) {
+                                 dropdown.select2('destroy');
+                              }
+                              dropdown.empty().append(new Option($emptyLabel, 0));
+                              const options = {theme: 'bootstrap-5'};
+                              if (itemtype && itemtype !== '0') {
+                                 // recherche + pagination côté serveur : plus de limite à 100 éléments
+                                 options.ajax = {
+                                    url: '$CFG_GLPI[root_doc]/ajax/getDropdownValue.php',
+                                    method: 'POST',
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function (params) {
+                                       return {
+                                          'itemtype'        : itemtype,
+                                          'entity_restrict' : '{$change->fields["entities_id"]}',
+                                          'used'            : usedItems[itemtype] || [],
+                                          'displaywith'     : ['contact', 'serial', 'otherserial'],
+                                          'searchText'      : params.term,
+                                          'page'            : params.page || 1,
+                                          'page_limit'      : 100
+                                       };
                                     }
-                                 });
+                                 };
+                              }
+                              dropdown.select2(options);
                            JS,
                            ]
                         ],
@@ -301,5 +309,21 @@ class Change_Item extends CommonItilObject_Item
                 Change::showListForItem($item, $withtemplate);
         }
         return true;
+    }
+
+    /**
+     * Items already linked to a change, grouped by itemtype (excluded from the item search).
+     *
+     * @param integer $changes_id
+     *
+     * @return array
+    **/
+    public static function getUsedItems($changes_id)
+    {
+        $used = [];
+        foreach (getAllDataFromTable('glpi_changes_items', ['changes_id' => $changes_id]) as $val) {
+            $used[$val['itemtype']][] = $val['items_id'];
+        }
+        return $used;
     }
 }
